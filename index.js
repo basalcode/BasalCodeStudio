@@ -2,6 +2,14 @@ const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
+/* st-mysql */
+const blogDB = require('st-mysql')({
+    host: 'localhost', user: 'root', password: '1135', database: 'Blog', flat: true, encode: false
+});
+const serverDB = require('st-mysql')({
+    host: 'localhost', user: 'root', password: '1135', database: 'Server', flat: true, encode: false
+});
+
 const app = express();
 
 /* body-parser */
@@ -24,10 +32,77 @@ app.get('/', function (req, res) {
     }
 })
 
+/* 
+let DBOperator = function() {
+    function init() {
+        
+        return this;
+    }
+}; */
+
 app.post('/writePost', function (req, res) {
-    res.send({
-        result: req.body
-    });
+    (async () => {
+        const Type = {
+            CREATE: 'c',
+            READ: 'r',
+            UPDATE: 'u',
+            DELETE: 'd'
+        }
+        
+        let inputType = Type.CREATE;
+        let viewCount = 1;
+        let commentCount = 2;
+        let is_get = req.method === 'GET' ? true : false;
+        let responseObj = {};
+        let dbParamsObj = {
+            blog: {
+                category_name: 'noName',
+                title: req.body.title,
+                author: req.body.author,
+                description: req.body.description,
+                view_count: viewCount,
+                comment_count: commentCount
+            },
+            server: {
+                ip_address: req.headers['x-forwarded-for'],
+                is_get: is_get,
+                CRUD: inputType,
+                request_url: req.originalUrl,
+                request_query: JSON.stringify(req.query),
+                request_body: JSON.stringify(req.body),
+                response_obj: JSON.stringify(responseObj)
+            }
+        }
+
+        let blogQeury = `INSERT INTO Post (category_name, title, author, description, view_count, comment_count) VALUES (?, ?, ?, ?, ?, ?);`;
+        let blogValues = [
+            dbParamsObj.blog.category_name,
+            dbParamsObj.blog.title,
+            dbParamsObj.blog.author,
+            dbParamsObj.blog.description,
+            dbParamsObj.blog.view_count,
+            dbParamsObj.blog.comment_count
+        ];
+        
+        let serverQuery = `INSERT INTO Log (ip_address, is_get, CRUD, request_url, request_query, request_body, response_obj) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+        let serverValues = [
+            dbParamsObj.server.ip_address,
+            dbParamsObj.server.is_get,
+            dbParamsObj.server.CRUD,
+            dbParamsObj.server.request_url,
+            dbParamsObj.server.request_query,
+            dbParamsObj.server.request_body,
+            dbParamsObj.server.response_obj
+        ];
+
+        let blog = await blogDB(blogQeury, blogValues);
+        let server = await serverDB(serverQuery, serverValues);
+
+        res.send({
+            blog: blog,
+            server: server
+        });
+    })();
 })
 
 app.listen(3000);

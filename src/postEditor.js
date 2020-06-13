@@ -13,8 +13,6 @@ window.onload = function() {
             description: description.value
         }
 
-        console.log(JSON.stringify(postEditorObj));
-
         fetch('/writePost', {
             method: 'POST',
             headers: {
