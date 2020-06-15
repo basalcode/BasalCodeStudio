@@ -6,13 +6,11 @@ window.onload = function () {
             return response.json();
         })
         .then(function (parsed) {
-            showPostList(parsed.blog);
+            showPostList(parsed.result);
         })
 }
 
-function showPostList(postObj) {
-    console.log(postObj);
-
+function showPostList(postObjArr) {
     let postList = document.querySelector('#post-list');
     let thead = document.querySelector('#thead');
     let tbody = document.querySelector('#tbody');
@@ -33,7 +31,7 @@ function showPostList(postObj) {
         thead.appendChild(th);
     }
 
-    postObj.forEach(postObj => {
+    postObjArr.forEach(postObj => {
         let tr = document.createElement('tr');
         for (const key in postObj) {
             let td = document.createElement('td');
