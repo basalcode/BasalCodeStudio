@@ -12,10 +12,11 @@ window.onload = function () {
 
 function showPostList(postObjArr) {
     let postList = document.querySelector('#post-list');
-    let thead = document.querySelector('#thead');
-    let tbody = document.querySelector('#tbody');
+    let tableHeader = document.querySelector('#thead');
+    let tableBody = document.querySelector('#tbody');
 
     const HeaderType = {
+        POST_ID: 'PostID',
         CATEGORY: 'Category',
         TITLE: 'Title',
         Author: 'Author',
@@ -28,16 +29,34 @@ function showPostList(postObjArr) {
         let th = document.createElement('th');
         th.innerText = HeaderType[key];
 
-        thead.appendChild(th);
+        tableHeader.appendChild(th);
     }
 
-    postObjArr.forEach(postObj => {
-        let tr = document.createElement('tr');
-        for (const key in postObj) {
-            let td = document.createElement('td');
-            td.innerText = postObj[key];
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    })
+    if (postObjArr.length === 0) {
+        let div = document.createElement('div');
+        div.innerText = 'There is no post.';
+
+        document.body.appendChild(div);
+    } else {
+        postObjArr.forEach(postObj => {
+            let tr = document.createElement('tr');
+            for (const key in postObj) {
+                let td = document.createElement('td');
+                if (key === 'title') {
+                    let postLink = document.createElement('a');
+                
+                    postLink.innerText = postObj[key];
+                    postLink.setAttribute('href', '/source/post.html');
+        
+                    td.appendChild(postLink);
+                    tr.appendChild(td);
+                } else {
+                    td.innerText = postObj[key];
+                    
+                    tr.appendChild(td);
+                }
+            }
+            tableBody.appendChild(tr);
+        })
+    }
 }

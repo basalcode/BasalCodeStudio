@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/post', express.static('./src'));
+app.use('/source', express.static('./src'));
 
 app.get('/', function (req, res) {
     if (req.headers['x-forwarded-proto' === 'http']) {
@@ -48,7 +48,6 @@ let DBOperator = (function () {
 
     let dbParamsObj;
     let contentValue;
-    let responseObj;
 
     function isVerifiedType(obj, type) {
         let verified = false;
@@ -89,27 +88,25 @@ let DBOperator = (function () {
                 CRUD: inputType,
                 request_url: req.originalUrl,
                 request_query: JSON.stringify(req.query),
-                request_body: JSON.stringify(req.body),
-                response_obj: JSON.stringify(responseObj)
+                request_body: JSON.stringify(req.body)
             }
         };
         contentValue = contentType;
     }
 
     function getCreateQueryObj() {
-        let queryObject;
+        let queryObject = {};
         switch (contentValue) {
             case ContentType.POST:
                 queryObject.query = 
                         `INSERT INTO Post (category, title, author, description, view_count, comment_count) VALUES (?, ?, ?, ?, ?, ?);`;
                 queryObject.values = [
-                    dbParamsObj.server.ip_address,
-                    dbParamsObj.server.is_get,
-                    dbParamsObj.server.CRUD,
-                    dbParamsObj.server.request_url,
-                    dbParamsObj.server.request_query,
-                    dbParamsObj.server.request_body,
-                    dbParamsObj.server.response_obj
+                    dbParamsObj.blog.category,
+                    dbParamsObj.blog.title,
+                    dbParamsObj.blog.author,
+                    dbParamsObj.blog.description,
+                    dbParamsObj.blog.view_count,
+                    dbParamsObj.blog.comment_count
                 ];
                 break;
             /* case ContentType.POST_LIST:
@@ -132,7 +129,7 @@ let DBOperator = (function () {
                 let endIndex = (startPage * loadAmount) - 1;
 
                 queryObject.query = 
-                    `SELECT category, title, author, description, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ${startIndex}, ${endIndex}`;
+                    `SELECT post_id, category, title, author, description, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ${startIndex}, ${endIndex}`;
                 queryObject.values = null
                 break;
             default:
@@ -171,7 +168,7 @@ let DBOperator = (function () {
     }
 
     function setQuery() {
-        let queryObject = {};
+        let queryObject;
         switch (dbParamsObj.server.CRUD) {
             case InputType.CREATE:
                 queryObject = getCreateQueryObj();
@@ -194,15 +191,14 @@ let DBOperator = (function () {
     function log() {
         return (async () => {
             let serverQuery = 
-                `INSERT INTO Log (ip_address, is_get, CRUD, request_url, request_query, request_body, response_obj) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+                `INSERT INTO Log (ip_address, is_get, CRUD, request_url, request_query, request_body) VALUES (?, ?, ?, ?, ?, ?);`;
             let serverValues = [
                 dbParamsObj.server.ip_address,
                 dbParamsObj.server.is_get,
                 dbParamsObj.server.CRUD,
                 dbParamsObj.server.request_url,
                 dbParamsObj.server.request_query,
-                dbParamsObj.server.request_body,
-                dbParamsObj.server.response_obj
+                dbParamsObj.server.request_body
             ];
             return await DB.server(serverQuery, serverValues);
         })();
@@ -213,10 +209,16 @@ let DBOperator = (function () {
             let queryObj = setQuery();
             let [query, values] = [queryObj.query, queryObj.values];
             
-            responseObj = await DB.blog(query, values);
-            await log();
+            let blogResult = await DB.blog(query, values);
+            let serverResult = await log();
 
-            return responseObj;
+            if (blogResult.errono !== undefined) {
+                throw new Error('[Error] run() : There might be an error in query syntax');
+            }
+            if (serverResult.errono !== undefined) {
+                throw new Error('[Error] run() : There might be an error in query syntax');
+            }
+            return blogResult;
         })();
     }
     
@@ -259,7 +261,7 @@ app.get('/readPostList', function (req, res) {
             DBOperator.InputType.READ,
             DBOperator.ContentType.POST_LIST
         );
-
+            
         res.send({
             result: await DBOperator.run()
         });

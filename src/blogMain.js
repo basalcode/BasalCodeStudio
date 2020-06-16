@@ -5,6 +5,6 @@ window.onload = function() {
     let readPostList = document.querySelector('#read-post-list');
 
     writePost.addEventListener('click', function(event) {
-        window.location.href="/post/postEditor.html";
+        window.location.href="/source/postEditor.html";
     })
 }

@@ -26,5 +26,6 @@ window.onload = function() {
         .then(function(parsed) {
             console.log(parsed);
         })
+        window.location.href = '/source/postList.html';
     })
 }
