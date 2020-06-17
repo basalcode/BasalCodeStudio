@@ -47,6 +47,7 @@ let DBOperator = (function () {
     }
 
     let dbParamsObj;
+    let requestObj;
     let contentValue;
 
     function isVerifiedType(obj, type) {
@@ -91,6 +92,8 @@ let DBOperator = (function () {
                 request_body: JSON.stringify(req.body)
             }
         };
+
+        requestObj = req;
         contentValue = contentType;
     }
 
@@ -120,8 +123,13 @@ let DBOperator = (function () {
     function getReadQueryObj() {
         let queryObject = {};
         switch (contentValue) {
-            /* case ContentType.POST:
-                break; */
+            case ContentType.POST:
+                let post_id = requestObj.query.post_id;
+                queryObject.query = `SELECT category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
+                queryObject.values = [
+                    post_id
+                ];
+                break;
             case ContentType.POST_LIST:
                 let startPage = 1;
                 let loadAmount = 100;
@@ -129,8 +137,11 @@ let DBOperator = (function () {
                 let endIndex = (startPage * loadAmount) - 1;
 
                 queryObject.query = 
-                    `SELECT post_id, category, title, author, description, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ${startIndex}, ${endIndex}`;
-                queryObject.values = null
+                    `SELECT post_id, category, title, author, description, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ?, ?`;
+                queryObject.values = [
+                    startIndex,
+                    endIndex
+                ]
                 break;
             default:
                 throw new Error('[Error] getCreateQueryObj() : Type Error');
@@ -143,11 +154,8 @@ let DBOperator = (function () {
         switch (contentValue) {
             /* case ContentType.POST:
                 break; */
-            case ContentType.POST_LIST:
-                queryObject.query = 
-                    `SELECT category, title, author, description, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ${startIndex}, ${endIndex}`;
-                queryObject.values = null
-                break;
+            /* case ContentType.POST_LIST:
+                break; */
             default:
                 throw new Error('[Error] getCreateQueryObj() : Type Error');
         }
@@ -230,16 +238,6 @@ let DBOperator = (function () {
     }
 })();
 
-/* app.get ('/test', function (req, res) {
-    let db1 = DBOperator().init('Hello');
-    let db2 = DBOperator().init('New Obj');
-
-    res.send({
-        db2: db2.value,
-        db1: db1.value
-    });
-}) */
-
 app.post('/writePost', function (req, res) {
     (async () => {
         DBOperator.init(
@@ -265,6 +263,20 @@ app.get('/readPostList', function (req, res) {
         res.send({
             result: await DBOperator.run()
         });
+    })();
+})
+
+app.get('/readPost', function (req, res) {
+    (async () => {
+        DBOperator.init(
+            req,
+            DBOperator.InputType.READ,
+            DBOperator.ContentType.POST
+        );
+
+        res.send({
+            result: await DBOperator.run()
+        })
     })();
 })
 

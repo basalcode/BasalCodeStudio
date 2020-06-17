@@ -26,6 +26,6 @@ window.onload = function() {
         .then(function(parsed) {
             console.log(parsed);
         })
-        window.location.href = '/source/postList.html';
+        window.location.href = '/source/blogMain.html';
     })
 }
