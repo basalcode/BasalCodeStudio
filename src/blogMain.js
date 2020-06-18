@@ -6,6 +6,6 @@ window.onload = function() {
 
     writePost.addEventListener('click', function(event) {
         console.log('Hello');
-        window.location.href='/source/postEditor.html';
+        window.location.href='/source/postEditor.html?mode=write';
     })
 }

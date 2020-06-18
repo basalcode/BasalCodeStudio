@@ -19,12 +19,21 @@ function showPost(postObj) {
     let postHeader = document.querySelector('#post__header');
     let category = document.querySelector('#category');
     let title = document.querySelector('#title');
+    
+    let postControl = document.querySelector('#post-control');
+    let updatePost = document.querySelector('#update');
+    let deletePost = document.querySelector('#delete');
+
     let author = document.querySelector('#author');
     let viewCount = document.querySelector('#view-count');
     let time = document.querySelector('#time');
 
     category.innerText = postObj.category;
     title.innerText = postObj.title;
+
+    updatePost.innerText = 'update';
+    deletePost.innerText = 'delete';
+
     author.innerText = postObj.author;
     viewCount.innerText = postObj.view_count;
     time.innerText = postObj.time;
@@ -33,4 +42,18 @@ function showPost(postObj) {
     let description  = document.querySelector('#description');
 
     description.innerText = postObj.description;
+
+    updatePost.addEventListener('click', function (event) {
+        window.location.href = `/source/postEditor.html?mode=update&post_id=${postObj.post_id}`
+    })
+
+    deletePost.addEventListener('click', function (event) {
+        fetch('/deletePost')
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (parsed) {
+            console.log(parsed);
+        });
+    })
 }

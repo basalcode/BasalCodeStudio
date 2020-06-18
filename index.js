@@ -98,7 +98,10 @@ let DBOperator = (function () {
     }
 
     function getCreateQueryObj() {
-        let queryObject = {};
+        let queryObject = {
+            query: null,
+            values: null
+        };
         switch (contentValue) {
             case ContentType.POST:
                 queryObject.query = 
@@ -121,11 +124,14 @@ let DBOperator = (function () {
     }
 
     function getReadQueryObj() {
-        let queryObject = {};
+        let queryObject = {
+            query: null,
+            values: null
+        };
         switch (contentValue) {
             case ContentType.POST:
                 let post_id = requestObj.query.post_id;
-                queryObject.query = `SELECT category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
+                queryObject.query = `SELECT post_id, category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
                 queryObject.values = [
                     post_id
                 ];
@@ -150,10 +156,21 @@ let DBOperator = (function () {
     }
 
     function getUpdateQueryObj() {
-        let queryObject = {};
+        let queryObject = {
+            query: null,
+            values: null
+        };
         switch (contentValue) {
-            /* case ContentType.POST:
-                break; */
+            case ContentType.POST:
+                let post_id = requestObj.body.post_id;
+                queryObject.query = 'UPDATE Post SET title=?, author=?, description=?  WHERE post_id=?';
+                queryObject.values = [
+                    dbParamsObj.blog.title,
+                    dbParamsObj.blog.author,
+                    dbParamsObj.blog.description,
+                    post_id
+                ];
+                break;
             /* case ContentType.POST_LIST:
                 break; */
             default:
@@ -163,7 +180,10 @@ let DBOperator = (function () {
     }
 
     function getDeleteQueryObj() {
-        let queryObject = {};
+        let queryObject = {
+            query: null,
+            values: null
+        };
         switch (contentValue) {
             /* case ContentType.POST:
                 break; */
@@ -245,7 +265,6 @@ app.post('/writePost', function (req, res) {
             DBOperator.InputType.CREATE,
             DBOperator.ContentType.POST
         );
-
         res.send({
             result: await DBOperator.run()
         });
@@ -271,6 +290,35 @@ app.get('/readPost', function (req, res) {
         DBOperator.init(
             req,
             DBOperator.InputType.READ,
+            DBOperator.ContentType.POST
+        );
+
+        res.send({
+            result: await DBOperator.run()
+        })
+    })();
+})
+
+app.post('/updatePost', function (req, res) {
+    console.log(req.body);
+    (async () => {
+        DBOperator.init(
+            req,
+            DBOperator.InputType.UPDATE,
+            DBOperator.ContentType.POST
+        );
+
+        res.send({
+            result: await DBOperator.run()
+        })
+    })();
+})
+
+app.post('/deletePost', function (req, res) {
+    (async () => {
+        DBOperator.init(
+            req,
+            DBOperator.InputType.DELETE,
             DBOperator.ContentType.POST
         );
 
