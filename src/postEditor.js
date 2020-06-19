@@ -11,25 +11,37 @@ window.onload = function () {
     let post_id = params.get('post_id');
     let mode = params.get('mode');
 
+    let buttonLocked = false;
     
     if (mode === 'write') {
         submit.addEventListener('click', function (event) {
-            let postEditorObj = {
-                title: title.value,
-                author: author.value,
-                description: description.value
+            if (!buttonLocked) {
+                buttonLocked = true;
+                let postEditorObj = {
+                    title: title.value,
+                    author: author.value,
+                    description: description.value
+                }
+    
+                fetch('/writePost', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postEditorObj)
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(parsed) {
+                    if (parsed.result.constructor.name === 'String') {
+                        alert(parsed.result);
+                    } else {
+                        window.location.href = '/source/postList.html';   
+                    }
+                    buttonLocked = false;
+                })
             }
-            
-            fetch('/writePost', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postEditorObj)
-            })
-            .then(function(response) {
-                window.location.href = '/source/postList.html';    
-            })
         })
     } else if (mode === 'update') {
         fetch(`/readPost?post_id=${post_id}`)
@@ -45,23 +57,36 @@ window.onload = function () {
             })
 
         submit.addEventListener('click', function (event) {
-            let postEditorObj = {
-                title: title.value,
-                author: author.value,
-                description: description.value,
-                post_id: post_id
+            if (!buttonLocked) {
+                buttonLocked = true;
+                let postEditorObj = {
+                    title: title.value,
+                    author: author.value,
+                    description: description.value,
+                    post_id: post_id
+                }
+                
+                console.log(postEditorObj);
+                
+                fetch(`/updatePost`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postEditorObj)
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (parsed) {
+                    if (parsed.result.constructor.name === 'String') {
+                        alert(parsed.result);
+                    } else {
+                        window.location.href = '/source/postList.html';   
+                    }
+                    buttonLocked = false;
+                })
             }
-
-            fetch(`/updatePost`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postEditorObj)
-            })
-            .then(function (response) {
-                window.location.href = '/source/postList.html';
-            })
         });
     } else {
         alert('Incorrect Mode Value');
