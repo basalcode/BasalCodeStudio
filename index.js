@@ -185,8 +185,13 @@ let DBOperator = (function () {
             values: null
         };
         switch (contentValue) {
-            /* case ContentType.POST:
-                break; */
+            case ContentType.POST:
+                let post_id = requestObj.body.post_id;
+                queryObject.query = 'DELETE FROM Post WHERE post_id=?';
+                queryObject.values = [
+                    post_id
+                ];
+                break;
             /* case ContentType.POST_LIST:
                 break; */
             default:
@@ -265,6 +270,7 @@ app.post('/writePost', function (req, res) {
             DBOperator.InputType.CREATE,
             DBOperator.ContentType.POST
         );
+
         res.send({
             result: await DBOperator.run()
         });

@@ -48,12 +48,19 @@ function showPost(postObj) {
     })
 
     deletePost.addEventListener('click', function (event) {
-        fetch('/deletePost')
+        
+        fetch('/deletePost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postObj)
+        })
         .then(function (response) {
             return response.json()
         })
         .then(function (parsed) {
-            console.log(parsed);
+            window.location.href ='/source/postList.html';
         });
     })
 }

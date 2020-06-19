@@ -13,12 +13,13 @@ window.onload = function () {
 
     
     if (mode === 'write') {
-        let postEditorObj = {
-            title: title.value,
-            author: author.value,
-            description: description.value
-        }
         submit.addEventListener('click', function (event) {
+            let postEditorObj = {
+                title: title.value,
+                author: author.value,
+                description: description.value
+            }
+            
             fetch('/writePost', {
                 method: 'POST',
                 headers: {
@@ -63,6 +64,6 @@ window.onload = function () {
             })
         });
     } else {
-
+        alert('Incorrect Mode Value');
     }
 }
