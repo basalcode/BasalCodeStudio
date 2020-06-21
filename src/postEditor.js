@@ -65,9 +65,7 @@ window.onload = function () {
                     description: description.value,
                     post_id: post_id
                 }
-                
-                console.log(postEditorObj);
-                
+
                 fetch(`/updatePost`, {
                     method: 'POST',
                     headers: {

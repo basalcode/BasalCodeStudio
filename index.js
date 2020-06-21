@@ -34,7 +34,6 @@ let DBOperator = (function () {
             host: 'localhost', user: 'root', password: '1135', database: 'Server', flat: true, encode: false
         })
     }
-
     const InputType = {
         CREATE: 'C',
         READ: 'R',
@@ -164,7 +163,7 @@ let DBOperator = (function () {
         switch (contentValue) {
             case ContentType.POST:
                 let post_id = requestObj.body.post_id;
-                
+
                 if (dbParamsObj.blog.title.length === 0) {
                     queryObject.errorMessage = 'There is no title.';
                 } else if (dbParamsObj.blog.author.length === 0) {
@@ -317,7 +316,6 @@ app.get('/readPost', function (req, res) {
 })
 
 app.post('/updatePost', function (req, res) {
-    console.log(req.body);
     (async () => {
         DBOperator.init(
             req,
@@ -344,5 +342,14 @@ app.post('/deletePost', function (req, res) {
         })
     })();
 })
+
+app.use(function (req, res, next) {
+    res.status(404).send('404 NOT FOUND');
+});
+
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('500 SERVER ERROR');
+});
 
 app.listen(3000);
