@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
     if (req.headers['x-forwarded-proto' === 'http']) {
         res.redirect(301, 'https://basalcode.space');
     } else {
-        fs.readFile('./src/blogMain.html', function (err, data) {
+        fs.readFile('./src/lobby.html', function (err, data) {
             if (err) {
                 res.status(404).send('Not Found');
             } else {
