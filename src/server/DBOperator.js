@@ -2,31 +2,37 @@ module.exports = (function () {
     /* st-mysql */
     const DB = {
         blog: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'Blog', flat: true, encode: false
+            host: 'localhost', user: 'root', password: '1135', database: 'blog', flat: true, encode: false
         }),
-        server: serverDB = require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'Server', flat: true, encode: false
+        server: require('st-mysql')({
+            host: 'localhost', user: 'root', password: '1135', database: 'server', flat: true, encode: false
         })
     }
     const InputType = {
-        CREATE: 'C',
-        READ: 'R',
-        UPDATE: 'U',
-        DELETE: 'D'
+        CREATE: 'create',
+        READ: 'read',
+        UPDATE: 'update',
+        DELETE: 'delete'
     }
     const ContentType = {
         POST: 'post',
-        POST_LIST: 'postList'
+        POST_LIST: 'postList',
+        CATEGORY: 'category'
     }
 
-    let dbParamsObj;
-    let requestObj;
+    let dbObject;
+    let requestObject;
     let contentValue;
-    let queryObject = {
+    let blogQueryObject = {
         query: null,
         values: null,
         errorMessage: null
     };
+    let serverQueryObject = {
+        query: null,
+        values: null,
+        errorMessage: null
+    }
 
     function isVerifiedType(obj, type) {
         let verified = false;
@@ -37,6 +43,135 @@ module.exports = (function () {
             }
         }
         return verified;
+    }
+
+
+
+    const queryObject = {
+        blog: {
+            post: {
+                create() {
+                    if (dbObject.blog.post.title.length === 0) {
+                        blogQueryObject.errorMessage = 'There is no title.';
+                    } else if (dbObject.blog.post.author.length === 0) {
+                        blogQueryObject.errorMessage = 'There is no author.';
+                    } else if (dbObject.blog.post.description.length === 0) {
+                        blogQueryObject.errorMessage = 'There is no description.';
+                    } else {
+                        blogQueryObject.query =
+                            `INSERT INTO Post (title, author, description, view_count, comment_count, category_id) VALUES (?, ?, ?, ?, ?, ?);`;
+                        blogQueryObject.values = [
+                            dbObject.blog.title,
+                            dbObject.blog.author,
+                            dbObject.blog.description,
+                            dbObject.blog.view_count,
+                            dbObject.blog.comment_count,
+                            dbObject.blog.category
+                        ];
+                    }
+                    return blogQueryObject;
+                },
+                read() {
+                    let post_id = requestObject.query.post_id;
+                    queryObject.query = `SELECT post_id, category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
+                    queryObject.values = [
+                        post_id
+                    ];
+                    return queryObject;
+                },
+                update() {
+                    let post_id = requestObject.body.post_id;
+
+                    if (dbObject.blog.title.length === 0) {
+                        queryObject.errorMessage = 'There is no title.';
+                    } else if (dbObject.blog.author.length === 0) {
+                        queryObject.errorMessage = 'There is no author.';
+                    } else if (dbObject.blog.description.length === 0) {
+                        queryObject.errorMessage = 'There is no description.';
+                    } else {
+                        queryObject.query = 'UPDATE Post SET title=?, author=?, description=?  WHERE post_id=?';
+                        queryObject.values = [
+                            dbObject.blog.title,
+                            dbObject.blog.author,
+                            dbObject.blog.description,
+                            post_id
+                        ];
+                    }
+                    return queryObject;
+                },
+                delete() {
+                    let post_id = requestObject.body.post_id;
+                    queryObject.query = 'DELETE FROM Post WHERE post_id=?';
+                    queryObject.values = [
+                        post_id
+                    ];
+                    return queryObject;
+                }
+            },
+            category: {
+                create() {
+                    /* let startPage = 1;
+                    let loadAmount = 100;
+                    let startIndex = (startPage - 1) * loadAmount;
+                    let endIndex = (startPage * loadAmount) - 1;
+                    queryObject.query =
+                        `SELECT post_id, category, title, author, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ?, ?`;
+                    queryObject.values = [
+                        startIndex,
+                        endIndex
+                    ]
+                    return queryObject; */
+                },
+                read() {
+
+                },
+                update() {
+
+                },
+                delete() {
+
+                }
+            },
+            section: {
+                create() {
+
+                },
+                read() {
+
+                },
+                update() {
+
+                },
+                delete() {
+
+                }
+            }
+        },
+        server: {
+            request_log: {
+                create() {
+                    serverQueryObject.query =
+                        `INSERT INTO Log (type, method, ip_address, url, request_body) VALUES (?, ?, ?, ?, ?);`;
+                    serverQueryObject.serverValues = [
+                        dbObject.request_log.type,
+                        dbObject.request_log.method,
+                        dbObject.request_log.ip_address,
+                        dbObject.request_log.url,
+                        dbObject.request_log.request_body
+                    ];
+                    return serverQueryObject;
+                },
+                read() {
+
+                },
+                update() {
+
+                },
+                delete() {
+
+                }
+            }
+        }
     }
 
     function init(req, inputType, contentType) {
@@ -52,189 +187,59 @@ module.exports = (function () {
             throw new Error('[Error] init() : Parameter \'contentType\' is wrong.');
         };
 
-        dbParamsObj = {
+        dbObject = {
             blog: {
-                category: 'noName',
-                title: req.body.title,
-                author: req.body.author,
-                description: req.body.description,
-                view_count: 0,
-                comment_count: 0
+                post: {
+                    title: req.body.title,
+                    author: req.body.author,
+                    description: req.body.description,
+                    view_count: 0,
+                    comment_count: 0,
+                    category_id: null
+                },
+                category: {
+                    name: '',
+                    section_id: null
+                },
+                section: {
+                    name: '',
+                    section_id: null
+                }
             },
             server: {
-                ip_address: req.headers['x-forwarded-for'],
-                is_get: req.method === 'GET' ? true : false,
-                CRUD: inputType,
-                request_url: req.originalUrl,
-                request_query: JSON.stringify(req.query),
-                request_body: JSON.stringify(req.body)
+                request_log: {
+                    type: inputType,
+                    method: req.method === 'GET' ? 'get' : 'post',
+                    ip_address: req.headers['x-forwarded-for'],
+                    url: req.originalUrl,
+                    body: JSON.stringify(req.body)
+                }
             }
-        };
-
-        requestObj = req;
+        }
+        requestObject = req;
         contentValue = contentType;
     }
-
-    function getCreateQueryObj() {
-        switch (contentValue) {
-            case ContentType.POST:
-                if (dbParamsObj.blog.title.length === 0) {
-                    queryObject.errorMessage = 'There is no title.';
-                } else if (dbParamsObj.blog.author.length === 0) {
-                    queryObject.errorMessage = 'There is no author.';
-                } else if (dbParamsObj.blog.description.length === 0) {
-                    queryObject.errorMessage = 'There is no description.';
-                } else {
-                    queryObject.query =
-                        `INSERT INTO Post (category, title, author, description, view_count, comment_count) VALUES (?, ?, ?, ?, ?, ?);`;
-                    queryObject.values = [
-                        dbParamsObj.blog.category,
-                        dbParamsObj.blog.title,
-                        dbParamsObj.blog.author,
-                        dbParamsObj.blog.description,
-                        dbParamsObj.blog.view_count,
-                        dbParamsObj.blog.comment_count
-                    ];
-                    queryObject.errorMessage = null;
-                }
-                break;
-            /* case ContentType.POST_LIST:
-                break; */
-            default:
-                throw new Error('[Error] getCreateQueryObj() : Type Error');
-        }
-        return queryObject;
-    }
-
-    function getReadQueryObj() {
-        switch (contentValue) {
-            case ContentType.POST:
-                let post_id = requestObj.query.post_id;
-                queryObject.query = `SELECT post_id, category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
-                queryObject.values = [
-                    post_id
-                ];
-                break;
-            case ContentType.POST_LIST:
-                let startPage = 1;
-                let loadAmount = 100;
-                let startIndex = (startPage - 1) * loadAmount;
-                let endIndex = (startPage * loadAmount) - 1;
-                queryObject.query =
-                    `SELECT post_id, category, title, author, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ?, ?`;
-                queryObject.values = [
-                    startIndex,
-                    endIndex
-                ]
-                break;
-            default:
-                throw new Error('[Error] getCreateQueryObj() : Type Error');
-        }
-        return queryObject;
-    }
-
-    function getUpdateQueryObj() {
-        switch (contentValue) {
-            case ContentType.POST:
-                let post_id = requestObj.body.post_id;
-
-                if (dbParamsObj.blog.title.length === 0) {
-                    queryObject.errorMessage = 'There is no title.';
-                } else if (dbParamsObj.blog.author.length === 0) {
-                    queryObject.errorMessage = 'There is no author.';
-                } else if (dbParamsObj.blog.description.length === 0) {
-                    queryObject.errorMessage = 'There is no description.';
-                } else {
-                    queryObject.query = 'UPDATE Post SET title=?, author=?, description=?  WHERE post_id=?';
-                    queryObject.values = [
-                        dbParamsObj.blog.title,
-                        dbParamsObj.blog.author,
-                        dbParamsObj.blog.description,
-                        post_id
-                    ];
-                    queryObject.errorMessage = null;
-                }
-                break;
-            /* case ContentType.POST_LIST:
-                break; */
-            default:
-                throw new Error('[Error] getCreateQueryObj() : Type Error');
-        }
-        return queryObject;
-    }
-
-    function getDeleteQueryObj() {
-        switch (contentValue) {
-            case ContentType.POST:
-                let post_id = requestObj.body.post_id;
-                queryObject.query = 'DELETE FROM Post WHERE post_id=?';
-                queryObject.values = [
-                    post_id
-                ];
-                break;
-            /* case ContentType.POST_LIST:
-                break; */
-            default:
-                throw new Error('[Error] getCreateQueryObj() : Type Error');
-        }
-        return queryObject;
-    }
-
-    function setQuery() {
-        let queryObject;
-        switch (dbParamsObj.server.CRUD) {
-            case InputType.CREATE:
-                queryObject = getCreateQueryObj();
-                break;
-            case InputType.READ:
-                queryObject = getReadQueryObj();
-                break;
-            case InputType.UPDATE:
-                queryObject = getUpdateQueryObj();
-                break;
-            case InputType.DELETE:
-                queryObject = getDeleteQueryObj();
-                break;
-            default:
-                throw new Error('[Error] setQuery() : Type Error');
-        }
-        return queryObject;
-    }
-
-    function log() {
-        return (async () => {
-            let serverQuery =
-                `INSERT INTO Log (ip_address, is_get, CRUD, request_url, request_query, request_body) VALUES (?, ?, ?, ?, ?, ?);`;
-            let serverValues = [
-                dbParamsObj.server.ip_address,
-                dbParamsObj.server.is_get,
-                dbParamsObj.server.CRUD,
-                dbParamsObj.server.request_url,
-                dbParamsObj.server.request_query,
-                dbParamsObj.server.request_body
-            ];
-            return await DB.server(serverQuery, serverValues);
-        })();
-    }
-
+    
     function run() {
         return (async () => {
-            let queryObj = setQuery();
-            if (queryObj.errorMessage) {
-                return queryObj.errorMessage;
+            let { blogQuery, blogValues, blogErrorMessage } = queryObject['blog'].post[dbObject.server.type]();
+            if (blogErrorMessage) {
+                return queryObject.errorMessage;
             } else {
-                let logResult = await log();
-                // console.log(serverResult);
-                let [query, values] = [queryObj.query, queryObj.values];
-                let postResult = await DB.blog(query, values);
+                /* Server */
+                let { serverQuery, serverValues, serverErrorMessage } = queryObject['server'].post[dbObject.server.type]()
+                let serverResult = await DB.server(serverQuery, serverValues);
 
-                if (postResult.errono) {
+                /* Blog */
+                let blogResult = await DB.blog(blogQuery, blogValues);
+
+                if (blogResult.errono) {
                     throw new Error('[Error] run() : There might be an error in query syntax on blog DB.');
                 }
-                if (logResult.errono) {
+                if (blogResult.errono) {
                     throw new Error('[Error] run() : There might be an error in query syntax on server DB.');
                 }
-                return postResult;
+                return blogResult;
             }
         })();
     }

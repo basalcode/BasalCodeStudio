@@ -45,7 +45,17 @@ app.get('/readPostList', function (req, res) {
             result: await DBOperator.run()
         });
     })();
-})
+});
+
+app.post('/createCategory', category.write);
+app.get('/readCategory', category.read);
+app.post('/updateCategory', category.update);
+app.post('/deleteCategory', category.delete);
+
+app.post('/createGroup', group.write);
+app.post('/updateGroup', group.update);
+app.post('/deleteGroup', group.delete);
+app.get('/readCategoryList');
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);
