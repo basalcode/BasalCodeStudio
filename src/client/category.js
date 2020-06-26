@@ -1,5 +1,5 @@
 window.onload = function () {
-    console.log(`[Open] 'postList.js' has been opend.`);
+    console.log(`[Open] 'category.js' has been opend.`);
 
     fetch(`/readCategory`)
         .then(function (response) {
@@ -11,7 +11,7 @@ window.onload = function () {
 }
 
 function showCategory(postObjArr) {
-    let postList = document.querySelector('#post-list');
+    let category = document.querySelector('#category');
     let tableHeader = document.querySelector('#thead');
     let tableBody = document.querySelector('#tbody');
 

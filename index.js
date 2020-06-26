@@ -6,7 +6,7 @@ const app = express();
 
 const errorHandler = require('./src/server/errors');
 const DBOperator = require('./src/server/DBOperator');
-const post = require('./src/server/post');
+// const post = require('./src/server/post');
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -28,34 +28,21 @@ app.get('/', function (req, res) {
     }
 })
 
-app.post('/writePost', post.write);
-app.get('/readPost', post.read);
-app.post('/updatePost', post.update);
-app.post('/deletePost', post.delete);
 
-app.get('/readPostList', function (req, res) {
-    (async () => {
-        DBOperator.init(
-            req,
-            DBOperator.InputType.READ,
-            DBOperator.ContentType.POST_LIST
-        );
+app.post('/writePost', DBOperator.run);
+app.get('/readPost', DBOperator.run);
+app.post('/updatePost', DBOperator.run);
+app.post('/deletePost', DBOperator.run);
 
-        res.send({
-            result: await DBOperator.run()
-        });
-    })();
-});
+app.post('/createCategory', DBOperator.run);
+app.get('/readCategory', DBOperator.run);
+app.post('/updateCategory', DBOperator.run);
+app.post('/deleteCategory', DBOperator.run);
 
-app.post('/createCategory', category.write);
-app.get('/readCategory', category.read);
-app.post('/updateCategory', category.update);
-app.post('/deleteCategory', category.delete);
-
-app.post('/createGroup', group.write);
-app.post('/updateGroup', group.update);
-app.post('/deleteGroup', group.delete);
-app.get('/readCategoryList');
+app.post('/createSection', DBOperator.run);
+app.post('/createSection', DBOperator.run);
+app.post('/createSection', DBOperator.run);
+// app.get('/readCategoryList', DBOperator.run);
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

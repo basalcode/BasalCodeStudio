@@ -1,4 +1,4 @@
-module.exports = (function () {
+const DB = (function () {
     /* st-mysql */
     const DB = {
         blog: require('st-mysql')({
@@ -16,13 +16,14 @@ module.exports = (function () {
     }
     const ContentType = {
         POST: 'post',
-        POST_LIST: 'postList',
-        CATEGORY: 'category'
+        CATEGORY: 'category',
+        SECTION: 'section'
     }
 
     let dbObject;
     let requestObject;
     let contentValue;
+    
     let blogQueryObject = {
         query: null,
         values: null,
@@ -45,8 +46,6 @@ module.exports = (function () {
         return verified;
     }
 
-
-
     const queryObject = {
         blog: {
             post: {
@@ -59,21 +58,21 @@ module.exports = (function () {
                         blogQueryObject.errorMessage = 'There is no description.';
                     } else {
                         blogQueryObject.query =
-                            `INSERT INTO Post (title, author, description, view_count, comment_count, category_id) VALUES (?, ?, ?, ?, ?, ?);`;
+                            `INSERT INTO post (title, author, description, view_count, comment_count, category_id) VALUES (?, ?, ?, ?, ?, ?);`;
                         blogQueryObject.values = [
                             dbObject.blog.title,
                             dbObject.blog.author,
                             dbObject.blog.description,
                             dbObject.blog.view_count,
                             dbObject.blog.comment_count,
-                            dbObject.blog.category
+                            dbObject.blog.category_id
                         ];
                     }
                     return blogQueryObject;
                 },
                 read() {
                     let post_id = requestObject.query.post_id;
-                    queryObject.query = `SELECT post_id, category, title, author, description, view_count, time FROM Post WHERE post_id=?`;
+                    queryObject.query = `SELECT id, category_id, title, author, description, view_count, comment_count, time FROM post WHERE id=?`;
                     queryObject.values = [
                         post_id
                     ];
@@ -81,7 +80,6 @@ module.exports = (function () {
                 },
                 update() {
                     let post_id = requestObject.body.post_id;
-
                     if (dbObject.blog.title.length === 0) {
                         queryObject.errorMessage = 'There is no title.';
                     } else if (dbObject.blog.author.length === 0) {
@@ -89,7 +87,7 @@ module.exports = (function () {
                     } else if (dbObject.blog.description.length === 0) {
                         queryObject.errorMessage = 'There is no description.';
                     } else {
-                        queryObject.query = 'UPDATE Post SET title=?, author=?, description=?  WHERE post_id=?';
+                        queryObject.query = 'UPDATE post SET title=?, author=?, description=? WHERE id=?';
                         queryObject.values = [
                             dbObject.blog.title,
                             dbObject.blog.author,
@@ -101,7 +99,7 @@ module.exports = (function () {
                 },
                 delete() {
                     let post_id = requestObject.body.post_id;
-                    queryObject.query = 'DELETE FROM Post WHERE post_id=?';
+                    queryObject.query = 'DELETE FROM post WHERE id=?';
                     queryObject.values = [
                         post_id
                     ];
@@ -110,17 +108,17 @@ module.exports = (function () {
             },
             category: {
                 create() {
-                    /* let startPage = 1;
+                    let startPage = 1;
                     let loadAmount = 100;
                     let startIndex = (startPage - 1) * loadAmount;
                     let endIndex = (startPage * loadAmount) - 1;
                     queryObject.query =
-                        `SELECT post_id, category, title, author, view_count, comment_count, time FROM Post ORDER BY post_id DESC LIMIT ?, ?`;
+                        `SELECT post_id, category, title, author, view_count, comment_count, time FROM Post WHERE ORDER BY post_id DESC LIMIT ?, ?`;
                     queryObject.values = [
                         startIndex,
                         endIndex
                     ]
-                    return queryObject; */
+                    return queryObject;
                 },
                 read() {
 
@@ -151,7 +149,7 @@ module.exports = (function () {
             request_log: {
                 create() {
                     serverQueryObject.query =
-                        `INSERT INTO Log (type, method, ip_address, url, request_body) VALUES (?, ?, ?, ?, ?);`;
+                        `INSERT INTO request_log (type, method, ip_address, url, request_body) VALUES (?, ?, ?, ?, ?);`;
                     serverQueryObject.serverValues = [
                         dbObject.request_log.type,
                         dbObject.request_log.method,
@@ -208,8 +206,7 @@ module.exports = (function () {
             },
             server: {
                 request_log: {
-                    type: inputType,
-                    method: req.method === 'GET' ? 'get' : 'post',
+                    type: InputType[inputType.toUpperCase()],                    method: req.method === 'GET' ? 'get' : 'post',
                     ip_address: req.headers['x-forwarded-for'],
                     url: req.originalUrl,
                     body: JSON.stringify(req.body)
@@ -219,10 +216,14 @@ module.exports = (function () {
         requestObject = req;
         contentValue = contentType;
     }
-    
-    function run() {
+
+    function run(req, inputType, contentType) {
         return (async () => {
-            let { blogQuery, blogValues, blogErrorMessage } = queryObject['blog'].post[dbObject.server.type]();
+            init(req, inputType, contentType);
+            console.log(inputType);
+            console.log(dbObject.server.request_log.type);
+
+            let { blogQuery, blogValues, blogErrorMessage } = queryObject['blog'].post[inputType]();
             if (blogErrorMessage) {
                 return queryObject.errorMessage;
             } else {
@@ -247,7 +248,24 @@ module.exports = (function () {
     return {
         InputType: InputType,
         ContentType: ContentType,
-        init: init,
-        run: run,
+        run: run
     }
-})();
+})()
+
+function getType(requestPath) {
+    let inputType = requestPath.split('/')[1].split(/[A-Z]/)[0].toUpperCase();
+    let contentType = requestPath.split(/\/[a-z]+/)[1].toUpperCase();
+    return [inputType, contentType];
+}
+
+module.exports = {
+    run (req, res) {
+        (async function() {
+            let [inputType, contentType] = getType(req.path);
+
+            res.send({
+                result: await DB.run(req, DB.InputType[inputType], DB.ContentType[contentType])
+            });
+        })();
+    }
+}
