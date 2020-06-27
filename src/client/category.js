@@ -44,11 +44,11 @@ function showCategory(postObjArr) {
                 let td = document.createElement('td');
                 if (key === 'title') {
                     let postLink = document.createElement('a');
-                    let post_id = postObj.post_id;
+                    let post_id = postObj.id;
                 
                     postLink.innerText = postObj[key];
-                    postLink.setAttribute('href', `/source/post.html?post_id=${post_id}`);
-        
+                    postLink.setAttribute('href', `/source/post.html?post=${post_id}`);
+                    
                     td.appendChild(postLink);
                     tr.appendChild(td);
                 } else {

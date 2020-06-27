@@ -3,9 +3,9 @@ window.onload = function() {
 
     let url = new URL(window.location.href);
     let params = url.searchParams;
-    let post_id = params.get('post_id');
+    let post_id = params.get('post');
 
-    fetch(`/readPost?post_id=${post_id}`)
+    fetch(`/readPost?post=${post_id}`)
     .then(function (response) {
         return response.json();
     })
@@ -44,7 +44,7 @@ function showPost(postObj) {
     description.innerText = postObj.description;
 
     updatePost.addEventListener('click', function (event) {
-        window.location.href = `/source/postEditor.html?mode=update&post_id=${postObj.post_id}`
+        window.location.href = `/source/postEditor.html?mode=update&post=${postObj.id}`
     })
 
     deletePost.addEventListener('click', function (event) {
@@ -54,13 +54,15 @@ function showPost(postObj) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(postObj)
+            body: JSON.stringify({
+                post: postObj.id
+            })
         })
         .then(function (response) {
             return response.json()
         })
         .then(function (parsed) {
-            window.location.href ='/source/postList.html';
+            window.location.href ='/source/category.html';
         });
     })
 }

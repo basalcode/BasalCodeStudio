@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/source', express.static('./src/client'));
 
 app.get('/', function (req, res) {
-    if (req.headers['x-forwarded-proto' === 'http']) {
+    if (req.headers['x-forwarded-proto'] === 'http') {
         res.redirect(301, 'https://basalcode.space');
     } else {
         fs.readFile('./src/client/lobby.html', function (err, data) {
@@ -28,8 +28,7 @@ app.get('/', function (req, res) {
     }
 })
 
-
-app.post('/writePost', DBOperator.run);
+app.post('/createPost', DBOperator.run);
 app.get('/readPost', DBOperator.run);
 app.post('/updatePost', DBOperator.run);
 app.post('/deletePost', DBOperator.run);

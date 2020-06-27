@@ -6,5 +6,9 @@ window.onload = function() {
 
     writePost.addEventListener('click', function(event) {
         window.location.href='/source/postEditor.html?mode=write';
-    })
+    });
+
+    readPostList.addEventListener('click', function(event) {
+        window.location.href='/source/category.html';
+    });
 }

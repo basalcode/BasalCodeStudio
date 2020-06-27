@@ -8,7 +8,7 @@ window.onload = function () {
 
     let url = new URL(window.location.href);
     let params = url.searchParams;
-    let post_id = params.get('post_id');
+    let post_id = params.get('post');
     let mode = params.get('mode');
 
     let buttonLocked = false;
@@ -23,7 +23,7 @@ window.onload = function () {
                     description: description.value
                 }
     
-                fetch('/writePost', {
+                fetch('/createPost', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -37,20 +37,20 @@ window.onload = function () {
                     if (parsed.result.constructor.name === 'String') {
                         alert(parsed.result);
                     } else {
-                        window.location.href = '/source/postList.html';   
+                        window.location.href = '/source/blogMain.html';   
                     }
                     buttonLocked = false;
                 })
             }
         })
     } else if (mode === 'update') {
-        fetch(`/readPost?post_id=${post_id}`)
+        fetch(`/readPost?post=${post_id}`)
             .then(function (response) {
                 return response.json();
             })
             .then(function (parsed) {
                 postObj = parsed.result[0];
-
+                
                 title.value = postObj.title;
                 author.value = postObj.author;
                 description.value = postObj.description;
@@ -80,7 +80,7 @@ window.onload = function () {
                     if (parsed.result.constructor.name === 'String') {
                         alert(parsed.result);
                     } else {
-                        window.location.href = '/source/postList.html';   
+                        window.location.href = '/source/category.html';
                     }
                     buttonLocked = false;
                 })

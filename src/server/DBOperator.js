@@ -1,3 +1,5 @@
+const { request } = require('express');
+
 const DB = (function () {
     /* st-mysql */
     const DB = {
@@ -17,229 +19,320 @@ const DB = (function () {
     const ContentType = {
         POST: 'post',
         CATEGORY: 'category',
-        SECTION: 'section'
+        CATEGORY_LIST: 'categoryList',
+        SECTION: 'section',
+        SECTION_LIST: 'sectionList',
+        REQUEST_LOG: 'requestLog'
     }
-
-    let dbObject;
     let requestObject;
-    let contentValue;
-    
-    let blogQueryObject = {
-        query: null,
-        values: null,
-        errorMessage: null
-    };
-    let serverQueryObject = {
-        query: null,
-        values: null,
-        errorMessage: null
-    }
-
-    function isVerifiedType(obj, type) {
-        let verified = false;
-        for (const key in obj) {
-            if (obj[key] === type) {
-                verified = true;
-                return verified;
-            }
-        }
-        return verified;
-    }
+    let typeObject;
 
     const queryObject = {
         blog: {
-            post: {
+            result: {
+                query: null,
+                values: null,
+                errorMessage: null
+            },
+            [ContentType.POST]: {
                 create() {
-                    if (dbObject.blog.post.title.length === 0) {
-                        blogQueryObject.errorMessage = 'There is no title.';
-                    } else if (dbObject.blog.post.author.length === 0) {
-                        blogQueryObject.errorMessage = 'There is no author.';
-                    } else if (dbObject.blog.post.description.length === 0) {
-                        blogQueryObject.errorMessage = 'There is no description.';
+                    if (requestObject.body.title.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no title.';
+                    } else if (requestObject.body.author.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no author.';
+                    } else if (requestObject.body.description.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no description.';
                     } else {
-                        blogQueryObject.query =
-                            `INSERT INTO post (title, author, description, view_count, comment_count, category_id) VALUES (?, ?, ?, ?, ?, ?);`;
-                        blogQueryObject.values = [
-                            dbObject.blog.title,
-                            dbObject.blog.author,
-                            dbObject.blog.description,
-                            dbObject.blog.view_count,
-                            dbObject.blog.comment_count,
-                            dbObject.blog.category_id
+                        queryObject.blog.result.query = `
+                            INSERT INTO post (
+                                title,
+                                author,
+                                description
+                            ) 
+                            VALUES (?, ?, ?);
+                        `;
+                        queryObject.blog.result.values = [
+                            requestObject.body.title,
+                            requestObject.body.author,
+                            requestObject.body.description
                         ];
                     }
-                    return blogQueryObject;
+                    return queryObject.blog.result;
                 },
                 read() {
-                    let post_id = requestObject.query.post_id;
-                    queryObject.query = `SELECT id, category_id, title, author, description, view_count, comment_count, time FROM post WHERE id=?`;
-                    queryObject.values = [
+                    let post_id = requestObject.query.post;
+                    queryObject.blog.result.query = `
+                        SELECT
+                            id,
+                            category_id,
+                            title,
+                            author,
+                            view_count,
+                            time,
+                            description
+                        FROM post
+                        WHERE id = ?
+                    `;
+                    queryObject.blog.result.values = [
                         post_id
                     ];
-                    return queryObject;
+                    return queryObject.blog.result;
                 },
                 update() {
-                    let post_id = requestObject.body.post_id;
-                    if (dbObject.blog.title.length === 0) {
-                        queryObject.errorMessage = 'There is no title.';
-                    } else if (dbObject.blog.author.length === 0) {
-                        queryObject.errorMessage = 'There is no author.';
-                    } else if (dbObject.blog.description.length === 0) {
-                        queryObject.errorMessage = 'There is no description.';
+                    let post_id = requestObject.body.post;
+                    if (requestObject.body.title.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no title.';
+                    } else if (requestObject.body.author.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no author.';
+                    } else if (requestObject.body.description.length === 0) {
+                        queryObject.blog.result.errorMessage = 'There is no description.';
                     } else {
-                        queryObject.query = 'UPDATE post SET title=?, author=?, description=? WHERE id=?';
-                        queryObject.values = [
-                            dbObject.blog.title,
-                            dbObject.blog.author,
-                            dbObject.blog.description,
-                            post_id
+                        queryObject.blog.result.query = `
+                            UPDATE post 
+                            SET 
+                                title=?, 
+                                author=?, 
+                                description=? 
+                            WHERE id=?;
+                        `;
+                        queryObject.blog.result.values = [
+                            requestObject.body.title,
+                            requestObject.body.author,
+                            requestObject.body.description,
+                            requestObject.body.post_id
                         ];
                     }
-                    return queryObject;
+                    return queryObject.blog.result;
                 },
                 delete() {
-                    let post_id = requestObject.body.post_id;
-                    queryObject.query = 'DELETE FROM post WHERE id=?';
-                    queryObject.values = [
+                    let post_id = requestObject.body.post;
+                    queryObject.blog.result.query = `
+                        DELETE FROM post 
+                        WHERE id=?
+                    `;
+                    queryObject.blog.result.values = [
                         post_id
                     ];
-                    return queryObject;
+                    return queryObject.blog.result;
                 }
             },
-            category: {
+            [ContentType.CATEGORY]: {
                 create() {
+                    
+                },
+                read() {
                     let startPage = 1;
                     let loadAmount = 100;
                     let startIndex = (startPage - 1) * loadAmount;
                     let endIndex = (startPage * loadAmount) - 1;
-                    queryObject.query =
-                        `SELECT post_id, category, title, author, view_count, comment_count, time FROM Post WHERE ORDER BY post_id DESC LIMIT ?, ?`;
-                    queryObject.values = [
-                        startIndex,
-                        endIndex
-                    ]
-                    return queryObject;
-                },
-                read() {
-
+                    let category_id = requestObject.query.category;
+                    if (category_id === undefined) {
+                        queryObject.blog.result.query = `
+                            SELECT 
+                                id,
+                                category_id,
+                                title,
+                                author,
+                                view_count,
+                                comment_count,
+                                time
+                            FROM post
+                            ORDER BY id DESC
+                            LIMIT ?, ?;
+                        `;
+                        queryObject.blog.result.values = [
+                            startIndex,
+                            endIndex
+                        ];
+                    } else {
+                        queryObject.blog.result.query = `
+                            SELECT 
+                                id,
+                                category_id,
+                                title,
+                                author,
+                                view_count,
+                                comment_count,
+                                time
+                            FROM post
+                            WHERE category_id = ?
+                            ORDER BY id DESC
+                            LIMIT ?, ?;
+                        `;
+                        queryObject.blog.result.values = [
+                            category_id,
+                            startIndex,
+                            endIndex
+                        ];
+                    }
+                    return queryObject.blog.result;
                 },
                 update() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 },
                 delete() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 }
             },
-            section: {
+            [ContentType.CATEGORY_LIST]: {
+                read() {
+                    const startPage = 1;
+                    const loadAmount = 100;
+                    let categoryId = requestObject.query.category;
+                    let startIndex = (startPage - 1) * loadAmount;
+                    let endIndex = (startPage * loadAmount) - 1;
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [
+                        categoryId,
+                        startIndex,
+                        endIndex
+                    ];
+                    return queryObject.blog.result;
+                }
+            },
+            [ContentType.SECTION]: {
                 create() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 },
                 read() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 },
                 update() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 },
                 delete() {
-
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = [];
+                    return queryObject.blog.result;
                 }
+            },
+            [ContentType.SECTION_LIST]: {
+
             }
         },
         server: {
-            request_log: {
+            result: {
+                query: null,
+                values: null,
+                errorMessage: null
+            },
+            [ContentType.REQUEST_LOG]: {
                 create() {
-                    serverQueryObject.query =
-                        `INSERT INTO request_log (type, method, ip_address, url, request_body) VALUES (?, ?, ?, ?, ?);`;
-                    serverQueryObject.serverValues = [
-                        dbObject.request_log.type,
-                        dbObject.request_log.method,
-                        dbObject.request_log.ip_address,
-                        dbObject.request_log.url,
-                        dbObject.request_log.request_body
+                    queryObject.server.result.query =
+                        `INSERT INTO request_log (
+                            type,
+                            method, 
+                            ip_address, 
+                            url, 
+                            body
+                        ) 
+                        VALUES (
+                            ?, ?, ?, ?, ?
+                        );`;
+                    queryObject.server.result.values = [
+                        typeObject.inputType,
+                        requestObject.method.toLowerCase(),
+                        requestObject.headers['x-forwarded-for'],
+                        requestObject.originalUrl,
+                        JSON.stringify(requestObject.body)
                     ];
-                    return serverQueryObject;
+                    return queryObject.server.result;
                 },
                 read() {
-
                 },
                 update() {
-
                 },
                 delete() {
-
                 }
             }
         }
     }
 
-    function init(req, inputType, contentType) {
+    function init(req) {
+        /* RequestObject */
         if (req === null) {
             throw new Error('[Error] init() : Parameter \'req\' is null.');
         }
+        requestObject = req;
 
-        if (!isVerifiedType(InputType, inputType)) {
-            throw new Error('[Error] init() : Parameter \'inputType\' is wrong.');
-        };
+        /* typeObject */
+        let requestPath = req.route.path;
+        typeObject = {
+            inputType: (function () {
+                let inputPart = requestPath.split('/')[1].split(/[A-Z]/)[0];
+                return inputPart;
+            })(),
+            contentType: (function () {
+                let contentPart = requestPath.split(/\/[a-z]+/)[1];
+                let firstLetter = contentPart.charAt(0);
+                let camelCase = contentPart.replace(firstLetter, firstLetter.toLowerCase());
+                return camelCase;
+            })()
+        }
 
-        if (!isVerifiedType(ContentType, contentType)) {
-            throw new Error('[Error] init() : Parameter \'contentType\' is wrong.');
-        };
-
-        dbObject = {
-            blog: {
-                post: {
-                    title: req.body.title,
-                    author: req.body.author,
-                    description: req.body.description,
-                    view_count: 0,
-                    comment_count: 0,
-                    category_id: null
-                },
-                category: {
-                    name: '',
-                    section_id: null
-                },
-                section: {
-                    name: '',
-                    section_id: null
-                }
-            },
-            server: {
-                request_log: {
-                    type: InputType[inputType.toUpperCase()],                    method: req.method === 'GET' ? 'get' : 'post',
-                    ip_address: req.headers['x-forwarded-for'],
-                    url: req.originalUrl,
-                    body: JSON.stringify(req.body)
+        function isVerifiedType(typeObject, value) {
+            let verified = false;
+            for (const key in typeObject) {
+                if (typeObject[key] === value) {
+                    verified = true;
+                    return verified;
                 }
             }
+            return verified;
         }
-        requestObject = req;
-        contentValue = contentType;
+        if (!isVerifiedType(InputType, typeObject.inputType)) {
+            throw new Error('[Error] init() : Parameter \'inputType\' is wrong.');
+        };
+        if (!isVerifiedType(ContentType, typeObject.contentType)) {
+            throw new Error('[Error] init() : Parameter \'contentType\' is wrong.');
+        };
     }
 
-    function run(req, inputType, contentType) {
+    function run(req) {
         return (async () => {
-            init(req, inputType, contentType);
-            console.log(inputType);
-            console.log(dbObject.server.request_log.type);
+            init(req);
 
-            let { blogQuery, blogValues, blogErrorMessage } = queryObject['blog'].post[inputType]();
-            if (blogErrorMessage) {
-                return queryObject.errorMessage;
+            let blogQueryObject = queryObject.blog[typeObject.contentType][typeObject.inputType]();
+
+            if (blogQueryObject.blogErrorMessage) {
+                return blogQueryObject.errorMessage;
             } else {
                 /* Server */
-                let { serverQuery, serverValues, serverErrorMessage } = queryObject['server'].post[dbObject.server.type]()
-                let serverResult = await DB.server(serverQuery, serverValues);
+                let serverQueryObject = queryObject.server[ContentType.REQUEST_LOG][InputType.CREATE]();
+                let serverResult = await DB.server(
+                    serverQueryObject.query,
+                    serverQueryObject.values
+                );
 
                 /* Blog */
-                let blogResult = await DB.blog(blogQuery, blogValues);
+                let blogResult = await DB.blog(
+                    blogQueryObject.query,
+                    blogQueryObject.values
+                );
 
-                if (blogResult.errono) {
-                    throw new Error('[Error] run() : There might be an error in query syntax on blog DB.');
+                if (blogResult.errno) {
+                    console.log(blogResult);
+                    console.log('[ Blog Query ]' + blogQueryObject.query);
+                    console.log('[ Blog Values ]' + blogQueryObject.values);
+                    throw new Error('[Error] run() : There might be an error in query syntax on \'blog DB\'.');
                 }
-                if (blogResult.errono) {
-                    throw new Error('[Error] run() : There might be an error in query syntax on server DB.');
+                if (serverResult.errno) {
+                    console.log(serverResult);
+                    console.log('[ Server Query ]' + serverQueryObject.query);
+                    console.log('[ Server Values ]' + serverQueryObject.values);
+                    throw new Error('[Error] run() : There might be an error in query syntax on \'server DB\'.');
                 }
+                console.log(blogResult);
                 return blogResult;
             }
         })();
@@ -250,21 +343,13 @@ const DB = (function () {
         ContentType: ContentType,
         run: run
     }
-})()
-
-function getType(requestPath) {
-    let inputType = requestPath.split('/')[1].split(/[A-Z]/)[0].toUpperCase();
-    let contentType = requestPath.split(/\/[a-z]+/)[1].toUpperCase();
-    return [inputType, contentType];
-}
+})();
 
 module.exports = {
-    run (req, res) {
-        (async function() {
-            let [inputType, contentType] = getType(req.path);
-
+    run(req, res) {
+        (async function () {
             res.send({
-                result: await DB.run(req, DB.InputType[inputType], DB.ContentType[contentType])
+                result: await DB.run(req)
             });
         })();
     }
