@@ -72,6 +72,7 @@ window.onload = function () {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(postEditorObj)
+                    
                 })
                 .then(function (response) {
                     return response.json();

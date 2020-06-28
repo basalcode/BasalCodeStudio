@@ -1,6 +1,5 @@
 window.onload = function() {
     console.log(`[Open] 'post.js' has been opend.`);
-
     let url = new URL(window.location.href);
     let params = url.searchParams;
     let post_id = params.get('post');
@@ -27,6 +26,7 @@ function showPost(postObj) {
     let author = document.querySelector('#author');
     let viewCount = document.querySelector('#view-count');
     let time = document.querySelector('#time');
+    console.log(postObj);
 
     category.innerText = postObj.category;
     title.innerText = postObj.title;
@@ -48,7 +48,6 @@ function showPost(postObj) {
     })
 
     deletePost.addEventListener('click', function (event) {
-        
         fetch('/deletePost', {
             method: 'POST',
             headers: {
@@ -56,13 +55,13 @@ function showPost(postObj) {
             },
             body: JSON.stringify({
                 post: postObj.id
-            })
+            }),
         })
         .then(function (response) {
             return response.json()
         })
         .then(function (parsed) {
-            window.location.href ='/source/category.html';
+            window.location.replace('/source/category.html');
         });
     })
 }

@@ -1,6 +1,10 @@
 window.onload = function () {
     console.log(`[Open] 'category.js' has been opend.`);
 
+    window.addEventListener ('popstate', function(event) {
+        alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    });
+    
     fetch(`/readCategory`)
         .then(function (response) {
             return response.json();
@@ -47,7 +51,7 @@ function showCategory(postObjArr) {
                     let post_id = postObj.id;
                 
                     postLink.innerText = postObj[key];
-                    postLink.setAttribute('href', `/source/post.html?post=${post_id}`);
+                    postLink.href = `/source/post.html?post=${post_id}`;
                     
                     td.appendChild(postLink);
                     tr.appendChild(td);
@@ -61,3 +65,8 @@ function showCategory(postObjArr) {
         })
     }
 }
+
+window.addEventListener('popstate', function(event) {
+    alert('만료된 페이지');
+    history.forward(1);
+})

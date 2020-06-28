@@ -18,10 +18,9 @@ const DB = (function () {
     }
     const ContentType = {
         POST: 'post',
+        CATEGORY_EDITOR: 'categoryEditor',
         CATEGORY: 'category',
-        CATEGORY_LIST: 'categoryList',
         SECTION: 'section',
-        SECTION_LIST: 'sectionList',
         REQUEST_LOG: 'requestLog'
     }
     let requestObject;
@@ -61,6 +60,7 @@ const DB = (function () {
                 },
                 read() {
                     let post_id = requestObject.query.post;
+                    console.log(post_id);
                     queryObject.blog.result.query = `
                         SELECT
                             id,
@@ -116,9 +116,33 @@ const DB = (function () {
                     return queryObject.blog.result;
                 }
             },
+            [ContentType.CATEGORY_EDITOR]: {
+                read() {
+                    queryObject.blog.result.query = `
+                        SELECT
+                            name,
+                            section_id
+                        FROM category
+                    `;
+                    queryObject.blog.result.values = null;
+                    return queryObject.blog.result;
+                }
+            },
             [ContentType.CATEGORY]: {
                 create() {
-                    
+                    queryObject.blog.result.query = `
+                        INSERT INTO (
+                            name,
+                            section_id
+                        )
+                        FROM category
+                        VALUES (?, ?)
+                    `;
+                    queryObject.blog.result.values = [
+                        requestObject.body.name,
+                        requestObject.body.section_id
+                    ];
+                    return queryObject.blog.result;
                 },
                 read() {
                     let startPage = 1;
@@ -168,55 +192,32 @@ const DB = (function () {
                     return queryObject.blog.result;
                 },
                 update() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
+                    queryObject.blog.result.query = `
+                        UPDATE category
+                        SET 
+                            name = ?,
+                            section_id = ?
+                        WHERE id = ?
+                    `;
+                    queryObject.blog.result.values = [
+                        requestObject.body.name,
+                        requestObject.body.section_id,
+                        requestObject.body.id
+                    ];
                     return queryObject.blog.result;
                 },
                 delete() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
-                    return queryObject.blog.result;
-                }
-            },
-            [ContentType.CATEGORY_LIST]: {
-                read() {
-                    const startPage = 1;
-                    const loadAmount = 100;
-                    let categoryId = requestObject.query.category;
-                    let startIndex = (startPage - 1) * loadAmount;
-                    let endIndex = (startPage * loadAmount) - 1;
-                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.query = `
+                        DELETE FROM category
+                        WHERE id = ?
+                    `;
                     queryObject.blog.result.values = [
-                        categoryId,
-                        startIndex,
-                        endIndex
+                        requestObject.body.id
                     ];
                     return queryObject.blog.result;
                 }
             },
             [ContentType.SECTION]: {
-                create() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
-                    return queryObject.blog.result;
-                },
-                read() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
-                    return queryObject.blog.result;
-                },
-                update() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
-                    return queryObject.blog.result;
-                },
-                delete() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = [];
-                    return queryObject.blog.result;
-                }
-            },
-            [ContentType.SECTION_LIST]: {
 
             }
         },
@@ -236,9 +237,7 @@ const DB = (function () {
                             url, 
                             body
                         ) 
-                        VALUES (
-                            ?, ?, ?, ?, ?
-                        );`;
+                        VALUES (?, ?, ?, ?, ?);`;
                     queryObject.server.result.values = [
                         typeObject.inputType,
                         requestObject.method.toLowerCase(),
@@ -322,17 +321,17 @@ const DB = (function () {
 
                 if (blogResult.errno) {
                     console.log(blogResult);
-                    console.log('[ Blog Query ]' + blogQueryObject.query);
-                    console.log('[ Blog Values ]' + blogQueryObject.values);
+                    console.log('[ Blog Query ]\n' + blogQueryObject.query);
+                    console.log('[ Blog Values ]\n' + blogQueryObject.values);
                     throw new Error('[Error] run() : There might be an error in query syntax on \'blog DB\'.');
                 }
                 if (serverResult.errno) {
                     console.log(serverResult);
-                    console.log('[ Server Query ]' + serverQueryObject.query);
-                    console.log('[ Server Values ]' + serverQueryObject.values);
+                    console.log('[ Server Query ]\n' + serverQueryObject.query);
+                    console.log('[ Server Values ]\n' + serverQueryObject.values);
                     throw new Error('[Error] run() : There might be an error in query syntax on \'server DB\'.');
                 }
-                console.log(blogResult);
+                console.log('[ blogResult ]\n' + blogResult);
                 return blogResult;
             }
         })();
