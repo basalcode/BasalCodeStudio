@@ -1,5 +1,19 @@
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted||window.performance&&window.performance.navigation.type === 2) {
+        // console.log('Page restored from BFCache.');
+        alert('This is an expired page.');
+        window.location.href = '/source/category.html';
+    } else {
+        // console.log('Page newly loaded');
+    }
+});
+
 window.onload = function() {
     console.log(`[Open] 'post.js' has been opend.`);
+    loadPage();
+}
+
+function loadPage() {
     let url = new URL(window.location.href);
     let params = url.searchParams;
     let post_id = params.get('post');
@@ -61,7 +75,7 @@ function showPost(postObj) {
             return response.json()
         })
         .then(function (parsed) {
-            window.location.replace('/source/category.html');
+            window.location.href = '/source/category.html';
         });
     })
 }

@@ -1,148 +1,191 @@
-let revised = false;
 window.onload = function () {
     console.log(`[Open] 'categoryEditor.js' has been opend.`);
-    let categoryEditor = document.querySelector('#category-editor');
 
-    let control = document.querySelector('#controls');
-    let addCategoryButton = document.querySelector('#add-category');
-    let addSectionButton = document.querySelector('#add-section');
-    let removeButton = document.querySelector('#remove');
+    let elementObject = {
+        editor: document.querySelector('#category-editor'),
 
-    let categoryList = document.querySelector('#category-list');
-    let listHeader = document.querySelector('#list-header');
-    let listBody = document.querySelector('#list-body');
+        controls: document.querySelector('#controls'),
+        addCategoryButton: document.querySelector('#add-category'),
+        addSectionButton: document.querySelector('#add-section'),
+        removeButton: document.querySelector('#remove'),
 
-    /* fetch('/readCategoryEditor')
+        categoryList: document.querySelector('#category-list'),
+        listHeader: document.querySelector('#list-header'),
+        listBody: document.querySelector('#list-body')
+    }
+
+    fetch('/readCategoryEditor')
         .then(function (response) {
             return response.json();
         })
         .then(function (parsed) {
             console.log(parsed);
             showCategory(parsed);
-        }); */
+        });
 
-    addCategoryButton.addEventListener('click', function (event) {
-        revised = true;
-        addCategory();
+    elementObject.addCategoryButton.addEventListener('click', function (event) {
+        addCategory(elementObject);
     });
-
-    addSectionButton.addEventListener('click', function (event) {
-        revised = true;
-        fetch('/createSection')
-            .then(function (response) {
-
-            })
-            .then(function (parsed) {
-
-            });
+    elementObject.addSectionButton.addEventListener('click', function (event) {
+        addSection(elementObject);
     });
-
-    removeButton.addEventListener('click', function (event) {
-        revised = true;
-        let isCategory;
-        if (isCategory) {
-            fetch('/deleteCategory')
-                .then(function (response) {
-
-                })
-                .then(function (parsed) {
-
-                });
-        } else {
-            fetch('/deleteSection')
-                .then(function (response) {
-
-                })
-                .then(function (parsed) {
-
-                });
-        }
-    });
-
-    
-
-    function addCategory() {
-        let categoryContent = document.createElement('div');
-        let checkBox = document.createElement('input');
-        let categoryNameField = document.createElement('div');
-        
-
-        const defaultCategoryName = 'Default Category';
-
-        checkBox.type = 'checkbox';
-        categoryNameField.innerText = defaultCategoryName;
-
-        categoryContent.appendChild(checkBox);
-        categoryContent.appendChild(categoryNameField);
-
-        listBody.appendChild(categoryContent);
-
-        categoryNameField.addEventListener('click', function (event) {
-            let newCategoryNameField = document.createElement('input');
-            let categoryName = categoryNameField.innerText;
-
-            let isFocused = false;
-
-            newCategoryNameField.type = 'text';
-            if (categoryName !== defaultCategoryName) {
-                newCategoryNameField.value = categoryName;
-            }
-            categoryContent.replaceChild(newCategoryNameField, categoryNameField);
-
-            newCategoryNameField.focus();
-            isFocused = true;
-
-            newCategoryNameField.addEventListener('keydown', function (event) {
-                if (isFocused) {
-                    const ApprovalKeys = {
-                        ENTER: 'Enter',
-                        NUMPAD_ENTER: 'NumpadEnter'
-                    };
-                    const CanselKey = {
-                        ESC: 'Escape'
-                    };
-    
-                    for (const key in ApprovalKeys) {
-                        if (event.code === ApprovalKeys[key]) {
-                            renameCategory(true);
-                            return;
-                        }
-                    }
-                    for (const key in CanselKey) {
-                        if (event.code === CanselKey[key]) {
-                            renameCategory(false);
-                            return;
-                        }
-                    }
-                }
-            });
-
-            newCategoryNameField.addEventListener('blur', function (event) {
-                if (isFocused) {
-                    renameCategory(true);
-                }
-            });
-
-            function renameCategory(apply) {
-                isFocused = false;
-                if (apply) {
-                    let changedText = newCategoryNameField.value;
-                    if (changedText.length === 0) {
-                        changedText = defaultCategoryName;
-                    }
-                    categoryNameField.innerText = changedText;
-                }
-                categoryContent.replaceChild(categoryNameField, newCategoryNameField);
-            }
-        })
-    }
-
-    
-    function showCategory() {
-
-    }
 }
 
+function addCategory(object) {
+    let category = document.createElement('div');
+    let checkBox = document.createElement('input');
+    let categoryName = document.createElement('div');
+
+    const defaultCategoryName = 'Default Category';
+
+    checkBox.type = 'checkbox';
+    categoryName.innerText = defaultCategoryName;
+
+    category.appendChild(checkBox);
+    category.appendChild(categoryName);
+
+    object.listBody.appendChild(category);
+
+    categoryName.addEventListener('click', function (event) {
+        let modifyName = document.createElement('input');
+        let categoryNameText = categoryName.innerText;
+
+        let isFocused = false;
+
+        modifyName.type = 'text';
+        if (categoryNameText !== defaultCategoryName) {
+            modifyName.value = categoryNameText;
+        }
+        category.replaceChild(modifyName, categoryName);
+
+        modifyName.focus();
+        isFocused = true;
+
+        modifyName.addEventListener('keydown', function (event) {
+            if (isFocused) {
+                const ApprovalKeys = {
+                    ENTER: 'Enter',
+                    NUMPAD_ENTER: 'NumpadEnter'
+                };
+                const CanselKey = {
+                    ESC: 'Escape'
+                };
+
+                for (const key in ApprovalKeys) {
+                    if (event.code === ApprovalKeys[key]) {
+                        renameCategory(true);
+                        return;
+                    }
+                }
+                for (const key in CanselKey) {
+                    if (event.code === CanselKey[key]) {
+                        renameCategory(false);
+                        return;
+                    }
+                }
+            }
+        });
+
+        modifyName.addEventListener('blur', function (event) {
+            if (isFocused) {
+                console.log(isFocused);
+                renameCategory(true);
+            }
+        });
+
+        function renameCategory(apply) {
+            isFocused = false;
+            if (apply) {
+                let changedText = modifyName.value;
+                if (changedText.length === 0) {
+                    changedText = defaultCategoryName;
+                }
+                categoryName.innerText = changedText;
+            }
+            category.replaceChild(categoryName, modifyName);
+        }
+    })
+}
+
+function addSection(object) {
+    let section = document.createElement('div');
+    let checkBox = document.createElement('input');
+    let sectionName = document.createElement('div');
+
+    const defaultCategoryName = 'Default Section';
+
+    checkBox.type = 'checkbox';
+    sectionName.innerText = defaultCategoryName;
+
+    section.appendChild(checkBox);
+    section.appendChild(sectionName);
+
+    object.listBody.appendChild(section);
+
+    sectionName.addEventListener('click', function (event) {
+        let modifyName = document.createElement('input');
+        let sectionNameText = sectionName.innerText;
+
+        let isFocused = false;
+
+        modifyName.type = 'text';
+        if (sectionNameText !== defaultCategoryName) {
+            modifyName.value = sectionNameText;
+        }
+        section.replaceChild(modifyName, sectionName);
+
+        modifyName.focus();
+        isFocused = true;
+
+        modifyName.addEventListener('keydown', function (event) {
+            if (isFocused) {
+                const ApprovalKeys = {
+                    ENTER: 'Enter',
+                    NUMPAD_ENTER: 'NumpadEnter'
+                };
+                const CanselKey = {
+                    ESC: 'Escape'
+                };
+
+                for (const key in ApprovalKeys) {
+                    if (event.code === ApprovalKeys[key]) {
+                        renameCategory(true);
+                        return;
+                    }
+                }
+                for (const key in CanselKey) {
+                    if (event.code === CanselKey[key]) {
+                        renameCategory(false);
+                        return;
+                    }
+                }
+            }
+        });
+
+        modifyName.addEventListener('blur', function (event) {
+            if (isFocused) {
+                console.log(isFocused);
+                renameCategory(true);
+            }
+        });
+
+        function renameCategory(apply) {
+            isFocused = false;
+            if (apply) {
+                let changedText = modifyName.value;
+                if (changedText.length === 0) {
+                    changedText = defaultCategoryName;
+                }
+                sectionName.innerText = changedText;
+            }
+            section.replaceChild(sectionName, modifyName);
+        }
+    })
+}
+
+function loadSectionInit(categoryEditorObject) {
+
+}
 /* fetch('/createCategory', {
     method: 'POST',
     headers: {

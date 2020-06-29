@@ -1,9 +1,5 @@
 window.onload = function () {
     console.log(`[Open] 'category.js' has been opend.`);
-
-    window.addEventListener ('popstate', function(event) {
-        alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
-    });
     
     fetch(`/readCategory`)
         .then(function (response) {
@@ -65,8 +61,3 @@ function showCategory(postObjArr) {
         })
     }
 }
-
-window.addEventListener('popstate', function(event) {
-    alert('만료된 페이지');
-    history.forward(1);
-})
