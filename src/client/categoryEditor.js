@@ -20,7 +20,6 @@ window.onload = function () {
         })
         .then(function (parsed) {
             console.log(parsed);
-            showCategory(parsed);
         });
 
     elementObject.addCategoryButton.addEventListener('click', function (event) {
@@ -28,6 +27,9 @@ window.onload = function () {
     });
     elementObject.addSectionButton.addEventListener('click', function (event) {
         addSection(elementObject);
+    });
+    elementObject.removeButton.addEventListener('click', function(event) {
+        removeContent(elementObject);
     });
 }
 
@@ -38,6 +40,8 @@ function addCategory(object) {
 
     const defaultCategoryName = 'Default Category';
 
+    category.id = 'content';
+    checkBox.id = 'checkbox';
     checkBox.type = 'checkbox';
     categoryName.innerText = defaultCategoryName;
 
@@ -115,6 +119,7 @@ function addSection(object) {
     const defaultCategoryName = 'Default Section';
 
     checkBox.type = 'checkbox';
+    checkBox.id = 'checkbox';
     sectionName.innerText = defaultCategoryName;
 
     section.appendChild(checkBox);
@@ -183,9 +188,17 @@ function addSection(object) {
     })
 }
 
-function loadSectionInit(categoryEditorObject) {
-
+function removeContent(object) {
+    let checkboxs = document.querySelectorAll('#checkbox');
+    for (const key in checkboxs) {
+        if (checkboxs[key].checked) {
+            let target = checkboxs[key].parentNode;
+            let parent = target.parentNode;
+            parent.removeChild(target);
+        }
+    }
 }
+
 /* fetch('/createCategory', {
     method: 'POST',
     headers: {
