@@ -11,15 +11,6 @@ const DBOperator = require('./src/server/DBOperator');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/* app.all('/*', function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] === 'http') {
-        console.log('HTTP://' + req.host + req.originalUrl + ' 로의 접근이 감지되었고 리다이렉트 함');
-        res.redirect(301, 'https://' + req.host + req.originalUrl);
-    } else {
-        next();
-    }
-}) */
-
 app.use('/source', express.static('./src/client'));
 app.get('/', function (req, res) {
     fs.readFile('./src/client/lobby.html', function (err, data) {

@@ -1,3 +1,8 @@
+const ContentType = {
+    CATEGORY: 1,
+    SECTION: 2
+}
+
 window.onload = function () {
     console.log(`[Open] 'categoryEditor.js' has been opend.`);
 
@@ -23,44 +28,53 @@ window.onload = function () {
         });
 
     elementObject.addCategoryButton.addEventListener('click', function (event) {
-        addCategory(elementObject);
+        addContent(elementObject, ContentType.CATEGORY);
     });
     elementObject.addSectionButton.addEventListener('click', function (event) {
-        addSection(elementObject);
+        addContent(elementObject, ContentType.SECTION);
     });
     elementObject.removeButton.addEventListener('click', function(event) {
         removeContent(elementObject);
     });
 }
 
-function addCategory(object) {
-    let category = document.createElement('div');
+function addContent(object, contentType) {
+    let content = document.createElement('div');
     let checkBox = document.createElement('input');
-    let categoryName = document.createElement('div');
+    let title = document.createElement('div');
 
-    const defaultCategoryName = 'Default Category';
+    const DefaultName = {
+        CATEGORY: 'Default Category',
+        SECTION: 'Default Section'
+    }
 
-    category.id = 'content';
+    content.id = 'content';
     checkBox.id = 'checkbox';
     checkBox.type = 'checkbox';
-    categoryName.innerText = defaultCategoryName;
+    if (contentType === ContentType.CATEGORY) {
+        title.innerText = DefaultName.CATEGORY;
+    } else if (contentType === ContentType.SECTION) {
+        title.innerText = DefaultName.SECTION;
+    } else {
+        throw new Error('[Error] addContent() : Parameter \'contentType\' is wrong.');
+    }
+    
+    content.appendChild(checkBox);
+    content.appendChild(title);
 
-    category.appendChild(checkBox);
-    category.appendChild(categoryName);
+    object.listBody.appendChild(content);
 
-    object.listBody.appendChild(category);
-
-    categoryName.addEventListener('click', function (event) {
+    title.addEventListener('click', function (event) {
         let modifyName = document.createElement('input');
-        let categoryNameText = categoryName.innerText;
+        let titleText = title.innerText;
 
         let isFocused = false;
 
         modifyName.type = 'text';
-        if (categoryNameText !== defaultCategoryName) {
-            modifyName.value = categoryNameText;
+        if (titleText !== defaultCategoryName) {
+            modifyName.value = titleText;
         }
-        category.replaceChild(modifyName, categoryName);
+        content.replaceChild(modifyName, title);
 
         modifyName.focus();
         isFocused = true;
@@ -104,86 +118,9 @@ function addCategory(object) {
                 if (changedText.length === 0) {
                     changedText = defaultCategoryName;
                 }
-                categoryName.innerText = changedText;
+                title.innerText = changedText;
             }
-            category.replaceChild(categoryName, modifyName);
-        }
-    })
-}
-
-function addSection(object) {
-    let section = document.createElement('div');
-    let checkBox = document.createElement('input');
-    let sectionName = document.createElement('div');
-
-    const defaultCategoryName = 'Default Section';
-
-    checkBox.type = 'checkbox';
-    checkBox.id = 'checkbox';
-    sectionName.innerText = defaultCategoryName;
-
-    section.appendChild(checkBox);
-    section.appendChild(sectionName);
-
-    object.listBody.appendChild(section);
-
-    sectionName.addEventListener('click', function (event) {
-        let modifyName = document.createElement('input');
-        let sectionNameText = sectionName.innerText;
-
-        let isFocused = false;
-
-        modifyName.type = 'text';
-        if (sectionNameText !== defaultCategoryName) {
-            modifyName.value = sectionNameText;
-        }
-        section.replaceChild(modifyName, sectionName);
-
-        modifyName.focus();
-        isFocused = true;
-
-        modifyName.addEventListener('keydown', function (event) {
-            if (isFocused) {
-                const ApprovalKeys = {
-                    ENTER: 'Enter',
-                    NUMPAD_ENTER: 'NumpadEnter'
-                };
-                const CanselKey = {
-                    ESC: 'Escape'
-                };
-
-                for (const key in ApprovalKeys) {
-                    if (event.code === ApprovalKeys[key]) {
-                        renameCategory(true);
-                        return;
-                    }
-                }
-                for (const key in CanselKey) {
-                    if (event.code === CanselKey[key]) {
-                        renameCategory(false);
-                        return;
-                    }
-                }
-            }
-        });
-
-        modifyName.addEventListener('blur', function (event) {
-            if (isFocused) {
-                console.log(isFocused);
-                renameCategory(true);
-            }
-        });
-
-        function renameCategory(apply) {
-            isFocused = false;
-            if (apply) {
-                let changedText = modifyName.value;
-                if (changedText.length === 0) {
-                    changedText = defaultCategoryName;
-                }
-                sectionName.innerText = changedText;
-            }
-            section.replaceChild(sectionName, modifyName);
+            content.replaceChild(title, modifyName);
         }
     })
 }
@@ -198,19 +135,3 @@ function removeContent(object) {
         }
     }
 }
-
-/* fetch('/createCategory', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify()
-})
-    .then(function (response) {
-
-    })
-    .then(function (parsed) {
-        console.log(parsed);
-
-
-    }); */
