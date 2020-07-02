@@ -119,10 +119,16 @@ const DB = (function () {
             [ContentType.CATEGORY_EDITOR]: {
                 read() {
                     queryObject.blog.result.query = `
-                        SELECT
-                            name,
-                            section_id
-                        FROM category
+                        SELECT 
+                            section.id AS section_id,
+                            section.name AS section_name,
+                            section.order AS section_order,
+                            category.id AS category_id,
+                            category.name AS category_name,
+                            category.order AS category_order
+                        FROM section
+                        JOIN category
+                        ON section.id = category.section_id;
                     `;
                     queryObject.blog.result.values = null;
                     return queryObject.blog.result;
@@ -302,6 +308,10 @@ const DB = (function () {
             init(req);
 
             let blogQueryObject = queryObject.blog[typeObject.contentType][typeObject.inputType]();
+            console.log('[ Content Type ]');
+            console.log(typeObject.contentType);
+            console.log('[ Input Type ]');
+            console.log(typeObject.inputType);
 
             if (blogQueryObject.blogErrorMessage) {
                 return blogQueryObject.errorMessage;
@@ -320,18 +330,26 @@ const DB = (function () {
                 );
 
                 if (blogResult.errno) {
+                    console.log('[ Blog Result ]');
                     console.log(blogResult);
-                    console.log('[ Blog Query ]\n' + blogQueryObject.query);
-                    console.log('[ Blog Values ]\n' + blogQueryObject.values);
+                    console.log('[ Blog Query ]');
+                    console.log(blogQueryObject.query);
+                    console.log('[ Blog Values ]');
+                    console.log(blogQueryObject.values);
                     throw new Error('[Error] run() : There might be an error in query syntax on \'blog DB\'.');
                 }
                 if (serverResult.errno) {
+                    console.log('[ Server Result ]');
                     console.log(serverResult);
-                    console.log('[ Server Query ]\n' + serverQueryObject.query);
-                    console.log('[ Server Values ]\n' + serverQueryObject.values);
+                    console.log('[ Server Query ]');
+                    console.log(serverQueryObject.query);
+                    console.log('[ Server Values ]');
+                    console.log(serverQueryObject.values);
                     throw new Error('[Error] run() : There might be an error in query syntax on \'server DB\'.');
                 }
-                console.log('[ blogResult ]\n' + blogResult);
+                console.log('[ blogResult ]');
+                console.log(blogResult);
+
                 return blogResult;
             }
         })();

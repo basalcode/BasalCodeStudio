@@ -13,19 +13,14 @@ window.onload = function () {
         addCategoryButton: document.querySelector('#add-category'),
         addSectionButton: document.querySelector('#add-section'),
         removeButton: document.querySelector('#remove'),
+        applyButton: document.querySelector('#apply'),
 
         categoryList: document.querySelector('#category-list'),
         listHeader: document.querySelector('#list-header'),
         listBody: document.querySelector('#list-body')
     }
 
-    fetch('/readCategoryEditor')
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (parsed) {
-            console.log(parsed);
-        });
+    loadContents();
 
     elementObject.addCategoryButton.addEventListener('click', function (event) {
         addContent(elementObject, ContentType.CATEGORY);
@@ -33,12 +28,86 @@ window.onload = function () {
     elementObject.addSectionButton.addEventListener('click', function (event) {
         addContent(elementObject, ContentType.SECTION);
     });
-    elementObject.removeButton.addEventListener('click', function(event) {
+    elementObject.removeButton.addEventListener('click', function (event) {
         removeContent(elementObject);
+    });
+
+    elementObject.applyButton.addEventListener('click', function (event) {
+        applyContent(elementObject);
+    })
+}
+
+function loadContents() {
+    console.log('loadContents() has been loaded.');
+
+    fetch('/readCategoryEditor')
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (parsed) {
+        // console.log('parsed: ', parsed);
+        
+        let contentArray = parsed.result;
+        // console.log('[ contentArray ]', contentArray);
+        let sections = {}
+        // console.log('[ sections ] ', sections);
+
+        function appendSection(element) {
+            let id = element.section_id;
+            let name = element.section_name;
+            let order = element.section_order;
+            let sectionObject = {
+                id: id,
+                order: order,
+                categories: {}
+            }
+
+            if (sections[name] === undefined) {
+                sections[name] = sectionObject;
+            }
+            appendCategory(sections[name], element);            
+        }
+
+        function appendCategory(target, element) {
+            let id = element.category_id;
+            let name = element.category_name;
+            let order = element.category_order;
+
+            let categoryObject = {
+                id: id,
+                order: order
+            }
+
+            if (target.categories[name] === undefined) {
+                target.categories[name] = categoryObject;
+            }
+        }
+
+        contentArray.forEach(element => {
+            appendSection(element)
+        })
+        console.log(sections);
+
+        //structure
+        /* contents = {
+            sections: {
+                [name] : {
+                    id: null
+                    categories: {
+                        [name] :{
+                            id: null
+                        }
+                    }
+                }
+                
+            }
+        } */
     });
 }
 
 function addContent(object, contentType) {
+    console.log('addContent() has been loaded.');
+
     let content = document.createElement('div');
     let checkBox = document.createElement('input');
     let title = document.createElement('div');
@@ -48,9 +117,11 @@ function addContent(object, contentType) {
         SECTION: 'Default Section'
     }
 
-    content.id = 'content';
-    checkBox.id = 'checkbox';
+    content.className = 'content';
+    checkBox.className = 'checkbox';
     checkBox.type = 'checkbox';
+    title.className = 'title';
+
     if (contentType === ContentType.CATEGORY) {
         title.innerText = DefaultName.CATEGORY;
     } else if (contentType === ContentType.SECTION) {
@@ -58,7 +129,7 @@ function addContent(object, contentType) {
     } else {
         throw new Error('[Error] addContent() : Parameter \'contentType\' is wrong.');
     }
-    
+
     content.appendChild(checkBox);
     content.appendChild(title);
 
@@ -126,7 +197,8 @@ function addContent(object, contentType) {
 }
 
 function removeContent(object) {
-    let checkboxs = document.querySelectorAll('#checkbox');
+    console.log('removeContent() has been loaded.');
+    let checkboxs = document.querySelectorAll('.checkbox');
     for (const key in checkboxs) {
         if (checkboxs[key].checked) {
             let target = checkboxs[key].parentNode;
@@ -134,4 +206,8 @@ function removeContent(object) {
             parent.removeChild(target);
         }
     }
+}
+
+function applyContent(object) {
+
 }
