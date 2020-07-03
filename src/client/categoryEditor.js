@@ -41,68 +41,124 @@ function loadContents() {
     console.log('loadContents() has been loaded.');
 
     fetch('/readCategoryEditor')
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (parsed) {
-        // console.log('parsed: ', parsed);
-        
-        let contentArray = parsed.result;
-        // console.log('[ contentArray ]', contentArray);
-        let sections = {}
-        // console.log('[ sections ] ', sections);
-
-        function appendSection(element) {
-            let id = element.section_id;
-            let name = element.section_name;
-            let order = element.section_order;
-            let sectionObject = {
-                id: id,
-                order: order,
-                categories: {}
-            }
-
-            if (sections[name] === undefined) {
-                sections[name] = sectionObject;
-            }
-            appendCategory(sections[name], element);            
-        }
-
-        function appendCategory(target, element) {
-            let id = element.category_id;
-            let name = element.category_name;
-            let order = element.category_order;
-
-            let categoryObject = {
-                id: id,
-                order: order
-            }
-
-            if (target.categories[name] === undefined) {
-                target.categories[name] = categoryObject;
-            }
-        }
-
-        contentArray.forEach(element => {
-            appendSection(element)
+        .then(function (response) {
+            return response.json();
         })
-        console.log(sections);
+        .then(function (parsed) {
+            let contentArray = parsed.result;
 
-        //structure
-        /* contents = {
-            sections: {
-                [name] : {
-                    id: null
-                    categories: {
-                        [name] :{
-                            id: null
-                        }
+            function initContent(contentArray) {
+                let sections = {}
+                contentArray.forEach(element => {
+                    appendSection(element);
+                });
+                function appendSection(element) {
+                    let id = element.section_id;
+                    let name = element.section_name;
+                    let order = element.section_order;
+                    let sectionObject = {
+                        id: id,
+                        name: name,
+                        order: order,
+                        categories: {}
+                    }
+
+                    if (sections[name] === undefined) {
+                        sections[name] = sectionObject;
+                    }
+                    appendCategory(sections[name], element);
+                }
+
+                function appendCategory(target, element) {
+                    let id = element.category_id;
+                    let name = element.category_name;
+                    let order = element.category_order;
+
+                    let categoryObject = {
+                        id: id,
+                        name: name,
+                        order: order
+                    }
+
+                    if (target.categories[name] === undefined) {
+                        target.categories[name] = categoryObject;
                     }
                 }
-                
+                return sections;
             }
-        } */
-    });
+
+            let contentsObject = initContent(contentArray);
+            showContents(contentsObject);
+            function showContents(sections) {
+                let content = document.createElement('div');
+
+                for (const i in sections) {
+                    let sectionObject = sections[i];
+                    let categories = sectionObject.categories;
+                    console.log(sectionObject);
+
+                    createSectionElements(sectionObject);
+                    function createSectionElements(sectionObject) {
+                        let listBody = document.querySelector('#list-body');
+
+                        let section = document.createElement('div');
+                        let checkBox = document.createElement('input');
+                        let title = document.createElement('div');
+
+                        let categories = document.createElement('div');
+
+                        section.id = sectionObject.name + 'Section';
+
+                        checkBox.id = sectionObject.name + 'CheckBox';
+                        checkBox.type = 'checkbox';
+
+                        title.id = sectionObject.name + 'Title';
+                        title.innerText = sectionObject.name;
+
+                        categories.id = sectionObject.name + 'Categories';
+
+                        section.appendChild(checkBox);
+                        section.appendChild(title);
+                        section.appendChild(categories);
+
+                        listBody.appendChild(section);
+                    }
+
+                    for (const j in categories) {
+                        let categoryObject = categories[j];
+                        createCategoryElements(categoryObject);
+                        function createCategoryElements(categoryObject) {
+                            let categories = document.querySelector('#' + sectionObject.name + 'Categories');
+
+                            let category = document.createElement('div');
+                            let checkBox = document.createElement('input');
+                            let title = document.createElement('div');
+
+                            category.id = categoryObject.name + 'Section';
+
+                            checkBox.id = categoryObject.name + 'CheckBox';
+                            checkBox.type = 'checkbox';
+
+                            title.id = categoryObject.name + 'Title';
+                            title.innerText = categoryObject.name;
+
+                            category.appendChild(checkBox);
+                            category.appendChild(title);
+
+                            categories.appendChild(category);
+                        }
+                        console.log(categoryObject);
+                    }
+                }
+
+                /* let section = document.createElement('div');
+                let checkBox = document.createElement('input');
+                let title = document.createElement('div');
+                let category = document.createElement('div');
+                let checkBox = document.createElement('input');
+                let title = document.createElement('div'); */
+            }
+        });
 }
 
 function addContent(object, contentType) {
