@@ -63,10 +63,10 @@ function loadContents() {
                         categories: {}
                     }
 
-                    if (sections[name] === undefined) {
-                        sections[name] = sectionObject;
+                    if (sections[order] === undefined) {
+                        sections[order] = sectionObject;
                     }
-                    appendCategory(sections[name], element);
+                    appendCategory(sections[order], element);
                 }
 
                 function appendCategory(target, element) {
@@ -79,9 +79,8 @@ function loadContents() {
                         name: name,
                         order: order
                     }
-
-                    if (target.categories[name] === undefined) {
-                        target.categories[name] = categoryObject;
+                    if (target.categories[order] === undefined) {
+                        target.categories[order] = categoryObject;
                     }
                 }
                 return sections;
@@ -89,12 +88,16 @@ function loadContents() {
 
             let contentsObject = initContent(contentArray);
             showContents(contentsObject);
-            function showContents(sections) {
+            function showContents(contentsObject) {
                 let content = document.createElement('div');
-
-                for (const i in sections) {
+                
+                console.log(contentsObject);
+                let sections = orderedObject(contentsObject);
+                window.stop();
+                for (let i in sections) {
                     let sectionObject = sections[i];
-                    let categories = sectionObject.categories;
+                    
+                    let categories = orderedObject(sectionObject.categories);
                     console.log(sectionObject);
 
                     createSectionElements(sectionObject);
@@ -124,7 +127,7 @@ function loadContents() {
                         listBody.appendChild(section);
                     }
 
-                    for (const j in categories) {
+                    for (let j in categories) {
                         let categoryObject = categories[j];
                         createCategoryElements(categoryObject);
                         function createCategoryElements(categoryObject) {
@@ -150,13 +153,6 @@ function loadContents() {
                         console.log(categoryObject);
                     }
                 }
-
-                /* let section = document.createElement('div');
-                let checkBox = document.createElement('input');
-                let title = document.createElement('div');
-                let category = document.createElement('div');
-                let checkBox = document.createElement('input');
-                let title = document.createElement('div'); */
             }
         });
 }
@@ -216,13 +212,13 @@ function addContent(object, contentType) {
                     ESC: 'Escape'
                 };
 
-                for (const key in ApprovalKeys) {
+                for (let key in ApprovalKeys) {
                     if (event.code === ApprovalKeys[key]) {
                         renameCategory(true);
                         return;
                     }
                 }
-                for (const key in CanselKey) {
+                for (let key in CanselKey) {
                     if (event.code === CanselKey[key]) {
                         renameCategory(false);
                         return;
@@ -255,7 +251,7 @@ function addContent(object, contentType) {
 function removeContent(object) {
     console.log('removeContent() has been loaded.');
     let checkboxs = document.querySelectorAll('.checkbox');
-    for (const key in checkboxs) {
+    for (let key in checkboxs) {
         if (checkboxs[key].checked) {
             let target = checkboxs[key].parentNode;
             let parent = target.parentNode;
@@ -266,4 +262,14 @@ function removeContent(object) {
 
 function applyContent(object) {
 
+}
+
+function orderedObject(unorderedObject) {
+    let orderedObject = {};
+
+    Object.keys(unorderedObject).sort().forEach(key => {
+        orderedObject[key] = unorderedObject[key];
+    })
+
+    return orderedObject;
 }
