@@ -1,7 +1,9 @@
-const ContentType = {
-    CATEGORY: 1,
-    SECTION: 2
+const DefaultTitle = {
+    SECTION: 'Default Section',
+    CATEGORY: 'Default Category'
 }
+
+let focusedElement = null;
 
 window.onload = function () {
     console.log(`[Open] 'categoryEditor.js' has been opend.`);
@@ -22,15 +24,10 @@ window.onload = function () {
 
     loadContents();
 
-    elementObject.addCategoryButton.addEventListener('click', function (event) {
-        addContent(elementObject, ContentType.CATEGORY);
-    });
-    elementObject.addSectionButton.addEventListener('click', function (event) {
-        addContent(elementObject, ContentType.SECTION);
-    });
-    elementObject.removeButton.addEventListener('click', function (event) {
-        removeContent(elementObject);
-    });
+    addSection(elementObject.addSectionButton);
+    addCategory(elementObject.addCategoryButton);
+    
+    removeContent(elementObject);
 
     elementObject.applyButton.addEventListener('click', function (event) {
         applyContent(elementObject);
@@ -88,180 +85,150 @@ function loadContents() {
 
             let contentsObject = initContent(contentArray);
             showContents(contentsObject);
-            function showContents(contentsObject) {
-                let content = document.createElement('div');
-                
-                console.log(contentsObject);
-                let sections = orderedObject(contentsObject);
-                window.stop();
-                for (let i in sections) {
-                    let sectionObject = sections[i];
-                    
-                    let categories = orderedObject(sectionObject.categories);
-                    console.log(sectionObject);
-
-                    createSectionElements(sectionObject);
-                    function createSectionElements(sectionObject) {
-                        let listBody = document.querySelector('#list-body');
-
-                        let section = document.createElement('div');
-                        let checkBox = document.createElement('input');
-                        let title = document.createElement('div');
-
-                        let categories = document.createElement('div');
-
-                        section.id = sectionObject.name + 'Section';
-
-                        checkBox.id = sectionObject.name + 'CheckBox';
-                        checkBox.type = 'checkbox';
-
-                        title.id = sectionObject.name + 'Title';
-                        title.innerText = sectionObject.name;
-
-                        categories.id = sectionObject.name + 'Categories';
-
-                        section.appendChild(checkBox);
-                        section.appendChild(title);
-                        section.appendChild(categories);
-
-                        listBody.appendChild(section);
-                    }
-
-                    for (let j in categories) {
-                        let categoryObject = categories[j];
-                        createCategoryElements(categoryObject);
-                        function createCategoryElements(categoryObject) {
-                            let categories = document.querySelector('#' + sectionObject.name + 'Categories');
-
-                            let category = document.createElement('div');
-                            let checkBox = document.createElement('input');
-                            let title = document.createElement('div');
-
-                            category.id = categoryObject.name + 'Section';
-
-                            checkBox.id = categoryObject.name + 'CheckBox';
-                            checkBox.type = 'checkbox';
-
-                            title.id = categoryObject.name + 'Title';
-                            title.innerText = categoryObject.name;
-
-                            category.appendChild(checkBox);
-                            category.appendChild(title);
-
-                            categories.appendChild(category);
-                        }
-                        console.log(categoryObject);
-                    }
-                }
-            }
         });
 }
 
-function addContent(object, contentType) {
-    console.log('addContent() has been loaded.');
+function addSection() {
+    console.log('addSection() has been loaded.');
+    let listBody = document.querySelector('#list-body');
+    let addSectionButton = document.querySelector('#add-section');
 
-    let content = document.createElement('div');
-    let checkBox = document.createElement('input');
-    let title = document.createElement('div');
-
-    const DefaultName = {
-        CATEGORY: 'Default Category',
-        SECTION: 'Default Section'
-    }
-
-    content.className = 'content';
-    checkBox.className = 'checkbox';
-    checkBox.type = 'checkbox';
-    title.className = 'title';
-
-    if (contentType === ContentType.CATEGORY) {
-        title.innerText = DefaultName.CATEGORY;
-    } else if (contentType === ContentType.SECTION) {
-        title.innerText = DefaultName.SECTION;
-    } else {
-        throw new Error('[Error] addContent() : Parameter \'contentType\' is wrong.');
-    }
-
-    content.appendChild(checkBox);
-    content.appendChild(title);
-
-    object.listBody.appendChild(content);
-
-    title.addEventListener('click', function (event) {
-        let modifyName = document.createElement('input');
-        let titleText = title.innerText;
-
-        let isFocused = false;
-
-        modifyName.type = 'text';
-        if (titleText !== defaultCategoryName) {
-            modifyName.value = titleText;
+    addSectionButton.addEventListener('click', function (event) {
+        let newSectionObject = {
+            section: document.createElement('div'),
+            title: document.createElement('div'),
+            categories: document.createElement('div')
         }
-        content.replaceChild(modifyName, title);
+        newSectionObject.title.className = 'title';
+        newSectionObject.section.className = 'section';
 
-        modifyName.focus();
-        isFocused = true;
+        newSectionObject.section.appendChild(newSectionObject.title);
+        newSectionObject.section.appendChild(newSectionObject.categories);
 
-        modifyName.addEventListener('keydown', function (event) {
-            if (isFocused) {
-                const ApprovalKeys = {
-                    ENTER: 'Enter',
-                    NUMPAD_ENTER: 'NumpadEnter'
-                };
-                const CanselKey = {
-                    ESC: 'Escape'
-                };
-
-                for (let key in ApprovalKeys) {
-                    if (event.code === ApprovalKeys[key]) {
-                        renameCategory(true);
-                        return;
-                    }
-                }
-                for (let key in CanselKey) {
-                    if (event.code === CanselKey[key]) {
-                        renameCategory(false);
-                        return;
-                    }
-                }
-            }
-        });
-
-        modifyName.addEventListener('blur', function (event) {
-            if (isFocused) {
-                console.log(isFocused);
-                renameCategory(true);
-            }
-        });
-
-        function renameCategory(apply) {
-            isFocused = false;
-            if (apply) {
-                let changedText = modifyName.value;
-                if (changedText.length === 0) {
-                    changedText = defaultCategoryName;
-                }
-                title.innerText = changedText;
-            }
-            content.replaceChild(title, modifyName);
+        if (focusedElement.className === 'section') {
+            listBody.insertBefore(newSectionObject.section, focusedElement.nextSibling);
+        } else if (focusedElement.className === 'category') {
+            listBody.insertBefore(newSectionObject.section, focusedElement.parentNode.nextSibling);
+        } else {
+            
         }
-    })
+        console.log(listBody);
+
+        newSectionObject.title.innerText = DefaultTitle.SECTION;
+        addModifyElementTextEvent(newSectionObject.title, DefaultTitle.SECTION);
+        addFocusedContentEvent(newSectionObject.section);
+    });
 }
 
-function removeContent(object) {
+function addCategory() {
+    console.log('addCategory() has been loaded.');
+    let listBody = document.querySelector('#list-body');
+    let addCategoryButton = document.querySelector('#add-category');
+
+    addCategoryButton.addEventListener('click', function (event) {
+        let newCategoryObject = {
+            category: document.createElement('div'),
+            title: document.createElement('div'),
+        }
+        console.log(listBody);
+
+        newCategoryObject.title.className = 'title';
+        newCategoryObject.category.className = 'category';
+
+        newCategoryObject.category.appendChild(newCategoryObject.title);
+
+        if (focusedElement.className === 'category') {
+            console.log('activated');
+            focusedElement.parentNode.insertBefore(newCategoryObject.category, focusedElement.nextSibling);
+        } else if (focusedElement.className === 'section') {
+            focusedElement.appendChild(newCategoryObject.category);
+        } else {
+
+        }
+        console.log(listBody);
+
+        newCategoryObject.title.innerText = DefaultTitle.CATEGORY;
+        addModifyElementTextEvent(newCategoryObject.title, DefaultTitle.CATEGORY);
+        addFocusedContentEvent(newCategoryObject.category);
+    });
+}
+
+function removeContent(elementObject) {
     console.log('removeContent() has been loaded.');
-    let checkboxs = document.querySelectorAll('.checkbox');
-    for (let key in checkboxs) {
-        if (checkboxs[key].checked) {
-            let target = checkboxs[key].parentNode;
-            let parent = target.parentNode;
-            parent.removeChild(target);
+    elementObject.removeButton.addEventListener('click', function (event) {
+        let checkboxes = document.querySelectorAll('.checkbox__section');
+        console.log(checkboxes);
+        for (let key in checkboxes) {
+            if (checkboxes[key].checked) {
+                let target = checkboxes[key].parentNode;
+                let parent = target.parentNode;
+                parent.removeChild(target);
+            }
         }
-    }
+    });
 }
 
 function applyContent(object) {
 
+}
+
+function showContents(contentsObject) {
+    let sectionsObject = orderedObject(contentsObject);
+    for (let i in sectionsObject) {
+        let sectionObject = sectionsObject[i];
+
+        let categoriesObject = orderedObject(sectionObject.categories);
+        console.log(sectionObject);
+
+        createSectionElements(sectionObject);
+        function createSectionElements(sectionObject) {
+            let listBody = document.querySelector('#list-body');
+
+            let sectionElementObject = {
+                section: document.createElement('div'),
+                title: document.createElement('div'),
+                categories: document.createElement('div')
+            }
+            sectionElementObject.section.className = 'section';
+
+            sectionElementObject.title.innerText = sectionObject.name;
+            sectionElementObject.title.className = 'title';
+
+            sectionElementObject.categories.id = sectionObject.name + '-categories';
+
+            sectionElementObject.section.appendChild(sectionElementObject.title);
+            sectionElementObject.section.appendChild(sectionElementObject.categories);
+
+            listBody.appendChild(sectionElementObject.section);
+
+            addModifyElementTextEvent(sectionElementObject.title, DefaultTitle.SECTION);
+            addFocusedContentEvent(sectionElementObject.section);
+        }
+
+        for (let j in categoriesObject) {
+            let categoryObject = categoriesObject[j];
+            createCategoryElements(categoryObject);
+            function createCategoryElements(categoryObject) {
+                let categories = document.querySelector('#' + sectionObject.name + '-categories');
+
+                let categoryElementObject = {
+                    category: document.createElement('div'),
+                    title: document.createElement('div')
+                }
+                categoryElementObject.category.className = 'category';
+
+                categoryElementObject.title.innerText = categoryObject.name;
+                categoryElementObject.title.className = 'title';
+                categoryElementObject.category.appendChild(categoryElementObject.title);
+
+                categories.appendChild(categoryElementObject.category);
+
+                addModifyElementTextEvent(categoryElementObject.title, DefaultTitle.CATEGORY);
+                addFocusedContentEvent(categoryElementObject.category);
+            }
+            console.log(categoryObject);
+        }
+    }
 }
 
 function orderedObject(unorderedObject) {
@@ -272,4 +239,85 @@ function orderedObject(unorderedObject) {
     })
 
     return orderedObject;
+}
+
+function addModifyElementTextEvent(element, defaultTitle) {
+    let parentElement = element.parentNode;
+    let doubleClickLock = false;
+
+    parentElement.addEventListener('dblclick', function (event) {
+        if (!doubleClickLock) {
+            doubleClickLock = true;
+
+            let originalName = element;
+            let modifiedName = document.createElement('input');
+            modifiedName.type = 'text';
+
+            let titleText = originalName.innerText;
+
+            if (titleText !== defaultTitle) {
+                modifiedName.value = titleText;
+            }
+            parentElement.replaceChild(modifiedName, originalName);
+
+            event.stopPropagation();
+            modifiedName.focus();
+            let isFocused = true;
+
+            modifiedName.addEventListener('keydown', function (event) {
+                if (isFocused) {
+                    const ApprovalKeys = {
+                        ENTER: 'Enter',
+                        NUMPAD_ENTER: 'NumpadEnter'
+                    };
+                    const CanselKey = {
+                        ESC: 'Escape'
+                    };
+
+                    for (let key in ApprovalKeys) {
+                        if (event.code === ApprovalKeys[key]) {
+                            renameCategory(true);
+                            return;
+                        }
+                    }
+                    for (let key in CanselKey) {
+                        if (event.code === CanselKey[key]) {
+                            renameCategory(false);
+                            return;
+                        }
+                    }
+                }
+            });
+
+            modifiedName.addEventListener('blur', function (event) {
+                if (isFocused) {
+                    renameCategory(true);
+                }
+            });
+
+            function renameCategory(apply) {
+                if (apply) {
+                    let changedText = modifiedName.value;
+                    if (changedText.length === 0) {
+                        changedText = defaultTitle;
+                    }
+                    originalName.innerText = changedText;
+                }
+                isFocused = false;
+                parentElement.replaceChild(originalName, modifiedName);
+                doubleClickLock = false;
+            }
+        }
+    })
+}
+
+function addFocusedContentEvent(element) {
+    element.addEventListener('click', function (event) {
+        event.stopPropagation();
+        if (focusedElement !== element) {
+            focusedElement = element;
+
+            console.log('TEST: ', focusedElement);
+        }
+    })
 }
