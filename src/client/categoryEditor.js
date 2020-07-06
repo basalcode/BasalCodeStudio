@@ -26,8 +26,8 @@ window.onload = function () {
 
     addSection(elementObject.addSectionButton);
     addCategory(elementObject.addCategoryButton);
-    
-    removeContent(elementObject);
+
+    removeContent();
 
     elementObject.applyButton.addEventListener('click', function (event) {
         applyContent(elementObject);
@@ -43,46 +43,7 @@ function loadContents() {
         })
         .then(function (parsed) {
             let contentArray = parsed.result;
-
-            function initContent(contentArray) {
-                let sections = {}
-                contentArray.forEach(element => {
-                    appendSection(element);
-                });
-                function appendSection(element) {
-                    let id = element.section_id;
-                    let name = element.section_name;
-                    let order = element.section_order;
-                    let sectionObject = {
-                        id: id,
-                        name: name,
-                        order: order,
-                        categories: {}
-                    }
-
-                    if (sections[order] === undefined) {
-                        sections[order] = sectionObject;
-                    }
-                    appendCategory(sections[order], element);
-                }
-
-                function appendCategory(target, element) {
-                    let id = element.category_id;
-                    let name = element.category_name;
-                    let order = element.category_order;
-
-                    let categoryObject = {
-                        id: id,
-                        name: name,
-                        order: order
-                    }
-                    if (target.categories[order] === undefined) {
-                        target.categories[order] = categoryObject;
-                    }
-                }
-                return sections;
-            }
-
+            console.log(contentArray);
             let contentsObject = initContent(contentArray);
             showContents(contentsObject);
         });
@@ -153,17 +114,19 @@ function addCategory() {
     });
 }
 
-function removeContent(elementObject) {
+function removeContent() {
     console.log('removeContent() has been loaded.');
-    elementObject.removeButton.addEventListener('click', function (event) {
-        let checkboxes = document.querySelectorAll('.checkbox__section');
-        console.log(checkboxes);
-        for (let key in checkboxes) {
-            if (checkboxes[key].checked) {
-                let target = checkboxes[key].parentNode;
-                let parent = target.parentNode;
-                parent.removeChild(target);
-            }
+    let removeButton = document.querySelector('#remove');
+    let lock = false;
+    removeButton.addEventListener('click', function (event) {
+        // event.stopPropagation();
+        if (!lock) {
+            lock = true;
+
+            let targetElement = focusedElement;
+            targetElement.parentNode.removeChild(targetElement);
+
+            lock = false;
         }
     });
 }
@@ -172,73 +135,112 @@ function applyContent(object) {
 
 }
 
+function initContent(contentArray) {
+    let sections = {}
+    contentArray.forEach(element => {
+        appendSection(element);
+    });
+
+    function appendSection(element) {
+        console.log('[ Test ] ', element);
+        let id = element.section_id;
+        let name = element.section_name;
+        let order = element.section_order;
+        if (order === null) {
+            order = 0;
+        }
+
+        let sectionObject = {
+            id: id,
+            name: name,
+            order: order,
+            categories: {}
+        }
+
+        if (sections[order] === undefined) {
+            sections[order] = sectionObject;
+        }
+        appendCategory(sections[order], element);
+    }
+
+    function appendCategory(target, element) {
+        let id = element.category_id;
+        let name = element.category_name;
+        let order = element.category_order;
+
+        let categoryObject = {
+            id: id,
+            name: name,
+            order: order
+        }
+        if (target.categories[order] === undefined) {
+            target.categories[order] = categoryObject;
+        }
+    }
+    return sections;
+}
+
 function showContents(contentsObject) {
-    let sectionsObject = orderedObject(contentsObject);
+    let sectionsObject = contentsObject;
+    
+    console.log('[ Check Point ] ', sectionsObject);
+
     for (let i in sectionsObject) {
         let sectionObject = sectionsObject[i];
-
-        let categoriesObject = orderedObject(sectionObject.categories);
         console.log(sectionObject);
 
+        let categoriesObject = sectionObject.categories;
         createSectionElements(sectionObject);
-        function createSectionElements(sectionObject) {
-            let listBody = document.querySelector('#list-body');
-
-            let sectionElementObject = {
-                section: document.createElement('div'),
-                title: document.createElement('div'),
-                categories: document.createElement('div')
-            }
-            sectionElementObject.section.className = 'section';
-
-            sectionElementObject.title.innerText = sectionObject.name;
-            sectionElementObject.title.className = 'title';
-
-            sectionElementObject.categories.id = sectionObject.name + '-categories';
-
-            sectionElementObject.section.appendChild(sectionElementObject.title);
-            sectionElementObject.section.appendChild(sectionElementObject.categories);
-
-            listBody.appendChild(sectionElementObject.section);
-
-            addModifyElementTextEvent(sectionElementObject.title, DefaultTitle.SECTION);
-            addFocusedContentEvent(sectionElementObject.section);
-        }
 
         for (let j in categoriesObject) {
             let categoryObject = categoriesObject[j];
-            createCategoryElements(categoryObject);
-            function createCategoryElements(categoryObject) {
-                let categories = document.querySelector('#' + sectionObject.name + '-categories');
-
-                let categoryElementObject = {
-                    category: document.createElement('div'),
-                    title: document.createElement('div')
-                }
-                categoryElementObject.category.className = 'category';
-
-                categoryElementObject.title.innerText = categoryObject.name;
-                categoryElementObject.title.className = 'title';
-                categoryElementObject.category.appendChild(categoryElementObject.title);
-
-                categories.appendChild(categoryElementObject.category);
-
-                addModifyElementTextEvent(categoryElementObject.title, DefaultTitle.CATEGORY);
-                addFocusedContentEvent(categoryElementObject.category);
-            }
+            createCategoryElements(sectionObject, categoryObject);
             console.log(categoryObject);
         }
     }
 }
 
-function orderedObject(unorderedObject) {
-    let orderedObject = {};
+function createSectionElements(sectionObject) {
+    let listBody = document.querySelector('#list-body');
 
-    Object.keys(unorderedObject).sort().forEach(key => {
-        orderedObject[key] = unorderedObject[key];
-    })
+    let sectionElementObject = {
+        section: document.createElement('div'),
+        title: document.createElement('div'),
+        categories: document.createElement('div')
+    }
+    sectionElementObject.section.className = 'section';
 
-    return orderedObject;
+    sectionElementObject.title.innerText = sectionObject.name;
+    sectionElementObject.title.className = 'title';
+
+    sectionElementObject.categories.id = sectionObject.name + '-categories';
+
+    sectionElementObject.section.appendChild(sectionElementObject.title);
+    sectionElementObject.section.appendChild(sectionElementObject.categories);
+
+    listBody.appendChild(sectionElementObject.section);
+
+    addModifyElementTextEvent(sectionElementObject.title, DefaultTitle.SECTION);
+    addFocusedContentEvent(sectionElementObject.section);
+}
+
+function createCategoryElements(sectionObject, categoryObject) {
+    let categories = document.querySelector('#' + sectionObject.name + '-categories');
+
+    let categoryElementObject = {
+        category: document.createElement('div'),
+        title: document.createElement('div')
+    }
+    categoryElementObject.category.className = 'category';
+
+    categoryElementObject.title.innerText = categoryObject.name;
+    categoryElementObject.title.className = 'title';
+    categoryElementObject.category.appendChild(categoryElementObject.title);
+
+    categories.appendChild(categoryElementObject.category);
+
+    addModifyElementTextEvent(categoryElementObject.title, DefaultTitle.CATEGORY);
+    addFocusedContentEvent(categoryElementObject.category);
 }
 
 function addModifyElementTextEvent(element, defaultTitle) {

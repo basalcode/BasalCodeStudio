@@ -127,8 +127,10 @@ const DB = (function () {
                             category.name AS category_name,
                             category.order AS category_order
                         FROM section
-                        JOIN category
-                        ON section.id = category.section_id;
+                        RIGHT JOIN category
+                        ON section.id = category.section_id
+                        ORDER BY section_order ASC, category_order ASC
+                        ;
                     `;
                     queryObject.blog.result.values = null;
                     return queryObject.blog.result;
