@@ -51,7 +51,6 @@ function loadContents() {
             let defaultSectionElement = sectionsElement.firstChild;
 
             focusedElementObject = createFocusedElementObject(defaultSectionElement);
-            // console.log(focusedElementObject);
 
             /* css */
             addSection();
@@ -80,13 +79,14 @@ function loadContents() {
             title.className = 'section__title';
             title.innerText = DefaultTitle.SECTION;
 
+            categories.className = 'section__categories';
+
             section.appendChild(self);
             self.appendChild(title)
 
             section.appendChild(categories);
 
             let target = focusedElementObject.value;
-            console.log('target', target);
 
             if (target.className === 'section__self') {
                 target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
@@ -147,23 +147,39 @@ function loadContents() {
             if (!lock) {
                 lock = true;
 
-                let targetElement = focusedElement;
-                if (targetElement.className === 'section') {
-                    let childCategories = targetElement.childNodes;
-                    let listBody = document.querySelector('#list-body');
-                    let defaultCategories = document.querySelector('#null-categories');
+                let target = focusedElementObject.value.parentNode;
+                let sections = document.querySelector('#sections');
+                let defaultSection = document.querySelector('#default-section');
+                let defaultCategory = document.querySelector('#default-category');
+                console.log('target', target);
+                console.log('sections', sections);
+                console.log('defaultSection', defaultSection);
+                console.log('defaultCategory', defaultCategory);
 
-                    console.log(defaultCategories);
-                    childCategories.forEach(element => {
-                        defaultCategories.appendChild(element);
-                    });
+                if (target === defaultSection || target === defaultCategory) {
+                    let content = focusedElementObject.value
+                    alert(`Can\'t remove default content.`);
+                } else {
+                    if (target.className === 'section') {                    
+                        let targetSection = target;
+                        let targetCategories = targetSection.querySelector('.section__categories');
+                        let defaultCategories = defaultCategory.parentNode;
+                        
+                        console.log('targetSection', targetSection);
+                        console.log('targetCategories', targetCategories);
+                        console.log('defaultCategories', defaultCategories);
 
-                    listBody.removeChild(targetElement);
-                } else if (targetElement.className === 'category') {
-                    // It needs to implement post moving features in near future.
-                    targetElement.parentNode.removeChild(targetElement);
-                }
-
+                        while (targetCategories.hasChildNodes()) {
+                            defaultCategories.appendChild(targetCategories.firstChild);
+                        }
+                        sections.removeChild(targetSection);
+                    } else {
+                        // It needs to implement post moving features in near future.
+                        let targetCategories = target.parentNode;
+                        targetCategories.removeChild(target);
+                    }
+                    focusedElementObject.value = defaultSection.firstChild;
+                } 
                 lock = false;
             }
         });
@@ -221,6 +237,8 @@ function loadContents() {
     }
 
     function createCategoryEditorElements(contentsObject) {
+        const DEFAULT_CONTENT = 0;
+
         let categoryList = document.querySelector('#category-list');
 
         let sectionsObject = contentsObject;
@@ -232,14 +250,17 @@ function loadContents() {
             sectionsElement.appendChild(sectionElement);
 
             let categoriesObject = sectionsObject[i].categories;
-            let categoriesElement = document.createElement('div');
-
-            sectionElement.appendChild(categoriesElement);
+            let categoriesElement = sectionElement.querySelector('.section__categories');
             for (let j in categoriesObject) {
                 let categoryObject = categoriesObject[j];
                 let categoryElement = createCategoryElement(categoryObject);
 
                 categoriesElement.appendChild(categoryElement);
+            }
+
+            if (Number(i) === DEFAULT_CONTENT) {
+                sectionElement.id = 'default-section';
+                categoriesElement.firstChild.id = 'default-category';
             }
         }
         categoryList.appendChild(sectionsElement);
@@ -267,18 +288,18 @@ function loadContents() {
 
     function createSectionElement(sectionObject) {
         let section = document.createElement('div');
-
         let self = document.createElement('div');
         let title = document.createElement('div');
-
         let categories = document.createElement('div');
 
         section.className = 'section';
 
         self.className = 'section__self';
 
-        title.innerText = sectionObject.name;
         title.className = 'section__title';
+        title.innerText = sectionObject.name;
+
+        categories.className = 'section__categories';
 
         section.appendChild(self);
         self.appendChild(title);
