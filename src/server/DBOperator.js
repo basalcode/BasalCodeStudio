@@ -134,6 +134,11 @@ const DB = (function () {
                     `;
                     queryObject.blog.result.values = null;
                     return queryObject.blog.result;
+                },
+                update() {
+                    queryObject.blog.result.query = ``;
+                    queryObject.blog.result.values = null;
+                    return queryObject.blog.result;
                 }
             },
             [ContentType.CATEGORY]: {

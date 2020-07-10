@@ -32,6 +32,10 @@ function loadContents() {
             set value(newElement) { element = newElement; }
         }
     }
+
+    let originalSectionLength = 0;
+    let originalCategoryLength = 0;
+
     document.body.style.border = '1px solid green';
 
     fetch('/readCategoryEditor')
@@ -41,9 +45,6 @@ function loadContents() {
         .then(function (parsed) {
             let contentArray = parsed.result;
             let contentsObject = initContent(contentArray);
-
-            console.log(contentArray);
-            console.log(contentsObject);
 
             createCategoryEditorElements(contentsObject);
 
@@ -91,7 +92,8 @@ function loadContents() {
             if (target.className === 'section__self') {
                 target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
             } else if (target.className === 'category__self') {
-                target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
+                let targetParentSection = target.parentNode.parentNode;
+                targetParentSection.insertBefore(section, targetParentSection.nextSibling);
             } else {
                 let sections = document.querySelector('#sections');
                 sections.appendChild(section);
@@ -123,15 +125,15 @@ function loadContents() {
             self.appendChild(title);
 
             let target = focusedElementObject.value;
-
             if (target.className === 'section__self') {
-                target.appendChild(category);
+                let targetSection = target.parentNode;
+                let targetCategories = targetSection.querySelector('.section__categories');
+                targetCategories.appendChild(category);
             } else if (target.className === 'category__self') {
                 target.parentNode.insertBefore(category, target.nextSibling);
             } else {
-                let sections = document.querySelector('#sections');
-                let defaultSection = sections.firstChild;
-                defaultSection.appendChild(category);
+                let defaultCategories = document.querySelector('#default-categories');
+                defaultCategories.appendChild(category);
             }
 
             addModifyElementTextEvent(title);
@@ -151,23 +153,14 @@ function loadContents() {
                 let sections = document.querySelector('#sections');
                 let defaultSection = document.querySelector('#default-section');
                 let defaultCategory = document.querySelector('#default-category');
-                console.log('target', target);
-                console.log('sections', sections);
-                console.log('defaultSection', defaultSection);
-                console.log('defaultCategory', defaultCategory);
 
                 if (target === defaultSection || target === defaultCategory) {
-                    let content = focusedElementObject.value
                     alert(`Can\'t remove default content.`);
                 } else {
-                    if (target.className === 'section') {                    
+                    if (target.className === 'section') {
                         let targetSection = target;
                         let targetCategories = targetSection.querySelector('.section__categories');
                         let defaultCategories = defaultCategory.parentNode;
-                        
-                        console.log('targetSection', targetSection);
-                        console.log('targetCategories', targetCategories);
-                        console.log('defaultCategories', defaultCategories);
 
                         while (targetCategories.hasChildNodes()) {
                             defaultCategories.appendChild(targetCategories.firstChild);
@@ -179,7 +172,7 @@ function loadContents() {
                         targetCategories.removeChild(target);
                     }
                     focusedElementObject.value = defaultSection.firstChild;
-                } 
+                }
                 lock = false;
             }
         });
@@ -188,7 +181,38 @@ function loadContents() {
     function applyContent() {
         let applyButton = document.querySelector('#apply');
         applyButton.addEventListener('click', function (event) {
+            let modifiedObject = {}
+            let modifiedSectionLength = 0;
+            let modifiedCategoryLength = 0;
 
+            let sections = document.querySelector('#sections');
+            sections.childNodes.forEach(section => {
+                let sectionTitle = section.querySelector('.section__title').innerText;
+                modifiedObject[sectionTitle] = {};
+
+                let categories = section.querySelector('.section__categories');
+                categories.childNodes.forEach(category => {
+                    let categoryTitle = category.querySelector('.category__title').innerText;
+                    modifiedObject[sectionTitle][categoryTitle] = {};
+                });
+                modifiedCategoryLength += categories.childNodes.length;
+            });
+            modifiedSectionLength += sections.childNodes.length;
+
+            console.log(modifiedObject);
+            /* fetch('/updateCategoryEditor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify()
+            })
+            .then(function(response) {
+                return response.json(modifiedObject);
+            })
+            .then(function(parsed) {
+                console.log(parsed);
+            }) */
         })
     }
 
@@ -260,9 +284,12 @@ function loadContents() {
 
             if (Number(i) === DEFAULT_CONTENT) {
                 sectionElement.id = 'default-section';
+                categoriesElement.id = 'default-categories';
                 categoriesElement.firstChild.id = 'default-category';
             }
+            originalCategoryLength += Object.keys(categoriesObject).length;
         }
+        originalSectionLength += Object.keys(sectionsObject).length;
         categoryList.appendChild(sectionsElement);
 
         sectionsElement.id = 'sections';
@@ -343,8 +370,6 @@ function loadContents() {
 
                 let parentElement = currentTarget.parentNode;
 
-                console.log('parentElement', parentElement);
-                console.log('currentTarget', currentTarget);
                 let originalNameField = currentTarget;
                 let modifiedNameField = document.createElement('input');
                 modifiedNameField.type = 'text';
@@ -410,7 +435,7 @@ function loadContents() {
                     doubleClickLock = false;
                 }
             }
-        })
+        });
     }
 
     function addFocusedContentEvent(element) {
