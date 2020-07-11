@@ -34,7 +34,7 @@ function loadContents() {
     }
 
     let originalSectionLength = 0;
-    let originalCategoryLength = 0;
+    let originalCategoryLength = [];
 
     document.body.style.border = '1px solid green';
 
@@ -45,6 +45,7 @@ function loadContents() {
         .then(function (parsed) {
             let contentArray = parsed.result;
             let contentsObject = initContent(contentArray);
+            console.log('contentsObject', contentsObject);
 
             createCategoryEditorElements(contentsObject);
 
@@ -71,6 +72,7 @@ function loadContents() {
             let section = document.createElement('div');
             let self = document.createElement('div');
             let title = document.createElement('div');
+            let id = document.createElement('div');
             let categories = document.createElement('div');
 
             section.className = 'section';
@@ -79,6 +81,9 @@ function loadContents() {
 
             title.className = 'section__title';
             title.innerText = DefaultTitle.SECTION;
+
+            id.className = 'section__id';
+            id.innerText = null;
 
             categories.className = 'section__categories';
 
@@ -181,34 +186,59 @@ function loadContents() {
     function applyContent() {
         let applyButton = document.querySelector('#apply');
         applyButton.addEventListener('click', function (event) {
-            let modifiedObject = {}
-            let modifiedSectionLength = 0;
-            let modifiedCategoryLength = 0;
+            let sectionsElement = document.querySelector('#sections');
+            let sectionsElements = sectionsElement.childNodes;
+            let sectionsLength = sectionsElements.length;
+            // let categoriesLengths = [];
+            let modifiedSections = {};
+            modifiedSections.lengthValue = sectionsLength - originalSectionLength;
+            for (let i = 0; i < sectionsLength; i++) {
+                let sectionElement = sectionsElements[i];
+                let sectionTitleElement = sectionElement.querySelector('.section__title');
+                let sectionTitle = sectionTitleElement.innerText;
+                // let sectionID = 
 
-            let sections = document.querySelector('#sections');
-            sections.childNodes.forEach(section => {
-                let sectionTitle = section.querySelector('.section__title').innerText;
-                modifiedObject[sectionTitle] = {};
+                modifiedSections[i] = {}
+                modifiedSections[i].name = sectionTitle;
+                modifiedSections[i].name = 
+                modifiedSections[i].categories = {};
 
-                let categories = section.querySelector('.section__categories');
-                categories.childNodes.forEach(category => {
-                    let categoryTitle = category.querySelector('.category__title').innerText;
-                    modifiedObject[sectionTitle][categoryTitle] = {};
-                });
-                modifiedCategoryLength += categories.childNodes.length;
-            });
-            modifiedSectionLength += sections.childNodes.length;
+                let categoriesElement = sectionElement.querySelector('.section__categories');
+                let categoriesElements = categoriesElement.childNodes;
+                let categoriesLength = categoriesElements.length;
 
-            console.log(modifiedObject);
-            /* fetch('/updateCategoryEditor', {
+                // categoriesLengths.push(categoriesLength);
+                let modifiedCategories = {};
+                for (let j = 0; j < categoriesLength; j++) {
+                    let categoryElement = categoriesElements[j];
+                    let categoryTitleElement = categoryElement.querySelector('.category__title');
+
+                    let categoryTitle = categoryTitleElement.innerText;
+                    modifiedCategories.lengthValue = categoriesLength - originalCategoryLength[i];
+                    modifiedCategories[j] = {};
+                    modifiedCategories[j].name = categoryTitle;
+                    
+                    modifiedSections[i].categories = modifiedCategories;
+                }
+                // console.log(modifiedCategories);
+            }
+
+
+            /* modifiedObject[modifiedChildLength] = {};
+            modifiedObject[modifiedChildLength] = modifiedSectionLength; */
+            
+            console.log(modifiedSections);
+            fetch(`/updateCategoryEditor`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify()
+                body: JSON.stringify({
+                    categoryEditor: modifiedSections
+                })
             })
-            .then(function(response) {
-                return response.json(modifiedObject);
+            /* .then(function(response) {
+                return response.json();
             })
             .then(function(parsed) {
                 console.log(parsed);
@@ -266,6 +296,7 @@ function loadContents() {
         let categoryList = document.querySelector('#category-list');
 
         let sectionsObject = contentsObject;
+        console.log(sectionsObject);
         let sectionsElement = document.createElement('div');
         for (let i in sectionsObject) {
             let sectionObject = sectionsObject[i];
@@ -287,9 +318,9 @@ function loadContents() {
                 categoriesElement.id = 'default-categories';
                 categoriesElement.firstChild.id = 'default-category';
             }
-            originalCategoryLength += Object.keys(categoriesObject).length;
+            originalCategoryLength.push(Object.keys(categoriesObject).length);
         }
-        originalSectionLength += Object.keys(sectionsObject).length;
+        originalSectionLength = Object.keys(sectionsObject).length;
         categoryList.appendChild(sectionsElement);
 
         sectionsElement.id = 'sections';
@@ -317,6 +348,7 @@ function loadContents() {
         let section = document.createElement('div');
         let self = document.createElement('div');
         let title = document.createElement('div');
+        let id = document.createElement('div');
         let categories = document.createElement('div');
 
         section.className = 'section';
@@ -326,10 +358,15 @@ function loadContents() {
         title.className = 'section__title';
         title.innerText = sectionObject.name;
 
+        id.className = 'section__id';
+        id.innerText = sectionObject.id;
+        id.style.display = 'none';
+
         categories.className = 'section__categories';
 
         section.appendChild(self);
         self.appendChild(title);
+        self.appendChild(id);
 
         section.appendChild(categories);
 
@@ -343,16 +380,22 @@ function loadContents() {
         let category = document.createElement('div');
         let self = document.createElement('div');
         let title = document.createElement('div');
+        let id = document.createElement('div');
 
         category.className = 'category';
 
         self.className = 'category__self';
 
-        title.innerText = categoryObject.name;
         title.className = 'category__title';
+        title.innerText = categoryObject.name;
+
+        id.className = 'category__id';
+        id.innerText = categoryObject.id;
+        id.style.display = 'none';
 
         category.appendChild(self);
         self.appendChild(title);
+        self.appendChild(id);
 
         addModifyElementTextEvent(title);
         addFocusedContentEvent(self);

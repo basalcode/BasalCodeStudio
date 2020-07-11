@@ -28,7 +28,7 @@ app.post('/updatePost', DBOperator.run);
 app.post('/deletePost', DBOperator.run);
 
 app.get('/readCategoryEditor', DBOperator.run);
-app.get('/updateCategoryEditor', DBOperator.run);
+app.post('/updateCategoryEditor', DBOperator.run);
 
 app.post('/createCategory', DBOperator.run);
 app.get('/readCategory', DBOperator.run);

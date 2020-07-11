@@ -1,4 +1,5 @@
 const { request } = require('express');
+const e = require('express');
 
 const DB = (function () {
     /* st-mysql */
@@ -135,9 +136,179 @@ const DB = (function () {
                     queryObject.blog.result.values = null;
                     return queryObject.blog.result;
                 },
-                update() {
-                    queryObject.blog.result.query = ``;
-                    queryObject.blog.result.values = null;
+                async update() {
+                    const LENGTH_VALUE = 1;
+                    const DEFAULT_INDEX = 0;
+                    const AFTER_DEFAULT = 1;
+
+                    let requestBody = requestObject.body;
+                    let sections = requestBody.categoryEditor;
+                    let sectionsLength = Object.keys(sections).length - LENGTH_VALUE;
+                    let sectionsLengthValue = sections.lengthValue;
+
+                    let sectionTableLength = await DB.blog(
+                        `SELECT COUNT(*) FROM section`
+                    );
+
+                    let modifiedSectionLength = sectionTableLength + sectionsLengthValue;
+
+                    if (sectionsLengthValue > 0) {
+
+                        for (let i = AFTER_DEFAULT; i < modifiedSectionLength; i++) {
+                            let section = sections[i];
+                            let sectionName = section.name;
+
+                            queryObject.blog.result.query = `
+                                UPDATE section
+                                SET 
+                                    name = ?,
+                                    order = ?
+                                WHERE id = ?
+                            `;
+                            queryObject.blog.result.values = [
+                                sectionName,
+                                i,
+                                AFTER_DEFAULT + i
+                            ];
+                        }
+                    } else if (sectionsLengthValue < 0) {
+                        for (let i = AFTER_DEFAULT; i < sectionTableLength; i++) {
+                            if (i < modifiedSectionLength) {
+                                let section = sections[i];
+                                let sectionName = section.name;
+                                queryObject.blog.result.query = `
+                                    UPDATE section
+                                    SET 
+                                        name = ?,
+                                        order = ?
+                                    WHERE id = ?
+                                `;
+                                queryObject.blog.result.values = [
+                                    sectionName,
+                                    i,
+                                    AFTER_DEFAULT + i
+                                ];
+                            } else {
+                                queryObject.blog.result.query = `
+                                    UPDATE section
+                                    SET 
+                                        name = ?,
+                                        order = ?
+                                    WHERE id = ?
+                                `;
+                                queryObject.blog.result.values = [
+                                    null,
+                                    null,
+                                    AFTER_DEFAULT + i
+                                ];
+                            }
+                        }
+                    } else {
+                        for (let i = AFTER_DEFAULT; i < sectionsLength; i++) {
+                            let section = sections[i];
+                            let sectionName = section.name;
+
+                            queryObject.blog.result.query = `
+                                UPDATE section
+                                SET 
+                                    name = ?,
+                                    order = ?
+                                WHERE id = ?
+                            `;
+                            queryObject.blog.result.values = [
+                                sectionName,
+                                i,
+                                AFTER_DEFAULT + i
+                            ];
+                        }
+                    }
+
+                    let categoryTableLength = await DB.server(
+                        `SELECT COUNT(*) FROM category`
+                    );
+
+                    for (let i = DEFAULT_INDEX; i < sectionTableLength; i++) {
+                        let categories = sections[i].categoires;
+                        let categoriesLength = Object.keys(categories).length - 1;
+                        let categorieslengthValue = categories.lengthValue;
+                        
+                        let modifiedCategoryLength = categoryTableLength + categorieslengthValue;
+
+                        let categoryId = 0;
+                        if (categorieslengthValue > 0) {
+                            for (let j = 0; j < modifiedCategoryLength; j++) {
+                                if (i === DEFAULT_INDEX && j === DEFAULT_INDEX) {
+                                    continue;
+                                }
+                                
+                                let category = categories[j];
+                                categoryId++;
+                                let categoryName = category.name;
+                                let categoryOrder = (j === DEFAULT_INDEX) ? j + 1 : j;
+                                
+                                queryObject.blog.result.query = `
+                                    UPDATE category
+                                    SET
+                                        name = ?,
+                                        order = ?
+                                    WHERE id = ?
+                                `;
+                                queryObject.blog.result.values = [
+                                    categoryName,
+                                    categoryOrder,
+                                    categoryId
+                                ];
+                            }
+                        } else if (categorieslengthValue < 0) {
+                            for (let j = 0; j < categoryTableLength; j++) {
+                                if (i === DEFAULT_INDEX && j === DEFAULT_INDEX) {
+                                    continue;
+                                }
+    
+                                let category = categories[j];
+                                categoryId++;
+                                let categoryName = category.name;
+                                let categoryOrder = (j === DEFAULT_INDEX) ? j + 1 : j;
+                                
+                                queryObject.blog.result.query = `
+                                    UPDATE category
+                                    SET
+                                        name = ?,
+                                        order = ?
+                                    WHERE id = ?
+                                `;
+                                queryObject.blog.result.values = [
+                                    categoryName,
+                                    categoryOrder,
+                                    categoryId
+                                ];
+                            }
+                        } else {
+                            for (let j = 0; j < categoriesLength; j++) {
+                                if (i === DEFAULT_INDEX && j === DEFAULT_INDEX) {
+                                    continue;
+                                }
+    
+                                let category = categories[j];
+                                categoryId++;
+                                let categoryName = category.name;
+                                let categoryOrder = (j === DEFAULT_INDEX) ? j + 1 : j;
+                                
+                                queryObject.blog.result.query = `
+                                    UPDATE category
+                                    SET
+                                        name = ?,
+                                        order = ?
+                                    WHERE id = ?
+                                `;
+                                queryObject.blog.result.values = [
+                                    categoryName,
+                                    categoryOrder,
+                                    categoryId
+                                ];
+                            }
+                        }
+                    }
                     return queryObject.blog.result;
                 }
             },
@@ -315,6 +486,7 @@ const DB = (function () {
             init(req);
 
             let blogQueryObject = queryObject.blog[typeObject.contentType][typeObject.inputType]();
+            console.log('=============== DB RUN ===============')
             console.log('[ Content Type ]');
             console.log(typeObject.contentType);
             console.log('[ Input Type ]');
@@ -356,6 +528,7 @@ const DB = (function () {
                 }
                 console.log('[ blogResult ]');
                 console.log(blogResult);
+                console.log('=============== DB RUN ===============')
 
                 return blogResult;
             }
