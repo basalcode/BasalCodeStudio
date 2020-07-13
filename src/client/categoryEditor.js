@@ -84,8 +84,12 @@ function loadContents() {
             if (target.className === 'section__self') {
                 target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
             } else if (target.className === 'category__self') {
-                let targetParentSection = target.parentNode.parentNode;
-                targetParentSection.insertBefore(section, targetParentSection.nextSibling);
+                let sections = document.querySelector('#sections');
+                let targetParentSection = target.parentNode.parentNode.parentNode;
+
+                console.log('[target]', target);
+                console.log('[targetParentSection', targetParentSection);
+                sections.insertBefore(section, targetParentSection.nextSibling);
             } else {
                 let sections = document.querySelector('#sections');
                 sections.appendChild(section);
