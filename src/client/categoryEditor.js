@@ -7,8 +7,8 @@ function loadContents() {
     console.log('loadContents() has been loaded.');
 
     const DefaultTitle = {
-        SECTION: 'Default Section',
-        CATEGORY: 'Default Category'
+        SECTION: 'New Section',
+        CATEGORY: 'New Category'
     }
 
     let defaultFocusedElement;
@@ -150,6 +150,7 @@ function loadContents() {
                 let defaultSection = document.querySelector('#default-section');
                 let defaultCategory = document.querySelector('#default-category');
 
+                console.log('[target]', target);
                 if (target === defaultSection || target === defaultCategory) {
                     alert(`Can\'t remove default content.`);
                 } else {
@@ -298,7 +299,7 @@ function loadContents() {
                 let defaultCategoriesElement = defaultSectionElement.querySelector('.section__categories');
                 let defaultCategoryElement = defaultCategoriesElement.firstChild;
 
-                sectionElement.id = 'default-category';
+                sectionElement.id = 'default-section';
                 defaultCategoriesElement.id = 'default-categories';
                 defaultCategoryElement.id = 'default-category';
             }
