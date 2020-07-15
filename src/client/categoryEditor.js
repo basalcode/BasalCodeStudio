@@ -26,6 +26,8 @@ function loadContents() {
         }
     }
 
+    let isUpdated = false;
+
     document.body.style.border = '1px solid green';
 
     fetch('/readCategoryEditor')
@@ -45,7 +47,6 @@ function loadContents() {
             defaultFocusedElement = sectionsElement.firstChild.querySelector('.section__self');
             focusedElementObject = createFocusedElementObject(defaultFocusedElement);
 
-            /* css */
             addSection();
             addCategory();
             removeContent();
@@ -53,195 +54,9 @@ function loadContents() {
             applyContent();
         });
 
-
-    function addSection() {
-        console.log('addSection() has been loaded.');
-
-        let addSectionButton = document.querySelector('#add-section');
-
-        addSectionButton.addEventListener('click', function (event) {
-            let section = document.createElement('div');
-            let self = document.createElement('div');
-            let title = document.createElement('div');
-            let categories = document.createElement('div');
-
-            section.className = 'section';
-
-            self.className = 'section__self';
-
-            title.className = 'section__title';
-            title.innerText = DefaultTitle.SECTION;
-
-            categories.className = 'section__categories';
-
-            section.appendChild(self);
-            self.appendChild(title)
-
-            section.appendChild(categories);
-
-            let target = focusedElementObject.value;
-
-            if (target.className === 'section__self') {
-                target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
-            } else if (target.className === 'category__self') {
-                let sections = document.querySelector('#sections');
-                let targetParentSection = target.parentNode.parentNode.parentNode;
-
-                console.log('[target]', target);
-                console.log('[targetParentSection', targetParentSection);
-                sections.insertBefore(section, targetParentSection.nextSibling);
-            } else {
-                let sections = document.querySelector('#sections');
-                sections.appendChild(section);
-            }
-
-            addModifyElementTextEvent(title);
-            addFocusedContentEvent(self);
-        });
-    }
-
-    function addCategory() {
-        console.log('addCategory() has been loaded.');
-
-        let addCategoryButton = document.querySelector('#add-category');
-
-        addCategoryButton.addEventListener('click', function (event) {
-            let category = document.createElement('div');
-            let self = document.createElement('div');
-            let title = document.createElement('div');
-
-            category.className = 'category';
-
-            self.className = 'category__self';
-
-            title.className = 'category__title';
-            title.innerText = DefaultTitle.CATEGORY;
-
-            category.appendChild(self);
-            self.appendChild(title);
-
-            let target = focusedElementObject.value;
-            if (target.className === 'section__self') {
-                let targetSection = target.parentNode;
-                let targetCategories = targetSection.querySelector('.section__categories');
-                targetCategories.appendChild(category);
-            } else if (target.className === 'category__self') {
-                target.parentNode.insertBefore(category, target.nextSibling);
-            } else {
-                let defaultCategories = document.querySelector('#default-categories');
-                defaultCategories.appendChild(category);
-            }
-
-            addModifyElementTextEvent(title);
-            addFocusedContentEvent(self);
-        });
-    }
-
-    function removeContent() {
-        console.log('removeContent() has been loaded.');
-        let removeButton = document.querySelector('#remove');
-        let lock = false;
-        removeButton.addEventListener('click', function (event) {
-            if (!lock) {
-                lock = true;
-
-                let target = focusedElementObject.value.parentNode;
-                let sections = document.querySelector('#sections');
-                let defaultSection = document.querySelector('#default-section');
-                let defaultCategory = document.querySelector('#default-category');
-
-                console.log('[target]', target);
-                if (target === defaultSection || target === defaultCategory) {
-                    alert(`Can\'t remove default content.`);
-                } else {
-                    if (target.className === 'section') {
-                        let targetSection = target;
-                        let targetCategories = targetSection.querySelector('.section__categories');
-
-                        console.log('[targetCategories]', targetCategories);
-                        let defaultCategories = document.querySelector('#default-categories');
-                        console.log('[defaultCategories]', defaultCategories);
-
-                        while (targetCategories.hasChildNodes()) {
-                            let targetCategory = targetCategories.querySelector('.category');
-                            console.log('[targetCategory]', targetCategory);
-                            defaultCategories.appendChild(targetCategory);
-                        }
-
-                        sections.removeChild(targetSection);
-                    } else {
-                        // It needs to implement post moving features in near future.
-                        let targetCategories = target.parentNode;
-                        targetCategories.removeChild(target);
-                    }
-                    let originalElement = focusedElementObject.value;
-                    focusedElementObject.value = [originalElement, defaultFocusedElement];
-                }
-                lock = false;
-            }
-        });
-    }
-
-    function applyContent() {
-        let applyButton = document.querySelector('#apply');
-        applyButton.addEventListener('click', function (event) {
-            let sections = document.querySelector('#sections');
-            let sectionsLength = sections.childElementCount;
-
-            // console.log('[sections]', sections);
-            // console.log('[sectionsLength]', sectionsLength);
-
-            let cloneSections = {};
-            for (let i = 0; i < sectionsLength; i++) {
-                let section = sections.childNodes[i];
-                let sectionTitle = section.querySelector('.section__title').innerText;
-
-                // console.log('[section]', section);
-                // console.log('[sectionTitle]', sectionTitle);
-                cloneSections[i] = {};
-                cloneSections[i].name = sectionTitle;
-                cloneSections[i].categories = {};
-
-                let categories = section.querySelector('.section__categories');
-                let categoriesLength = categories.childElementCount;
-
-                // console.log('[categories]', categories);
-                // console.log('[categoriesLength]', categoriesLength);
-                for (let j = 0; j < categoriesLength; j++) {
-                    let category = categories.childNodes[j];
-                    let categoryTitle = category.querySelector('.category__title').innerText;
-
-                    // console.log('[category]', category);
-                    // console.log('[categoryTitle]', categoryTitle);
-
-                    cloneSections[i].categories[j] = {};
-                    cloneSections[i].categories[j].name = categoryTitle;
-                }
-            }
-            // console.log('[cloneSections]', cloneSections);
-
-            fetch(`/updateCategoryEditor`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    categoryEditor: cloneSections
-                })
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (parsed) {
-                    console.log('[From Server]', parsed);
-                })
-        })
-    }
-
     function initContent(contentArray) {
         let sections = {}
         contentArray.forEach(element => {
-            // console.log('[element]', element);
             let section = {
                 id: element.section_id,
                 name: element.section_name,
@@ -261,7 +76,6 @@ function loadContents() {
                 sections[section.id].categories[category.id] = category;
             }
         });
-        // console.log('[sections]', sections);
         return sections;
     }
 
@@ -274,22 +88,14 @@ function loadContents() {
             let section = sections[i];
             let sectionElement = createSectionElement(section);
 
-            // console.log('[section]', section);
-            // console.log('[sectionElement]', sectionElement);
-
             sectionsElement.appendChild(sectionElement);
 
             let categories = sections[i].categories;
             let categoriesElement = sectionElement.querySelector('.section__categories');
 
-            // console.log('[categories]', categories);
-            // console.log('[categoriesElement]', categoriesElement);
             for (let j in categories) {
                 let category = categories[j];
                 let categoryElement = createCategoryElement(category);
-
-                // console.log('[category]', category);
-                // console.log('[categoryElement]', categoryElement);
 
                 categoriesElement.appendChild(categoryElement);
             }
@@ -304,7 +110,7 @@ function loadContents() {
                 defaultCategoryElement.id = 'default-category';
             }
         }
-        
+
         let contentList = document.querySelector('#content-list');
         contentList.appendChild(sectionsElement);
 
@@ -331,7 +137,7 @@ function loadContents() {
 
         section.appendChild(categories);
 
-        addModifyElementTextEvent(title);
+        addElementTextModifyEvent(title);
         addFocusedContentEvent(self);
 
         return section;
@@ -352,15 +158,210 @@ function loadContents() {
         category.appendChild(self);
         self.appendChild(title);
 
-        addModifyElementTextEvent(title);
+        addElementTextModifyEvent(title);
         addFocusedContentEvent(self);
 
         return category;
     }
 
-    function addModifyElementTextEvent(element) {
-        let doubleClickLock = false;
+    function addSection() {
+        console.log('addSection() has been loaded.');
+        let addSectionButton = document.querySelector('#add-section');
+        let lock = false;
+        addSectionButton.addEventListener('click', function (event) {
+            if (!lock) {
+                lock = true;
+                isUpdated = true;
 
+                let section = document.createElement('div');
+                let self = document.createElement('div');
+                let title = document.createElement('div');
+                let categories = document.createElement('div');
+
+                section.className = 'section';
+
+                self.className = 'section__self';
+
+                title.className = 'section__title';
+                title.innerText = DefaultTitle.SECTION;
+
+                categories.className = 'section__categories';
+
+                section.appendChild(self);
+                self.appendChild(title)
+
+                section.appendChild(categories);
+
+                let target = focusedElementObject.value;
+
+                if (target.className === 'section__self') {
+                    target.parentNode.parentNode.insertBefore(section, target.parentNode.nextSibling);
+                } else if (target.className === 'category__self') {
+                    let sections = document.querySelector('#sections');
+                    let targetParentSection = target.parentNode.parentNode.parentNode;
+
+                    console.log('[target]', target);
+                    console.log('[targetParentSection', targetParentSection);
+                    sections.insertBefore(section, targetParentSection.nextSibling);
+                } else {
+                    let sections = document.querySelector('#sections');
+                    sections.appendChild(section);
+                }
+
+                addElementTextModifyEvent(title);
+                addFocusedContentEvent(self);
+
+                lock = false;
+            }
+        });
+    }
+
+    function addCategory() {
+        console.log('addCategory() has been loaded.');
+        let addCategoryButton = document.querySelector('#add-category');
+        let lock = false;
+        addCategoryButton.addEventListener('click', function (event) {
+            if (!lock) {
+                lock = true;
+                isUpdated = true;
+
+                let category = document.createElement('div');
+                let self = document.createElement('div');
+                let title = document.createElement('div');
+
+                category.className = 'category';
+
+                self.className = 'category__self';
+
+                title.className = 'category__title';
+                title.innerText = DefaultTitle.CATEGORY;
+
+                category.appendChild(self);
+                self.appendChild(title);
+
+                let target = focusedElementObject.value;
+                if (target.className === 'section__self') {
+                    let targetSection = target.parentNode;
+                    let targetCategories = targetSection.querySelector('.section__categories');
+                    targetCategories.appendChild(category);
+                } else if (target.className === 'category__self') {
+                    target.parentNode.insertBefore(category, target.nextSibling);
+                } else {
+                    let defaultCategories = document.querySelector('#default-categories');
+                    defaultCategories.appendChild(category);
+                }
+
+                addElementTextModifyEvent(title);
+                addFocusedContentEvent(self);
+
+                lock = false;
+            }
+        });
+    }
+
+    function removeContent() {
+        console.log('removeContent() has been loaded.');
+        let removeButton = document.querySelector('#remove');
+        let lock = false;
+        removeButton.addEventListener('click', function (event) {
+            if (!lock) {
+                lock = true;
+                isUpdated = true;
+
+                let target = focusedElementObject.value.parentNode;
+                let sections = document.querySelector('#sections');
+                let defaultSection = document.querySelector('#default-section');
+                let defaultCategory = document.querySelector('#default-category');
+
+                if (target === defaultSection || target === defaultCategory) {
+                    alert(`Can\'t remove default content.`);
+                } else {
+                    if (target.className === 'section') {
+                        let targetSection = target;
+                        let targetCategories = targetSection.querySelector('.section__categories');
+
+                        let defaultCategories = document.querySelector('#default-categories');
+
+                        while (targetCategories.hasChildNodes()) {
+                            let targetCategory = targetCategories.querySelector('.category');
+                            defaultCategories.appendChild(targetCategory);
+                        }
+
+                        sections.removeChild(targetSection);
+                    } else {
+                        // It needs to implement post moving features in near future.
+                        let targetCategories = target.parentNode;
+                        targetCategories.removeChild(target);
+                    }
+                    let originalElement = focusedElementObject.value;
+                    focusedElementObject.value = [originalElement, defaultFocusedElement];
+                }
+                lock = false;
+            }
+        });
+    }
+
+    function applyContent() {
+        console.log('applyContent() has been loaded.');
+        let applyButton = document.querySelector('#apply');
+        let lock = false;
+        applyButton.addEventListener('click', function (event) {
+            let updateConfirm = confirm('Sure you want to update?');
+            if (!lock && updateConfirm) {
+                lock = true;
+                if (isUpdated) {
+                    let sections = document.querySelector('#sections');
+                    let sectionsLength = sections.childElementCount;
+
+                    let cloneSections = {};
+                    for (let i = 0; i < sectionsLength; i++) {
+                        let section = sections.childNodes[i];
+                        let sectionTitle = section.querySelector('.section__title').innerText;
+
+                        cloneSections[i] = {};
+                        cloneSections[i].name = sectionTitle;
+                        cloneSections[i].categories = {};
+
+                        let categories = section.querySelector('.section__categories');
+                        let categoriesLength = categories.childElementCount;
+
+                        for (let j = 0; j < categoriesLength; j++) {
+                            let category = categories.childNodes[j];
+                            let categoryTitle = category.querySelector('.category__title').innerText;
+
+                            cloneSections[i].categories[j] = {};
+                            cloneSections[i].categories[j].name = categoryTitle;
+                        }
+                    }
+
+                    fetch(`/updateCategoryEditor`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            categoryEditor: cloneSections
+                        })
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (parsed) {
+                            console.log('[From Server]', parsed);
+                            alert('Successfully updated!');
+                            isUpdated = false;
+                            lock = false;
+                        })
+                } else {
+                    alert('There is no change.');
+                    lock = false;
+                }
+            }
+        });
+    }
+
+    function addElementTextModifyEvent(element) {
+        let doubleClickLock = false;
         element.addEventListener('dblclick', function (event) {
             let currentTarget = event.target;
             if (!doubleClickLock) {
@@ -369,8 +370,8 @@ function loadContents() {
                 let parentElement = currentTarget.parentNode;
 
                 let originalNameField = currentTarget;
-                let modifiedNameField = document.createElement('input');
-                modifiedNameField.type = 'text';
+                let newNameField = document.createElement('input');
+                newNameField.type = 'text';
 
                 let titleText = originalNameField.innerText;
                 let defaultTitle;
@@ -381,15 +382,15 @@ function loadContents() {
                 }
 
                 if (titleText !== defaultTitle) {
-                    modifiedNameField.value = titleText;
+                    newNameField.value = titleText;
                 }
-                parentElement.replaceChild(modifiedNameField, originalNameField);
+                parentElement.replaceChild(newNameField, originalNameField);
 
                 event.stopPropagation();
-                modifiedNameField.focus();
+                newNameField.focus();
                 let isFocused = true;
 
-                modifiedNameField.addEventListener('keydown', function (event) {
+                newNameField.addEventListener('keydown', function (event) {
                     if (isFocused) {
                         const ApprovalKeys = {
                             ENTER: 'Enter',
@@ -414,7 +415,7 @@ function loadContents() {
                     }
                 });
 
-                modifiedNameField.addEventListener('blur', function (event) {
+                newNameField.addEventListener('blur', function (event) {
                     if (isFocused) {
                         renameCategory(true);
                     }
@@ -422,14 +423,14 @@ function loadContents() {
 
                 function renameCategory(apply) {
                     if (apply) {
-                        let changedText = modifiedNameField.value;
+                        let changedText = newNameField.value;
                         if (changedText.length === 0) {
                             changedText = defaultTitle;
                         }
                         originalNameField.innerText = changedText;
                     }
                     isFocused = false;
-                    parentElement.replaceChild(originalNameField, modifiedNameField);
+                    parentElement.replaceChild(originalNameField, newNameField);
                     doubleClickLock = false;
                 }
             }
@@ -446,5 +447,4 @@ function loadContents() {
             }
         })
     }
-
 }
