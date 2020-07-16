@@ -47,10 +47,12 @@ function loadContents() {
             defaultFocusedElement = sectionsElement.firstChild.querySelector('.section__self');
             focusedElementObject = createFocusedElementObject(defaultFocusedElement);
 
+            // button event
             addSection();
             addCategory();
             removeContent();
-
+            moveUpContent();
+            moveDownContent();
             applyContent();
         });
 
@@ -297,6 +299,65 @@ function loadContents() {
                     focusedElementObject.value = [originalElement, defaultFocusedElement];
                 }
                 lock = false;
+            }
+        });
+    }
+
+    function moveUpContent() {
+        console.log('moveUpContent() has been loaded.');
+        let moveUpButton = document.querySelector('#move-up');
+
+        moveUpButton.addEventListener('click', function (event) {
+            let defaultElement = {
+                section: document.querySelector('#default-section'),
+                category: document.querySelector('#default-category')
+            }
+
+            let target = focusedElementObject.value;
+            let targetElement = target.parentNode;
+
+            if (targetElement !== defaultElement.section &&
+                targetElement !== defaultElement.category) {
+
+                let targetParentElement = targetElement.parentNode;
+                let previousElement = targetElement.previousSibling;
+
+                if (previousElement !== defaultElement.section &&
+                    previousElement !== defaultElement.category &&
+                    previousElement !== null) {
+                    targetParentElement.insertBefore(targetElement, previousElement);
+                }
+            }
+        });
+    }
+
+    function moveDownContent() {
+        console.log('moveDownContent() has been loaded.');
+        let moveDownButton = document.querySelector('#move-down');
+
+        moveDownButton.addEventListener('click', function (event) {
+            let defaultElement = {
+                section: document.querySelector('#default-section'),
+                category: document.querySelector('#default-category')
+            }
+
+            let target = focusedElementObject.value;
+            let targetElement = target.parentNode;
+
+            if (targetElement !== defaultElement.section &&
+                targetElement !== defaultElement.category) {
+
+                let targetParentElement = targetElement.parentNode;
+
+                let nextElement = targetElement.nextSibling;
+                if (nextElement !== null) {
+                    let nextNextElement = nextElement.nextSibling;
+
+                    if (nextNextElement !== defaultElement.section &&
+                        nextNextElement !== defaultElement.category) {
+                        targetParentElement.insertBefore(targetElement, nextNextElement);
+                    }
+                }
             }
         });
     }
