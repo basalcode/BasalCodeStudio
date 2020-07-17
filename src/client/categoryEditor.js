@@ -336,7 +336,17 @@ function loadContents() {
                     let targetParentElement = targetElement.parentNode;
                     if (direction === Direction.UP) {
                         let previousElement = targetElement.previousSibling;
-                        if (previousElement !== null) {
+                        if (previousElement === null) {
+                            if (targetElement.className === 'category') {
+                                let previousSection = targetElement.parentNode.
+                                parentNode.previousSibling;
+                                if (previousSection !== null) {
+                                    let previousCategories = previousSection.querySelector('.section__categories');
+                                    targetParentElement = previousCategories;
+                                    previousCategories.appendChild(targetElement);
+                                }
+                            }
+                        } else {
                             if (previousElement !== defaultElement.section &&
                                 previousElement !== defaultElement.category) {
                                 targetParentElement.insertBefore(targetElement, previousElement);
@@ -346,7 +356,16 @@ function loadContents() {
                         }
                     } else {
                         let nextElement = targetElement.nextSibling;
-                        if (nextElement !== null) {
+                        if (nextElement === null) {
+                            if (targetElement.className === 'category') {
+                                let nextSection = targetElement.parentNode.parentNode.nextSibling;
+                                if (nextSection !== null) {
+                                    let nextCategories = nextSection.querySelector('.section__categories');
+                                    targetParentElement = nextCategories;
+                                    nextCategories.insertBefore(targetElement, nextCategories.firstChild);
+                                }
+                            }
+                        } else {
                             let nextNextElement = nextElement.nextSibling;
                             if (nextNextElement !== defaultElement.section &&
                                 nextNextElement !== defaultElement.category) {
