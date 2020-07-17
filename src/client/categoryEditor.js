@@ -11,6 +11,11 @@ function loadContents() {
         CATEGORY: 'New Category'
     }
 
+    const Direction = {
+        UP: 1,
+        DOWN: 2
+    }
+
     let defaultFocusedElement;
     let focusedElementObject;
     function createFocusedElementObject(initElement) {
@@ -51,8 +56,8 @@ function loadContents() {
             addSection();
             addCategory();
             removeContent();
-            moveUpContent();
-            moveDownContent();
+            moveContent(Direction.UP)
+            moveContent(Direction.DOWN)
             applyContent();
         });
 
@@ -242,12 +247,15 @@ function loadContents() {
                 self.appendChild(title);
 
                 let target = focusedElementObject.value;
+                console.log(target);
                 if (target.className === 'section__self') {
                     let targetSection = target.parentNode;
                     let targetCategories = targetSection.querySelector('.section__categories');
                     targetCategories.appendChild(category);
                 } else if (target.className === 'category__self') {
-                    target.parentNode.insertBefore(category, target.nextSibling);
+                    let targetCategory = target.parentNode;
+                    let targetCategories = targetCategory.parentNode;
+                    targetCategories.insertBefore(category, targetCategory.nextSibling);
                 } else {
                     let defaultCategories = document.querySelector('#default-categories');
                     defaultCategories.appendChild(category);
@@ -303,61 +311,55 @@ function loadContents() {
         });
     }
 
-    function moveUpContent() {
-        console.log('moveUpContent() has been loaded.');
-        let moveUpButton = document.querySelector('#move-up');
+    function moveContent(direction) {
+        let defaultElement = {
+            section: document.querySelector('#default-section'),
+            category: document.querySelector('#default-category')
+        }
+        let moveButton;
+        if (direction === Direction.UP) {
+            moveButton = document.querySelector('#move-up');
+        } else if (direction === Direction.DOWN) {
+            moveButton = document.querySelector('#move-down');
+        } else {
+            throw new Error('[Error] moveContent() : Parameter \'direction\' is invalid.');
+        }
 
-        moveUpButton.addEventListener('click', function (event) {
-            let defaultElement = {
-                section: document.querySelector('#default-section'),
-                category: document.querySelector('#default-category')
-            }
+        let lock = false;
+        moveButton.addEventListener('click', function (event) {
+            if (!lock) {
+                lock = true;
 
-            let target = focusedElementObject.value;
-            let targetElement = target.parentNode;
-
-            if (targetElement !== defaultElement.section &&
-                targetElement !== defaultElement.category) {
-
-                let targetParentElement = targetElement.parentNode;
-                let previousElement = targetElement.previousSibling;
-
-                if (previousElement !== defaultElement.section &&
-                    previousElement !== defaultElement.category &&
-                    previousElement !== null) {
-                    targetParentElement.insertBefore(targetElement, previousElement);
-                }
-            }
-        });
-    }
-
-    function moveDownContent() {
-        console.log('moveDownContent() has been loaded.');
-        let moveDownButton = document.querySelector('#move-down');
-
-        moveDownButton.addEventListener('click', function (event) {
-            let defaultElement = {
-                section: document.querySelector('#default-section'),
-                category: document.querySelector('#default-category')
-            }
-
-            let target = focusedElementObject.value;
-            let targetElement = target.parentNode;
-
-            if (targetElement !== defaultElement.section &&
-                targetElement !== defaultElement.category) {
-
-                let targetParentElement = targetElement.parentNode;
-
-                let nextElement = targetElement.nextSibling;
-                if (nextElement !== null) {
-                    let nextNextElement = nextElement.nextSibling;
-
-                    if (nextNextElement !== defaultElement.section &&
-                        nextNextElement !== defaultElement.category) {
-                        targetParentElement.insertBefore(targetElement, nextNextElement);
+                let targetElement = focusedElementObject.value.parentNode;
+                if (targetElement !== defaultElement.section &&
+                    targetElement !== defaultElement.category) {
+                    let targetParentElement = targetElement.parentNode;
+                    if (direction === Direction.UP) {
+                        let previousElement = targetElement.previousSibling;
+                        if (previousElement !== null) {
+                            if (previousElement !== defaultElement.section &&
+                                previousElement !== defaultElement.category) {
+                                targetParentElement.insertBefore(targetElement, previousElement);
+                            } else {
+                                alert('Can\'t switch with default content.');
+                            }
+                        }
+                    } else {
+                        let nextElement = targetElement.nextSibling;
+                        if (nextElement !== null) {
+                            let nextNextElement = nextElement.nextSibling;
+                            if (nextNextElement !== defaultElement.section &&
+                                nextNextElement !== defaultElement.category) {
+                                targetParentElement.insertBefore(targetElement, nextNextElement);
+                            } else {
+                                alert('Can\'t switch with default content.');
+                            }
+                        }
                     }
+                } else {
+                    alert('Can\'t move with default content.');
                 }
+                lock = false;
             }
         });
     }
