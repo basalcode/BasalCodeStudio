@@ -32,8 +32,12 @@ function loadContents() {
     }
 
     let isUpdated = false;
-
-    document.body.style.border = '1px solid green';
+    window.addEventListener('beforeunload', function (event) {
+        if (isUpdated) {
+            event.preventDefault();
+            event.returnValue = 'Exit';
+        }
+    });
 
     fetch('/readCategoryEditor')
         .then(function (response) {
@@ -276,7 +280,6 @@ function loadContents() {
         removeButton.addEventListener('click', function (event) {
             if (!lock) {
                 lock = true;
-                isUpdated = true;
 
                 let target = focusedElementObject.value.parentNode;
                 let sections = document.querySelector('#sections');
@@ -286,6 +289,8 @@ function loadContents() {
                 if (target === defaultSection || target === defaultCategory) {
                     alert(`Can\'t remove default content.`);
                 } else {
+                    isUpdated = true;
+
                     if (target.className === 'section') {
                         let targetSection = target;
                         let targetCategories = targetSection.querySelector('.section__categories');
@@ -339,17 +344,21 @@ function loadContents() {
                         if (previousElement === null) {
                             if (targetElement.className === 'category') {
                                 let previousSection = targetElement.parentNode.
-                                parentNode.previousSibling;
+                                    parentNode.previousSibling;
                                 if (previousSection !== null) {
                                     let previousCategories = previousSection.querySelector('.section__categories');
                                     targetParentElement = previousCategories;
                                     previousCategories.appendChild(targetElement);
+
+                                    isUpdated = true;
                                 }
                             }
                         } else {
                             if (previousElement !== defaultElement.section &&
                                 previousElement !== defaultElement.category) {
                                 targetParentElement.insertBefore(targetElement, previousElement);
+
+                                isUpdated = true;
                             } else {
                                 alert('Can\'t switch with default content.');
                             }
@@ -363,6 +372,8 @@ function loadContents() {
                                     let nextCategories = nextSection.querySelector('.section__categories');
                                     targetParentElement = nextCategories;
                                     nextCategories.insertBefore(targetElement, nextCategories.firstChild);
+
+                                    isUpdated = true;
                                 }
                             }
                         } else {
@@ -370,6 +381,8 @@ function loadContents() {
                             if (nextNextElement !== defaultElement.section &&
                                 nextNextElement !== defaultElement.category) {
                                 targetParentElement.insertBefore(targetElement, nextNextElement);
+
+                                isUpdated = true;
                             } else {
                                 alert('Can\'t switch with default content.');
                             }
@@ -388,11 +401,12 @@ function loadContents() {
         let applyButton = document.querySelector('#apply');
         let lock = false;
         applyButton.addEventListener('click', function (event) {
-            let updateConfirm = confirm('Sure you want to update?');
-            if (!lock && updateConfirm) {
+            if (!lock) {
                 lock = true;
                 if (isUpdated) {
-                    let sections = document.querySelector('#sections');
+                    let updateConfirm = confirm('Sure you want to update?');
+                    if (updateConfirm) {
+                        let sections = document.querySelector('#sections');
                     let sectionsLength = sections.childElementCount;
 
                     let cloneSections = {};
@@ -434,11 +448,12 @@ function loadContents() {
                             isUpdated = false;
                             lock = false;
                         })
+                    }
                 } else {
                     alert('There is no change.');
                     lock = false;
                 }
-            }
+            } 
         });
     }
 
