@@ -1,5 +1,11 @@
 window.onload = function () {
     console.log(`[Open] 'postEditor.js' has been opend.`);
+    loadPostEditor();
+}
+
+function loadPostEditor() {
+    let section = document.querySelector('#section');
+    let category = document.querySelector('#category');
 
     let title = document.querySelector('#title');
     let author = document.querySelector('#author');
@@ -11,18 +17,17 @@ window.onload = function () {
     let post_id = params.get('post');
     let mode = params.get('mode');
 
-    let buttonLocked = false;
-    
+    let lock = false;
     if (mode === 'write') {
         submit.addEventListener('click', function (event) {
-            if (!buttonLocked) {
-                buttonLocked = true;
+            if (!lock) {
+                lock = true;
                 let postEditorObj = {
                     title: title.value,
                     author: author.value,
                     description: description.value
                 }
-    
+
                 fetch('/createPost', {
                     method: 'POST',
                     headers: {
@@ -30,17 +35,17 @@ window.onload = function () {
                     },
                     body: JSON.stringify(postEditorObj)
                 })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(parsed) {
-                    if (parsed.result.constructor.name === 'String') {
-                        alert(parsed.result);
-                    } else {
-                        window.location.href = '/source/blogMain.html';   
-                    }
-                    buttonLocked = false;
-                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (parsed) {
+                        if (parsed.result.constructor.name === 'String') {
+                            alert(parsed.result);
+                        } else {
+                            window.location.href = '/source/blogMain.html';
+                        }
+                        lock = false;
+                    })
             }
         })
     } else if (mode === 'update') {
@@ -50,44 +55,45 @@ window.onload = function () {
             })
             .then(function (parsed) {
                 postObj = parsed.result[0];
-                
+
                 title.value = postObj.title;
                 author.value = postObj.author;
                 description.value = postObj.description;
-            })
 
-        submit.addEventListener('click', function (event) {
-            if (!buttonLocked) {
-                buttonLocked = true;
-                let postEditorObj = {
-                    title: title.value,
-                    author: author.value,
-                    description: description.value,
-                    post_id: post_id
-                }
-
-                fetch(`/updatePost`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(postEditorObj)
-                    
-                })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (parsed) {
-                    if (parsed.result.constructor.name === 'String') {
-                        alert(parsed.result);
-                    } else {
-                        window.location.href = '/source/category.html';
+                submit.addEventListener('click', function (event) {
+                    if (!lock) {
+                        lock = true;
+                        let postEditorObj = {
+                            title: title.value,
+                            author: author.value,
+                            description: description.value,
+                            post_id: post_id
+                        }
+        
+                        fetch(`/updatePost`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(postEditorObj)
+        
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (parsed) {
+                                if (parsed.result.constructor.name === 'String') {
+                                    alert(parsed.result);
+                                } else {
+                                    window.location.href = '/source/category.html';
+                                }
+                                lock = false;
+                            })
                     }
-                    buttonLocked = false;
-                })
-            }
-        });
+                });
+            })
     } else {
-        alert('Incorrect Mode Value');
+        alert('Incorrect mode value.');
+        location.href = '/source/category.html';
     }
 }

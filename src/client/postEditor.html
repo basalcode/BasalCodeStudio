@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Editor</title>
 </head>
+
 <body>
-    <div>Title</div>
-    <input id="title" type="text"/>
-    <div>Author</div>
-    <input id="author" type="text"/>
-    <div>Description</div>
-    <textarea id="description"></textarea>
-    <script src="/source/postEditor.js"></script>
-    <input id="submit" type="submit" />
+    <div id="post-editor">
+        <div>Section</div>
+        <select id="section"></select>
+        <div>Category</div>
+        <select id="category"></select>
+        <div>Title</div>
+        <input id="title" type="text" />
+        <div>Author</div>
+        <input id="author" type="text" />
+        <div>Description</div>
+        <textarea id="description"></textarea>
+        <script src="/source/postEditor.js"></script>
+        <input id="submit" type="submit" />
+    </div>
 </body>
+
 </html>
