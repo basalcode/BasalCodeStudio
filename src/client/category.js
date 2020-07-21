@@ -1,13 +1,17 @@
 window.onload = function () {
     console.log(`[Open] 'category.js' has been opend.`);
     
-    fetch(`/readCategory`)
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    let pageName = url.pathname.split('/')[2].split('.html')[0];
+
+    fetch(`/readCategory?page=${pageName}`)
         .then(function (response) {
             return response.json();
         })
         .then(function (parsed) {
             showCategory(parsed.result);
-        })
+        });
 }
 
 function showCategory(postObjArr) {

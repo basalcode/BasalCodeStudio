@@ -17,12 +17,14 @@ module.exports = (function() {
             SERVER: 'server'
         },
         InputType: {
+            TEST: 'test',
             CREATE: 'create',
             READ: 'read',
             UPDATE: 'update',
             DELETE: 'delete'
         },
         ContentType: {
+            TEST: 'test',
             POST: 'post',
             CATEGORY_EDITOR: 'categoryEditor',
             CATEGORY: 'category',

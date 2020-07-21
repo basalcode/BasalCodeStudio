@@ -22,6 +22,8 @@ app.get('/', function (req, res) {
     })
 })
 
+app.get('/testTest', DBOperator.run)
+
 app.post('/createPost', DBOperator.run);
 app.get('/readPost', DBOperator.run);
 app.post('/updatePost', DBOperator.run);
@@ -35,10 +37,7 @@ app.get('/readCategory', DBOperator.run);
 app.post('/updateCategory', DBOperator.run);
 app.post('/deleteCategory', DBOperator.run);
 
-app.post('/createSection', DBOperator.run);
-app.post('/readSection', DBOperator.run);
-app.post('/updateSection', DBOperator.run);
-app.post('/deleteSection', DBOperator.run);
+app.get('/readSection', DBOperator.run);
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

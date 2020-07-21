@@ -41,6 +41,15 @@ module.exports = function (dbMembers) {
                 errorMessage: [],
                 length: 0
             },
+            [ContentType.TEST]: {
+                test() {
+                    console.log('[requestObject]', requestObject);
+
+                    let query = ``;
+                    let values = ``;
+                    return queryObject.setResult(DBType.BLOG, query, values, null);
+                }
+            },
             [ContentType.POST]: {
                 create() {
                     if (requestObject.body.title.length === 0) {
@@ -229,16 +238,30 @@ module.exports = function (dbMembers) {
                         requestObject.body.name,
                         requestObject.body.section_id
                     ];
+
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
                 read() {
-                    let startPage = 1;
-                    let loadAmount = 100;
-                    let startIndex = (startPage - 1) * loadAmount;
-                    let endIndex = (startPage * loadAmount) - 1;
-                    let category_id = requestObject.query.category;
-                    if (category_id === undefined) {
-                        let query = `
+                    const Page = {
+                        CATEGORY: 'category',
+                        POST_EDITOR: 'postEditor'
+                    }
+                    let queryString = requestObject.query;
+                    let page = queryString.page;
+
+                    let query = null;
+                    let values = null;
+                    let errorMessage = null;
+                    if (page === Page.CATEGORY) {
+                        const startPage = 1;
+                        const loadAmount = 100;
+                        let startIndex = (startPage - 1) * loadAmount;
+                        let endIndex = (startPage * loadAmount) - 1;
+
+                        let category_id = queryString.category;
+
+                        if (category_id === 0) {
+                            let query = `
                             SELECT 
                                 id,
                                 category_id,
@@ -251,13 +274,13 @@ module.exports = function (dbMembers) {
                             ORDER BY id DESC
                             LIMIT ?, ?;
                         `;
-                        let values = [
-                            startIndex,
-                            endIndex
-                        ];
-                        return queryObject.setResult(DBType.BLOG, query, values, null);
-                    } else {
-                        let query = `
+                            let values = [
+                                startIndex,
+                                endIndex
+                            ];
+                            
+                        } else {
+                            let query = `
                             SELECT 
                                 id,
                                 category_id,
@@ -271,13 +294,25 @@ module.exports = function (dbMembers) {
                             ORDER BY id DESC
                             LIMIT ?, ?;
                         `;
-                        let values = [
-                            category_id,
-                            startIndex,
-                            endIndex
-                        ];
-                        return queryObject.setResult(DBType.BLOG, query, values, null);
+                            let values = [
+                                category_id,
+                                startIndex,
+                                endIndex
+                            ];
+                        }
+                    } else if (page === Page.POST_EDITOR) {
+                        let section_id = queryString.section;
+                        
+                        query = `
+                            SELECT id, name
+                            FROM category
+                            WHERE section_id = ?;
+                        `; 
+                        values = [ section_id ];
+                    } else {
+                        errorMessage = 'Wrong page argument.';
                     }
+                    return queryObject.setResult(DBType.BLOG, query, values, errorMessage);
                 },
                 update() {
                     let query = `
@@ -306,7 +341,13 @@ module.exports = function (dbMembers) {
                 }
             },
             [ContentType.SECTION]: {
-
+                read() {
+                    let query = `
+                        SELECT id, name
+                        FROM section;
+                    `;
+                    return queryObject.setResult(DBType.BLOG, query, null, null);
+                }
             }
         },
         server: {
