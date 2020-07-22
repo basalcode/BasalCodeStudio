@@ -6,14 +6,8 @@ window.onload = function () {
 function loadPostEditor() {
     const url = new URL(window.location.href);
     const params = url.searchParams;
-
-    let pageName = url.pathname.split('/')[2].split('.html')[0];
-
-    
-
-    let title = document.querySelector('#title');
-    let author = document.querySelector('#author');
-    let description = document.querySelector('#description');
+    let pathArray = url.pathname.split('/')
+    let pageName = pathArray[pathArray.length - 1].split('.html')[0];
 
     let post_id = params.get('post');
     let mode = params.get('mode');
@@ -41,8 +35,9 @@ function loadPostEditor() {
     }
 }
 
-function readDefaultSelectBoxes(pageName) {
-    fetch(`/readSection`)
+async function readDefaultSelectBoxes(pageName) {
+    let sectionSelectBox = document.querySelector('#section');
+    await fetch(`/readSection`)
         .then(function (response) {
             return response.json();
         })
@@ -51,32 +46,53 @@ function readDefaultSelectBoxes(pageName) {
             let sectionObject = parsed.result;
             for (let key in sectionObject) {
                 let section = sectionObject[key];
-
-                let sectionSelectBox = document.querySelector('#section');
                 let sectionOption = document.createElement('option');
-                sectionOption.innerText = section.name;
 
+                sectionOption.innerText = section.name;
                 sectionSelectBox.appendChild(sectionOption);
             }
+        });
 
-    let section_id = 0;
-    fetch(`/readCategory?page=${pageName}&section=${section_id}`)
+    const default_section_id = 0;
+    await fetch(`/readCategory?page=${pageName}&section=${default_section_id}`)
         .then(function (response) {
             return response.json();
         })
-        .then(function (parsed) {
-            let categoryObject = parsed.result;
-            for (let key in categoryObject) {
-                let category = categoryObject[key];
+        .then(createCategoryOptions);
 
-                let categorySelectBox = document.querySelector('#category');
-                let categoryOption = document.createElement('option');
-                categoryOption.innerText = category.name;
+    sectionSelectBoxChangeEvent(pageName);
+}
 
-                categorySelectBox.appendChild(categoryOption);
-            }
-        })
+function sectionSelectBoxChangeEvent(pageName) {
+    let sectionSelectBox = document.querySelector('#section');
+
+    sectionSelectBox.addEventListener('change', function (event) {
+        let categorySelectBox = document.querySelector('#category');
+        while (categorySelectBox.hasChildNodes()) {
+            categorySelectBox.removeChild(categorySelectBox.firstChild);
+        }
+        
+        let section_id = event.target.selectedIndex;
+        fetch(`/readCategory?page=${pageName}&section=${section_id}`)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(createCategoryOptions);
     });
+}
+
+function createCategoryOptions(parsed) {
+    console.log('test');
+    let categorySelectBox = document.querySelector('#category');
+
+    let categoryObject = parsed.result;
+    for (let key in categoryObject) {
+        let category = categoryObject[key];
+        let categoryOption = document.createElement('option');
+
+        categoryOption.innerText = category.name;
+        categorySelectBox.appendChild(categoryOption);
+    }
 }
 
 function submitButton(path) {
@@ -86,6 +102,12 @@ function submitButton(path) {
     submit.addEventListener('click', function (event) {
         if (!lock) {
             lock = true;
+
+            let sectionSelectBox = document.querySelector('#section');
+            let sectionOption = document.createElement('option');
+            let title = document.querySelector('#title');
+            let author = document.querySelector('#author');
+            let description = document.querySelector('#description');
             let postEditorObj = {
                 title: title.value,
                 author: author.value,

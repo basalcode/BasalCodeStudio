@@ -261,7 +261,7 @@ module.exports = function (dbMembers) {
                         let category_id = queryString.category;
 
                         if (category_id === 0) {
-                            let query = `
+                            query = `
                             SELECT 
                                 id,
                                 category_id,
@@ -274,13 +274,13 @@ module.exports = function (dbMembers) {
                             ORDER BY id DESC
                             LIMIT ?, ?;
                         `;
-                            let values = [
+                            values = [
                                 startIndex,
                                 endIndex
                             ];
                             
                         } else {
-                            let query = `
+                            query = `
                             SELECT 
                                 id,
                                 category_id,
@@ -294,7 +294,7 @@ module.exports = function (dbMembers) {
                             ORDER BY id DESC
                             LIMIT ?, ?;
                         `;
-                            let values = [
+                            values = [
                                 category_id,
                                 startIndex,
                                 endIndex

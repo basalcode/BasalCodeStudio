@@ -3,7 +3,8 @@ window.onload = function () {
     
     const url = new URL(window.location.href);
     const params = url.searchParams;
-    let pageName = url.pathname.split('/')[2].split('.html')[0];
+    let pathArray = url.pathname.split('/')
+    let pageName = pathArray[pathArray.length - 1].split('.html')[0];
 
     fetch(`/readCategory?page=${pageName}`)
         .then(function (response) {
