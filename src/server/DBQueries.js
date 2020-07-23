@@ -66,14 +66,16 @@ module.exports = function (dbMembers) {
                             INSERT INTO post (
                                 title,
                                 author,
-                                description
+                                description,
+                                category_id
                             ) 
-                            VALUES (?, ?, ?);
+                            VALUES (?, ?, ?, ?);
                         `;
                         let values = [
                             requestObject.body.title,
                             requestObject.body.author,
-                            requestObject.body.description
+                            requestObject.body.description,
+                            requestObject.body.category
                         ];
                         return queryObject.setResult(DBType.BLOG, query, values, null);
                     }
