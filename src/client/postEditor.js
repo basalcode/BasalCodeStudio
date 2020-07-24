@@ -138,7 +138,6 @@ function submitButton(path) {
                     if (parsed.result.constructor.name === 'String') {
                         alert(parsed.result);
                     } else {
-                        console.log('HEHEIJHOEJH:EOIHJ:');
                         window.location.href = '/source/blogMain.html';
                     }
                     lock = false;
