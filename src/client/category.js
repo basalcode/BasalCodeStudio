@@ -4,9 +4,10 @@ window.onload = function () {
     const url = new URL(window.location.href);
     const params = url.searchParams;
     let pathArray = url.pathname.split('/')
+    let categoryId = params.get('category');
     let pageName = pathArray[pathArray.length - 1].split('.html')[0];
 
-    fetch(`/readCategory?page=${pageName}`)
+    fetch(`/readCategory?category=${categoryId}&page=${pageName}`)
         .then(function (response) {
             return response.json();
         })
@@ -22,7 +23,6 @@ function showCategory(postObjArr) {
 
     const HeaderType = {
         POST_ID: 'PostID',
-        CATEGORY: 'Category',
         TITLE: 'Title',
         Author: 'Author',
         VIEW_COUNT: 'View',

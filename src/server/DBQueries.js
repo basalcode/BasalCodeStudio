@@ -249,6 +249,7 @@ module.exports = function (dbMembers) {
                         POST_EDITOR: 'postEditor'
                     }
                     let queryString = requestObject.query;
+                    let category_id = queryString.category;
                     let page = queryString.page;
 
                     let query = null;
@@ -259,33 +260,10 @@ module.exports = function (dbMembers) {
                         const loadAmount = 100;
                         let startIndex = (startPage - 1) * loadAmount;
                         let endIndex = (startPage * loadAmount) - 1;
-
-                        let category_id = queryString.category;
-
-                        if (category_id === 0) {
-                            query = `
+                        
+                        query = `
                             SELECT 
                                 id,
-                                category_id,
-                                title,
-                                author,
-                                view_count,
-                                comment_count,
-                                time
-                            FROM post
-                            ORDER BY id DESC
-                            LIMIT ?, ?;
-                        `;
-                            values = [
-                                startIndex,
-                                endIndex
-                            ];
-                            
-                        } else {
-                            query = `
-                            SELECT 
-                                id,
-                                category_id,
                                 title,
                                 author,
                                 view_count,
@@ -296,12 +274,11 @@ module.exports = function (dbMembers) {
                             ORDER BY id DESC
                             LIMIT ?, ?;
                         `;
-                            values = [
-                                category_id,
-                                startIndex,
-                                endIndex
-                            ];
-                        }
+                        values = [
+                            category_id,
+                            startIndex,
+                            endIndex
+                        ];
                     } else if (page === Page.POST_EDITOR) {
                         let section_id = queryString.section;
                         

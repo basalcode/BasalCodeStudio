@@ -5,7 +5,6 @@ export default (async function () {
                 return response.json();
             })
             .then(function (parsed) {
-                console.log(1);
                 let dbResult = parsed.result;
                 let categoryListObject = getCategoryListObject(dbResult);
 
@@ -26,6 +25,7 @@ export default (async function () {
                     categorySelf: root.querySelectorAll('.category__self'),
                     categoryTitle: root.querySelectorAll('.category__title')
                 }
+
                 return {
                     root: root,
                     defaultElement: defaultElement,
@@ -101,6 +101,9 @@ export default (async function () {
                     let self = document.createElement('div');
                     let title = document.createElement('div');
 
+                    let categoryId = (categoryObject.id > 0) ? categoryObject.id : null;
+
+                    category.id = `category-id__${categoryId}`;
                     category.className = 'category';
 
                     self.className = 'category__self';
