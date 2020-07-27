@@ -244,54 +244,34 @@ module.exports = function (dbMembers) {
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
                 read() {
-                    const Page = {
-                        CATEGORY: 'category',
-                        POST_EDITOR: 'postEditor'
-                    }
                     let queryString = requestObject.query;
                     let category_id = queryString.category;
-                    let page = queryString.page;
 
-                    let query = null;
-                    let values = null;
-                    let errorMessage = null;
-                    if (page === Page.CATEGORY) {
-                        const startPage = 1;
-                        const loadAmount = 100;
-                        let startIndex = (startPage - 1) * loadAmount;
-                        let endIndex = (startPage * loadAmount) - 1;
-                        
-                        query = `
-                            SELECT 
-                                id,
-                                title,
-                                author,
-                                view_count,
-                                comment_count,
-                                time
-                            FROM post
-                            WHERE category_id = ?
-                            ORDER BY id DESC
-                            LIMIT ?, ?;
-                        `;
-                        values = [
-                            category_id,
-                            startIndex,
-                            endIndex
-                        ];
-                    } else if (page === Page.POST_EDITOR) {
-                        let section_id = queryString.section;
-                        
-                        query = `
-                            SELECT id, name
-                            FROM category
-                            WHERE section_id = ?;
-                        `; 
-                        values = [ section_id ];
-                    } else {
-                        errorMessage = 'Wrong page argument.';
-                    }
-                    return queryObject.setResult(DBType.BLOG, query, values, errorMessage);
+                    const startPage = 1;
+                    const loadAmount = 100;
+                    let startIndex = (startPage - 1) * loadAmount;
+                    let endIndex = (startPage * loadAmount) - 1;
+
+                    let query = `
+                        SELECT 
+                            id,
+                            title,
+                            author,
+                            view_count,
+                            comment_count,
+                            time
+                        FROM post
+                        WHERE category_id = ?
+                        ORDER BY id DESC
+                        LIMIT ?, ?;
+                    `;
+                    let values = [
+                        category_id,
+                        startIndex,
+                        endIndex
+                    ];
+
+                    return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
                 update() {
                     let query = `
@@ -322,8 +302,14 @@ module.exports = function (dbMembers) {
             [ContentType.SECTION]: {
                 read() {
                     let query = `
-                        SELECT id, name
-                        FROM section;
+                        SELECT 
+                            section.id AS section_id,
+                            section.name AS section_name,
+                            category.id AS category_id,
+                            category.name AS category_name
+                        FROM section
+                        JOIN category
+                        ON section.id = category.section_id;
                     `;
                     return queryObject.setResult(DBType.BLOG, query, null, null);
                 }

@@ -58,7 +58,7 @@ function showPost(postObj) {
     description.innerText = postObj.description;
 
     updatePost.addEventListener('click', function (event) {
-        window.location.href = `/source/postEditor.html?mode=update&post=${postObj.id}`
+        window.location.href = `/source/postEditor.html?mode=update&post=${postObj.id}&category=${postObj.category_id}`
     })
 
     deletePost.addEventListener('click', function (event) {

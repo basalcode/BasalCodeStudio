@@ -5,9 +5,8 @@ window.onload = function () {
     const params = url.searchParams;
     let pathArray = url.pathname.split('/')
     let categoryId = params.get('category');
-    let pageName = pathArray[pathArray.length - 1].split('.html')[0];
 
-    fetch(`/readCategory?category=${categoryId}&page=${pageName}`)
+    fetch(`/readCategory?category=${categoryId}`)
         .then(function (response) {
             return response.json();
         })
