@@ -12,7 +12,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/source', express.static('./src/client'));
-app.use('/module', express.static('./src/client/common'));
 app.get('/', function (req, res) {
     fs.readFile('./src/client/lobby.html', function (err, data) {
         if (err) {
@@ -23,7 +22,7 @@ app.get('/', function (req, res) {
     })
 })
 
-app.get('/testTest', DBOperator.run)
+app.get('/testTest', DBOperator.run);
 
 app.post('/createPost', DBOperator.run);
 app.get('/readPost', DBOperator.run);

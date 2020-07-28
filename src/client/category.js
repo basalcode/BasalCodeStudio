@@ -1,9 +1,18 @@
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted||window.performance&&window.performance.navigation.type === 2) {
+        console.log('Page restored from BFCache.');
+        alert('This is an expired page.');
+        window.location.href = '/source/category.html';
+    } else {
+        console.log('Page newly loaded');
+    }
+});
+
 window.onload = function () {
     console.log(`[Open] 'category.js' has been opend.`);
     
     const url = new URL(window.location.href);
     const params = url.searchParams;
-    let pathArray = url.pathname.split('/')
     let categoryId = params.get('category');
 
     fetch(`/readCategory?category=${categoryId}`)

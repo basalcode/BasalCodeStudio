@@ -432,7 +432,7 @@ async function loadContents() {
                 if (!lock) {
                     lock = true;
                     if (isUpdated) {
-                        let updateConfirm = confirm('Sure you want to update?');
+                        let updateConfirm = confirm('Sure you want update?');
                         if (updateConfirm) {
                             let sections = document.querySelector('#sections');
                             let sectionsLength = sections.childElementCount;

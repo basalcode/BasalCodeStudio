@@ -1,10 +1,11 @@
 window.addEventListener("pageshow", function(event) {
+    console.log('pageshow');
     if (event.persisted||window.performance&&window.performance.navigation.type === 2) {
-        // console.log('Page restored from BFCache.');
+        console.log('Page restored from BFCache.');
         alert('This is an expired page.');
         window.location.href = '/source/category.html';
     } else {
-        // console.log('Page newly loaded');
+        console.log('Page newly loaded');
     }
 });
 
@@ -58,7 +59,7 @@ function showPost(postObj) {
     description.innerText = postObj.description;
 
     updatePost.addEventListener('click', function (event) {
-        window.location.href = `/source/postEditor.html?mode=update&post=${postObj.id}&category=${postObj.category_id}`
+        window.location.href = `/source/postEditor.html?mode=update&category=${postObj.category_id}&post=${postObj.id}`;
     })
 
     deletePost.addEventListener('click', function (event) {

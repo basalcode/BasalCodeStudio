@@ -62,6 +62,13 @@ module.exports = function (dbMembers) {
                         let errorMessage = 'There is no description.';
                         return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
                     } else {
+                        let requestBody = requestObject.body;
+
+                        let title = requestBody.title;
+                        let author = requestBody.author;
+                        let description = requestBody.description;
+                        let category_id = requestBody.category_id;
+
                         let query = `
                             INSERT INTO post (
                                 title,
@@ -72,10 +79,10 @@ module.exports = function (dbMembers) {
                             VALUES (?, ?, ?, ?);
                         `;
                         let values = [
-                            requestObject.body.title,
-                            requestObject.body.author,
-                            requestObject.body.description,
-                            requestObject.body.category
+                            title,
+                            author,
+                            description,
+                            category_id
                         ];
                         return queryObject.setResult(DBType.BLOG, query, values, null);
                     }
@@ -110,20 +117,28 @@ module.exports = function (dbMembers) {
                         let errorMessage = 'There is no description.';
                         return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
                     } else {
-                        // let post_id = requestObject.body.post;
+                        let requestBody = requestObject.body;
+
+                        let id = requestBody.id;
+                        let title = requestBody.title;
+                        let author = requestBody.author;
+                        let description = requestBody.description;
+                        let category_id = requestBody.category_id;
                         let query = `
                             UPDATE post 
                             SET 
-                                title=?, 
-                                author=?, 
-                                description=? 
+                                title = ?, 
+                                author = ?, 
+                                description = ?,
+                                category_id = ?
                             WHERE id=?;
                         `;
                         let values = [
-                            requestObject.body.title,
-                            requestObject.body.author,
-                            requestObject.body.description,
-                            requestObject.body.post_id
+                            title,
+                            author,
+                            description,
+                            category_id,
+                            id
                         ];
                         return queryObject.setResult(DBType.BLOG, query, values, null);
                     }
