@@ -1,13 +1,4 @@
-window.addEventListener("pageshow", function(event) {
-    console.log('pageshow');
-    if (event.persisted||window.performance&&window.performance.navigation.type === 2) {
-        console.log('Page restored from BFCache.');
-        alert('This is an expired page.');
-        window.location.href = '/source/category.html';
-    } else {
-        console.log('Page newly loaded');
-    }
-});
+import {expire} from './common/expiredPage.js';
 
 window.onload = function() {
     console.log(`[Open] 'post.js' has been opend.`);
@@ -76,6 +67,7 @@ function showPost(postObj) {
             return response.json()
         })
         .then(function (parsed) {
+            expire();
             window.location.href = '/source/category.html';
         });
     })

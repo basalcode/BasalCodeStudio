@@ -1,4 +1,6 @@
 import sections from './common/categoryList.js';
+import {expire} from './common/expiredPage.js';
+
 
 window.onload = function () {
     console.log(`[Open] 'categoryEditor.js' has been opend.`);
