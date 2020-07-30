@@ -1,26 +1,36 @@
-const expiredPage = (function () {
-    const submitted = '/source/common/expiredPage.html';
-
-    function redirectionEvent(expiredWarning) {
+export default (function () {
+    function registerAsDefaultPage(alertMessage) {
         window.addEventListener("pageshow", function (event) {
-            if (expiredWarning.constructor.name === 'String') {
-                alert(expiredWarning);
-            } else {
-                alert('This is an expired page.');
+            let message = 'This is an expired page.';
+            if (alertMessage) {
+                message = alertMessage;
             }
-            history.forward();
+            alert(message);
+            window.history.forward();
         });
     }
 
-    function expirePage() {
-        history.replaceState({}, '', submitted);
+    function isExpired() {
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || 
+               (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
     }
+
+    function expire(redirection) {
+        history.replaceState(null, '', redirection);
+    }
+
     return {
-        redirect: redirectionEvent,
-        start: expirePage
+        registerAsDefaultPage: registerAsDefaultPage,
+        isExpired: isExpired,
+        expire: expire
     }
 })();
 
-window.onload = expiredPage.redirect;
 
-export let expire = expiredPage.start;
+
+
+

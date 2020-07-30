@@ -6,6 +6,10 @@
     <title>Expired Page</title>
 </head>
 <body>
-    <script type='module' src='/source/common/expiredPage.js'></script>
+    <script type="module">
+        import expire from './expiredPage.js';
+        expire.registerAsDefaultPage();
+        console.log()
+    </script>
 </body>
 </html>

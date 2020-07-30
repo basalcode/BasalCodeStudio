@@ -1,5 +1,6 @@
-import {expire} from './common/expiredPage.js';
+import expire from './common/expiredPage.js';
 
+expire.isExpired();
 window.onload = function () {
     console.log(`[Open] 'postEditor.js' has been opend.`);
     loadPostEditor();
@@ -35,7 +36,6 @@ function loadPostEditor() {
         alert('Incorrect mode value.');
         location.href = '/source/category.html';
     }
-
 
     function initSelectBoxes(categoryId) {
         return fetch(`/readSection`)
@@ -196,10 +196,10 @@ function loadPostEditor() {
                             if (parsed.result.constructor.name === 'String') {
                                 alert(parsed.result);
                             } else {
-                                expire();
+                                expire.expire('./common/expiredPage.html');
                                 window.location.href = '/source/blogMain.html';
                             }
-                            isUpdated = false
+                            isUpdated = false;
                             lock = false;
                         });
                 } else {

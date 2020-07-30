@@ -1,4 +1,6 @@
-import {expire} from './common/expiredPage.js';
+import expire from './common/expiredPage.js';
+
+expire.isExpired();
 
 window.onload = function() {
     console.log(`[Open] 'post.js' has been opend.`);
@@ -61,14 +63,14 @@ function showPost(postObj) {
             },
             body: JSON.stringify({
                 post: postObj.id
-            }),
+            })
         })
         .then(function (response) {
             return response.json()
         })
         .then(function (parsed) {
-            expire();
-            window.location.href = '/source/category.html';
+            expire.expire('./common/expiredPage.html');
+            window.location.href = `/source/category.html?category=${postObj.category_id}`;
         });
     })
 }
