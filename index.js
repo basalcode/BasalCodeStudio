@@ -1,6 +1,9 @@
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
 
@@ -10,6 +13,29 @@ const DBOperator = require('./src/server/DBOperator');
 /* body-parser */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+/* cookie-parser */
+app.use(cookieParser());
+
+/* session-store */
+const options = {
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    passward: '1135',
+    database: 'sessions'
+}
+const sessionStore = new MySQLStore(options);
+
+/* session */
+app.use(session({
+    key: '',
+    secret: 'i am not a cat',
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore
+}));
+
 
 app.use('/source', express.static('./src/client'));
 app.get('/', function (req, res) {
