@@ -50,7 +50,7 @@ function showCategory(postObjArr) {
                     let post_id = postObj.id;
                 
                     postLink.innerText = postObj[key];
-                    postLink.href = `/source/post.html?post=${post_id}`;
+                    postLink.href = `/source/blog/post.html?post=${post_id}`;
                     
                     td.appendChild(postLink);
                     tr.appendChild(td);

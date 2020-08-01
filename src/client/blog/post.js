@@ -1,4 +1,4 @@
-import expire from './common/expiredPage.js';
+import expire from '../common/expiredPage.js';
 
 expire.isExpired();
 
@@ -52,7 +52,7 @@ function showPost(postObj) {
     description.innerText = postObj.description;
 
     updatePost.addEventListener('click', function (event) {
-        window.location.href = `/source/postEditor.html?mode=update&category=${postObj.category_id}&post=${postObj.id}`;
+        window.location.href = `/source/blog/postEditor.html?mode=update&category=${postObj.category_id}&post=${postObj.id}`;
     })
 
     deletePost.addEventListener('click', function (event) {
@@ -69,8 +69,8 @@ function showPost(postObj) {
             return response.json()
         })
         .then(function (parsed) {
-            expire.expire('./common/expiredPage.html');
-            window.location.href = `/source/category.html?category=${postObj.category_id}`;
+            expire.expire('../common/expiredPage.html');
+            window.location.href = `/source/blog/category.html?category=${postObj.category_id}`;
         });
     })
 }

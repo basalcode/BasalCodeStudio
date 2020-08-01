@@ -1,11 +1,11 @@
-import sections from './common/categoryList.js';
+import sections from '../common/categoryList.js';
 
 window.onload = function () {
     console.log(`[Open] 'blogMain.js' has been opend.`);
 
     let writePost = document.querySelector('#write-post');
     writePost.addEventListener('click', function (event) {
-        window.location.href = '/source/postEditor.html?mode=write';
+        window.location.href = '/source/blog/postEditor.html?mode=write';
     });
     
     loadCategoryList();
@@ -34,7 +34,7 @@ async function loadCategoryList() {
 
             let categoryId = (i > 0) ? category.id.split('__')[1] : 0;
             
-            anchorTag.href = `/source/category.html?category=${categoryId}`; // 
+            anchorTag.href = `/source/blog/category.html?category=${categoryId}`; // 
             anchorTag.id = '.category-anchor';
 
             categorySelf.appendChild(anchorTag);

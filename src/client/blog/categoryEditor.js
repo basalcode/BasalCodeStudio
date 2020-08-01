@@ -1,4 +1,4 @@
-import sections from './common/categoryList.js';
+import sections from '../common/categoryList.js';
 
 window.onload = function () {
     console.log(`[Open] 'categoryEditor.js' has been opend.`);

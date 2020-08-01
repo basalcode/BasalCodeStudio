@@ -1,4 +1,4 @@
-import expire from './common/expiredPage.js';
+import expire from '../common/expiredPage.js';
 
 expire.isExpired();
 window.onload = function () {
@@ -34,7 +34,7 @@ function loadPostEditor() {
         submitButtonEvent('/updatePost');
     } else {
         alert('Incorrect mode value.');
-        location.href = '/source/category.html';
+        location.href = '/source/blog/category.html';
     }
 
     function initSelectBoxes(categoryId) {
@@ -196,8 +196,8 @@ function loadPostEditor() {
                             if (parsed.result.constructor.name === 'String') {
                                 alert(parsed.result);
                             } else {
-                                expire.expire('./common/expiredPage.html');
-                                window.location.href = '/source/blogMain.html';
+                                expire.expire('../common/expiredPage.html');
+                                window.location.href = '/source/blog/blogMain.html';
                             }
                             isUpdated = false;
                             lock = false;

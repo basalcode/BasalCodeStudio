@@ -39,7 +39,7 @@ app.use(session({
 
 app.use('/source', express.static('./src/client'));
 app.get('/', function (req, res) {
-    fs.readFile('./src/client/lobby.html', function (err, data) {
+    fs.readFile('./src/client/blog/lobby.html', function (err, data) {
         if (err) {
             res.status(404).send('Not Found');
         } else {
