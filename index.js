@@ -15,14 +15,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /* cookie-parser */
-app.use(cookieParser());
+app.use(cookieParser('ABCDEFG'));
 
 /* session-store */
 const options = {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    passward: '1135',
+    password: '1135',
     database: 'sessions'
 }
 const sessionStore = new MySQLStore(options);
@@ -36,7 +36,6 @@ app.use(session({
     store: sessionStore
 }));
 
-
 app.use('/source', express.static('./src/client'));
 app.get('/', function (req, res) {
     fs.readFile('./src/client/blog/lobby.html', function (err, data) {
@@ -47,6 +46,18 @@ app.get('/', function (req, res) {
         }
     })
 })
+
+app.post('/auth/login', function (req, res) {
+    res.send({
+        result: 'login'
+    });
+});
+
+app.post('/auth/signup', function (req, res) {
+    res.send({
+        result: 'signup'
+    });
+});
 
 app.get('/testTest', DBOperator.run);
 
