@@ -1,6 +1,6 @@
 export default (async function () {
     function init() {
-        return fetch('/readCategoryEditor')
+        return fetch('/request/blog/read/categoryEditor')
             .then(function (response) {
                 return response.json();
             })

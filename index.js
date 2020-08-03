@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -14,25 +13,37 @@ const DBOperator = require('./src/server/DBOperator');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/* cookie-parser */
-app.use(cookieParser('ABCDEFG'));
-
 /* session-store */
-const options = {
+const storeOptions = {
     host: 'localhost',
     port: 3306,
     user: 'root',
     password: '1135',
-    database: 'sessions'
+    database: 'sessions',
+    clearExpired: true,
+    checkExpirationInterval: 900000,
+    expiration: 8640000,
+    createDatabaseTable: true,
+    connectionLimit: 1,
+    endConnectionOnClose: true,
+    charset: 'utf8mb4_unicode_ci',
+    schema: {
+        tableName: 'session',
+        columnNames: {
+            session_id: 'session_id',
+            expires: 'expires',
+            data: 'data'
+        }
+    }
 }
-const sessionStore = new MySQLStore(options);
+const sessionStore = new MySQLStore(storeOptions);
 
 /* session */
 app.use(session({
-    key: '',
+    // key: 'session_cookie_name',
     secret: 'i am not a cat',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: sessionStore
 }));
 
@@ -47,34 +58,7 @@ app.get('/', function (req, res) {
     })
 })
 
-app.post('/auth/login', function (req, res) {
-    res.send({
-        result: 'login'
-    });
-});
-
-app.post('/auth/signup', function (req, res) {
-    res.send({
-        result: 'signup'
-    });
-});
-
-app.get('/testTest', DBOperator.run);
-
-app.post('/createPost', DBOperator.run);
-app.get('/readPost', DBOperator.run);
-app.post('/updatePost', DBOperator.run);
-app.post('/deletePost', DBOperator.run);
-
-app.get('/readCategoryEditor', DBOperator.run);
-app.post('/updateCategoryEditor', DBOperator.run);
-
-app.post('/createCategory', DBOperator.run);
-app.get('/readCategory', DBOperator.run);
-app.post('/updateCategory', DBOperator.run);
-app.post('/deleteCategory', DBOperator.run);
-
-app.get('/readSection', DBOperator.run);
+app.use('/request/:db/:inputType/:contentType', DBOperator.run);
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

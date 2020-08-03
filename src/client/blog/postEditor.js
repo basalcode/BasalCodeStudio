@@ -26,19 +26,19 @@ function loadPostEditor() {
     if (mode === PageMode.WRITE) {
         initSelectBoxes(DEFAULT_VALUE);
         postContentUpdateEvent();
-        submitButtonEvent('/createPost');
+        submitButtonEvent('/request/blog/create/post');
     } else if (mode === PageMode.UPDATE) {
         initSelectBoxes(categoryId);
         readPostContent();
         postContentUpdateEvent();
-        submitButtonEvent('/updatePost');
+        submitButtonEvent('/request/blog/update/post');
     } else {
         alert('Incorrect mode value.');
         location.href = '/source/blog/category.html';
     }
 
     function initSelectBoxes(categoryId) {
-        return fetch(`/readSection`)
+        return fetch(`/request/blog/read/section`)
             .then(function (response) {
                 return response.json();
             })
@@ -125,7 +125,7 @@ function loadPostEditor() {
     }
 
     function readPostContent() {
-        fetch(`/readPost?post=${postId}`)
+        fetch(`/request/blog/read/post?post=${postId}`)
             .then(function (response) {
                 return response.json();
             })

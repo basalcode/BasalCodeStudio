@@ -7,7 +7,7 @@ window.onload = function () {
 function loadLogIn() {
     let submit = document.querySelector('#submit');
 
-    let email = document.querySelector('#id');
+    let email = document.querySelector('#email');
     let password = document.querySelector('#password');
 
     let lock = false;

@@ -1,118 +1,93 @@
-const dbMembers = require('./DBmembers');
-
 const DBOperator = (function () {
-    function init(req) {
-        /* RequestObject */
-        if (req === null) {
-            throw new Error('[Error] init() : Parameter \'req\' is null.');
-        }
-        dbMembers.requestObject = req;
-
-        /* typeObject */
-        let requestPath = req.route.path;
-        dbMembers.typeObject = {
-            inputType: (function () {
-                let inputPart = requestPath.split('/')[1].split(/[A-Z]/)[0];
-                return inputPart;
-            })(),
-            contentType: (function () {
-                let contentPart = requestPath.split(/\/[a-z]+/)[1];
-                let firstLetter = contentPart.charAt(0);
-                let camelCase = contentPart.replace(firstLetter, firstLetter.toLowerCase());
-                return camelCase;
-            })()
-        }
-
-        function isVerifiedType(typeObject, value) {
-            let verified = false;
-            for (const key in typeObject) {
-                if (typeObject[key] === value) {
-                    verified = true;
-                    return verified;
-                }
-            }
-            return verified;
-        }
-        if (!isVerifiedType(dbMembers.InputType, dbMembers.typeObject.inputType)) {
-            throw new Error('[Error] init() : Parameter \'inputType\' is wrong.');
-        };
-        if (!isVerifiedType(dbMembers.ContentType, dbMembers.typeObject.contentType)) {
-            throw new Error('[Error] init() : Parameter \'contentType\' is wrong.');
-        };
-    }
-
     function run(req) {
         return (async () => {
-            init(req);
-            let queryObject = require('./DBQueries')(dbMembers).queryObject;
+            let dbMembers = require('./DBmembers')(req);
+            let dbQueries = require('./DBQueries')(dbMembers).queryObject;
 
-            let blogContentType = dbMembers.typeObject.contentType;
-            let blogInputType = dbMembers.typeObject.inputType;
-            let dbType = dbMembers.DBType.BLOG;
+            let DBType = dbMembers.dbType;
+            let contentType = dbMembers.contentType;
+            let inputType = dbMembers.inputType;
 
-            let blogQueryObject = queryObject.blog[blogContentType][blogInputType]();
-            let queryLength = queryObject.getResultLength(dbType);
+            console.log('[ Target DB Type ]');
+            console.log(DBType);
+            console.log('[ Target Content Type ]');
+            console.log(contentType);
+            console.log('[ Target Input Type ]');
+            console.log(inputType);
 
-            let serverResult = [];
-            let blogResult = [];
-            for (let procedureId = 0; procedureId < queryLength; procedureId++) {
-                console.log('=============== DB RUN ===============')
+            // console.log('[ queryObject ]', dbQueries);
+            // console.log('[ queryObject ]', dbQueries[DBType]);
+            // console.log('[ queryObject ]', dbQueries[DBType][contentType]);
+            // console.log('[ queryObject ]', dbQueries[DBType][contentType][inputType]());
+            // console.log('[ queryAmount ]', dbQueries.getResultLength(DBType));
+
+            let queryObject = dbQueries[DBType][contentType][inputType]();
+            let queryAmount = dbQueries.getResultLength(DBType);
+
+            let requestResults = [];
+            let logResults = [];
+            for (let procedureId = 0; procedureId < queryAmount; procedureId++) {
+                console.log('=============== DB START ===============')
                 console.log('[procedureId]', procedureId)
-                // console.log('[ Content Type ]');
-                // console.log(blogContentType);
-                // console.log('[ Input Type ]');
-                // console.log(blogInputType);
+                
+                let requestDB =  dbMembers.targetDB;
+                let query = queryObject.query.shift();
+                let values = queryObject.values.shift();
+                let errorMessage = queryObject.errorMessage.shift();
 
-                let blogQuery = blogQueryObject.query.shift();
-                let blogValues = blogQueryObject.values.shift();
-                let blogErrorMessage = blogQueryObject.errorMessage.shift();
-
-                if (blogErrorMessage) {
-                    return blogQueryObject.errorMessage;
+                if (errorMessage) {
+                    return errorMessage;
                 } else {
-                    const DB = dbMembers.DB;
-
-                    /* Server */
-                    let serverContentType = dbMembers.ContentType.REQUEST_LOG;
-                    let serverInputType = dbMembers.InputType.CREATE;
-                    let serverQueryObject = queryObject.server[serverContentType][serverInputType]();
-
-                    let serverQuery = serverQueryObject.query.shift();
-                    let serverValues = serverQueryObject.values.shift();
-                    let serverErrorMessage = serverQueryObject.errorMessage.shift();
-
-                    serverResult.push(await DB.server(serverQuery, serverValues));
-
                     /* Blog */
-                    blogResult.push(await DB.blog(blogQuery, blogValues));
+                    requestResults.push(await requestDB(query, values));
 
-                    if (blogResult[blogResult.length - 1].errno) {
-                        // console.log('[ Blog Result ]');
-                        // console.log(blogResult);
-                        // console.log('[ Blog Query ]');
-                        // console.log(blogQueryObject.query);
-                        // console.log('[ Blog Values ]');
-                        // console.log(blogQueryObject.values);
-                        throw new Error('[Error] run() : There might be an error in query syntax on \'blog DB\'.');
+                    if (requestResults[requestResults.length - 1].errno) {
+                        // console.log('[ Request Result ]');
+                        // console.log(requestResults);
+                        // console.log('[ Request Query ]');
+                        // console.log(queryObject.query);
+                        // console.log('[ Request Values ]');
+                        // console.log(queryObject.values);
+                        throw new Error('[Error] run() : There might be an error in query syntax on \'targetDB DB\'.');
                     }
-                    if (serverResult[serverResult.length - 1].errno) {
-                        // console.log('[ Server Result ]');
-                        // console.log(serverResult);
-                        // console.log('[ Server Query ]');
-                        // console.log(serverQueryObject.query);
-                        // console.log('[ Server Values ]');
-                        // console.log(serverQueryObject.values);
+
+                    /* Log */
+                    let logDBType = dbMembers.DBType.SERVER;
+                    let logContentType = dbMembers.ContentType.REQUEST_LOG;
+                    let logInputType = dbMembers.InputType.CREATE;
+
+                    console.log('logDBType', logDBType);
+                    console.log('logContentType', logContentType);
+                    console.log('logInputType', logInputType)
+
+
+                    let logQueryObject = dbQueries[logDBType][logContentType][logInputType]();
+
+                    let logDB = dbMembers.logDB;
+                    let logQuery = logQueryObject.query.shift();
+                    let logValues = logQueryObject.values.shift();
+                    // let serverErrorMessage = serverQueryObject.errorMessage.shift();
+
+                    logResults.push(await logDB(logQuery, logValues));
+
+                    if (logResults[logResults.length - 1].errno) {
+                        // console.log('[ Log Result ]');
+                        // console.log(logResults);
+                        // console.log('[ Log Query ]');
+                        // console.log(logQueryObject.query);
+                        // console.log('[ Log Values ]');
+                        // console.log(logQueryObject.values);
                         throw new Error('[Error] run() : There might be an error in query syntax on \'server DB\'.');
                     }
-                    console.log('[ blogResult ]');
-                    console.log(blogResult);
-                    console.log('=============== DB RUN ===============')
+                    console.log('[ Request Results ]');
+                    console.log(requestResults);
+                    console.log('=============== DB FINISH ===============')
                 }
             }
-            if (blogResult.length === 1) {
-                return blogResult[0];
+            if (requestResults.length === 1) {
+                return requestResults[0];
             } else {
-                return blogResult;
+                return requestResults;
             }
         })();
     }

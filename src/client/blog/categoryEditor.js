@@ -458,7 +458,7 @@ async function loadContents() {
                                 }
                             }
         
-                            fetch(`/updateCategoryEditor`, {
+                            fetch(`/request/blog/update/categoryEditor`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'

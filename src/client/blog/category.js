@@ -5,7 +5,7 @@ window.onload = function () {
     const params = url.searchParams;
     let categoryId = params.get('category');
 
-    fetch(`/readCategory?category=${categoryId}`)
+    fetch(`/request/blog/read/category?category=${categoryId}`)
         .then(function (response) {
             return response.json();
         })

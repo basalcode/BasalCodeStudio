@@ -12,7 +12,7 @@ function loadPage() {
     let params = url.searchParams;
     let post_id = params.get('post');
 
-    fetch(`/readPost?post=${post_id}`)
+    fetch(`/request/blog/read/post?post=${post_id}`)
     .then(function (response) {
         return response.json();
     })
@@ -56,7 +56,7 @@ function showPost(postObj) {
     })
 
     deletePost.addEventListener('click', function (event) {
-        fetch('/deletePost', {
+        fetch('/request/blog/delete/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

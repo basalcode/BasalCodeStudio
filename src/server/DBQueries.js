@@ -1,13 +1,13 @@
 module.exports = function (dbMembers) {
-    let DB = dbMembers.DB;
+    let requestObject = dbMembers.requestObject;
+    
     let DBType = dbMembers.DBType;
     let InputType = dbMembers.InputType;
     let ContentType = dbMembers.ContentType;
-    let requestObject = dbMembers.requestObject;
 
     let queryObject = {
         setResult: function (db, query, values, errorMessage) {
-            if (db === 'blog') {
+            if (db !== 'server') {
                 console.log('[ PUSH ]', query);
                 console.log('[ PUSH ]', values);
             }
@@ -34,24 +34,46 @@ module.exports = function (dbMembers) {
         getResultLength: function (db) {
             return queryObject[db].result.length;
         },
-        blog: {
+        [DBType.USER]: {
             result: {
                 query: [],
                 values: [],
                 errorMessage: [],
                 length: 0
             },
-            [ContentType.TEST]: {
-                test() {
-                    console.log('[requestObject]', requestObject);
+            [ContentType.ACOUNT]: {
+                [InputType.CREATE]() {
+                    let requestBody = requestObject.body;
+                    let email = requestBody.email;
+                    let password = requestBody.password;
+                    let userName = requestBody.userName;
 
-                    let query = ``;
-                    let values = ``;
-                    return queryObject.setResult(DBType.BLOG, query, values, null);
+                    let query = `
+                        INSERT INTO account (
+                            email, 
+                            password, 
+                            user_name
+                        )
+                        VALUES ( ?, ?, ? );
+                    `;
+                    let values = [
+                        email,
+                        password,
+                        userName
+                    ];
+                    return queryObject.setResult(DBType.USER, query, values, null);
                 }
             },
+        },
+        [DBType.BLOG]: {
+            result: {
+                query: [],
+                values: [],
+                errorMessage: [],
+                length: 0
+            },
             [ContentType.POST]: {
-                create() {
+                [InputType.CREATE]() {
                     if (requestObject.body.title.length === 0) {
                         let errorMessage = 'There is no title.';
                         return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
@@ -87,7 +109,7 @@ module.exports = function (dbMembers) {
                         return queryObject.setResult(DBType.BLOG, query, values, null);
                     }
                 },
-                read() {
+                [InputType.READ]() {
                     let post_id = requestObject.query.post;
                     let query = `
                         SELECT
@@ -106,7 +128,7 @@ module.exports = function (dbMembers) {
                     ];
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
-                update() {
+                [InputType.UPDATE]() {
                     if (requestObject.body.title.length === 0) {
                         let errorMessage = 'There is no title.';
                         return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
@@ -143,7 +165,7 @@ module.exports = function (dbMembers) {
                         return queryObject.setResult(DBType.BLOG, query, values, null);
                     }
                 },
-                delete() {
+                [InputType.DELETE]() {
                     let post_id = requestObject.body.post;
                     let query = `
                         DELETE FROM post 
@@ -156,7 +178,7 @@ module.exports = function (dbMembers) {
                 }
             },
             [ContentType.CATEGORY_EDITOR]: {
-                read() {
+                [InputType.READ]() {
                     let query = `
                         SELECT 
                             section.id AS section_id,
@@ -169,7 +191,7 @@ module.exports = function (dbMembers) {
                     `;
                     return queryObject.setResult(DBType.BLOG, query, null, null);
                 },
-                update() {
+                [InputType.UPDATE]() {
                     const DEFAULT_INDEX = 0;
 
                     let query;
@@ -242,7 +264,7 @@ module.exports = function (dbMembers) {
                 }
             },
             [ContentType.CATEGORY]: {
-                create() {
+                [InputType.CREATE]() {
                     let query = `
                         INSERT INTO (
                             name,
@@ -258,7 +280,7 @@ module.exports = function (dbMembers) {
 
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
-                read() {
+                [InputType.READ]() {
                     let queryString = requestObject.query;
                     let category_id = queryString.category;
 
@@ -288,7 +310,7 @@ module.exports = function (dbMembers) {
 
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
-                update() {
+                [InputType.UPDATE]() {
                     let query = `
                         UPDATE category
                         SET 
@@ -303,7 +325,7 @@ module.exports = function (dbMembers) {
                     ];
                     return queryObject.setResult(DBType.BLOG, query, values, null);
                 },
-                delete() {
+                [InputType.DELETE]() {
                     let query = `
                         DELETE FROM category
                         WHERE id = ?
@@ -315,7 +337,7 @@ module.exports = function (dbMembers) {
                 }
             },
             [ContentType.SECTION]: {
-                read() {
+                [InputType.READ]() {
                     let query = `
                         SELECT 
                             section.id AS section_id,
@@ -330,7 +352,7 @@ module.exports = function (dbMembers) {
                 }
             }
         },
-        server: {
+        [DBType.SERVER]: {
             result: {
                 query: [],
                 values: [],
@@ -338,7 +360,7 @@ module.exports = function (dbMembers) {
                 length: 0
             },
             [ContentType.REQUEST_LOG]: {
-                create() {
+                [InputType.CREATE]() {
                     let query = `
                         INSERT INTO request_log (
                             type,
@@ -349,8 +371,10 @@ module.exports = function (dbMembers) {
                         ) 
                         VALUES (?, ?, ?, ?, ?);
                     `;
+                    console.log('requestObject', requestObject);
+                    console.log('requestObject.method', requestObject.method);
                     let values = [
-                        dbMembers.typeObject.inputType,
+                        dbMembers.inputType,
                         requestObject.method.toLowerCase(),
                         requestObject.headers['x-forwarded-for'],
                         requestObject.originalUrl,
@@ -358,11 +382,11 @@ module.exports = function (dbMembers) {
                     ];
                     return queryObject.setResult(DBType.SERVER, query, values, null);
                 },
-                read() {
+                [InputType.READ]() {
                 },
-                update() {
+                [InputType.UPDATE]() {
                 },
-                delete() {
+                [InputType.DELETE]() {
                 }
             }
         }
