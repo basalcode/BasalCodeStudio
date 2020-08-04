@@ -1,3 +1,5 @@
+const ilog = require('./improvedConsoleLog');
+
 const DBOperator = (function () {
     function run(req) {
         return (async () => {
@@ -8,27 +10,20 @@ const DBOperator = (function () {
             let contentType = dbMembers.contentType;
             let inputType = dbMembers.inputType;
 
-            console.log('[ Target DB Type ]');
-            console.log(DBType);
-            console.log('[ Target Content Type ]');
-            console.log(contentType);
-            console.log('[ Target Input Type ]');
-            console.log(inputType);
-
-            // console.log('[ queryObject ]', dbQueries);
-            // console.log('[ queryObject ]', dbQueries[DBType]);
-            // console.log('[ queryObject ]', dbQueries[DBType][contentType]);
-            // console.log('[ queryObject ]', dbQueries[DBType][contentType][inputType]());
-            // console.log('[ queryAmount ]', dbQueries.getResultLength(DBType));
-
+            ilog.middle('TYPE START');
+            ilog.all({DBType: DBType});
+            ilog.all({contentType: contentType});
+            ilog.all({inputType: inputType});
+            ilog.middle('TYPE FINISH');
+            
             let queryObject = dbQueries[DBType][contentType][inputType]();
             let queryAmount = dbQueries.getResultLength(DBType);
 
             let requestResults = [];
             let logResults = [];
             for (let procedureId = 0; procedureId < queryAmount; procedureId++) {
-                console.log('=============== DB START ===============')
-                console.log('[procedureId]', procedureId)
+                ilog.middle('DB START');
+                ilog.all({procedureId, procedureId});
                 
                 let requestDB =  dbMembers.targetDB;
                 let query = queryObject.query.shift();
@@ -42,12 +37,9 @@ const DBOperator = (function () {
                     requestResults.push(await requestDB(query, values));
 
                     if (requestResults[requestResults.length - 1].errno) {
-                        // console.log('[ Request Result ]');
-                        // console.log(requestResults);
-                        // console.log('[ Request Query ]');
-                        // console.log(queryObject.query);
-                        // console.log('[ Request Values ]');
-                        // console.log(queryObject.values);
+                        ilog.all({requestResults: requestResults});
+                        ilog.all({[queryObject.query]: queryObject.query});
+                        ilog.all({[queryObject.values]: queryObject.values});
                         throw new Error('[Error] run() : There might be an error in query syntax on \'targetDB DB\'.');
                     }
 
@@ -56,10 +48,9 @@ const DBOperator = (function () {
                     let logContentType = dbMembers.ContentType.REQUEST_LOG;
                     let logInputType = dbMembers.InputType.CREATE;
 
-                    console.log('logDBType', logDBType);
-                    console.log('logContentType', logContentType);
-                    console.log('logInputType', logInputType)
-
+                    ilog.all({logDBType: logDBType});
+                    ilog.all({logContentType: logContentType});
+                    ilog.all({logInputType: logInputType});
 
                     let logQueryObject = dbQueries[logDBType][logContentType][logInputType]();
 
@@ -71,17 +62,14 @@ const DBOperator = (function () {
                     logResults.push(await logDB(logQuery, logValues));
 
                     if (logResults[logResults.length - 1].errno) {
-                        // console.log('[ Log Result ]');
-                        // console.log(logResults);
-                        // console.log('[ Log Query ]');
-                        // console.log(logQueryObject.query);
-                        // console.log('[ Log Values ]');
-                        // console.log(logQueryObject.values);
+                        // ilog.all({logResults: logResults});
+                        // ilog.all({[logQueryObject.query]: logQueryObject.query});
+                        // ilog.all({[logQueryObject.values]: logQueryObject.values});
+                        
                         throw new Error('[Error] run() : There might be an error in query syntax on \'server DB\'.');
                     }
-                    console.log('[ Request Results ]');
-                    console.log(requestResults);
-                    console.log('=============== DB FINISH ===============')
+                    ilog.all({requestResults: requestResults});
+                    ilog.middle('DB FINISH');
                 }
             }
             if (requestResults.length === 1) {

@@ -1,3 +1,5 @@
+const ilog = require('./improvedConsoleLog');
+
 module.exports = function (dbMembers) {
     let requestObject = dbMembers.requestObject;
     
@@ -8,8 +10,10 @@ module.exports = function (dbMembers) {
     let queryObject = {
         setResult: function (db, query, values, errorMessage) {
             if (db !== 'server') {
-                console.log('[ PUSH ]', query);
-                console.log('[ PUSH ]', values);
+                ilog.middle('QUERY START');
+                ilog.all({query: query});
+                ilog.all({values: values});
+                ilog.middle('QUERY FINISH');
             }
 
             if (queryObject[db].result.query === null) {
@@ -196,8 +200,6 @@ module.exports = function (dbMembers) {
 
                     let query;
                     let values;
-                    console.log('========= DELETE TABLES =========');
-                    console.log('--------- CLEAR SECTION TABLE ---------');
                     query = `
                         DELETE FROM category
                         WHERE id > 0;
@@ -213,17 +215,10 @@ module.exports = function (dbMembers) {
                     let requestBody = requestObject.body;
                     let sections = requestBody.categoryEditor;
                     let sectionsLength = Object.keys(sections).length;
-                    console.log('[requestBody]', requestBody);
-                    console.log('[newSections]', sections);
-                    console.log('[newSectionsLength]', sectionsLength);
                     let categoryId = 0;
                     for (let i = DEFAULT_INDEX; i < sectionsLength; i++) {
-                        console.log('========= UPDATE SECTION =========');
                         let section = sections[i];
                         let sectionName = section.name;
-                        console.log('[section]', section);
-                        console.log('[sectionName]', sectionName);
-
                         if (i > DEFAULT_INDEX) {
                             query = `
                                 INSERT INTO section ( id, name )
@@ -236,20 +231,14 @@ module.exports = function (dbMembers) {
 
                         let categories = section.categories;
                         let newCategoriesLength = Object.keys(categories).length;
-                        console.log('[categories]', categories);
-                        console.log('[newCategoriesLength]', newCategoriesLength);
                         for (let j = DEFAULT_INDEX; j < newCategoriesLength; j++) {
-                            console.log('========= UPDATE CATEGORY =========');
                             if (i === DEFAULT_INDEX && j === DEFAULT_INDEX) {
                                 continue;
                             }
                             categoryId++;
 
-                            console.log('[categoryId]', categoryId);
                             let category = categories[j];
                             let categoryName = category.name;
-                            console.log('[category]', category);
-                            console.log('[categoryName]', categoryName);
 
                             query = `
                                 INSERT INTO category ( id, name, section_id )
@@ -371,8 +360,6 @@ module.exports = function (dbMembers) {
                         ) 
                         VALUES (?, ?, ?, ?, ?);
                     `;
-                    console.log('requestObject', requestObject);
-                    console.log('requestObject.method', requestObject.method);
                     let values = [
                         dbMembers.inputType,
                         requestObject.method.toLowerCase(),

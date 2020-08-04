@@ -34,17 +34,14 @@ module.exports = function (request) {
 
     function isValid(typeConstant, typeParameter) {
         if (!typeConstant) {
-            throw new Error(`[Error] isValid(): \'typeConstant\' is undefined.`);
+            throw new Error(`[Error] isValid(): Undefined \'typeConstant\' parameter.`);
         }
         if (!typeParameter) {
-            throw new Error(`[Error] isValid(): \'typeParameter\' is undefined.`);
+            throw new Error(`[Error] isValid(): Undefined \'typeParameter\' parameter.`);
         }
 
-        for (let key in typeConstant) {
-            let element = typeConstant[key];
-            if (element === typeParameter) {
-                return;
-            }
+        if (Object.values(typeConstant).indexOf(typeParameter) === -1) {
+            throw new Error(`[Error] isValid(): Invalid \'${typeConstant.name}\' value has been detected on \'DBmembers.js.\'`);
         }
         if (typeConstant === ContentType) {
             (function isContentTypeValid() {
@@ -52,26 +49,23 @@ module.exports = function (request) {
                     [DBType.USER]: {
                         [ContentType.ACCOUNT]: 1
                     },
-                    [DBType.ContentType]: {
+                    [DBType.BLOG]: {
                         [ContentType.POST]: 1,
                         [ContentType.CATEGORY_EDITOR]: 2,
                         [ContentType.CATEGORY]: 3,
                         [ContentType.SECTION]: 4
                     },
-                    [DBType.InputType]: {
+                    [DBType.SERVER]: {
                         [ContentType.REQUEST_LOG]: 1
                     }
                 }
-        
                 if (!Relation[dbType][contentType]) {
-                    throw new Error(`[Error] isContentTypeValid(): \'contentType\' is undefined.`);
+                    throw new Error(`[Error] isContentTypeValid(): Unrelated 
+                    DB and content.`);
                 }
             })();
         }
-        throw new Error(`[Error] isValid(): Invalid \'${typeConstant.name}\' value has been detected on \'DBmembers.js.\'`);
     }
-
-    
 
     /* st-mysql */
     const DB = {
