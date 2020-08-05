@@ -7,7 +7,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 
 const errorHandler = require('./src/server/errors');
-const DBOperator = require('./src/server/DBOperator');
+const requestProcessor = require('./src/server/requestProcessor');
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -58,7 +58,9 @@ app.get('/', function (req, res) {
     })
 })
 
-app.use('/request/:db/:inputType/:contentType', DBOperator.run);
+app.use('/verify/:session', requestProcessor);
+app.use('/request/:db/:inputType/:contentType/:session', requestProcessor);
+app.use('/request/:db/:inputType/:contentType', requestProcessor);
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

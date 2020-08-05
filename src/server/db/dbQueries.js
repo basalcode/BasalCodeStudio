@@ -1,4 +1,4 @@
-const ilog = require('./improvedConsoleLog');
+const ilog = require('../module/improvedConsoleLog');
 
 module.exports = function (dbMembers) {
     let requestObject = dbMembers.requestObject;
