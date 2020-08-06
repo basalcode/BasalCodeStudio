@@ -1,3 +1,5 @@
+const ilog = require('../module/improvedConsoleLog');
+
 module.exports = function (request) {
     if (!request) {
         throw new Error('[Error] DBmembers.js: There is no \'request\' parameter on DBmembers.js.');
@@ -10,7 +12,7 @@ module.exports = function (request) {
         SERVER: 'server'
     }
     const ContentType = {
-        ACOUNT: 'account',
+        ACCOUNT: 'account',
         POST: 'post',
         CATEGORY_EDITOR: 'categoryEditor',
         CATEGORY: 'category',
@@ -24,27 +26,46 @@ module.exports = function (request) {
         DELETE: 'delete'
     }
 
-    let dbType = request.params.db;
-    let inputType = request.params.inputType;
+    let requestObject = request;
+
+    let dbType = request.params.dbType;
     let contentType = request.params.contentType;
+    let inputType = request.params.inputType;
 
-    isValid(DBType, dbType);
-    isValid(ContentType, contentType);
-    isValid(InputType, inputType);
+    verify(DBType, dbType);
+    verify(ContentType, contentType);
+    verify(InputType, inputType);
 
-    function isValid(typeConstant, typeParameter) {
+    /* st-mysql */
+    const DB = {
+        user: require('st-mysql')({
+            host: 'localhost', user: 'root', password: '1135', database: 'user', flat: true, encode: false
+        }),
+        blog: require('st-mysql')({
+            host: 'localhost', user: 'root', password: '1135', database: 'blog', flat: true, encode: false
+        }),
+        server: require('st-mysql')({
+            host: 'localhost', user: 'root', password: '1135', database: 'server', flat: true, encode: false
+        })
+    }
+    
+    let requestDB = DB[dbType];
+    let logDB = DB[DBType.SERVER];
+
+    function verify(typeConstant, typeParameter) {
         if (!typeConstant) {
-            throw new Error(`[Error] isValid(): Undefined \'typeConstant\' parameter.`);
+            throw new Error(`[Error] verify(): Undefined \'typeConstant\' parameter.`);
         }
         if (!typeParameter) {
-            throw new Error(`[Error] isValid(): Undefined \'typeParameter\' parameter.`);
+            throw new Error(`[Error] verify(): Undefined \'typeParameter\' parameter.`);
         }
 
         if (Object.values(typeConstant).indexOf(typeParameter) === -1) {
-            throw new Error(`[Error] isValid(): Invalid \'${typeConstant.name}\' value has been detected on \'DBmembers.js.\'`);
+            throw new Error(`[Error] verify(): Invalid \'${typeConstant.name}\' value has been detected on \'DBmembers.js.\'`);
         }
+
         if (typeConstant === ContentType) {
-            (function isContentTypeValid() {
+            (function verifyContentType() {
                 const Relation = {
                     [DBType.USER]: {
                         [ContentType.ACCOUNT]: 1
@@ -60,40 +81,25 @@ module.exports = function (request) {
                     }
                 }
                 if (!Relation[dbType][contentType]) {
-                    throw new Error(`[Error] isContentTypeValid(): Unrelated 
+                    throw new Error(`[Error] verifyContentType(): Unrelated 
                     DB and content.`);
                 }
             })();
         }
     }
 
-    /* st-mysql */
-    const DB = {
-        user: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'user', flat: true, encode: false
-        }),
-        blog: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'blog', flat: true, encode: false
-        }),
-        server: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'server', flat: true, encode: false
-        })
-    }
-    let targetDB = DB[dbType];
-    let logDB = DB[DBType.SERVER];
-
     return {
-        requestObject: request,
-
         DBType: DBType,
         ContentType: ContentType,
         InputType: InputType,
+
+        requestObject: requestObject,
 
         dbType: dbType,
         inputType: inputType,
         contentType: contentType,
 
-        targetDB: targetDB,
+        requestDB: requestDB,
         logDB: logDB
     }
-}
+};

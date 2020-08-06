@@ -58,9 +58,7 @@ app.get('/', function (req, res) {
     })
 })
 
-app.use('/verify/:session', requestProcessor);
-app.use('/request/:db/:inputType/:contentType/:session', requestProcessor);
-app.use('/request/:db/:inputType/:contentType', requestProcessor);
+app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

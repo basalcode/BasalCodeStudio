@@ -41,7 +41,7 @@ module.exports = (function () {
     }
 
     function verifyValue(log) {
-        if (!log) {
+        if (log === undefined || log === null) {
             throw Error('[Error] imporvedConsole.js: Not exist \'logName\' && \'log\' parameter.');
         }
     }

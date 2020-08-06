@@ -1,54 +1,33 @@
-const dbOperator = require('./db/dbOperator');
-const sessionOperator = require('./session/sessionOperator');
 const ilog = require('../server/module/improvedConsoleLog')
 
 module.exports = function (req, res) {
     (async function () {
-        const SessionType = {
-            ONLY: 'alone',
-            FRONT: 'front',
-            BOTH: 'both',
-            BACK: 'back'
-        }
+        const dbMembers = require('./db/dbMembers')(req);
 
-        let originalURL = req.originalUrl;
-        let sessionParams = req.params.session;
-        if (sessionParams) {
-            if (Object.values(SessionType).indexOf(sessionParams) === -1) {
-                throw new Error(`[Error] requestProcessor.js: Invalid \'SessionType\' value. in \'sessionParams\'.`);
+        let DBType = dbMembers.DBType;
+        let ContentType = dbMembers.ContentType;
+
+        let dbType = dbMembers.dbType;
+        let contentType = dbMembers.contentType;
+
+        let requestLinker = {
+            [DBType.USER]: {
+                [ContentType.ACOUNT]: require('./db/queries/user/account')
+            },
+            [DBType.BLOG]: {
+                [ContentType.POST]: require('./db/queries/blog/post'),
+                [ContentType.CATEGORY_EDITOR]: require('./db/queries/blog/categoryEditor'),
+                [ContentType.CATEGORY]: require('./db/queries/blog/category'),
+                [ContentType.SECTION]: require('./db/queries/blog/section'),
+            },
+            [DBType.SERVER]: {
+                [ContentType.REQUEST_LOG]: require('./db/queries/server/requestLog')
             }
         }
+
         
-        ilog.all({originalURL: originalURL});
-        ilog.all({sessionParams: sessionParams});
-
-        let requestResult;
-        if (originalURL.split('/')[1] === SessionType.ONLY) { // Only Session
-            console.log('Only Session');
-
-            requestResult = sessionOperator(req);
-        } else if (sessionParams === SessionType.FRONT) { // Session => DB
-            console.log('Session => DB');
-
-            let frontSession = sessionOperator(req);
-            requestResult = await dbOperator(req, frontSession);
-        } else if (sessionParams === SessionType.BOTH) { // Session => DB => Session
-            console.log('Session => DB => Session');
-
-            let frontSession = sessionOperator.run(req);
-            let db = await dbOperator(req, frontSession);
-            requestResult = sessionOperator(req, db);
-        } else if (sessionParams === SessionType.BACK) { // DB => Session
-            console.log('DB => Session');
-
-            let db = await dbOperator(req);
-            requestResult = sessionOperator(req, db);
-        } else { // Only DB
-            console.log('Only DB');
-
-            requestResult = await dbOperator(req);
-        }
-        ilog.all({requestResult: requestResult});
+        let requestResult = await requestLinker[dbType][contentType](dbMembers);
+        requestLinker[DBType.SERVER][ContentType.REQUEST_LOG](dbMembers);
 
         res.send({
             result: requestResult
