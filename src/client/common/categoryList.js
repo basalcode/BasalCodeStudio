@@ -5,6 +5,7 @@ export default (async function () {
                 return response.json();
             })
             .then(function (parsed) {
+                console.log(parsed);
                 let dbResult = parsed.result;
                 let categoryListObject = getCategoryListObject(dbResult);
 

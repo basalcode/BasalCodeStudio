@@ -1,6 +1,6 @@
 const queryObject = require('../../queryObject');
 
-module.exports = function (dbMembers) {
+module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
     let logDB = dbMembers.logDB;
     let InputType = dbMembers.InputType;

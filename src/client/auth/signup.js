@@ -24,7 +24,7 @@ function loadSignUp() {
                 userName: userName.value
             }
     
-            fetch('/auth/signup', {
+            fetch('/request/user/create/account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

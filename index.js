@@ -40,7 +40,6 @@ const sessionStore = new MySQLStore(storeOptions);
 
 /* session */
 app.use(session({
-    // key: 'session_cookie_name',
     secret: 'i am not a cat',
     resave: false,
     saveUninitialized: true,
@@ -59,6 +58,9 @@ app.get('/', function (req, res) {
 })
 
 app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
+app.get('/test', function (req, res) {
+    res.redirect(301, '/');
+})
 
 app.use(errorHandler.error404);
 app.use(errorHandler.error500);

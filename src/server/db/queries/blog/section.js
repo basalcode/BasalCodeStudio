@@ -1,13 +1,13 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
 
-module.exports = function (dbMembers) {
+module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
     let InputType = dbMembers.InputType;
     let inputType = dbMembers.inputType;
 
     let contentQueries = {
-        [InputType.READ]() {
+        async [InputType.READ]() {
             let query = `
             SELECT 
                 section.id AS section_id,
@@ -20,7 +20,7 @@ module.exports = function (dbMembers) {
         `;
         
         queryObject.push(query, values, null);
-        return dbOperator(dbMembers, queryObject);
+        return await dbOperator(dbMembers, queryObject);
         }
     }
     return contentQueries[inputType]();

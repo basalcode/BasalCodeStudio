@@ -9,10 +9,10 @@ module.exports = (function () {
     }
 
     function push(query, values, errorMessage) {
-        ilog.middle('QUERY');
+        ilog.middle(' QUERY START ');
         ilog.all({ query: query });
         ilog.all({ values: values });
-        ilog.middle('');
+        ilog.middle(' QUERY FINISH ');
 
         object.queryList.push(query);
         object.valuesList.push(values);

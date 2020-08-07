@@ -16,7 +16,7 @@ module.exports = (function () {
             if (log.constructor.name === 'Object') {
                 let logName = Object.keys(log).pop();
                 let logValue = Object.values(log).pop();
-                console.log(`${frontBracket} ${logName} ${backBracket}`, logValue);
+                console.log(`${frontBracket}${logName}${backBracket}`, logValue);
             } else {
                 console.log(log);
             }
@@ -30,7 +30,7 @@ module.exports = (function () {
 
             let lineFront = middleLine.repeat(middleLineLength / 2 - 1);
             let lineBack = middleLine.repeat(middleLineLength / 2 - 1);
-            console.log(`${lineFront} ${log} ${lineBack}`);
+            console.log(`${lineFront}${log}${lineBack}`);
             return;
         },
         [Type.NONE](log) {

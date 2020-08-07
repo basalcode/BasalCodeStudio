@@ -1,8 +1,12 @@
 const ilog = require('../module/improvedConsoleLog');
 
-module.exports = function (request) {
+module.exports = function (request, response) {
     if (!request) {
         throw new Error('[Error] DBmembers.js: There is no \'request\' parameter on DBmembers.js.');
+    }
+
+    if (!response) {
+        throw new Error('[Error] DBmembers.js: There is no \'response\' parameter on DBmembers.js.');
     }
 
     /* types */
@@ -27,6 +31,7 @@ module.exports = function (request) {
     }
 
     let requestObject = request;
+    let responseObject = response;
 
     let dbType = request.params.dbType;
     let contentType = request.params.contentType;
@@ -94,6 +99,7 @@ module.exports = function (request) {
         InputType: InputType,
 
         requestObject: requestObject,
+        responseObject: responseObject,
 
         dbType: dbType,
         inputType: inputType,

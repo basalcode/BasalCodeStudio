@@ -1,13 +1,13 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
 
-module.exports = function (dbMembers) {
+module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
     let InputType = dbMembers.InputType;
     let inputType = dbMembers.inputType;
 
     let contentQueries = {
-        [InputType.CREATE]() {
+        async [InputType.CREATE]() {
             let query = `
             INSERT INTO (
                 name,
@@ -22,9 +22,9 @@ module.exports = function (dbMembers) {
             ];
 
             queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+            return await dbOperator(dbMembers, queryObject);
         },
-        [InputType.READ]() {
+        async [InputType.READ]() {
             let queryString = requestObject.query;
             let category_id = queryString.category;
 
@@ -53,9 +53,9 @@ module.exports = function (dbMembers) {
             ];
 
             queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+            return await dbOperator(dbMembers, queryObject);
         },
-        [InputType.UPDATE]() {
+        async [InputType.UPDATE]() {
             let query = `
             UPDATE category
             SET 
@@ -69,9 +69,9 @@ module.exports = function (dbMembers) {
                 requestObject.body.id
             ];
             queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+            return await dbOperator(dbMembers, queryObject);
         },
-        [InputType.DELETE]() {
+        async [InputType.DELETE]() {
             let query = `
             DELETE FROM category
             WHERE id = ?
@@ -80,7 +80,7 @@ module.exports = function (dbMembers) {
                 requestObject.body.id
             ];
             queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+            return await dbOperator(dbMembers, queryObject);
         }
     }
     return contentQueries[inputType]();

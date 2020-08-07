@@ -1,22 +1,22 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
 
-module.exports = function (dbMembers) {
+module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
     let InputType = dbMembers.InputType;
     let inputType = dbMembers.inputType;
 
     let contentQueries = {
-        [InputType.CREATE]() {
+        async [InputType.CREATE]() {
             if (requestObject.body.title.length === 0) {
                 let errorMessage = 'There is no title.';
-                return queryObject.push(null, null, errorMessage);
+                return errorMessage;
             } else if (requestObject.body.author.length === 0) {
                 let errorMessage = 'There is no author.';
-                return queryObject.push(null, null, errorMessage);
+                return errorMessage;
             } else if (requestObject.body.description.length === 0) {
                 let errorMessage = 'There is no description.';
-                return queryObject.push(null, null, errorMessage);
+                return errorMessage;
             } else {
                 let requestBody = requestObject.body;
 
@@ -41,10 +41,10 @@ module.exports = function (dbMembers) {
                     category_id
                 ];
                 queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+                return await dbOperator(dbMembers, queryObject);
             }
         },
-        [InputType.READ]() {
+        async [InputType.READ]() {
             let post_id = requestObject.query.post;
             let query = `
                 SELECT
@@ -61,18 +61,19 @@ module.exports = function (dbMembers) {
             let values = [
                 post_id
             ];
-            return queryObject.setResult(DBType.BLOG, query, values, null);
+            queryObject.push(query, values, null);
+            return await dbOperator(dbMembers, queryObject);
         },
-        [InputType.UPDATE]() {
+        async [InputType.UPDATE]() {
             if (requestObject.body.title.length === 0) {
                 let errorMessage = 'There is no title.';
-                return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
+                return errorMessage;
             } else if (requestObject.body.author.length === 0) {
                 let errorMessage = 'There is no author.';
-                return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
+                return errorMessage;
             } else if (requestObject.body.description.length === 0) {
                 let errorMessage = 'There is no description.';
-                return queryObject.setResult(DBType.BLOG, null, null, errorMessage);
+                return errorMessage;
             } else {
                 let requestBody = requestObject.body;
 
@@ -98,10 +99,10 @@ module.exports = function (dbMembers) {
                     id
                 ];
                 queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+                return await dbOperator(dbMembers, queryObject);
             }
         },
-        [InputType.DELETE]() {
+        async [InputType.DELETE]() {
             let post_id = requestObject.body.post;
             let query = `
                 DELETE FROM post 
@@ -111,7 +112,7 @@ module.exports = function (dbMembers) {
                 post_id
             ];
             queryObject.push(query, values, null);
-            return dbOperator(dbMembers, queryObject);
+            return await dbOperator(dbMembers, queryObject);
         }
     }
     return contentQueries[inputType]();

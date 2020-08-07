@@ -16,11 +16,11 @@ function loadLogIn() {
             lock = true;
 
             let loginObject = {
-                id: email.value,
+                email: email.value,
                 password: password.value
             }
 
-            fetch('/auth/login', {
+            fetch('/request/user/read/account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -30,6 +30,7 @@ function loadLogIn() {
                 return response.json()
             }).then(function (parsed) {
                 console.log(parsed);
+                window.location.href = '/source/blog/blogMain.html'
             });
 
             lock = false;
