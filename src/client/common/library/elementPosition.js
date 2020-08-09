@@ -1,12 +1,12 @@
-import stringParser from './stringParser.js';
+import parser from './parser.js';
 
 export default (function () {
     function getHeight(element) {
-        return stringParser.removePixel(element.style.height);
+        return parser.removePixel(element.style.height);
     }
 
     function getWidth(element) {
-        return stringParser.removePixel(element.style.width);
+        return parser.removePixel(element.style.width);
     }
 
     function center(element, parent) {
@@ -33,38 +33,38 @@ export default (function () {
     }
 
     function centeredXCordinate(element, parent) {
-        let parentWidth = stringParser.removePixel(parent.style.width);
-        let width = stringParser.removePixel(element.style.width);
+        let parentWidth = parser.removePixel(parent.style.width);
+        let width = parser.removePixel(element.style.width);
         let xCordination = (parentWidth - width) / 2;
         
         return xCordination;
     }
 
     function centeredYCordinate(element, parent) {
-        let parentHeight = stringParser.removePixel(parent.style.height);
-        let height = stringParser.removePixel(element.style.height);
+        let parentHeight = parser.removePixel(parent.style.height);
+        let height = parser.removePixel(element.style.height);
         let yCordination = (parentHeight - height) / 2;
 
         return yCordination;
     }
 
     function aboveViewport(element) {
-        let height = stringParser.removePixel(element.style.height);
+        let height = parser.removePixel(element.style.height);
         element.style.top = (height * -1) + 'px';
     }
 
     function belowViewport(element) {
-        let height = stringParser.removePixel(element.style.height);
+        let height = parser.removePixel(element.style.height);
         element.style.bottom = (height * -1) + 'px';
     }
 
     function leftViewport(element) {
-        let width = stringParser.removePixel(element.style.width);
+        let width = parser.removePixel(element.style.width);
         element.style.right = (width * -1) + 'px';
     }
 
     function rightViewport(element) {
-        let width = stringParser.removePixel(element.style.width);
+        let width = parser.removePixel(element.style.width);
         element.style.right = (width * -1) + 'px';
     }
 
