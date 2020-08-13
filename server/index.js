@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.get('/hello', function (req, res) {
-    console.log('Test');
     res.send({
         result: 'Hello'
     });
