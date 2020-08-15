@@ -46,7 +46,7 @@ app.use(session({
     store: sessionStore
 }));
 
-app.use('/source', express.static('./src/client'));
+app.use('/client', express.static('../src/'));
 app.get('/', function (req, res) {
     fs.readFile('./src/client/blog/lobby.html', function (err, data) {
         if (err) {
