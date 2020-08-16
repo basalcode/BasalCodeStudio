@@ -1,6 +1,7 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Lobby from './lobby/lobby';
+import Lobby from './component/Lobby/lobby';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,7 +14,10 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <Lobby></Lobby>
+        <Switch>
+          <Route path="/" component={Lobby}></Route>
+        </Switch>
+        
       </div>
     );
   }
