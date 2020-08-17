@@ -8,6 +8,14 @@ class Lobby extends Component {
         }
     }
 
+    
+    componentDidMount() {
+        const LOBBY_WAIT_TIMER = 2000;
+        window.setTimeout(() => {
+            this.props.history.push('/blogMain');    
+        }, LOBBY_WAIT_TIMER);
+    }
+
     render() {
         return (
             <div className="Lobby">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Lobby from './component/Lobby/lobby';
+import Blog from './component/Blog/Blog';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,9 +16,9 @@ class App extends React.Component {
     return (
       <div id="App">
         <Switch>
-          <Route path="/" component={Lobby}></Route>
+          <Route exact path="/" component={Lobby}></Route>
+          <Route path="/blogMain" component={Blog}></Route>
         </Switch>
-        
       </div>
     );
   }
