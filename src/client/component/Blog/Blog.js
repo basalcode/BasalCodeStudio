@@ -6,11 +6,14 @@ class Blog extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            test: 'Default Test Result'
         }
     }
+
     render() {
         return (
             <div className="Blog">
+                <div className="test">{this.state.test}</div>
                 <Header></Header>
                 <div className="Blog__main-image">Image</div>
                 <div className="Blog__category-list"></div>
@@ -28,7 +31,7 @@ class Blog extends Component {
 export default Blog;
 
 
-{/* <input></input>
+/* <input></input>
 <a></a>
 <a></a>
 <div></div>
@@ -38,4 +41,4 @@ export default Blog;
 <a id="category-editor" href="/source/blog/categoryEditor.html">Category Editor</a>
 <a id="log-in" href="/source/auth/login.html">Log In</a>
 <div id="category-list"></div>
-<script type="module" src="/source/blog/blogMain.js"></script> */}
+<script type="module" src="/source/blog/blogMain.js"></script> */

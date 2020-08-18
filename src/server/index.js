@@ -3,11 +3,12 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const path = require('path');
 
 const app = express();
 
-const errorHandler = require('./src/server/errors');
-const requestProcessor = require('./src/server/requestProcessor');
+// const errorHandler = require('./src/errors');
+// const requestProcessor = require('./src/requestProcessor');
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -46,23 +47,35 @@ app.use(session({
     store: sessionStore
 }));
 
-app.use('/client', express.static('../src/'));
-app.get('/', function (req, res) {
-    fs.readFile('./src/client/blog/lobby.html', function (err, data) {
-        if (err) {
-            res.status(404).send('Not Found');
-        } else {
-            res.status(200).send(data.toString());
+
+// To change developmentMode as false,
+// the "start" value on package.json should be modified 
+// as "export PORT=3001 && react-scripts start"
+const developmentMode = true;
+if (developmentMode) {
+    //Client Side Rendering
+
+    // app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
+
+    // app.use(errorHandler.error404);
+    // app.use(errorHandler.error500);
+
+    app.listen(3001);
+} else {
+    //Server Side Rendering
+
+    app.use('/', express.static(path.resolve(__dirname, '../../build')));
+    app.get('*', (req, res, next) => {
+        if (req.path.split('/')[1] === 'static') {
+            return next();
         }
-    })
-})
+        console.log(__dirname);
 
-app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
-app.get('/test', function (req, res) {
-    res.redirect(301, '/');
-})
+        res.sendFile(path.resolve(__dirname, '../../build/index.html'));
+    });
 
-app.use(errorHandler.error404);
-app.use(errorHandler.error500);
 
-app.listen(3001);
+    
+
+    app.listen(3000);
+}
