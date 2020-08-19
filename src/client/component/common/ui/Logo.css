@@ -1,0 +1,21 @@
+.Logo {
+    display: inline-block;
+}
+
+.Logo__text {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 3px;
+}
+
+.Logo__bottom-line {
+    width: 0px;
+    border-bottom: 1px solid black;
+    transition: width 1s;    
+}
+
+.Logo:hover .Logo__bottom-line {
+    width: 100%;
+    transition: width 1s;
+}

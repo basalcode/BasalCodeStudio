@@ -56,12 +56,9 @@ body {
 }
 
 .Lobby__text {
-    /* border: 1px solid pink; */
     text-align: center;
     font-size: 72px;
     font-family: 'Cinzel', serif;
-    /* font-family: Playfair Display, serif; */
-    /* font-family: Lora, serif; */
     color: white;
     letter-spacing: 5px;
     mix-blend-mode: difference;

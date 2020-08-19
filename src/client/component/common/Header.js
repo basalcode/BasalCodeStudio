@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Header.css';
 
+import Navigation from '../common/Navigation';
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +13,6 @@ class Header extends Component {
         return (
             <header className="Header">
                 <div className="Header__logo">Basal Code Studio</div>
-                <nav className="Header__navigation">Navigation</nav>
             </header>
         );
     }

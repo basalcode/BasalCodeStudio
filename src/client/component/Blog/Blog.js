@@ -1,28 +1,19 @@
 import React, { Component } from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
+import './Blog.css'
+
+import BlogLobby from './BlogLobby';
 
 class Blog extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            test: 'Default Test Result'
         }
     }
 
     render() {
         return (
             <div className="Blog">
-                <div className="test">{this.state.test}</div>
-                <Header></Header>
-                <div className="Blog__main-image">Image</div>
-                <div className="Blog__category-list"></div>
-                <div className="Blog__content-board">
-                    <div className="Blog__lastest-posts">Latest Posts</div>
-                    <div className="Blog__introduction">Introduction</div>
-                    <div className="Blog__post-list">PostList</div>
-                </div>
-                <Footer></Footer>
+                <BlogLobby></BlogLobby>
             </div>
         );
     }
