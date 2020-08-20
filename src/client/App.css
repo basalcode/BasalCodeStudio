@@ -8,9 +8,13 @@ html {
     margin: 0;
 }
 
-*, *:before, *:after{
+*, *:before, *:after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
     margin: 0;
+}
+
+a, button {
+    all: unset;
 }

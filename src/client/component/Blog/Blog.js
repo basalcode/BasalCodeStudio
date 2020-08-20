@@ -1,22 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+
 import './Blog.css'
 
 import BlogLobby from './BlogLobby';
 
-class Blog extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-
-    render() {
-        return (
-            <div className="Blog">
-                <BlogLobby></BlogLobby>
-            </div>
-        );
-    }
+function Blog({match}) {
+    return (
+        <div className="Blog">
+            <Switch>
+                <Route path={`${match.path}/main`} component={BlogLobby}></Route>
+            </Switch>
+        </div>
+    );
 }
 
 export default Blog;

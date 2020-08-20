@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import './LoginLink.css';
 
-class LoginLink extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-
-    render() {
-        return (
-            <div className="LoginLink" onClick={event => this.props.history.push('/login')}>
-            </div>
-        );
-    }
+function LoginLink() {
+    return (
+        <div className="LoginLink">
+        <Link to="/login">Login</Link>
+        </div>
+    );
 }
 
 export default LoginLink;

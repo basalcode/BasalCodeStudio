@@ -12,7 +12,7 @@ class Lobby extends Component {
     componentDidMount() {
         const LOBBY_WAIT_TIMER = 2000;
         window.setTimeout(() => {
-            this.props.history.push('/blogMain');    
+            this.props.history.push('/blog/main');    
         }, LOBBY_WAIT_TIMER);
     }
 

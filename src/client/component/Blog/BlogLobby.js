@@ -10,36 +10,29 @@ import EmailLink from '../common/ui/floatButton/EmailLink'
 
 import Footer from '../common/Footer';
 
-class BlogLobby extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-    render() {
-        return (
-            <header className="BlogLobby">
-                <Logo></Logo>
-                <Navigation></Navigation>
-                <GoTop></GoTop>
-                <NightMode></NightMode>
-                <GitHubLink></GitHubLink>
-                <EmailLink></EmailLink>
+function BlogLobby() {
+    return (
+        <div className="BlogLobby">
+            <Logo></Logo>
+            <Navigation></Navigation>
+            <GoTop></GoTop>
+            <NightMode></NightMode>
+            <GitHubLink></GitHubLink>
+            <EmailLink></EmailLink>
 
-                <div className="BlogMain">
-                    BasalCodeStudio에 오신 것을 환영합니다.
+            <div className="BlogMain">
+                BasalCodeStudio에 오신 것을 환영합니다.
                 </div>
-                <div className="BlogIntro">
-                    BlogIntro
+            <div className="BlogIntro">
+                BlogIntro
                 </div>
-                <div className="BlogSkill">
-                    Skill
+            <div className="BlogSkill">
+                Skill
                 </div>
 
-                <Footer></Footer>
-            </header>
-        );
-    }
+            <Footer></Footer>
+        </div>
+    );
 }
 
 export default BlogLobby;

@@ -63,8 +63,13 @@ if (developmentMode) {
     app.listen(3001);
 } else {
     //Server Side Rendering
+    // After Apply Redux
+    app.get('/*', (req, res) => {
+        res.sendfile(path.join(__dirname, '../index.html'));
+    })
 
-    app.use('/', express.static(path.resolve(__dirname, '../../build')));
+    // Before Apply Redux
+    /* app.use('/', express.static(path.resolve(__dirname, '../../build')));
     app.get('*', (req, res, next) => {
         if (req.path.split('/')[1] === 'static') {
             return next();
@@ -72,7 +77,7 @@ if (developmentMode) {
         console.log(__dirname);
 
         res.sendFile(path.resolve(__dirname, '../../build/index.html'));
-    });
+    }); */
 
 
     

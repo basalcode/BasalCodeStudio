@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import './Login.css'
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-
-    render() {
-        return (
-            <div className="Login">
-                
-            </div>
-        );
-    }
+function Login() {
+    return (
+        <div className="Login">
+            <span>id: </span>
+            <input className="id"></input>
+            <span>pw: </span>
+            <input className="password"></input>
+        </div>
+    );
 }
 
 export default Login;
