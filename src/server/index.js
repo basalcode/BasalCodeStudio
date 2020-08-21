@@ -7,8 +7,8 @@ const path = require('path');
 
 const app = express();
 
-// const errorHandler = require('./src/errors');
-// const requestProcessor = require('./src/requestProcessor');
+const errorHandler = require('./errors');
+const requestProcessor = require('./requestProcessor');
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -47,18 +47,16 @@ app.use(session({
     store: sessionStore
 }));
 
-
 // To change developmentMode as false,
 // the "start" value on package.json should be modified 
 // as "export PORT=3001 && react-scripts start"
 const developmentMode = true;
 if (developmentMode) {
     //Client Side Rendering
+    app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
 
-    // app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
-
-    // app.use(errorHandler.error404);
-    // app.use(errorHandler.error500);
+    app.use(errorHandler.error404);
+    app.use(errorHandler.error500);
 
     app.listen(3001);
 } else {

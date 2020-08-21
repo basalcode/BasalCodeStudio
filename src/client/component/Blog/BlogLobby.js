@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './BlogLobby.css';
 
 import Logo from '../common/ui/Logo';
@@ -10,6 +10,8 @@ import EmailLink from '../common/ui/floatButton/EmailLink'
 
 import Footer from '../common/Footer';
 
+import CategoryList from '../common/CategoryList/CategoryList';
+
 function BlogLobby() {
     return (
         <div className="BlogLobby">
@@ -19,6 +21,8 @@ function BlogLobby() {
             <NightMode></NightMode>
             <GitHubLink></GitHubLink>
             <EmailLink></EmailLink>
+
+            <CategoryList></CategoryList>
 
             <div className="BlogMain">
                 BasalCodeStudio에 오신 것을 환영합니다.

@@ -14,6 +14,7 @@ module.exports = async function (dbMembers, queryObject) {
         } else {
             requestResults.push(await requestDB(query, values));
             if (requestResults[requestResults.length - 1].errno) {
+                ilog.all({'errno': requestResults[requestResults.length - 1]});
                 throw new Error('[Error] dbOperator() : There might be an error in query syntax on \'requestDB\'.');
             }
 

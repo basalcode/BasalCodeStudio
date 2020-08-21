@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Navigation.css';
 
 import LoginLink from './LoginLink';
-import CategoryLinks from './CategoryLinks';
+import CategoryList from '../../CategoryList/CategoryList';
 
 function Navigation() {
     return (
@@ -12,9 +12,8 @@ function Navigation() {
             }} /></svg>
 
             <div className="Navigation__drop-down-container">
-                    <LoginLink></LoginLink>
-                    <CategoryLinks></CategoryLinks>
-                </div>
+                <LoginLink></LoginLink>
+            </div>
         </button>
     );
 }

@@ -1,4 +1,4 @@
-const queryObject = require('../../queryObject');
+const ilog = require('../../../module/improvedConsoleLog');
 
 module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
@@ -21,13 +21,18 @@ module.exports = async function (dbMembers) {
             let values = [
                 dbMembers.inputType,
                 requestObject.method.toLowerCase(),
-                requestObject.headers['x-forwarded-for'],
+                requestObject.headers['x-forwarded-for'][0],
                 requestObject.originalUrl,
                 JSON.stringify(requestObject.body)
             ];
-
+            
+            // ilog.middle(' Log Start ');
+            // ilog.all({query: query});
+            // ilog.all({values: values});
             let logResult = await logDB(query, values);
+            // ilog.middle(' Log End ');
             if (logResult.errno) {
+                ilog.all({logResult, logResult});
                 throw new Error('[Error] requestLog.js : There might be an error in query syntax on \'logDB\'.');
             }
         }

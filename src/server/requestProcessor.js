@@ -27,7 +27,7 @@ module.exports = async function (req, res) {
     ilog.all({ dbType: dbType })
     let requestResult = await requestLinker[dbType][contentType](dbMembers);
     requestLinker[DBType.SERVER][ContentType.REQUEST_LOG](dbMembers);
+    ilog.all({requestResult, requestResult});
 
-
-    res.send({result: requestResult}).redirect('./src/client/auth/login.html');
+    res.send({result: requestResult});
 }
