@@ -1,5 +1,9 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
+const resultObject = require('../../resultObject');
+
+const isUndefined = require('../../../module/verifyValue').isUndefined;
+
 const ilog = require('../../../module/improvedConsoleLog');
 
 module.exports = async function (dbMembers) {
@@ -49,17 +53,23 @@ module.exports = async function (dbMembers) {
             let values = [ email ];
 
             queryObject.push(query, values, null);
-            let dbResult = await dbOperator(dbMembers, queryObject);
-            
-            if (dbResult.length === 0) {
-                return 'The email or password you entered is incorrect.';
+            let dbResult = (await dbOperator(dbMembers, queryObject))[0];
+
+            const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
+            if (isUndefined(dbResult)) {
+                return resultObject(false, ERROR_MESSAGE);
             }
 
-            if (password === dbResult[0].password) {
+            let response = {
+                email: dbResult.email,
+                user_name: dbResult.user_name,
+            };
+            
+            if (password === dbResult.password) {
                 requestObject.session.login = true;
-                return true;
+                return resultObject(true, response);
             } else {
-                return false;
+                return resultObject(false, ERROR_MESSAGE);
             }
         }
     }

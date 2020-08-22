@@ -12,20 +12,17 @@ function CategoryList() {
                 .then(function (response) {
                     return response.json();
                 })
-                .then(function (parsed) {
-                    console.log(parsed.result);
-                    let dbResult = parsed.result;
-                    let categoryListObject = getCategoryListObject(dbResult);
-                    console.log(categoryListObject);
-
-                    resolve(categoryListObject)
-                })
+                .then(function (result) {
+                    if (result.validity) {
+                        let categoryListObject = getCategoryListObject(result.value);
+                        resolve(categoryListObject);
+                    }
+                });
         })
     };
 
     const renderSection = () => {
         return Object.values(sections).map(section => {
-            console.log(JSON.stringify(section));
             return (<Section
                 key={section.id}
                 name={section.name}
@@ -39,7 +36,6 @@ function CategoryList() {
             const sectionsObject = await getSections();
             setSections(sectionsObject);
         }
-
         fetchSections();
     }, [])
 
@@ -55,6 +51,7 @@ function CategoryList() {
 export default CategoryList;
 
 function getCategoryListObject(dbResult) {
+    console.log('dbResult', dbResult);
     let sections = {}
     dbResult.forEach(element => {
         let section = {
@@ -78,16 +75,3 @@ function getCategoryListObject(dbResult) {
     });
     return sections;
 }
-
-/*
-<div className="section">
-                            <div className="section__self">
-                                <div className="section__title"></div>
-                            </div>
-                            <div className="section__categories">
-                                <div className="category"></div>
-                                <div className="category__self">
-                                    <div className="category__title"></div>
-                                </div>
-                            </div>
-                        </div> */

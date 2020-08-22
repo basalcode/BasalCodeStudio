@@ -8,7 +8,6 @@ class Lobby extends Component {
         }
     }
 
-    
     componentDidMount() {
         const LOBBY_WAIT_TIMER = 2000;
         window.setTimeout(() => {

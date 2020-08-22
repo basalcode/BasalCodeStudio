@@ -64,11 +64,9 @@ module.exports = function (request, response) {
         if (!typeParameter) {
             throw new Error(`[Error] verify(): Undefined \'typeParameter\' parameter.`);
         }
-
         if (Object.values(typeConstant).indexOf(typeParameter) === -1) {
             throw new Error(`[Error] verify(): Invalid \'${typeConstant.name}\' value has been detected on \'DBmembers.js.\'`);
         }
-
         if (typeConstant === ContentType) {
             (function verifyContentType() {
                 const Relation = {

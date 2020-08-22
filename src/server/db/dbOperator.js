@@ -17,7 +17,6 @@ module.exports = async function (dbMembers, queryObject) {
                 ilog.all({'errno': requestResults[requestResults.length - 1]});
                 throw new Error('[Error] dbOperator() : There might be an error in query syntax on \'requestDB\'.');
             }
-
             ilog.all({ requestResults: requestResults });
             ilog.middle(' DB FINISH ');
         }

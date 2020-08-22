@@ -1,5 +1,6 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
+const resultObject = require('../../resultObject');
 
 module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
@@ -21,7 +22,9 @@ module.exports = async function (dbMembers) {
             let values = null;
 
             queryObject.push(query, values, null);
-            return await dbOperator(dbMembers, queryObject);
+            let result = await dbOperator(dbMembers, queryObject);
+            
+            return resultObject(true, result);
         },
         async [InputType.UPDATE]() {
             const DEFAULT_INDEX = 0;
@@ -56,7 +59,6 @@ module.exports = async function (dbMembers) {
                     queryObject.setResult(DBType.BLOG, query, values, null);
                 }
 
-
                 let categories = section.categories;
                 let newCategoriesLength = Object.keys(categories).length;
                 for (let j = DEFAULT_INDEX; j < newCategoriesLength; j++) {
@@ -73,7 +75,6 @@ module.exports = async function (dbMembers) {
                         VALUES ( ?, ?, ? );
                     `;
                     values = [categoryId, categoryName, i];
-
                     queryObject.setResult(DBType.BLOG, query, values, null);
                 }
             }

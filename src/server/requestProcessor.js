@@ -25,9 +25,9 @@ module.exports = async function (req, res) {
     }
 
     ilog.all({ dbType: dbType })
-    let requestResult = await requestLinker[dbType][contentType](dbMembers);
+    let reponseObject = await requestLinker[dbType][contentType](dbMembers);
     requestLinker[DBType.SERVER][ContentType.REQUEST_LOG](dbMembers);
-    ilog.all({requestResult, requestResult});
+    ilog.all({reponseObject, reponseObject});
 
-    res.send({result: requestResult});
+    res.send(reponseObject);
 }
