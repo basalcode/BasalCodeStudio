@@ -7,6 +7,7 @@ import store from './redux/store';
 import Lobby from './component/Lobby/lobby';
 import Blog from './component/Blog/Blog';
 import Login from './component/Auth/Login';
+import Signup from './component/Auth/Signup';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Route exact path="/" component={Lobby} />
             <Route path="/blog" component={Blog} />
             <Route path="/login" component={Login} />
-            <Route component={Error} />
+            <Route path="/signup" component={Signup} />
+            {/* <Route component={Error} /> */}
           </Switch>
         </Router>
       </Provider>
