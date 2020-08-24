@@ -10,7 +10,7 @@ module.exports = (function () {
     }
 
     function isPassword(value) {
-        let regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        let regExp = /^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
         return match(value, regExp);
     }
 

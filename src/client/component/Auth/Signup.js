@@ -1,23 +1,43 @@
 import React, { useState } from 'react';
+import verifyForm from '../../../server/module/verifyForm';
 import './Signup.css';
 
 function Signup() {
     const [form, setForm] = useState({
         email: '',
         password: '',
-        passwordConfirm: '',
+        confirmPassword: '',
         userName: ''
     });
 
     const [formVerifier, setFormVerifier] = useState({
         email: '',
         password: '',
-        passwordConfirm: ''
+        confirmPassword: ''
     })
 
     const [lock, setLock] = useState(false);
 
-    const checkDuplication = () => {
+    const SetStateType = {
+        SET_FORM: 'setForm',
+        SET_FORM_VERIFIER: 'setFormVerifier'
+    }
+    const FormType = {
+        EMAIL: 'email',
+        PASSWORD: 'password',
+        CONFIRM_PASSWORD: 'confirmPassword',
+        USER_NAME: 'userName'
+    }
+
+    const changeState = (stateName, keyName, value) => {
+        const setState = {
+            [SetStateType.SET_FORM]: setForm,
+            [SetStateType.SET_FORM_VERIFIER]: setFormVerifier
+        }
+        setState[stateName](previous => {return{...previous, [keyName]: value }});
+    }
+
+    const verifyEmail = () => {
         return new Promise((resolve, reject) => {
             const page = 'signup';
             const email = form.email;
@@ -46,27 +66,31 @@ function Signup() {
         })
     }
 
-    const changeState = (stateName, keyName, value) => {
-        [stateName](previous => {
-            return { ...previous, [keyName]: value }
-        })
-    }
-
     const isEmail = (value) => {
-        let regExp = /^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$/i;
+        if (value === undefined) { value = ''}
+
+        
+        console.log('email: ', value);
+        console.log(value.constructor.name);
+        let regExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/i;
         let result = value.toString().match(regExp);
         return result !== null ? true : false;
     }
 
-    const StateType = {
-        SET_FORM: 'setForm',
-        SET_FORM_VERIFIER: 'setFormVerifier'
+    const isPassword = (value) => {
+        if (value === undefined) { value = ''}
+        console.log('password: ', value);
+        console.log(value.constructor.name);
+
+        let regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        let result = value.toString().match(regExp);
+        
+        return result !== null ? true : false;
     }
-    const FormType = {
-        EMAIL: 'email',
-        PASSWORD: 'password',
-        PASSWORD_CONFIRM: 'passwordConfirm',
-        USER_NAME: 'userName'
+
+    const isSamePassword = (value) => {
+        if (form.password === form.confirmPassword) { return true; }
+        return false;
     }
 
     return (
@@ -80,41 +104,32 @@ function Signup() {
                     type="email"
                     value={form.email}
                     onChange={(event) => changeState(
-                        StateType.SET_FORM, 
-                        FormType.EMAIL, 
-                        event.target.value
+                            SetStateType.SET_FORM, 
+                            FormType.EMAIL, 
+                            event.target.value
                         )
                     }
                     onBlur={async (event) => {
+                        let value = '';
                         if (isEmail(form.email)) {
-                            await checkDuplication()
-                            .then((resolve) => changeState(
-                                StateType.SET_FORM_VERIFIER, 
-                                FormType.EMAIL, 
-                                resolve
-                            ), (reject) => changeState(
-                                StateType.SET_FORM_VERIFIER, 
-                                FormType.EMAIL, 
-                                reject
-                                )
-                            )
-                            return;
-                        }
-                        if (form.email.length === 0) {
-                            const NOT_EMAIL_ADDRESS = 'Please fill out this field';
-                            changeState(
-                                StateType.SET_FORM_VERIFIER, 
-                                FormType.EMAIL, 
-                                NOT_EMAIL_ADDRESS
-                            )
+                            await verifyEmail()
+                            .then((resolve) => { 
+                                value = resolve; 
+                            }, (reject) => {
+                                value = reject;
+                            })
+                        } else if (form.email.length === 0) {
+                            const EMPTY_EMAIL_ADDRESS = 'Please fill out this field.';
+                            value = EMPTY_EMAIL_ADDRESS;
                         } else {
-                            const NOT_EMAIL_ADDRESS = 'It is not valid email address';
-                            changeState(
-                                StateType.SET_FORM_VERIFIER, 
-                                FormType.EMAIL, 
-                                NOT_EMAIL_ADDRESS
-                            )
+                            const INVALID_EMAIL_ADDRESS = 'It is an invalid email address';
+                            value = INVALID_EMAIL_ADDRESS;
                         }
+                        changeState(
+                            SetStateType.SET_FORM_VERIFIER,
+                            FormType.EMAIL, 
+                            value
+                        )
                     }}
                 />
                 <div className="Signup__email--check">{formVerifier.email}</div>
@@ -124,36 +139,73 @@ function Signup() {
                     value={form.password}
                     type="password"
                     onChange={(event) => changeState(
-                        StateType.SET_FORM,
-                        FormType.PASSWORD, 
-                        event.target.value
+                            SetStateType.SET_FORM,
+                            FormType.PASSWORD, 
+                            event.target.value
                         )
                     }
+                    onBlur={(event) => {
+                        let value = '';
+                        if (isPassword()) {
+                            const INVALID_PASSWORD = 'Great!';
+                            value = INVALID_PASSWORD;
+                        } else if (form.password.length === 0) {
+                            const EMPTY_PASSWORD = 'Please fill out this field';
+                            value = EMPTY_PASSWORD;
+                        } else {
+                            const INVALID_PASSWORD = 'Password must contain 8 to 16 characters with a mix of letters, numbers and symbols.';
+                            value = INVALID_PASSWORD;
+                        }
+                        changeState(
+                            SetStateType.SET_FORM_VERIFIER, 
+                            FormType.PASSWORD, 
+                            value
+                        )
+                    }}
                 />
                 <div className="Signup__password--check">{formVerifier.password}</div>
 
                 <label>Password Confirm</label>
                 <input className="Signup__password-confirm"
-                    value={form.passwordConfirm}
+                    value={form.confirmPassword}
                     type="password"
                     onChange={(event) => changeState(
-                        StateType.SET_FORM,
-                        FormType.PASSWORD_CONFIRM, 
-                        event.target.value
+                            SetStateType.SET_FORM,
+                            FormType.CONFIRM_PASSWORD, 
+                            event.target.value
                         )
                     }
+                    onBlur={(event) => {
+                        let value = '';
+                        if (isSamePassword(form.confirmPassword)) {
+                            const SAME_PASSWORD = 'Great!';
+                            value = SAME_PASSWORD;
+                        } else if (form.confirmPassword.length === 0) {
+                            const EMPTY_CONFIRM_PASSWORD = 'Please fill out this field';
+                            value = EMPTY_CONFIRM_PASSWORD;
+                        } else {
+                            const DIFFERENT_CONFIRM_PASSWORD = 'Both passwords do not match.';
+                            value = DIFFERENT_CONFIRM_PASSWORD;
+                        }
+                        changeState(
+                            SetStateType.SET_FORM_VERIFIER, 
+                            FormType.CONFIRM_PASSWORD, 
+                            value
+                        )
+                    }}
                 />
-                <div className="Signup__password-confirm--check">{formVerifier.passwordConfirm}</div>
+                <div className="Signup__password-confirm--check">{formVerifier.confirmPassword}</div>
 
                 <label>User Name</label>
                 <input className="Signup__user-name"
                     type="text"
                     value={form.userName}
                     onChange={(event) => changeState(
-                        StateType.SET_FORM, 
-                        FormType.USER_NAME, 
-                        event.target.value
-                    )}
+                            SetStateType.SET_FORM, 
+                            FormType.USER_NAME, 
+                            event.target.value
+                        )
+                    }
                 />
 
                 <input className="Signup__sign-up" type="submit" value="Sign up" />
