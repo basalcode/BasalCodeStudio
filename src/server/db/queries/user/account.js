@@ -4,9 +4,11 @@ const resultObject = require('../../resultObject');
 
 const isUndefined = require('../../../module/verifyValue').isUndefined;
 const isEmail = require('../../../module/verifyForm').isEmail;
+const isPassword = require('../../../module/verifyForm').isPassword;
+const hasNoSpecialCharacter = require('../../../module/verifyForm').hasNoSpecialCharacter;
 
 const ilog = require('../../../module/improvedConsoleLog');
-const { isPassword } = require('../../../module/verifyForm');
+
 
 module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
@@ -14,14 +16,21 @@ module.exports = async function (dbMembers) {
     let InputType = dbMembers.InputType;
     let inputType = dbMembers.inputType;
 
-    ilog.all({ inputType: inputType })
-
     let contentQueries = {
         async [InputType.CREATE]() {
             let requestBody = requestObject.body;
             let email = requestBody.email;
             let password = requestBody.password;
             let userName = requestBody.userName;
+            if (!(email && isEmail(email))) {
+                return resultObject(false, 'Invalid email address.');
+            }
+            if (!(password && isPassword(password))) {
+                return resultObject(false, 'Invalid password.');
+            }
+            if (!(userName && hasNoSpecialCharacter(userName))) {
+                return resultObject(false, 'Invalid userName.');
+            }
 
             let query = `
                 INSERT INTO account (
@@ -37,7 +46,14 @@ module.exports = async function (dbMembers) {
                 userName
             ];
             queryObject.push(query, values, null);
-            return await dbOperator(dbMembers, queryObject);
+            let dbResult = await dbOperator(dbMembers, queryObject);
+            ilog.all({dbResult: dbResult});
+
+            if (!isUndefined(dbResult)) {
+                return resultObject(true, 'Great! Your Account has been created successfully.');
+            } else { 
+                return resultObject(false, 'Failed to register an user account. Please try again later.');
+            }
         },
         async [InputType.READ]() {
             const Page = {

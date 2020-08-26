@@ -11,7 +11,7 @@ class Lobby extends Component {
     componentDidMount() {
         const LOBBY_WAIT_TIMER = 2000;
         window.setTimeout(() => {
-            this.props.history.push('/blog/main');    
+            this.props.history.push('/blog/lobby');    
         }, LOBBY_WAIT_TIMER);
     }
 

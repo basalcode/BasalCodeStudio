@@ -55,7 +55,7 @@ function Login({ history }) {
                 if (!lock) {
                     await signin()
                     .then((resolve) => {
-                        history.push('/blog/main');
+                        history.push('/blog/lobby');
                     }, (reject) => {
                         setForm(previous => {
                             return {...previous, email: ''}

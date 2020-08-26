@@ -9,7 +9,7 @@ function Blog({match}) {
     return (
         <div className="Blog">
             <Switch>
-                <Route path={`${match.path}/main`} component={BlogLobby}></Route>
+                <Route path={`${match.path}/lobby`} component={BlogLobby}></Route>
             </Switch>
         </div>
     );

@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
-import verifyForm from '../../../server/module/verifyForm';
 import './Signup.css';
 
-function Signup() {
+function Signup({ history }) {
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -69,10 +68,30 @@ function Signup() {
 
     const signup = () => {
         return new Promise((resolve, reject) => {
-            fetch(``)
+            const accountObject = {
+                email: form.email,
+                password: form.password,
+                userName: form.userName
+            }
+
+
+            fetch(`/request/user/create/account`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(accountObject)
+            })
                 .then(response => response.json())
                 .then(result => {
-
+                    const isSuccess = result.validity;
+                    if (isSuccess) {
+                        const CREATE_ACCOUNT_SUCCESS = result.value;
+                        resolve(CREATE_ACCOUNT_SUCCESS);
+                    } else {
+                        const CREATE_ACCOUNT_ERROR = result.value;
+                        reject(CREATE_ACCOUNT_ERROR);
+                    }
                 })
         })
     }
@@ -86,7 +105,7 @@ function Signup() {
 
     const isPassword = (value) => {
         if (value === undefined) { value = '' }
-        const regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        const regExp = /^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
         const result = value.toString().match(regExp);
 
         return result !== null ? true : false;
@@ -94,6 +113,7 @@ function Signup() {
 
     const isSamePassword = () => {
         if (form.password === form.confirmPassword) { return true; }
+
         return false;
     }
 
@@ -101,6 +121,7 @@ function Signup() {
         if (value === undefined) { value = '' }
         const regExp = /^[^`~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿]*$/;
         const result = value.toString().match(regExp);
+
         return result !== null ? true : false;
     }
 
@@ -127,12 +148,19 @@ function Signup() {
         <div className="Signup">
             <form className="Signup"
                 onSubmit={async (event) => {
-                    event.preventDefault();
-                    canSubmit();
-                    // canSubmit();
-                    // if (1) {
-                    //     await signup();
-                    // }
+                    // event.preventDefault();
+                    if (canSubmit()) {
+                        await signup()
+                            .then((resolve) => {
+                                /* event.target.reset();
+                                alert(resolve);*/
+                                history.push('/blog/lobby'); 
+                            }, (reject) => {
+                                /* event.target.reset();
+                                alert(reject);*/
+                                history.replace('/signup');
+                            });
+                    }
                 }}>
                 <label>Email Address</label>
                 <input className="Signup__email"
