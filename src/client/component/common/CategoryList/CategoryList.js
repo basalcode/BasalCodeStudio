@@ -3,7 +3,7 @@ import './CategoryList.css';
 
 import Section from './Section';
 
-function CategoryList() {
+function CategoryList({ link }) {
     const [sections, setSections] = useState({});
 
     const getSections = () => {
@@ -27,6 +27,7 @@ function CategoryList() {
                 key={section.id}
                 name={section.name}
                 categories={section.categories}
+                link={link}
             ></Section>);
         })
     }
@@ -51,7 +52,6 @@ function CategoryList() {
 export default CategoryList;
 
 function getCategoryListObject(dbResult) {
-    console.log('dbResult', dbResult);
     let sections = {}
     dbResult.forEach(element => {
         let section = {

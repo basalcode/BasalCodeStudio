@@ -22,7 +22,7 @@ function BlogLobby() {
             <GitHubLink></GitHubLink>
             <EmailLink></EmailLink>
 
-            <CategoryList></CategoryList>
+            <CategoryList link={true}></CategoryList>
 
             <div className="BlogMain">
                 BasalCodeStudio에 오신 것을 환영합니다.

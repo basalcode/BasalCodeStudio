@@ -3,13 +3,14 @@ import './Section.css';
 
 import Category from './Category';
 
-function Section({ name, categories }) {
+function Section({ name, categories, link}) {
     
     const renderCategory = () => {
         return Object.values(categories).map(category => (
             <Category
                 key={category.id}
                 name={category.name}
+                link={link}
             ></Category>
         ));
     }
