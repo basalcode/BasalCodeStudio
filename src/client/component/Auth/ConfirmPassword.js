@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-import verifyInputValue from '/library/verifyInputValue';
-import { isSamePassword } from '/library/verifyForm';
+import verifyInputValue from 'library/verifyInputValue';
+import { isSamePassword } from 'library/verifyForm';
 
-const ConfirmPassword = () => {
-    const [text, setText] = useState(value);
-    const [message, setMessage] = useState(value);
-    const [verified, setVerified] = useState(value);
+const ConfirmPassword = (props) => {
+    const [text, setText] = useState('');
+    const [message, setMessage] = useState('');
+    const [verified, setVerified] = useState(false);
 
     const onChangeHandler = (event) => { setText(event.target.value); }
 
     const onBlurHandler = (event) => {
-        const inputValue = envet.target.value;
-        const validMessage = 'Great!'
+        const inputValue = [event.target.value, props.originalPassword];
+        const RESULT_MESSAGE = 'Great!'
         const DIFFERENT_PASSWORD = 'Both passwords do not match.';
 
-        verifyInputValue(isSamePassword, inputValue, [validMessage, true], DIFFERENT_PASSWORD);
+        const [stateMessage, isConfirmed] = verifyInputValue(
+            isSamePassword, 
+            inputValue, 
+            RESULT_MESSAGE, 
+            true, 
+            DIFFERENT_PASSWORD
+        );
 
         setMessage(stateMessage);
-        setVerified(confirmed);
+        setVerified(isConfirmed);
+
+        props.onInputBlur(text, isConfirmed);
     }
 
     return (
         <div className="ConfirmPassword">
             <label>Password Confirm</label>
             <input 
-                ref={confirmPasswordRef}
+                ref={props.forwardedRef}
                 value={text}
                 type="password"
                 onChange={onChangeHandler}

@@ -21,12 +21,16 @@ module.exports = async function (dbMembers) {
             let requestBody = requestObject.body;
             let email = requestBody.email;
             let password = requestBody.password;
+            let confirmPassword = requestBody.confirmPassword;
             let userName = requestBody.userName;
             if (!(email && isEmail(email))) {
                 return resultObject(false, 'Invalid email address.');
             }
             if (!(password && isPassword(password))) {
                 return resultObject(false, 'Invalid password.');
+            }
+            if (confirmPassword !== password) {
+                return resultObject(false, 'Confirm password do not match.');
             }
             if (!(userName && hasNoSpecialCharacter(userName))) {
                 return resultObject(false, 'Invalid userName.');

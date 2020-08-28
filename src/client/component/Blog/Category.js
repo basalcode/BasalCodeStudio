@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import './Category.css';
 
 function Category() {
-    fetch(`/request/blog/read/category?category=${categoryId}`)
+    /* fetch(`/request/blog/read/category?category=${categoryId}`)
         .then(function (response) {
             return response.json();
         })
         .then(function (parsed) {
             showCategory(parsed.result);
-        });
+        }); */
 
     return (
         <table id="category">

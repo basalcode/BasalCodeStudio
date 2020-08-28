@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-import verifyInputValue from '/library/verifyInputValue';
-import { isPassword } from '/library/verifyForm';
+import verifyInputValue from 'library/verifyInputValue';
+import { isPassword } from 'library/verifyForm';
 
-const Password = () => {
-    const [text, setText] = useState(value);
-    const [message, setMessage] = useState(value);
-    const [verified, setVerified] = useState(value);
+const Password = (props) => {
+    const [text, setText] = useState('');
+    const [message, setMessage] = useState('');
+    const [verified, setVerified] = useState(false);
 
     const onChangeHandler = (event) => { setText(event.target.value); }
 
     const onBlurHandler = (event) => {
-        const inputValue = envet.target.value;
-        const validMessage = 'Great!'
+        const inputValue = event.target.value;
+        const RESULT_MESSAGE = 'Great!'
         const INVALID_PASSWORD = 'Password must contain 8 to 16 characters with a mix of letters, numbers and sepcial character.';
 
-        verifyInputValue(isPassword, inputValue, [validMessage, true], INVALID_PASSWORD);
+        const [stateMessage, isConfirmed] = verifyInputValue(
+            isPassword, 
+            inputValue, 
+            RESULT_MESSAGE, 
+            true, 
+            INVALID_PASSWORD
+        );
 
         setMessage(stateMessage);
-        setVerified(confirmed);
+        setVerified(isConfirmed);
+
+        props.onInputBlur(text, isConfirmed);
     }
 
     return (
         <div className="Password">
             <label>Password</label>
             <input
-                ref={passwordRef}
+                ref={props.forwardedRef}
                 value={text}
                 type="password"
                 onChange={onChangeHandler}
