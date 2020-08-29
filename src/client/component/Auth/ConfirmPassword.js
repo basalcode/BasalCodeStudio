@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import verifyInputValue from 'library/verifyInputValue';
 import { isSamePassword } from 'library/verifyForm';

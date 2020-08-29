@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './BlogLobby.css';
 
 import Logo from '../common/ui/Logo';
@@ -23,6 +25,10 @@ function BlogLobby() {
             <EmailLink></EmailLink>
 
             <CategoryList link={true}></CategoryList>
+
+            <div><Link to={`/postEditor`}>postEditor</Link></div>
+            <div><Link to={`/categoryEditor`}>categoryEditor</Link></div>
+            
 
             <div className="BlogMain">
                 BasalCodeStudio에 오신 것을 환영합니다.

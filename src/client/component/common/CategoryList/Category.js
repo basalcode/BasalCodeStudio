@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './Category.css';
 
-function Category({ name, link }) {
+function Category({ id, name, link }) {
     const linkedTitle = (link) => {
         if (link) {
-            return (<Link to={`/category/${name}`}>{name}</Link>);
+            return (<Link to={`/category/${id}`}>{name}</Link>);
         } else {
             return name;
         }

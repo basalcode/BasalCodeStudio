@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './Section.css';
 
 import Category from './Category';
@@ -9,6 +9,7 @@ function Section({ name, categories, link}) {
         return Object.values(categories).map(category => (
             <Category
                 key={category.id}
+                id={category.id}
                 name={category.name}
                 link={link}
             ></Category>

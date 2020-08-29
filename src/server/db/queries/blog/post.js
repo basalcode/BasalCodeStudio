@@ -1,5 +1,9 @@
 const queryObject = require('../../queryObject');
 const dbOperator = require('../../dbOperator');
+const resultObject = require('../../resultObject');
+
+const isUndefined = require('../../../module/verifyValue').isUndefined;
+const ilog = require('../../../module/improvedConsoleLog');
 
 module.exports = async function (dbMembers) {
     let requestObject = dbMembers.requestObject;
@@ -9,19 +13,16 @@ module.exports = async function (dbMembers) {
     let contentQueries = {
         async [InputType.CREATE]() {
             if (requestObject.body.title.length === 0) {
-                let errorMessage = 'There is no title.';
-                return errorMessage;
-            } else if (requestObject.body.author.length === 0) {
-                let errorMessage = 'There is no author.';
-                return errorMessage;
+                const NO_TITLE = 'There is no title.';
+                return resultObject(false, NO_TITLE);
             } else if (requestObject.body.description.length === 0) {
-                let errorMessage = 'There is no description.';
-                return errorMessage;
+                const NO_DESCRIPTION = 'There is no description.'
+                return resultObject(false, NO_DESCRIPTION);
             } else {
                 let requestBody = requestObject.body;
 
-                let title = requestBody.title;
                 let author = requestBody.author;
+                let title = requestBody.title;
                 let description = requestBody.description;
                 let category_id = requestBody.category_id;
 
@@ -41,7 +42,15 @@ module.exports = async function (dbMembers) {
                     category_id
                 ];
                 queryObject.push(query, values, null);
-                return await dbOperator(dbMembers, queryObject);
+                let dbResult = await dbOperator(dbMembers, queryObject);
+                ilog.all({ dbResult: dbResult });
+
+                if (!isUndefined(dbResult)) {
+                    const WRITE_SUCCESS = 'Successfully posted!'
+                    return resultObject(true, WRITE_SUCCESS);
+                } else {
+                    return resultObject(false, 'Failed to save the post, please try again later.');
+                }
             }
         },
         async [InputType.READ]() {

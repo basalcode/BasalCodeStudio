@@ -51,7 +51,7 @@ module.exports = async function (dbMembers) {
             ];
             queryObject.push(query, values, null);
             let dbResult = await dbOperator(dbMembers, queryObject);
-            ilog.all({dbResult: dbResult});
+            // ilog.all({dbResult: dbResult});
 
             if (!isUndefined(dbResult)) {
                 return resultObject(true, 'Great! Your Account has been created successfully.');

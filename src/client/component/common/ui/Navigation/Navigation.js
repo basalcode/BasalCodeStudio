@@ -2,7 +2,6 @@ import React from 'react';
 import './Navigation.css';
 
 import LoginLink from './LoginLink';
-import CategoryList from '../../CategoryList/CategoryList';
 
 function Navigation() {
     return (
