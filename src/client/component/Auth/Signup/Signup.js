@@ -6,7 +6,7 @@ import Password from './Password';
 import ConfirmPassword from './ConfirmPassword';
 import UserName from './UserName';
 
-function Signup({ history }) {
+const Signup = ({ history }) => {
     const [emailVerified, setEmailVerified] = useState(false);
     const [passwordVerified, setPasswordVerified] = useState(false);
     const [confirmPasswordVerified, setConfirmPasswordVerified] = useState(false);
@@ -36,14 +36,13 @@ function Signup({ history }) {
         else if (userNameVerified !== true) {
             userNameRef.current.focus();
         } else {
-            console.log('WOW!!');
             permission = true;
         }
         return permission;
     }
     const signup = () => {
         return new Promise((resolve, reject) => {
-            const accountObject = {
+            let accountObject = {
                 email: emailText,
                 password: passwordText,
                 confirmPassword: confirmPasswordText,
@@ -98,16 +97,16 @@ function Signup({ history }) {
                     }}
                 ></Email>
                 <Password
-                    confirmPassword={confirmPasswordText}
                     forwardedRef={passwordRef}
+                    confrimPasswordVerified={confirmPasswordVerified}
                     onInputBlur={(text, verified) => {
                         setPasswordText(text);
                         setPasswordVerified(verified);
                     }}
                 ></Password>
                 <ConfirmPassword
-                    originalPassword={passwordText}
                     forwardedRef={confirmPasswordRef}
+                    passwordText={passwordText}
                     onInputBlur={(text, verified) => {
                         setConfirmPasswordText(text);
                         setConfirmPasswordVerified(verified);

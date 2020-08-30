@@ -17,16 +17,6 @@ export const isPassword = (value) => {
     return match(value, regExp);
 }
 
-export const isSamePassword = (value) => {
-    const confirmPassword = value[0];
-    const password = value[1];
-    if (password === undefined) { password = '' }
-    if (confirmPassword === undefined) { confirmPassword = '' }
-    if (password === confirmPassword) { return true; }
-
-    return false;
-}
-
 export const hasNoSpecialCharacter = (value) => {
     if (value === undefined) { value = '' }
     const regExp = /^[^`~!@#$%^&*()_+={}\[\]|\\:;“’<,>.?๐฿]*$/;

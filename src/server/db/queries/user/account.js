@@ -7,7 +7,10 @@ const isEmail = require('../../../module/verifyForm').isEmail;
 const isPassword = require('../../../module/verifyForm').isPassword;
 const hasNoSpecialCharacter = require('../../../module/verifyForm').hasNoSpecialCharacter;
 
+const bcrypt = require('../../../auth/bcrypt');
+
 const ilog = require('../../../module/improvedConsoleLog');
+const session = require('express-session');
 
 
 module.exports = async function (dbMembers) {
@@ -24,39 +27,55 @@ module.exports = async function (dbMembers) {
             let confirmPassword = requestBody.confirmPassword;
             let userName = requestBody.userName;
             if (!(email && isEmail(email))) {
-                return resultObject(false, 'Invalid email address.');
+                const INVALID_EMAIL_MESSAGE = 'Invalid email address.';
+                return resultObject(false, INVALID_EMAIL_MESSAGE);
             }
             if (!(password && isPassword(password))) {
-                return resultObject(false, 'Invalid password.');
+                const INVALID_PASSWORD_MESSAGE = 'Invalid password.';
+                return resultObject(false, INVALID_PASSWORD_MESSAGE);
             }
             if (confirmPassword !== password) {
-                return resultObject(false, 'Confirm password do not match.');
+                const PASSWORD_NOT_MATCH_MESSAGE = 'Confirm passwords do not match.';
+                return resultObject(false, PASSWORD_NOT_MATCH_MESSAGE);
             }
             if (!(userName && hasNoSpecialCharacter(userName))) {
-                return resultObject(false, 'Invalid userName.');
+                const INVALID_USERNAME_MESSAGE = 'Invalid userName.';
+                return resultObject(false, INVALID_USERNAME_MESSAGE);
             }
+
+            let hashcode;
+            await bcrypt.hash(password)
+                .then((resolve) => {
+                    hashcode = resolve;
+                }, (reject) => {
+                    const HASHING_FAILED = reject;
+                    return resultObject(false, HASHING_FAILED);
+                })
 
             let query = `
                 INSERT INTO account (
                     email, 
-                    password, 
+                    hashcode, 
                     user_name
                 )
                 VALUES ( ?, ?, ? );
             `;
             let values = [
                 email,
-                password,
+                hashcode,
                 userName
             ];
+
             queryObject.push(query, values, null);
             let dbResult = await dbOperator(dbMembers, queryObject);
             // ilog.all({dbResult: dbResult});
 
             if (!isUndefined(dbResult)) {
-                return resultObject(true, 'Great! Your Account has been created successfully.');
-            } else { 
-                return resultObject(false, 'Failed to register an user account. Please try again later.');
+                const REGISTER_SUCCESS_MESSAGE = 'Great! Your Account has been created successfully.';
+                return resultObject(true, REGISTER_SUCCESS_MESSAGE);
+            } else {
+                const REGISTER_FAILED_MESSAGE = 'Failed to register an user account. Please try again later.';
+                return resultObject(false, REGISTER_FAILED_MESSAGE);
             }
         },
         async [InputType.READ]() {
@@ -68,42 +87,55 @@ module.exports = async function (dbMembers) {
             let requestQuery = requestObject.query;
             let queryPage = requestQuery.page
             if (queryPage === Page.LOG_IN) {
-                let requestBody = requestObject.body;
-                let email = requestBody.email;
-                let password = requestBody.password;
+                if (requestObject.session.login) {
+                    let requestBody = requestObject.body;
+                    let email = requestBody.email;
+                    let password = requestBody.password;
 
-                let query = `
-                    SELECT 
-                        email,
-                        password,
-                        user_name
-                    FROM account
-                    WHERE email = ?
-                `;
-                let values = [email];
+                    let query = `
+                        SELECT 
+                            email,
+                            hashcode,
+                            user_name
+                        FROM account
+                        WHERE email = ?
+                    `;
+                    let values = [email];
 
-                queryObject.push(query, values, null);
-                let dbResult = (await dbOperator(dbMembers, queryObject))[0];
+                    queryObject.push(query, values, null);
+                    let dbResult = (await dbOperator(dbMembers, queryObject))[0];
+                    ilog.all({ dbResult: dbResult });
+                    if (isUndefined(dbResult)) {
+                        const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
+                        return resultObject(false, ERROR_MESSAGE);
+                    }
 
-                const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
-                if (isUndefined(dbResult)) {
-                    return resultObject(false, ERROR_MESSAGE);
-                }
-
-                let response = {
-                    email: dbResult.email,
-                    user_name: dbResult.user_name,
-                };
-
-                if (password === dbResult.password) {
-                    requestObject.session.login = true;
-                    return resultObject(true, response);
+                    return await bcrypt.compare(password, dbResult.hashcode)
+                        .then((resolve) => {
+                            const LOGIN_SUCCESS = resolve;
+                            if (LOGIN_SUCCESS) {
+                                let accountInformation = {
+                                    email: dbResult.email,
+                                    user_name: dbResult.user_name,
+                                };
+                                requestObject.session.login = LOGIN_SUCCESS;
+                                const LOGIN_FAILED_MESSAGE = 'Login Success!'
+                                return resultObject(true, LOGIN_FAILED_MESSAGE);
+                            } else {
+                                const LOGIN_FAILED_MESSAGE = 'The email or password you entered is incorrect.';
+                                return resultObject(false, LOGIN_FAILED_MESSAGE);
+                            }
+                        }, (reject) => {
+                            const VERIFICATION_FAILD_MESSAGE = reject;
+                            return resultObject(false, VERIFICATION_FAILD_MESSAGE);
+                        })
                 } else {
-                    return resultObject(false, ERROR_MESSAGE);
+                    const ALREADY_LOGGED_IN = 'Already logged in.'
+                    return resultObject(true, ALREADY_LOGGED_IN);
                 }
             } else if (queryPage === Page.SIGN_UP) {
                 let queryEmail = requestQuery.email;
-                let query =`
+                let query = `
                     SELECT
                         email
                     FROM account
@@ -113,18 +145,15 @@ module.exports = async function (dbMembers) {
                 queryObject.push(query, values, null);
 
                 let dbResult = (await dbOperator(dbMembers, queryObject))[0];
-                
+
                 if (!isUndefined(dbResult)) {
                     return resultObject(false, 'Email is already in use.');
-                } else { 
+                } else {
                     return resultObject(true, 'Welcome!');
                 }
-
-
             } else {
                 throw new Error(`[Error] account.js: Invalid \'page\' query.`);
             }
-
         }
     }
     return contentQueries[inputType]();

@@ -9,8 +9,8 @@ import Category from './component/Blog/Category';
 import PostEditor from './component/Blog/PostEditor/PostEditor';
 import CategoryEditor from './component/Blog/CategoryEditor';
 
-import Login from './component/Auth/Login';
-import Signup from './component/Auth/Signup';
+import Login from './component/Auth/Login/Login';
+import Signup from './component/Auth/Signup/Signup';
 
 
 function App() {

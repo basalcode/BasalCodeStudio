@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import category from '../../../../server/db/queries/blog/category';
 
 import './CategorySelector.css'

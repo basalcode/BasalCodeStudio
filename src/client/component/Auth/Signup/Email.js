@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import verifyInputValue from 'library/verifyInputValue';
 import { isEmail } from 'library/verifyForm';
 
-const Email = (props) => {
+const Email = ({ onInputBlur, confirmPasswordText, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
-    const [verified, setVerified] = useState(false);
 
     const onChangeHandler = (event) => { setText(event.target.value); }
-    
+
     const verifyEmail = () => {
         return new Promise((resolve, reject) => {
             const page = 'signup';
@@ -30,35 +28,36 @@ const Email = (props) => {
     }
     const doesEmailNotExist = async () => {
         return await verifyEmail()
-        .then((resolve) => {
-            return [ resolve, true ];
-        }, (reject) => {
-            return [ reject, false ];
-        });
+            .then((resolve) => {
+                return [resolve, true];
+            }, (reject) => {
+                return [reject, false];
+            });
     }
     const onBlurHandler = async (event) => {
         const inputValue = event.target.value;
-        const INVALID_EMAIL_ADDRESS = 'It is an invalid email address'
-        const [RESULT_MESSAGE, isSucceed] = await doesEmailNotExist();
 
-        const [stateMessage, isConfirmed] = verifyInputValue(
-            isEmail, 
-            inputValue, 
-            RESULT_MESSAGE, 
-            isSucceed, 
-            INVALID_EMAIL_ADDRESS
-        );
-
+        let stateMessage = '';
+        let confirmed = false;
+        if (inputValue.length === 0) {
+            const EMPTY_VALUE = 'Please fill out this field.';
+            stateMessage = EMPTY_VALUE;
+        } else if (isEmail(inputValue)) {
+            [stateMessage, confirmed] = await doesEmailNotExist();
+        } else {
+            const INVALID_EMAIL_ADDRESS = 'It is an invalid email address'
+            stateMessage = INVALID_EMAIL_ADDRESS;
+        }
+        
         setMessage(stateMessage);
-        setVerified(isConfirmed);
-        props.onInputBlur(text, isConfirmed);
+        onInputBlur(text, confirmed);
     }
 
     return (
         <div className="Email">
             <label>Email Address</label>
             <input
-                ref={props.forwardedRef}
+                ref={forwardedRef}
                 type="email"
                 value={text}
                 onChange={onChangeHandler}

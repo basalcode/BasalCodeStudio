@@ -3,37 +3,38 @@ import React, { useState } from 'react';
 import verifyInputValue from 'library/verifyInputValue';
 import { hasNoSpecialCharacter } from 'library/verifyForm';
 
-const UserName = (props) => {
+const UserName = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
-    const [verified, setVerified] = useState(false);
 
     const onChangeHandler = (event) => { setText(event.target.value); }
 
     const onBlurHandler = (event) => {
         const inputValue = event.target.value;
-        const validMessage = 'Great!'
-        const HAS_SPECIAL_CHARACTER = 'User name must not contain special character.';
 
-        const [stateMessage, isConfirmed] = verifyInputValue(
-            hasNoSpecialCharacter, 
-            inputValue, 
-            validMessage, 
-            true, 
-            HAS_SPECIAL_CHARACTER
-        );
+        let stateMessage = '';
+        let confirmed = false;
+        if (inputValue.length === 0) {
+            const EMPTY_VALUE = 'Please fill out this field.';
+            stateMessage = EMPTY_VALUE;
+        } else if (hasNoSpecialCharacter(inputValue)) {
+            const CONFIRM_MESSAGE = 'Great!'
+            stateMessage = CONFIRM_MESSAGE;
+            confirmed = true;
+        } else {
+            const HAS_SPECIAL_CHARACTER = 'User name must not contain special character.';
+            stateMessage = HAS_SPECIAL_CHARACTER;
+        }
 
         setMessage(stateMessage);
-        setVerified(isConfirmed);
-
-        props.onInputBlur(text, isConfirmed);
+        onInputBlur(text, confirmed);
     }
 
     return (
         <div className="UserName">
             <label>User Name</label>
             <input
-                ref={props.forwardedRef}
+                ref={forwardedRef}
                 type="text"
                 value={text}
                 onChange={onChangeHandler}

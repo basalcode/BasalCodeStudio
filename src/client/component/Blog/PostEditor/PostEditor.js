@@ -1,10 +1,8 @@
 import React, { useState, useRef } from 'react';
 
 import './PostEditor.css'
-
 import SectionSelector from './SectionSelector';
 import CategorySelector from './CategorySelector'
-import section from '../../../../server/db/queries/blog/section';
 
 function PostEditor({ history }) {
     const [sectionValue, setSectionValue] = useState(0);

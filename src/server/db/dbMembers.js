@@ -1,3 +1,5 @@
+const privateDB = require('../../../.private/db');
+
 const ilog = require('../module/improvedConsoleLog');
 
 module.exports = function (request, response) {
@@ -44,13 +46,28 @@ module.exports = function (request, response) {
     /* st-mysql */
     const DB = {
         user: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'user', flat: true, encode: false
+            host: 'localhost', 
+            user: privateDB.mysqlUser, 
+            password: privateDB.mysqlPassword, 
+            database: privateDB.databaseName.user, 
+            flat: true, 
+            encode: false
         }),
         blog: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'blog', flat: true, encode: false
+            host: 'localhost', 
+            user: privateDB.mysqlUser, 
+            password: privateDB.mysqlPassword, 
+            database: privateDB.databaseName.blog, 
+            flat: true, 
+            encode: false
         }),
         server: require('st-mysql')({
-            host: 'localhost', user: 'root', password: '1135', database: 'server', flat: true, encode: false
+            host: 'localhost', 
+            user: privateDB.mysqlUser, 
+            password: privateDB.mysqlPassword, 
+            database: privateDB.databaseName.server,
+            flat: true, 
+            encode: false
         })
     }
     
