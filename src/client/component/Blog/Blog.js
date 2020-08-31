@@ -4,12 +4,14 @@ import { Route, Switch } from 'react-router-dom';
 import './Blog.css'
 
 import BlogLobby from './BlogLobby';
+import Category from './Category';
 
-function Blog({match}) {
+const Blog = ({ match }) => {
     return (
         <div className="Blog">
             <Switch>
-                <Route path={`${match.path}/lobby`} component={BlogLobby}></Route>
+                <Route path={`${match.path}/lobby`} component={BlogLobby} />
+                <Route path={`${match.path}/category`} component={Category} />
             </Switch>
         </div>
     );

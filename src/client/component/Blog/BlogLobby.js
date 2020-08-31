@@ -12,8 +12,6 @@ import EmailLink from '../common/ui/floatButton/EmailLink'
 
 import Footer from '../common/Footer';
 
-import CategoryList from '../common/CategoryList/CategoryList';
-
 function BlogLobby() {
     return (
         <div className="BlogLobby">
@@ -23,13 +21,7 @@ function BlogLobby() {
             <NightMode></NightMode>
             <GitHubLink></GitHubLink>
             <EmailLink></EmailLink>
-
-            <CategoryList link={true}></CategoryList>
-
-            <div><Link to={`/postEditor`}>postEditor</Link></div>
-            <div><Link to={`/categoryEditor`}>categoryEditor</Link></div>
             
-
             <div className="BlogMain">
                 BasalCodeStudio에 오신 것을 환영합니다.
                 </div>

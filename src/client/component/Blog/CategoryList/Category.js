@@ -4,18 +4,15 @@ import { Link } from 'react-router-dom';
 import './Category.css';
 
 function Category({ id, name, link }) {
-    const linkedTitle = (link) => {
-        if (link) {
-            return (<Link to={`/category/${id}`}>{name}</Link>);
-        } else {
-            return name;
-        }
-    }
 
     return (
         <div className="category">
             <div className="category__self">
-                <div className="category__title">{linkedTitle(link)}</div>
+                <div className="category__title">{
+                    link ? 
+                    <Link to={`/blog/category/${id}`}>{name}</Link> :
+                    name
+                }</div>
             </div>
         </div>
     )

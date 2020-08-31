@@ -1,7 +1,8 @@
 import React from 'react';
 import './Navigation.css';
 
-import LoginLink from './LoginLink';
+import CategoryList from '../../../Blog/CategoryList/CategoryList';
+import Auth from './Auth/Auth'
 
 function Navigation() {
     return (
@@ -11,7 +12,8 @@ function Navigation() {
             }} /></svg>
 
             <div className="Navigation__drop-down-container">
-                <LoginLink></LoginLink>
+                <Auth></Auth>
+                <CategoryList link={true}></CategoryList>
             </div>
         </button>
     );

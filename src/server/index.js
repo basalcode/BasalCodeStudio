@@ -8,7 +8,8 @@ const session = require('./auth/session');
 const app = express();
 
 const errorHandler = require('./errors');
-const requestProcessor = require('./requestProcessor');
+const requestProcessor = require('./db/requestProcessor');
+const authProcessor = require('./auth/authProcessor')
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ const developmentMode = true;
 if (developmentMode) {
     //Client Side Rendering
     app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
+    app.use('/auth/:inputType/:session', authProcessor);
 
     app.use(errorHandler.error404);
     app.use(errorHandler.error500);

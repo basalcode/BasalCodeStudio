@@ -30,11 +30,9 @@ const Login = ({ history }) => {
             .then(result => {
                 const isSuccess = result.validity;
                 if (isSuccess) {
-                    console.log(result.value);
                     const loginSuccess = result.value;
                     resolve(loginSuccess);
                 } else {
-                    console.log(result.value);
                     const loginFailed = result.value;
                     reject(loginFailed);
                 }
@@ -101,7 +99,7 @@ const Login = ({ history }) => {
             <input
                 type="button"
                 value="Sign up"
-                onClick={() => { history.push('/signup') }}
+                onClick={() => { history.push('/auth/signup') }}
             />
         </div>
     );

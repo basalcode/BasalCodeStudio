@@ -6,6 +6,30 @@ import Section from './Section';
 function CategoryList({ link }) {
     const [sections, setSections] = useState({});
 
+    const getCategoryListObject = (dbResult) => {
+        let sections = {}
+        dbResult.forEach(element => {
+            let section = {
+                id: element.section_id,
+                name: element.section_name,
+                categories: {}
+            }
+
+            // Prevent overwrite.
+            if (sections[section.id] === undefined) {
+                sections[section.id] = section;
+            }
+
+            let category = {
+                id: element.category_id,
+                name: element.category_name,
+            }
+            if (category.id !== null || category.name !== null) {
+                sections[section.id].categories[category.id] = category;
+            }
+        });
+        return sections;
+    }
     const getSections = () => {
         return new Promise((resolve, reject) => {
             fetch('/request/blog/read/categoryEditor')
@@ -21,17 +45,6 @@ function CategoryList({ link }) {
         })
     };
 
-    const renderSection = () => {
-        return Object.values(sections).map(section => {
-            return (<Section
-                key={section.id}
-                name={section.name}
-                categories={section.categories}
-                link={link}
-            ></Section>);
-        })
-    }
-
     useEffect(() => {
         const fetchSections = async () => {
             const sectionsObject = await getSections();
@@ -43,7 +56,14 @@ function CategoryList({ link }) {
     return (
         <div className="CategoryList">
             <div className="sections">
-                {renderSection()}
+                {Object.values(sections).map(section => {
+                    return (<Section
+                        key={section.id}
+                        name={section.name}
+                        categories={section.categories}
+                        link={link}
+                    ></Section>);
+                })}
             </div>
         </div>
     );
@@ -51,27 +71,3 @@ function CategoryList({ link }) {
 
 export default CategoryList;
 
-function getCategoryListObject(dbResult) {
-    let sections = {}
-    dbResult.forEach(element => {
-        let section = {
-            id: element.section_id,
-            name: element.section_name,
-            categories: {}
-        }
-
-        // Prevent overwrite.
-        if (sections[section.id] === undefined) {
-            sections[section.id] = section;
-        }
-
-        let category = {
-            id: element.category_id,
-            name: element.category_name,
-        }
-        if (category.id !== null || category.name !== null) {
-            sections[section.id].categories[category.id] = category;
-        }
-    });
-    return sections;
-}

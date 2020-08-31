@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './Category.css';
 
-function Category({ match }) {
+const Category = ({ match }) => {
 
     const readCategory = () => {
         return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ function Category({ match }) {
                 });
         });
     }
-    readCategory();
+    
     const renderHeader = () => {
         return (
             <tr>
@@ -42,6 +42,11 @@ function Category({ match }) {
             </tr>
         );
     }
+
+    useEffect(() => {
+        readCategory();
+    }, [])
+
 
     return (
         <table id="category">

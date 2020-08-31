@@ -1,7 +1,7 @@
-const ilog = require('../server/module/improvedConsoleLog')
+const ilog = require('../module/improvedConsoleLog')
 
 module.exports = async function (req, res) {
-    const dbMembers = require('./db/dbMembers')(req, res);
+    const dbMembers = require('./dbMembers')(req, res);
 
     let DBType = dbMembers.DBType;
     let ContentType = dbMembers.ContentType;
@@ -11,16 +11,16 @@ module.exports = async function (req, res) {
 
     let requestLinker = {
         [DBType.USER]: {
-            [ContentType.ACCOUNT]: require('./db/queries/user/account')
+            [ContentType.ACCOUNT]: require('./queries/user/account')
         },
         [DBType.BLOG]: {
-            [ContentType.POST]: require('./db/queries/blog/post'),
-            [ContentType.CATEGORY_EDITOR]: require('./db/queries/blog/categoryEditor'),
-            [ContentType.CATEGORY]: require('./db/queries/blog/category'),
-            [ContentType.SECTION]: require('./db/queries/blog/section'),
+            [ContentType.POST]: require('./queries/blog/post'),
+            [ContentType.CATEGORY_EDITOR]: require('./queries/blog/categoryEditor'),
+            [ContentType.CATEGORY]: require('./queries/blog/category'),
+            [ContentType.SECTION]: require('./queries/blog/section'),
         },
         [DBType.SERVER]: {
-            [ContentType.REQUEST_LOG]: require('./db/queries/server/requestLog')
+            [ContentType.REQUEST_LOG]: require('./queries/server/requestLog')
         }
     }
 
