@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-import './Auth.css';
+import { useSelector } from 'react-redux';
+import { isLoggedIn } from '../../../../../library/auth';
 
-import { isLoggedIn } from '../../../../../library/auth'
+import './Auth.css';
 
 import Login from './Login';
 import Account from './Account';
 
 function Auth() {
-    const [loggedIn, setLoggedIn] = useState(false);
-
-    useEffect(() => {
-        console.log('hello');
-        setLoggedIn(isLoggedIn);
-    }, [])
-
+    const login = useSelector(store => store.auth.login);
+    console.log(login);
     return (
         <div className="LoginLink"> {
-            loggedIn ?
-            <Account></Account> :
-            <Login></Login>
+            login ?
+                <Account></Account> :
+                <Login></Login>
         }</div>
     );
 }

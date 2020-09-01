@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import './Auth.css';
-
 import Login from './Login/Login';
 import Signup from './Signup/Signup';
+
+import './Auth.css';
 
 const Auth = ({ match }) => {
     

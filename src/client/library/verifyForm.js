@@ -12,7 +12,7 @@ export const isEmail = (value) => {
 
 export const isPassword = (value) => {
     if (value === undefined) { value = '' }
-    const regExp = /^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+])[A-Za-z\d!@#$%^&*()\-_=+]{8,16}$/;
 
     return match(value, regExp);
 }

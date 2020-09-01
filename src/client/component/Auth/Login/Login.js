@@ -1,10 +1,19 @@
-import React, { useState, useRef } from 'react';
-import './Login.css'
+import React, { useState, useEffect, useRef } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { login as loginAction } from '../../../action/auth';
+import { login as loginSession } from '../../../library/auth';
 
 import Email from './Email';
 import Password from './Password'
 
+import './Login.css'
+
+
 const Login = ({ history }) => {
+    const dispatch = useDispatch();
+    const [login, setLogin] = useState(false);
+
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -30,6 +39,7 @@ const Login = ({ history }) => {
             .then(result => {
                 const isSuccess = result.validity;
                 if (isSuccess) {
+                    console.log()
                     const loginSuccess = result.value;
                     resolve(loginSuccess);
                 } else {
@@ -44,11 +54,11 @@ const Login = ({ history }) => {
         let permission = false;
         if (emailText.length === 0) {
             emailRef.current.focus();
-            const EMAIL_EORROR_MESSAGE = 'Please fill out the form email.'
+            const EMAIL_EORROR_MESSAGE = 'Please fill out the form email.';
             setErrorMessage(EMAIL_EORROR_MESSAGE);
         } else if (passwordText.length === 0) {
             passwordRef.current.focus();
-            const PASSWORD_EORROR_MESSAGE = 'Please fill out the form password.'
+            const PASSWORD_EORROR_MESSAGE = 'Please fill out the form password.';
             setErrorMessage(PASSWORD_EORROR_MESSAGE);
         } else {
             permission = true;
@@ -66,17 +76,29 @@ const Login = ({ history }) => {
             (async () => {
                 await signin()
                     .then((resolve) => {
+                        loginSession();
+                        setLogin(true);
+                        console.log('resolve', resolve);
                         alert(resolve);
-                        lock = false;
                         history.push('/blog/lobby');
+
+                        lock = false;
                     }, (reject) => {
+                        console.log('reject', reject);
                         emailRef.current.value = emailText;
                         setErrorMessage(reject);
+
                         lock = false;
                     })
             })();
         }
     }
+
+    useEffect(() => {
+        dispatch(loginAction(true));
+        console.log('login!');
+        
+    }, [login])
 
     return (
         <div className="Login">

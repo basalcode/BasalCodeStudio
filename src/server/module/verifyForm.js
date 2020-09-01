@@ -13,7 +13,7 @@ module.exports = (function () {
 
     function isPassword(value) {
         if (value === undefined) { value = '' }
-        const regExp = /^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        const regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+])[A-Za-z\d!@#$%^&*()\-_=+]{8,16}$/;
         const result = value.toString().match(regExp);
 
         return match(value, regExp);

@@ -18,9 +18,12 @@ module.exports = function (request, response) {
     const sessionName = request.params.session;
     const inputType = request.params.inputType;
 
+    ilog.all({ sessionName: sessionName });
+    ilog.all({ inputType: inputType });
+
     const verifyInput = () => {
         let permission = false;
-        InputType.forEach(element => {
+        Object.values(InputType).forEach(element => {
             if (element === inputType) {
                 permission = true;
             }
@@ -39,6 +42,7 @@ module.exports = function (request, response) {
     const sessionOperator = {
         [InputType.READ]() {
             let session = request.session[sessionName];
+            
             if (session) {
                 sessionResult.validity = true;
                 sessionResult.value = session;
@@ -53,8 +57,11 @@ module.exports = function (request, response) {
         [InputType.UPDATE]() {
             const queryString = request.query;
             const sessionUpdate = queryString.session;
+            console.log('sessionUpdate', sessionUpdate);
 
             request.session[sessionName] = sessionUpdate;
+
+            console.log('session', request.session[sessionName]);
 
             const session = request.session[sessionName];
 
@@ -80,9 +87,12 @@ module.exports = function (request, response) {
         }
     }
 
+    const validity = sessionResult.validity;
+    const value = sessionResult.value;
+
     ilog.middle(' Session Start ');
-    ilog.all({ sessionName: sessionName });
-    ilog.all({ sessionValue: sessionValue });
+    ilog.all({ validity: validity });
+    ilog.all({ value: value });
     ilog.middle(' Session Finish ');
 
     const resultObject = sessionOperator[inputType]();
