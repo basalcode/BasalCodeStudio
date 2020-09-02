@@ -1,8 +1,19 @@
-import { LOGIN } from '../constant/auth';
+export const LOGIN = 'LOG_IN';
+export const LOGIN_SUCCESS = 'LOG_IN_SUCCESS';
+export const LOGIN_FAILURE = 'LOG_IN_FAILURE';
+export const LOGOUT = 'LOG_OUT';
 
-export const login = (isLoggedIn) => {
+
+export const login = (userEmail, userName) => {
     return {
         type: LOGIN,
-        payload: isLoggedIn
+        userEmail: userEmail,
+        userName: userName
+    }
+}
+
+export const logout = () => {
+    return {
+        type: LOGOUT
     }
 }

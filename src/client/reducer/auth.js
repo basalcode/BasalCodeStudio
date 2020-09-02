@@ -1,15 +1,30 @@
-import { combineReducers } from 'redux';
-import { LOGIN } from '../constant/auth';
+import { LOG_IN, LOG_OUT } from '../action/auth'
 
-export const login = (state = false, action) => {
-    switch (action.type) {
-        case LOGIN:
-            return action.payload
-        default:
-            return state;
-    }
+const initialState = {
+    isLoggedIn: false,
+    userEmail: null,
+    userName: null,
 }
 
-export default combineReducers({
-    login
-});
+export default (state = initialState, action) => {
+    switch (action.type) {
+        case LOG_IN:
+            return {
+                ...state,
+                isLoggedIn: true,
+                userEmail: action.userEmail,
+                userName: action.userName,
+            };
+        case LOG_OUT: {
+            return {
+                ...state,
+                isLoggedIn: false,
+                userEmail: null,
+                userName: null,
+            }
+        }
+        default: {
+            return { ...state };
+        }
+    }
+}
