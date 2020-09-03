@@ -1,35 +1,36 @@
 import { all, call, put, fork, takeLatest } from 'redux-saga/effects';
-import { LOG_IN, LOG_IN_SUCCESS, LOG_IN_FAILURE } from '../action/auth';
+import { LOG_IN } from '../action/auth';
 
-import { login } from '../action/auth';
+import { login as loginAPI } from '../api/auth';
 
-function loginAPI() {
+import { loginSuccess as loginSuccessAction } from '../action/auth';
+import { loginFailure as loginFailureAction } from '../action/auth';
 
-}
-
-function* login() {
+function* login(action) {
     try {
+        console.log('[Saga] login start');
         // request to server
-        yield call(loginAPI);
+        const response = yield call(loginAPI, action);
+        const email = response.email;
+        const userName = response.user_name;
+        
         // same as dispatch
-        yield put({
-            type: LOG_IN_SUCCESS
-        })
-    } catch (error) { // loginAPI failed
-        console.log(error)
+        yield put(loginSuccessAction(email, userName));
+
+        action.history.push('/blog/lobby');
+    } catch (reject) { // loginAPI failed
+        console.error(reject);
         // same as dispatch
-        yield put({
-            type: LOG_IN_FAILURE
-        })
+        yield put(loginFailureAction(reject));
     }
 }
 
 function* watchLogin() {
     //wait for action and its finish.
-    yield takeLatest(LOG_IN, login)
+    yield takeLatest(LOG_IN, login);
 }
 
-export default function* authSaga() {
+export default function* auth() {
     yield all([
         fork(watchLogin),
     ]);

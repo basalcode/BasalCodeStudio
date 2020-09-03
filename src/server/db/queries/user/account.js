@@ -87,7 +87,7 @@ module.exports = async function (dbMembers) {
             let requestQuery = requestObject.query;
             let queryPage = requestQuery.page
             if (queryPage === Page.LOG_IN) {
-                if (requestObject.session.login) {
+                if (!requestObject.session.isLoggedIn) {
                     let requestBody = requestObject.body;
                     let email = requestBody.email;
                     let password = requestBody.password;
@@ -104,7 +104,7 @@ module.exports = async function (dbMembers) {
 
                     queryObject.push(query, values, null);
                     let dbResult = (await dbOperator(dbMembers, queryObject))[0];
-                    ilog.all({ dbResult: dbResult });
+                    // ilog.all({ dbResult: dbResult });
                     if (isUndefined(dbResult)) {
                         const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
                         return resultObject(false, ERROR_MESSAGE);
@@ -118,9 +118,12 @@ module.exports = async function (dbMembers) {
                                     email: dbResult.email,
                                     user_name: dbResult.user_name,
                                 };
-                                requestObject.session.login = LOGIN_SUCCESS;
-                                const LOGIN_FAILED_MESSAGE = 'Login Success!'
-                                return resultObject(true, LOGIN_FAILED_MESSAGE);
+                                
+                                requestObject.session.isLoggedIn = LOGIN_SUCCESS;
+                                requestObject.session.email = dbResult.email;
+                                requestObject.session.user_name = dbResult.user_name;
+
+                                return resultObject(true, accountInformation);
                             } else {
                                 const LOGIN_FAILED_MESSAGE = 'The email or password you entered is incorrect.';
                                 return resultObject(false, LOGIN_FAILED_MESSAGE);
@@ -130,8 +133,11 @@ module.exports = async function (dbMembers) {
                             return resultObject(false, VERIFICATION_FAILD_MESSAGE);
                         })
                 } else {
-                    const ALREADY_LOGGED_IN = 'Already logged in.'
-                    return resultObject(true, ALREADY_LOGGED_IN);
+                    let accountInformation = {
+                        email: requestObject.session.email,
+                        user_name: requestObject.session.user_name,
+                    };
+                    return resultObject(true, accountInformation);
                 }
             } else if (queryPage === Page.SIGN_UP) {
                 let queryEmail = requestQuery.email;

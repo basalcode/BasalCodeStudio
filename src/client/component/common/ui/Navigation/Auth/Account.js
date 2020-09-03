@@ -19,7 +19,6 @@ const Account = () => {
                     const isSuccess = result.validity;
                     if (isSuccess) {
                         logoutSession();
-                        setLogout(true);
                         alert('You have logged out successfully!');
                     } else {
                         const LOGOUT_FAILD = result.value;
@@ -33,7 +32,7 @@ const Account = () => {
         dispatch(loginAction(false));
         console.log('logout!');
 
-    }, [logout]) 
+    }, []) 
 
     return (
         <div className="Account">

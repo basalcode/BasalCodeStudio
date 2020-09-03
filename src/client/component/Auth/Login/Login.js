@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login as loginAction } from '../../../action/auth';
@@ -9,10 +10,12 @@ import Password from './Password'
 
 import './Login.css'
 
-
-const Login = ({ history }) => {
+const Login = () => {
+    console.log('[Component] login start');
     const dispatch = useDispatch();
-    const [login, setLogin] = useState(false);
+    const history = useHistory();
+
+    const isLoggedIn = useSelector(store => store.auth.isLoggedIn);
 
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
@@ -20,35 +23,6 @@ const Login = ({ history }) => {
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
-
-    const signin = () => {
-        return new Promise((resolve, reject) => {
-            let loginObject = {
-                email: emailText.toString(),
-                password: passwordText.toString()
-            }
-            const LOGIN_PAGE = 'login'
-            fetch(`/request/user/read/account?page=${LOGIN_PAGE}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginObject)
-            })
-            .then(response => response.json())
-            .then(result => {
-                const isSuccess = result.validity;
-                if (isSuccess) {
-                    console.log()
-                    const loginSuccess = result.value;
-                    resolve(loginSuccess);
-                } else {
-                    const loginFailed = result.value;
-                    reject(loginFailed);
-                }
-            });
-        });
-    }
 
     const canSubmit = () => {
         let permission = false;
@@ -67,38 +41,12 @@ const Login = ({ history }) => {
     }
 
     const onSubmitHandler = (event) => {
-        const eventTarget = event.target;
+        event.target.reset();
         event.preventDefault();
-        let lock = false;
-        if (!lock && canSubmit()) {
-            lock = true;
-            eventTarget.reset();
-            (async () => {
-                await signin()
-                    .then((resolve) => {
-                        loginSession();
-                        setLogin(true);
-                        console.log('resolve', resolve);
-                        alert(resolve);
-                        history.push('/blog/lobby');
-
-                        lock = false;
-                    }, (reject) => {
-                        console.log('reject', reject);
-                        emailRef.current.value = emailText;
-                        setErrorMessage(reject);
-
-                        lock = false;
-                    })
-            })();
+        if (canSubmit()) {
+            dispatch(loginAction(emailText, passwordText, history));
         }
     }
-
-    useEffect(() => {
-        dispatch(loginAction(true));
-        console.log('login!');
-        
-    }, [login])
 
     return (
         <div className="Login">
