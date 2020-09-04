@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { login as loginAction } from '../../../action/auth';
-import { login as loginSession } from '../../../library/auth';
+import { login as loginAction } from '../../../action/authAction';
 
 import Email from './Email';
 import Password from './Password'
@@ -15,14 +14,13 @@ const Login = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const isLoggedIn = useSelector(store => store.auth.isLoggedIn);
-
     const [emailText, setEmailText] = useState('');
     const [passwordText, setPasswordText] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
+    const messageRef = useRef(null);
 
     const canSubmit = () => {
         let permission = false;
@@ -41,10 +39,16 @@ const Login = () => {
     }
 
     const onSubmitHandler = (event) => {
-        event.target.reset();
         event.preventDefault();
         if (canSubmit()) {
-            dispatch(loginAction(emailText, passwordText, history));
+            dispatch(loginAction(
+                emailText,
+                passwordText,
+                history,
+                emailRef,
+                passwordRef,
+                messageRef
+            ));
         }
     }
 
@@ -63,7 +67,7 @@ const Login = () => {
                     }}
                     forwardedRef={passwordRef}
                 ></Password>
-                <div>{errorMessage}</div>
+                <div ref={messageRef}>{errorMessage}</div>
                 <input type="submit" value="Sign in" />
             </form>
             <input

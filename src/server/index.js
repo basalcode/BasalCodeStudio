@@ -3,13 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 const bodyParser = require('body-parser');
-const session = require('./auth/session');
+const session = require('./session/session');
 
 const app = express();
 
 const errorHandler = require('./errors');
 const requestProcessor = require('./db/requestProcessor');
-const authProcessor = require('./auth/authProcessor')
+const sessionProcessor = require('./session/sessionProcessor')
 
 /* body-parser */
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ const developmentMode = true;
 if (developmentMode) {
     //Client Side Rendering
     app.use('/request/:dbType/:inputType/:contentType', requestProcessor);
-    app.use('/auth/:inputType/:session', authProcessor);
+    app.use('/auth/:inputType/:session', sessionProcessor);
 
     app.use(errorHandler.error404);
     app.use(errorHandler.error500);

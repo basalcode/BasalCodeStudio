@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
-import { isLoggedIn } from '../../../../../library/auth';
-
-import './Auth.css';
+import { checkLogin as checkLoginAction } from '../../../../../action/authAction'
 
 import Login from './Login';
 import Account from './Account';
 
+import './Auth.css';
+
 function Auth() {
-    const login = useSelector(store => store.auth.login);
-    console.log(login);
+    const dispatch = useDispatch();
+    const login = useSelector(store => store.authReducer.login);
+
+    if (!login) {
+        dispatch(checkLoginAction());
+    }
+
     return (
         <div className="LoginLink"> {
             login ?

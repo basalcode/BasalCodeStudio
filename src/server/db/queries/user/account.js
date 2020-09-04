@@ -7,10 +7,9 @@ const isEmail = require('../../../module/verifyForm').isEmail;
 const isPassword = require('../../../module/verifyForm').isPassword;
 const hasNoSpecialCharacter = require('../../../module/verifyForm').hasNoSpecialCharacter;
 
-const bcrypt = require('../../../auth/bcrypt');
+const bcrypt = require('../../../session/bcrypt');
 
 const ilog = require('../../../module/improvedConsoleLog');
-const session = require('express-session');
 
 
 module.exports = async function (dbMembers) {
@@ -87,58 +86,52 @@ module.exports = async function (dbMembers) {
             let requestQuery = requestObject.query;
             let queryPage = requestQuery.page
             if (queryPage === Page.LOG_IN) {
-                if (!requestObject.session.isLoggedIn) {
-                    let requestBody = requestObject.body;
-                    let email = requestBody.email;
-                    let password = requestBody.password;
+                let requestBody = requestObject.body;
+                let email = requestBody.email;
+                let password = requestBody.password;
 
-                    let query = `
-                        SELECT 
-                            email,
-                            hashcode,
-                            user_name
-                        FROM account
-                        WHERE email = ?
-                    `;
-                    let values = [email];
+                let query = `
+                    SELECT 
+                        email,
+                        hashcode,
+                        user_name
+                    FROM account
+                    WHERE email = ?
+                `;
+                let values = [email];
 
-                    queryObject.push(query, values, null);
-                    let dbResult = (await dbOperator(dbMembers, queryObject))[0];
-                    // ilog.all({ dbResult: dbResult });
-                    if (isUndefined(dbResult)) {
-                        const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
-                        return resultObject(false, ERROR_MESSAGE);
-                    }
-
-                    return await bcrypt.compare(password, dbResult.hashcode)
-                        .then((resolve) => {
-                            const LOGIN_SUCCESS = resolve;
-                            if (LOGIN_SUCCESS) {
-                                let accountInformation = {
-                                    email: dbResult.email,
-                                    user_name: dbResult.user_name,
-                                };
-                                
-                                requestObject.session.isLoggedIn = LOGIN_SUCCESS;
-                                requestObject.session.email = dbResult.email;
-                                requestObject.session.user_name = dbResult.user_name;
-
-                                return resultObject(true, accountInformation);
-                            } else {
-                                const LOGIN_FAILED_MESSAGE = 'The email or password you entered is incorrect.';
-                                return resultObject(false, LOGIN_FAILED_MESSAGE);
-                            }
-                        }, (reject) => {
-                            const VERIFICATION_FAILD_MESSAGE = reject;
-                            return resultObject(false, VERIFICATION_FAILD_MESSAGE);
-                        })
-                } else {
-                    let accountInformation = {
-                        email: requestObject.session.email,
-                        user_name: requestObject.session.user_name,
-                    };
-                    return resultObject(true, accountInformation);
+                queryObject.push(query, values, null);
+                let dbResult = (await dbOperator(dbMembers, queryObject))[0];
+                // ilog.all({ dbResult: dbResult });
+                if (isUndefined(dbResult)) {
+                    const ERROR_MESSAGE = 'The email or password you entered is incorrect.';
+                    return resultObject(false, ERROR_MESSAGE);
                 }
+
+                return await bcrypt.compare(password, dbResult.hashcode)
+                    .then((resolve) => {
+                        const LOGIN_SUCCESS = resolve;
+                        if (LOGIN_SUCCESS) {
+                            let accountInformation = {
+                                email: dbResult.email,
+                                user_name: dbResult.user_name,
+                            };
+
+                            requestObject.session.login = {
+                                isLoggedIn: LOGIN_SUCCESS,
+                                email: dbResult.email,
+                                user_name: dbResult.user_name
+                            }
+
+                            return resultObject(true, accountInformation);
+                        } else {
+                            const LOGIN_FAILED_MESSAGE = 'The email or password you entered is incorrect.';
+                            return resultObject(false, LOGIN_FAILED_MESSAGE);
+                        }
+                    }, (reject) => {
+                        const VERIFICATION_FAILD_MESSAGE = reject;
+                        return resultObject(false, VERIFICATION_FAILD_MESSAGE);
+                    })
             } else if (queryPage === Page.SIGN_UP) {
                 let queryEmail = requestQuery.email;
                 let query = `

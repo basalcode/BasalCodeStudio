@@ -1,11 +1,10 @@
 export const login = (action) => {
-    console.log('[API] login start');
     return new Promise((resolve, reject) => {
         let loginObject = {
             email: action.userEmail,
             password: action.userPassword
         }
-        const LOGIN_PAGE = 'login'
+        const LOGIN_PAGE = 'login';
         fetch(`/request/user/read/account?page=${LOGIN_PAGE}`, {
             method: 'POST',
             headers: {

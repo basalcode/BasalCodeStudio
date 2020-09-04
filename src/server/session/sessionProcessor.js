@@ -41,8 +41,9 @@ module.exports = function (request, response) {
 
     const sessionOperator = {
         [InputType.READ]() {
-            let session = request.session[sessionName];
-            
+            const session = request.session[sessionName];
+            ilog.all({[request.session[sessionName]]: request.session[sessionName]})
+            ilog.all({session:session})
             if (session) {
                 sessionResult.validity = true;
                 sessionResult.value = session;
@@ -61,7 +62,7 @@ module.exports = function (request, response) {
 
             request.session[sessionName] = sessionUpdate;
 
-            console.log('session', request.session[sessionName]);
+            console.log('before session', request.session[sessionName]);
 
             const session = request.session[sessionName];
 
@@ -73,7 +74,7 @@ module.exports = function (request, response) {
                 sessionResult.validity = false;
                 sessionResult.value = UPDATE_FAILD;
             }
-
+            console.log('after session', request.session[sessionName]);
             return sessionResult;
         },
         [InputType.DELETE]() {
@@ -86,16 +87,15 @@ module.exports = function (request, response) {
             return sessionResult;
         }
     }
+    const resultObject = sessionOperator[inputType]();
 
-    const validity = sessionResult.validity;
-    const value = sessionResult.value;
+    const validity = resultObject.validity;
+    const value = resultObject.value;
 
     ilog.middle(' Session Start ');
     ilog.all({ validity: validity });
     ilog.all({ value: value });
     ilog.middle(' Session Finish ');
-
-    const resultObject = sessionOperator[inputType]();
 
     response.send(resultObject);
 }

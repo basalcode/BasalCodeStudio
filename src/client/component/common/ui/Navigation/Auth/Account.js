@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { login as loginAction } from '../../../../../action/auth'
-import { logout as logoutSession } from '../../../../../library/auth';
+import { login as loginAction } from '../../../../../action/authAction';
+import { logout as logoutSession } from '../../../../../api/session/authApiSession';
 
 import './Account.css'
 
@@ -27,13 +27,7 @@ const Account = () => {
                 })
         })();
     }
-
-    useEffect(() => {
-        dispatch(loginAction(false));
-        console.log('logout!');
-
-    }, []) 
-
+    
     return (
         <div className="Account">
             <p>Login Success !</p>

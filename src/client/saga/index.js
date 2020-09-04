@@ -1,9 +1,9 @@
 import { all, call } from 'redux-saga/effects';
 
-import auth from './auth';
+import authSaga from './authSaga';
 
 export default function* index() {
     yield all([
-        call(auth),
+        call(authSaga),
     ])
 }
