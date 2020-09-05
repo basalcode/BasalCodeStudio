@@ -5,7 +5,9 @@ import {
     CHECK_LOG_IN,
     CHECK_LOG_IN_SUCCESS,
     CHECK_LOG_IN_FAILURE,
-    LOG_OUT 
+    LOG_OUT,
+    LOG_OUT_SUCCESS, 
+    LOG_OUT_FAILURE 
 } from '../action/authAction'
 
 const initialState = {
@@ -37,6 +39,8 @@ export default (state = initialState, action) => {
         case CHECK_LOG_IN_FAILURE: return { ...state };
 
         case LOG_OUT: return { ...state };
+        case LOG_OUT_SUCCESS: return { initialState };
+        case LOG_OUT_FAILURE: return { ...state };
         default: return { ...state };
     }
 }

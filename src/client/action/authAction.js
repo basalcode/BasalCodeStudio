@@ -5,6 +5,8 @@ export const CHECK_LOG_IN = 'CHECK_LOG_IN';
 export const CHECK_LOG_IN_SUCCESS = 'CHECK_LOG_IN_SUCCESS';
 export const CHECK_LOG_IN_FAILURE = 'CHECK_LOG_IN_FAILURE';
 export const LOG_OUT = 'LOG_OUT';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
 export const login = (userEmail, userPassword, history, emailRef, passwordRef, messageRef) => {
     return {
@@ -41,8 +43,11 @@ export const checkLoginFailure = () => {
     return { type: CHECK_LOG_IN_FAILURE }
 }
 
-export const logout = () => {
+export const logout = () => ({ type: LOG_OUT })
+export const logoutSuccess = () => ({ type: LOG_OUT_SUCCESS })
+
+export const logoutFailure = () => {
     return {
-        type: LOG_OUT
+        type: LOG_OUT_FAILURE
     }
 }

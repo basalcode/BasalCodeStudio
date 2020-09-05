@@ -1,13 +1,18 @@
 import { all, call, put, fork, takeLatest } from 'redux-saga/effects';
-import { LOG_IN, CHECK_LOG_IN } from '../action/authAction';
+import { LOG_IN, CHECK_LOG_IN, LOG_OUT } from '../action/authAction';
 
 import { login as loginAPI } from '../api/db/authApiDB';
-import { checkLogin as checkLoginAPI } from '../api/session/authApiSession'
+import { checkLogin as checkLoginAPI } from '../api/session/authApiSession';
+import { logout as logoutAPI } from '../api/session/authApiSession';
 
-import { loginSuccess as loginSuccessAction } from '../action/authAction';
-import { loginFailure as loginFailureAction } from '../action/authAction';
-import { checkLoginSuccess as checkLoginSuccessAction } from '../action/authAction';
-import { checkLoginFailure as checkLoginFailureAction } from '../action/authAction';
+import { 
+    loginSuccess as loginSuccessAction,
+    loginFailure as loginFailureAction,
+    checkLoginSuccess as checkLoginSuccessAction,
+    checkLoginFailure as checkLoginFailureAction,
+    logoutSuccess as logoutSuccessAction,
+    logoutFailure as logoutFailureAction
+} from '../action/authAction';
 
 function* login(action) {
     try {
@@ -22,7 +27,7 @@ function* login(action) {
         // same as dispatch
         yield put(loginSuccessAction(email, userName));
         
-        alert('login success!!')
+        alert('Login success!!')
         action.history.push('/blog/lobby');
     } catch (reject) { // loginAPI failed
         
@@ -49,12 +54,29 @@ function* checkLogin(action) {
 
 }
 function* watchCheckLogin() {
-    yield takeLatest(CHECK_LOG_IN, checkLogin)
+    yield takeLatest(CHECK_LOG_IN, checkLogin);
+}
+
+function* logout(action) {
+    try {
+        const resolve = yield call(logoutAPI);
+        const isSuccess = resolve;
+        console.log('isSuccess', isSuccess);
+
+        yield put(logoutSuccessAction());
+        alert('Logout success!!');
+    } catch (reject) {
+        yield put(logoutFailureAction());
+    }
+}
+function* watchLogout() {
+    yield takeLatest(LOG_OUT, logout);
 }
 
 export default function* authSaga() {
     yield all([
         fork(watchLogin),
         fork(watchCheckLogin),
+        fork(watchLogout)
     ]);
 }

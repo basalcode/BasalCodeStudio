@@ -34,13 +34,13 @@ export const checkLogin = () => {
 
 export const logout = () => {
     return new Promise((resolve, reject) => {
-        fetch('/auth/update/login?session=false')
+        fetch('/auth/delete/login')
         .then(response => response.json())
         .then(result => {
             const isSuccess = result.validity;
             if (isSuccess) {
-                const logoutSuccess = result.value;
-                resolve(logoutSuccess);
+                const logoutSuccessMessage = result.value;
+                resolve(logoutSuccessMessage);
             } else {
                 const logoutFailedMessage = result.value;
                 reject(logoutFailedMessage);
