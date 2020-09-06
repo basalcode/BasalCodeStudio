@@ -1,20 +1,18 @@
 import React from 'react';
 import './BlogLobby.css';
 
-import Logo from '../common/ui/Logo';
-import Navigation from '../common/ui/Navigation/Navigation';
-import GoTop from '../common/ui/floatButton/GoTop';
-import NightMode from '../common/ui/floatButton/NightMode';
-import GitHubLink from '../common/ui/floatButton/GitHubLink'
-import EmailLink from '../common/ui/floatButton/EmailLink'
+import Header from 'component/common/Header';
 
-import Footer from '../common/Footer';
+import GoTop from 'component/common/ui/floatButton/GoTop';
+import NightMode from 'component/common/ui/floatButton/NightMode';
+import GitHubLink from 'component/common/ui/floatButton/GitHubLink';
+import EmailLink from 'component/common/ui/floatButton/EmailLink';
+import Footer from 'component/common/Footer';
 
-function BlogLobby() {
+const BlogLobby = () => {
     return (
         <div className="BlogLobby">
-            <Logo></Logo>
-            <Navigation></Navigation>
+            <Header></Header>
             <GoTop></GoTop>
             <NightMode></NightMode>
             <GitHubLink></GitHubLink>

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './CategoryEditor.css'
+import './BlogCategoryEditor.css'
 
-function CategoryEditor() {
+function BlogCategoryEditor() {
     return (
         <div className="CategoryEditor">
             <div id="category-editor">
@@ -20,4 +20,4 @@ function CategoryEditor() {
     );
 }
 
-export default CategoryEditor;
+export default BlogCategoryEditor;

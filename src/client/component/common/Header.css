@@ -1,5 +1,7 @@
 .Header {
+    position: relative;
     
+    border: 1px solid orchid;
 }
 
 .Header__logo {

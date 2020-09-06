@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import './Category.css';
+import './BlogCategory.css';
 
-const Category = ({ match }) => {
-
+const BlogCategory = ({ match }) => {
     const readCategory = () => {
         return new Promise((resolve, reject) => {
             const categoryId = match.params;
@@ -60,7 +59,7 @@ const Category = ({ match }) => {
     )
 }
 
-export default Category;
+export default BlogCategory;
 
 /*
 window.onload = function () {
