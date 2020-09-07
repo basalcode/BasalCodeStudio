@@ -1,8 +1,6 @@
 import React from 'react';
 
-import './Post.css'
-
-function Post({}) {
+const Post = () => {
     return (
         <div className="Post">
         </div>

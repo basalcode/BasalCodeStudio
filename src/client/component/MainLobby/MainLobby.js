@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import './MainLobby.css'
+import './MainLobby.scss'
 
 const MainLobby = ({ history }) => {
     useEffect(() => {

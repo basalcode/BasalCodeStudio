@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Category.css';
-
-function Category({ id, name, link }) {
+const Category = ({ id, name, link }) => {
 
     return (
         <div className="category">

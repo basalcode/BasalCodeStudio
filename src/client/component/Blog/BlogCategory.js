@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import './BlogCategory.css';
 
 const BlogCategory = ({ match }) => {
     const readCategory = () => {

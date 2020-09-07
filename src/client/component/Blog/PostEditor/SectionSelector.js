@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import './SectionSelector.css';
-
 function SectionSelector({onIndexChange}) {
     const [options, setOptions] = useState([]);
     const [sectionValue, setSectionValue] = useState(0);

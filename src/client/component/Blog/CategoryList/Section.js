@@ -1,9 +1,8 @@
 import React from 'react';
-import './Section.css';
 
 import Category from './Category';
 
-function Section({ name, categories, link }) {
+const Section = ({ name, categories, link }) => {
 
     return (
         <div className="section">

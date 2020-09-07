@@ -6,7 +6,7 @@ import { checkLogin as checkLoginAction } from '../../../../../action/authAction
 import Login from './Login';
 import Account from './Account';
 
-import './Auth.css';
+import './Auth.scss';
 
 function Auth() {
     const dispatch = useDispatch();

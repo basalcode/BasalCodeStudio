@@ -1,8 +1,6 @@
 import React from 'react';
 
-import './BlogCategoryEditor.css'
-
-function BlogCategoryEditor() {
+const BlogCategoryEditor = () => {
     return (
         <div className="CategoryEditor">
             <div id="category-editor">

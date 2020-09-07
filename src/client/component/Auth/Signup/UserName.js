@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import verifyInputValue from 'library/verifyInputValue';
 import { hasNoSpecialCharacter } from 'library/verifyForm';
 
 const UserName = ({ onInputBlur, forwardedRef }) => {

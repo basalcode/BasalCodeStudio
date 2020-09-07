@@ -1,8 +1,6 @@
 import React from 'react';
-import './BlogLobby.css';
 
 import Header from 'component/common/Header';
-
 import GoTop from 'component/common/ui/floatButton/GoTop';
 import NightMode from 'component/common/ui/floatButton/NightMode';
 import GitHubLink from 'component/common/ui/floatButton/GitHubLink';

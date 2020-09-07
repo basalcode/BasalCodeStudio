@@ -4,8 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { logout as logoutAction } from '../../../../../action/authAction';
 
-import './Account.css'
-
 const Account = () => {
     const dispatch = useDispatch();
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import './Blog.css'
-
 import BlogLobby from './BlogLobby';
 import BlogCategory from './BlogCategory';
+
+import './Blog.scss'
 
 const Blog = ({ match }) => {
     return (

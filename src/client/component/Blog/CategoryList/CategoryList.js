@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './CategoryList.css';
 
 import Section from './Section';
 
-function CategoryList({ link }) {
+const CategoryList = ({ link }) => {
     const [sections, setSections] = useState({});
 
     const getCategoryListObject = (dbResult) => {

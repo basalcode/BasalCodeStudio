@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { isEmail } from 'library/verifyForm';
 
-const Email = ({ onInputBlur, confirmPasswordText, forwardedRef }) => {
+const Email = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
 

@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import category from '../../../../server/db/queries/blog/category';
 
-import './CategorySelector.css'
-
-function CategorySelector({ onIndexChange, sectionValue }) {
+const CategorySelector = ({ onIndexChange, sectionValue }) => {
     const [options, setOptions] = useState([]);
     const [selectedValue, setSelectedValue] = useState(undefined);
 

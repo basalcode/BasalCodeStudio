@@ -5,7 +5,7 @@ import MainLobby from 'component/MainLobby/MainLobby'
 import Blog from 'component/Blog/Blog';
 import Auth from 'component/Auth/Auth';
 
-import './App.css';
+import './App.scss';
 
 const App = () => {
   return (

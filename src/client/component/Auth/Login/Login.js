@@ -7,8 +7,6 @@ import { login as loginAction } from '../../../action/authAction';
 import Email from './Email';
 import Password from './Password'
 
-import './Login.css'
-
 const Login = () => {
     console.log('[Component] login start');
     const dispatch = useDispatch();

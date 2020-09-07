@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import './Signup.css';
 
 import Email from './Email';
 import Password from './Password';

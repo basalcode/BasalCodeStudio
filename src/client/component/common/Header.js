@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import './Header.css';
+import './Header.scss';
 
 import Logo from 'component/common/ui/Logo';
 import Navigation from 'component/common/ui/Navigation/Navigation';

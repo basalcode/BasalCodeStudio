@@ -10,6 +10,7 @@
     "cross-env": "^7.0.2",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
