@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import Section from './Section';
 
+import './CategoryList.scss';
+
 const CategoryList = ({ link }) => {
     const [sections, setSections] = useState({});
 
@@ -54,7 +56,7 @@ const CategoryList = ({ link }) => {
 
     return (
         <div className="CategoryList">
-            <div className="sections">
+            <div className="CategoryList__sections">
                 {Object.values(sections).map(section => {
                     return (<Section
                         key={section.id}

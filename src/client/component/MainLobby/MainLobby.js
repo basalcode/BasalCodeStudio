@@ -21,6 +21,7 @@ const MainLobby = ({ history }) => {
             <div className="Lobby__first-layor"></div>
             <div className="Lobby__second-layor"></div>
             <div className="Lobby__third-layor"></div>
+            <div className="Test"></div>
         </div>
     );
 }

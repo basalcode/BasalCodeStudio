@@ -1,0 +1,13 @@
+@import 'style/common';
+
+.CategoryList {
+    @include moveCenter();
+    width: 100%;
+    border: 1px solid aliceblue;
+    
+    &__sections {
+        @include setSize(85%, 100%);
+        margin: auto;
+        border: 1px solid azure;
+    }
+}

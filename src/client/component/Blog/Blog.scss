@@ -1,19 +1,24 @@
-html, body {
+@import 'style/common';
+
+@mixin BlogBase($backgroundColor) {
     width: 100%;
     height: 100%;
-    border: 1px solid red;
+
     overflow: hidden;
-    
+    background-color: $backgroundColor;
 }
 
-body {
-    border: 1px solid blue;
-    background-color: #ffffff;
-}
+html {
+    @include BlogBase(white);
+    border: 1px solid red;
+    body {
+        @include BlogBase(white);
+        border: 1px solid blue;
+        .Blog {
+            width: 95%;
+            height: 100%;
+            margin: auto;
+        }
+    }
 
-.Blog {
-    width: 80%;
-    height: 100%;
-    margin: auto;
-    border: 1px solid green;
 }

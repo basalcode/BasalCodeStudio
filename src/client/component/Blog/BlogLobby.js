@@ -1,16 +1,15 @@
 import React from 'react';
 
-import Header from 'component/common/Header';
 import GoTop from 'component/common/ui/floatButton/GoTop';
 import NightMode from 'component/common/ui/floatButton/NightMode';
 import GitHubLink from 'component/common/ui/floatButton/GitHubLink';
 import EmailLink from 'component/common/ui/floatButton/EmailLink';
-import Footer from 'component/common/Footer';
+
+import './BlogLobby.scss';
 
 const BlogLobby = () => {
     return (
         <div className="BlogLobby">
-            <Header></Header>
             <GoTop></GoTop>
             <NightMode></NightMode>
             <GitHubLink></GitHubLink>
@@ -26,7 +25,7 @@ const BlogLobby = () => {
                 Skill
                 </div>
 
-            <Footer></Footer>
+            
         </div>
     );
 }

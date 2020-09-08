@@ -1,13 +1,8 @@
+@import 'style/common';
+
 .Header {
     position: relative;
-    
-    border: 1px solid orchid;
-}
-
-.Header__logo {
-
-}
-
-.Header__navigation {
-
+    top: 40px;
+    @include setSize(100%, 60px);
+    border: 1px solid blue;
 }

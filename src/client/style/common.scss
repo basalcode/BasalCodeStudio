@@ -1,0 +1,51 @@
+$center: 50%;
+
+@mixin fullScreen($backgroundColor) {
+    $viewportWidth: 100vw;
+    $viewportHeight: 100vh;
+
+    width: $viewportWidth;
+    height: $viewportHeight;
+
+    overflow: hidden;
+
+    background-color: $backgroundColor;
+}
+
+@mixin setSize($width: 0px, $height: 0px) {
+    width: $width;
+    height: $height;
+}
+
+@mixin setBox($padding, $border, $margin) {
+    padding: $padding;
+    border: $border;
+    margin: $margin;
+}
+
+@mixin moveVerticalCenter($top: $center, $bottom: none, $position: absolute) {
+    position: $position;
+    top: $top;
+    bottom: $bottom;
+    transform: translateY(-$center);
+}
+
+@mixin moveHorizontalCenter($left: $center, $right: none, $position: absolute) {
+    position: $position;
+    left: $left;
+    right: $right;
+    transform: translateX(-$center);
+}
+
+@mixin moveCenter($top: $center, $left: $center, $bottom: none, $right: none, $position: absolute) {
+    position: $position;
+    top: $center;
+    left: $center;
+    bottom: $bottom;
+    right: $right;
+    transform: translate(-$center, -$center);
+}
+
+@mixin circle($size: 50%) {
+    border-radius: $size;
+}

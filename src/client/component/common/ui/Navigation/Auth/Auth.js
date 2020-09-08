@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { checkLogin as checkLoginAction } from '../../../../../action/authAction'
+import { checkLogin as checkLoginAction } from 'action/authAction'
 
 import Login from './Login';
 import Account from './Account';
@@ -17,11 +17,12 @@ function Auth() {
     }
 
     return (
-        <div className="LoginLink"> {
-            login ?
-                <Account></Account> :
-                <Login></Login>
-        }</div>
+        <div className="Auth">
+            <div className="Auth__top-margin"></div>
+            <div className="Auth__content">
+                { login ? <Account></Account> : <Login></Login>}
+            </div>
+        </div>
     );
 }
 

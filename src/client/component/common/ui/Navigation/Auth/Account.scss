@@ -1,0 +1,8 @@
+@import 'style/common';
+
+.Account {
+    @include moveVerticalCenter();
+    right: 0;
+
+    border: 1px solid fuchsia;
+}

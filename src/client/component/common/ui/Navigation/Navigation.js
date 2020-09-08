@@ -6,34 +6,37 @@ import Auth from './Auth/Auth'
 import './Navigation.scss';
 
 function Navigation() {
-    
-    let clicked = false;
+    const [containerToggle, setContainerToggle] = useState("Navigation__container--off");
+    const [clicked, setClicked] = useState(false);
+
     const onClickHandler = () => {
         if (clicked) {
-            
+            setContainerToggle("Navigation__container--off");
 
-            clicked = false;
+            setClicked(false);
         } else {
+            setContainerToggle("Navigation__container--on");
 
-
-            clicked = true;
+            setClicked(true);
         }
-        console.log(clicked);
+        console.log('clicked', clicked);
     }
+    console.log('containerToggle', containerToggle)
+
 
     return (
         <div className="Navigation">
-            <button className="Navigation__icon-container"
-                onClick={onClickHandler}
-            >
-                <svg className="Navigation__icon"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
-                </svg>
-            </button>
-            <div className="Navigation__slide-container">
-                <Auth></Auth>
-                <CategoryList link={true}></CategoryList>
+            <div className="Navigation__button-container">
+                <div className="Navigation__button" onClick={onClickHandler}>Button</div>
+            </div>
+            <div className={containerToggle}>
+                <div className="Navigation__container--header">
+                    <Auth></Auth>
+                </div>
+                <div className="Navigation__container--body">
+                    <CategoryList link={true}></CategoryList>
+                </div>
+                <div className="Navigation__container--footer"></div>
             </div>
         </div>
     );

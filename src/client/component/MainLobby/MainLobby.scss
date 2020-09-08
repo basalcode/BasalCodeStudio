@@ -1,65 +1,50 @@
-html, body {
-    width: 100%;
-    height: 100%;
-    border: 1px solid red;
-    overflow: hidden;
-}
+@import 'style/common';
 
-body {
-    border: 1px solid blue;
-    background-color: #F1E3D2;
+html {
+    @include fullScreen(white);
+    border: 1px solid red;
+
+    body {
+        @include fullScreen(#F1E3D2);
+        border: 1px solid blue;
+    }
 }
 
 .Lobby {
     position: relative;
-    width: 80vw;
-    height: 100vh;
+    @include setSize(80vw, 99vh);
     margin: auto;
     border: 1px solid green;
-}
 
-/* // elementPosition.centerX(lobby, body); */
+    &__image {
+        $imageLink: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
 
-.Lobby__image {
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    width: 600px;
-    height: 1000px;
+        @include moveCenter();
+        @include setSize(600px, 1000px);
 
-    background-image: url(https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);
-    background-position: center;
-    background-size: cover;
-}
+        background-image: url($imageLink);
+        background-position: center;
+        background-size: cover;
+    }
 
-.Lobby__circle {
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    width: 750px;
-    height: 750px;
-    border: 1px solid white;
-    border-radius: 450px;
-    mix-blend-mode: difference;
-}
+    &__circle {
+        @include moveCenter();
+        @include setSize(750px, 750px);
+        border: 1px solid white;
+        @include circle();
+        mix-blend-mode: difference;
+    }
 
-.Lobby__title {
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    /* width: 800px; */
-    /* height: 300px; */
-    /* border: 1px solid purple; */
-}
-
-.Lobby__text {
-    text-align: center;
-    font-size: 72px;
-    font-family: 'Cinzel', serif;
-    color: white;
-    letter-spacing: 5px;
-    mix-blend-mode: difference;
+    &__title {
+        @include moveCenter();
+    }
+    
+    &__text {
+        text-align: center;
+        font-size: 72px;
+        font-family: 'Cinzel', serif;
+        color: white;
+        letter-spacing: 5px;
+        mix-blend-mode: difference;
+    }
 }

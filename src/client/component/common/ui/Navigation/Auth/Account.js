@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { logout as logoutAction } from '../../../../../action/authAction';
+import { logout as logoutAction } from 'action/authAction';
+
+import './Account.scss';
 
 const Account = () => {
     const dispatch = useDispatch();

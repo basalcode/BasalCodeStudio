@@ -1,52 +1,66 @@
+@import 'style/common';
+
+@mixin slideContainer($rightPosition) {
+    position: fixed;
+    top: 0;
+    right: $rightPosition;
+
+    @include setSize(25%, 100vh);
+
+    background-color: grey;
+    transition: right 1s;
+    z-index: 1;
+}
+
 .Navigation {
     position: absolute;
     top: 0px;
     right: 0px;
+    @include setSize(60px, 100%);
 
-    border:1px solid fuchsia;
+    border: 1px solid forestgreen;
+
+    &__button-container {
+        @include moveCenter();
+        @include setSize(50px, 50px);
+        border: 1px solid darkkhaki;
+
+        @include circle();
+        background-color: white;
+
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    &__button {
+        @include moveCenter();
+    }
+
+    &__container--off {
+        @include slideContainer(-25%);
+        border: 1px solid darkslateblue;
+    }
+
+    &__container--on {
+        @include slideContainer(0%);
+        border: 1px solid dimgrey;
+    }
+
+    &__container--header {
+        @include setSize(100%, 100px);
+        border: 1px solid fuchsia;
+    }
+
+    &__container--body {
+        border: 1px solid mediumslateblue;
+    }
+
+    &__container--footer {
+        position: absolute;
+        bottom: 0px;
+
+        @include setSize(100%, 100px);
+        border: 1px solid salmon;
+    }
 }
 
-input {
-    width: 50px;
-    height: 50px;
-    border: 1px solid darkgray;
-
-    background-color: darkcyan;
-}
- 
-.Navigation__icon-container {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    border: 1px solid red;
-
-    background-color: white;
-
-    z-index: 1;
-}
-
-.Navigation__icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px;
-    height: 24px;
-    
-    border: 1px solid green;
-}
-
-.Navigation__slide-container {
-    position: fixed;
-    top: 0px;
-    right: -30%;
-    width: 30%;
-    height: 100vh;
-    
-    border: 1px solid peru;
-
-    background-color: silver;
-
-    transition: right 1s;
-}
