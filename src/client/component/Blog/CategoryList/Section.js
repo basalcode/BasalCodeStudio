@@ -2,14 +2,16 @@ import React from 'react';
 
 import Category from './Category';
 
+import './Section.scss';
+
 const Section = ({ name, categories, link }) => {
 
     return (
-        <div className="section">
-            <div className="section__self">
-                <div className="section__title">{name}</div>
+        <div className="Section">
+            <div className="Section__self">
+                <div className="Section__self-title">{name}</div>
             </div>
-            <div className="section__categories"> {
+            <div className="Section__categories"> {
                 Object.values(categories).map(category => (
                     <Category
                         key={category.id}

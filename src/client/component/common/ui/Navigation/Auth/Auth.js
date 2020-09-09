@@ -20,7 +20,7 @@ function Auth() {
         <div className="Auth">
             <div className="Auth__top-margin"></div>
             <div className="Auth__content">
-                { login ? <Account></Account> : <Login></Login>}
+                { login ? <Account></Account> : <Login></Login> }
             </div>
         </div>
     );

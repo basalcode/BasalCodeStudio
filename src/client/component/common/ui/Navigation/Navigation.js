@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
+import NavigationButton from './NavigationButton';
+import Auth from './Auth/Auth';
 import CategoryList from 'component/Blog/CategoryList/CategoryList';
-import Auth from './Auth/Auth'
 
 import './Navigation.scss';
 
@@ -23,11 +24,12 @@ function Navigation() {
     }
     console.log('containerToggle', containerToggle)
 
-
     return (
         <div className="Navigation">
             <div className="Navigation__button-container">
-                <div className="Navigation__button" onClick={onClickHandler}>Button</div>
+                <div className="Navigation__button" onClick={onClickHandler}>
+                    <NavigationButton clicked={clicked}></NavigationButton>
+                </div>
             </div>
             <div className={containerToggle}>
                 <div className="Navigation__container--header">

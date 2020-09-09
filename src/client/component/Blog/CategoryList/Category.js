@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Category = ({ id, name, link }) => {
+import './Category.scss';
 
+const Category = ({ id, name, link }) => {
     return (
-        <div className="category">
-            <div className="category__self">
-                <div className="category__title">{
+        <div className="Category">
+            <div className="Category__self">
+                <div className="Category__self-title">{
                     link ? 
                     <Link to={`/blog/category/${id}`}>{name}</Link> :
                     name

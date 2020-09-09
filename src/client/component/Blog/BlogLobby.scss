@@ -1,5 +1,9 @@
+@import 'style/common';
+
 .BlogLobby {
     position: relative;
     top: 60px;
+    @include setSize(300px, 300px);
+
     border: 1px solid fuchsia
 }

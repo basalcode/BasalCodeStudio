@@ -1,0 +1,43 @@
+@import 'style/common';
+
+@mixin elementSetting($top, $width) {
+    position: absolute;
+    top: $top;
+    right: 25%;
+    width: $width;
+
+    border: 1.5px solid navy;
+    background-color: navy;
+    transition: width 1s;
+}
+
+.NavigationButton {
+    position: absolute;
+    @include setSize(100%, 100%);
+
+    &__on--first {
+        @include elementSetting(25%, 50%);
+    }
+    &__on--second {
+        @include elementSetting(40%, 40%);
+    }
+    &__on--third {
+        @include elementSetting(55%, 30%);
+    }
+    &__on--fourth {
+        @include elementSetting(70%, 20%);
+    }
+    
+    &__off--first {
+        @include elementSetting(25%, 50%);
+    }
+    &__off--second {
+        @include elementSetting(40%, 50%);
+    }
+    &__off--third {
+        @include elementSetting(55%, 50%);
+    }
+    &__off--fourth {
+        @include elementSetting(70%, 50%);
+    }
+}
