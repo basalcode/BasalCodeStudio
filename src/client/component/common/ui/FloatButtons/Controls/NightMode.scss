@@ -1,0 +1,14 @@
+.NightMode {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &__icon {
+        font-size: 24px;
+        transition: font-size 0.5s;
+        &:hover {
+            font-size: 30px;
+        }
+    }
+}

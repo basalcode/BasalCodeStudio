@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Header from 'component/common/Header';
+import FloatButtons from 'component/common/ui/FloatButtons/FloatButtons';
 import BlogLobby from './BlogLobby';
 import BlogCategory from './BlogCategory';
 import Footer from 'component/common/Footer';
@@ -12,6 +13,7 @@ const Blog = ({ match }) => {
     return (
         <div className="Blog">
             <Header></Header>
+            <FloatButtons></FloatButtons>
             <Switch>
                 <Route path={`${match.path}/lobby`} component={BlogLobby} />
                 <Route path={`${match.path}/category`} component={BlogCategory} />

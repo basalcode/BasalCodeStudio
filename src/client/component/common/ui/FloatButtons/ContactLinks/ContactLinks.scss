@@ -1,0 +1,12 @@
+@import 'style/common';
+
+$bottom: 40px;
+
+.ContactLinks {
+    position: fixed;
+    left: 2.5%;
+    bottom: $bottom;
+    @include setSize(40px, 80px);
+    // border: 1px solid darkgoldenrod;
+    // border-radius: ($bottom / 2);
+}
