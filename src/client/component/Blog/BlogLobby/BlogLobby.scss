@@ -1,0 +1,17 @@
+@import 'style/common';
+
+@mixin setImage($url, $width: 100%) {
+    width: $width;
+    background-image: url($url);
+    background-size: cover;
+    background-attachment: scroll;
+    background-position: center;
+}
+
+.BlogLobby {
+    $firstUrl: 'https://images.unsplash.com/photo-1457364887197-9150188c107b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80';
+
+    @include moveCenter();
+    @include setSize(50vw, 50vh);
+    @include setImage($firstUrl, 40vw);
+}

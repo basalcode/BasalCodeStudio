@@ -5,7 +5,7 @@ import './GoTop.scss';
 const GoTop = () => {
     return (
         <div className="GoTop">
-            <div class="GoTop__icon icon-up-outline"></div>
+            <div className="GoTop__icon icon-up-outline"></div>
         </div>
     );
 }

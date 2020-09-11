@@ -17,7 +17,7 @@ const NightMode = () => {
 
     return (
         <div className="NightMode">
-            <div class={`NightMode__icon ${nightModeClassName}`}
+            <div className={`NightMode__icon ${nightModeClassName}`}
                 onClick={onClickHandler}></div>
         </div>
     );

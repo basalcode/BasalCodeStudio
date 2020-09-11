@@ -1,0 +1,46 @@
+@import 'style/common';
+
+@keyframes fade-in{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.BlogLobbyMain {    
+    font-family: 'Courier Prime', monospace;
+    font-size: 72px;
+    color: white;
+    mix-blend-mode: exclusion;
+    
+    &__title {
+        @include moveCenter();
+        width: 60%;
+        text-align: center;
+        &--before {
+            
+        }
+        &--after {
+            display: none;
+        }
+    }
+
+    &__greeting {
+        &--before {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;   
+        }
+        &--after {
+            @include moveCenter();
+            
+               
+            animation: fade-in 1s;
+            transition: top 1s;
+        }
+    }
+}
