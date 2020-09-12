@@ -18,12 +18,12 @@
     right: 0px;
     @include setSize(60px, 100%);
 
-    border: 1px solid forestgreen;
+    // border: 1px solid forestgreen;
 
     &__button-container {
         @include moveCenter();
         @include setSize(50px, 50px);
-        border: 1px solid darkkhaki;
+        // border: 1px solid darkkhaki; 
 
         @include circle();
         background-color: white;

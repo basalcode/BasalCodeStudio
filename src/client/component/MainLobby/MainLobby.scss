@@ -2,19 +2,15 @@
 
 html {
     @include fullScreen(white);
-    border: 1px solid red;
-
     body {
         @include fullScreen(#F1E3D2);
-        border: 1px solid blue;
     }
 }
 
 .Lobby {
     position: relative;
-    @include setSize(80vw, 99vh);
+    @include setSize(80vw, 100vh);
     margin: auto;
-    border: 1px solid green;
 
     &__image {
         $imageLink: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';

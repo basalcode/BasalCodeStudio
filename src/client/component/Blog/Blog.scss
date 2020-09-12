@@ -1,22 +1,29 @@
 @import 'style/common';
 
-@mixin BlogBase($backgroundColor) {
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-    background-color: $backgroundColor;
-}
-
+$pageHeight: 100vh;
+$pageAmount: 3;
+$totalHeight: $pageHeight * $pageAmount;
 html {
-    @include BlogBase(white);
-    border: 1px solid red;
+    // width: 100vw;
+    @include setSize(100vw, $totalHeight);
+    overflow: auto;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
+    scroll-behavior: smooth;
     body {
-        @include BlogBase(white);
-        border: 1px solid blue;
+        @include setSize(inherit, inherit);
+        #root {
+            @include setSize(inherit, inherit);
+        }
+        #App {
+            @include setSize(inherit, inherit);
+        }
         .Blog {
-            width: 95%;
-            height: 100%;
+            @include setSize(inherit, inherit);
+            width: 95vw;
+            height: 100vh;
             margin: auto;
         }
     }

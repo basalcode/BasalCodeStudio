@@ -5,10 +5,11 @@
     transform: translateX(-50%);
 
     &__icon {
-        font-size: 24px;
+        font-size: 36px;
         transition: font-size 0.5s;
         &:hover {
-            font-size: 30px;
+            font-size: 42px;
+            cursor: pointer;
         }
     }
 }

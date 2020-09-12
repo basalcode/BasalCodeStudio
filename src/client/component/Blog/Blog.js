@@ -17,8 +17,8 @@ const Blog = ({ match }) => {
                 <Route path={`${match.path}/category`} component={BlogCategory} />
             </Switch>
             <Header></Header>
-            <FloatButtons></FloatButtons>
             <Footer></Footer>
+            <FloatButtons></FloatButtons>
         </div>
     );
 }

@@ -1,4 +1,15 @@
+@import 'style/common';
+
+$footerWidth: 100%;
+$footerHeight: 60px;
+
 .Footer {
+    @include setSize($footerWidth, $footerHeight);
+    border: 5px solid cornsilk;
+
+
+    background-color: khaki;
+
     &__logo {
 
     }
