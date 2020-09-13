@@ -1,17 +1,15 @@
 @import 'style/common';
 
-$pageHeight: 100vh;
-$pageAmount: 3;
-$totalHeight: $pageHeight * $pageAmount;
 html {
-    // width: 100vw;
-    @include setSize(100vw, $totalHeight);
+    width: 100vw;
     overflow: auto;
     -ms-overflow-style: none;
     &::-webkit-scrollbar {
         display: none !important;
     }
     scroll-behavior: smooth;
+
+    background-color: #F1E3D2;
     body {
         @include setSize(inherit, inherit);
         #root {

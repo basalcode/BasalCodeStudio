@@ -1,10 +1,7 @@
 @import 'style/common';
 
 html {
-    @include fullScreen(white);
-    body {
-        @include fullScreen(#F1E3D2);
-    }
+    overflow: hidden;
 }
 
 .Lobby {

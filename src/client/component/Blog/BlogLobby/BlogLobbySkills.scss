@@ -2,44 +2,61 @@
 
 .BlogLobbySkills {
     width: 100%;
-    // @include setSize(100%, 100vh);
     padding: 5%;
     border: 1px solid cyan;
-
-    background-color: #F1E3D2;
 
     font-family: 'Noto Serif KR', serif;
     &__title {
         text-align: center;
-
-        border: 1px solid cyan;
-
         margin: 20px auto;
 
         font-size: 2rem;
         text-decoration: underline;
     }
-    &__paragraph {
-        display: flex;
-        flex-direction: column;
-
-        border: 1px solid cyan;
+    &__content-container {
+        display: inline-block;
+        // border: 1px solid green;
         margin: auto;
-        width: 80%;
+    }
+    &__content {
     }
     &__subtitle {
+        display: inline-block;
+
         text-align: center;
+
+        margin-bottom: 40px;
 
         font-weight: lighter;
         font-size: 1.5rem;
         text-decoration: underline;
-    }
-    &__image {
 
+        border: 1px solid cyan;
     }
-    &__text {
+
+    &__description-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        // border: 1px solid cyan;
+        margin: auto;
+    }
+    &__description {
+        display: flex;
+        flex-direction: column;
+
+        margin: 10px;
+    }
+    &__description-image {
+        @include setSize(100px, 100px);
+        // border: 1px solid crimson;
+    }
+    &__description-text {
+        @include setSize(100px, 50px);
         text-align: center;
 
         font-size: 1.5rem;
+
+        // border: 1px solid cornflowerblue;
     }
 }

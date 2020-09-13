@@ -6,7 +6,7 @@ import Blog from 'component/Blog/Blog';
 import Auth from 'component/Auth/Auth';
 
 import './App.scss';
-import 'font/fontello/css/fontello.css';
+import 'asset/fontello/css/fontello.css';
 
 const App = () => {
   return (

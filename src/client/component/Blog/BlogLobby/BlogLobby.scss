@@ -1,11 +1,6 @@
 @import 'style/common';
 
-$viewportHeight: 100vh;
-$pageAmount: 3;
-$pageHeight: $viewportHeight * $pageAmount;
-
 .BlogLobby {
-    @include setSize(100%, $pageHeight);
-
-    border: 3px solid cadetblue;
+    width: 100%;
+    background-color: #F1E3D2;
 }

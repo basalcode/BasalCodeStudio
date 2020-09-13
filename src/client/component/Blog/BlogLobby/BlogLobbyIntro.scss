@@ -1,16 +1,11 @@
 @import 'style/common';
 
-/* $viewportHeight: 100vh;
-$pageIndex: 1;
-$currentPageHeight: $viewportHeight * $pageIndex; */
-
 .BlogLobbyIntro {
     width: 100%;
     // @include setSize(100%, 100vh);
     padding: 5%;
     border: 1px solid crimson;
 
-    background-color: #F1E3D2;
     font-family: 'Noto Serif KR', serif;
 
     &__title {
