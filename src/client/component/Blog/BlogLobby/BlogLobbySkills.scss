@@ -3,35 +3,38 @@
 .BlogLobbySkills {
     width: 100%;
     padding: 5%;
-    border: 1px solid cyan;
+    // border: 1px solid cyan;
 
+    text-align: center;
     font-family: 'Noto Serif KR', serif;
+
     &__title {
         text-align: center;
         margin: 20px auto;
 
         font-size: 2rem;
         text-decoration: underline;
+        // border: 1px solid red;
     }
     &__content-container {
         display: inline-block;
-        // border: 1px solid green;
+        // border: 2px solid green;
         margin: auto;
+        // text-align: center;
     }
     &__content {
+        // border: 1px solid cornflowerblue;
     }
     &__subtitle {
-        display: inline-block;
-
-        text-align: center;
-
-        margin-bottom: 40px;
+        text-align: left;
+        // width: 100%;
+        margin:20px auto 10px auto;
 
         font-weight: lighter;
         font-size: 1.5rem;
         text-decoration: underline;
 
-        border: 1px solid cyan;
+        // border: 1px solid cyan;
     }
 
     &__description-container {

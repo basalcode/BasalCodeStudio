@@ -12,7 +12,7 @@ const BlogLobbyIntro = () => {
 
     return (
         <section className="BlogLobbyIntro">
-            <h1 className="BlogLobbyIntro__title">ABOUT</h1>
+            <h1 className="BlogLobbyIntro__title">Intro</h1>
             <p className="BlogLobbyIntro__paragraph">
                 {textArray.map(text => (
                     <span className="BlogLobbyIntro__text">
