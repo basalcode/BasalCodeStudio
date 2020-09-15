@@ -7,7 +7,7 @@ import BlogLobby from './BlogLobby/BlogLobby';
 import BlogCategory from './BlogCategory';
 import Footer from 'component/common/Footer';
 
-import './Blog.scss'
+import 'style/page/BLBlog.scss'
 
 const Blog = ({ match }) => {
     return (
