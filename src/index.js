@@ -12,7 +12,7 @@ import reduxLogger from 'redux-logger';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import App from 'component/App';
+import App from 'page/App';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(
