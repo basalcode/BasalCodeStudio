@@ -1,0 +1,16 @@
+.Auth {
+    // @include setSize(100%, 100px);
+    border: 1px solid blue;
+
+    &__top-margin {
+        // @include setSize(100%, 40px);
+        border: 1px solid floralwhite;
+    }
+
+    &__content {
+        position: relative;
+        border: 1px solid darkcyan;
+        background-color: darkgray;
+        // @include setSize(100%, 60px);
+    }
+}

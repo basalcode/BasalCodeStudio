@@ -1,5 +1,5 @@
+/* module */
 import React, { useEffect } from 'react';
-
 
 const BlogCategory = ({ match }) => {
     const readCategory = () => {

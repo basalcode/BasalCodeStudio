@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+/* module */
+import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { login as loginAction } from 'action/auth';
+/* store */
+import { login as loginAction } from 'store/action/auth';
 
+/* component */
 import Email from './Email';
 import Password from './Password'
 
 const Login = () => {
-    console.log('[Component] login start');
     const dispatch = useDispatch();
     const history = useHistory();
 

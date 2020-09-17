@@ -1,7 +1,6 @@
+/* module */
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import './Category.scss';
 
 const Category = ({ id, name, link }) => {
     return (

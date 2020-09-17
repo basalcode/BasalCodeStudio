@@ -1,0 +1,33 @@
+@import 'category/category';
+@import 'category-editor/category-editor';
+@import 'lobby/lobby';
+@import 'post/post';
+@import 'post-editor/post-editor';
+
+html {
+    width: 100vw;
+    overflow: auto;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
+    scroll-behavior: smooth;
+
+    background-color: #F1E3D2;
+    body {
+        // @include setSize(inherit, inherit);
+        #root {
+            // @include setSize(inherit, inherit);
+        }
+        #App {
+            // @include setSize(inherit, inherit);
+        }
+        .Blog {
+            // @include setSize(inherit, inherit);
+            width: 95vw;
+            height: 100vh;
+            margin: auto;
+        }
+    }
+
+}

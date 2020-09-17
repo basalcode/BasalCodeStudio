@@ -1,0 +1,36 @@
+.BlogLobbyIntro {
+    width: 100%;
+    // @include setSize(100%, 100vh);
+    padding: 5%;
+    // border: 1px solid crimson;
+
+    font-family: 'Noto Serif KR', serif;
+
+    &__title {
+        text-align: center;
+
+        // border: 1px solid cyan;
+        margin: 20px auto;
+
+        font-size: 2rem;
+        text-decoration: underline;
+    }
+    
+    &__paragraph {
+        display: flex;
+        flex-direction: column;
+
+        // border: 1px solid cyan;
+        margin: auto;
+        width: 80%;
+    }
+
+    &__text {
+        text-align: center;
+        
+        // border: 1px solid violet;
+        margin: 15px auto;
+
+        font-size: 1.5rem;
+    }
+}

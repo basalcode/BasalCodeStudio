@@ -1,0 +1,25 @@
+.Logo {
+    display: inline-block;
+    // @include moveVerticalCenter();
+    // border:1px solid red;
+    margin: auto;
+    cursor: pointer;
+
+    &__text {
+        text-align: center;
+        font-size: 30px;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 3px;
+    }
+    
+    &__bottom-line {
+        // @include setSize();
+        border-bottom: 1px solid black;
+        transition: width 1s;
+    }
+    
+    &:hover &__bottom-line {
+        width: 100%;
+        transition: width 1s;
+    }
+}

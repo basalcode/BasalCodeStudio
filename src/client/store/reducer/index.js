@@ -1,5 +1,8 @@
+/* module */
 import { combineReducers } from 'redux';
-import auth from './auth'
+
+/* store */
+import auth from 'store/saga/auth'
 
 export default combineReducers({
     auth

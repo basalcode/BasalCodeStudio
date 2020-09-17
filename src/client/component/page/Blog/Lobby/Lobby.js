@@ -1,5 +1,7 @@
+/* module */
 import React from 'react';
 
+/* component */
 import Intro from './Intro';
 import About from './About';
 import Skills from './Skills';

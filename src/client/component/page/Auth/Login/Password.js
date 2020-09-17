@@ -1,3 +1,4 @@
+/* module */
 import React, { useState } from 'react';
 
 const Password = ({ onTextChange, forwardedRef }) => {

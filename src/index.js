@@ -1,18 +1,27 @@
+/* module */
+// react
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
-import rootReducer from './client/reducer/index'
-import rootSaga from './client/saga/index'
-
-import { composeWithDevTools } from 'redux-devtools-extension';
-import reduxLogger from 'redux-logger';
-
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import App from 'page/App';
+// redux
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+
+// dev-tool
+import reduxLogger from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+/* store */
+import rootReducer from './client/store/reducer/index'
+import rootSaga from './client/store/saga/index'
+
+/* component */
+import App from 'component/page/App';
+
+/* style */
+import 'style/index.scss';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(

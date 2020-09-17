@@ -1,0 +1,65 @@
+@mixin slideContainer($rightPosition) {
+    position: fixed;
+    top: 0;
+    right: $rightPosition;
+
+    // @include setSize(25%, 100vh);
+
+    background-color: grey;
+    transition: right 1s;
+    z-index: 1;
+}
+
+.Navigation {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    // @include setSize(60px, 100%);
+
+    // border: 1px solid forestgreen;
+
+    &__button-container {
+        // @include moveCenter();
+        // @include setSize(50px, 50px);
+        // border: 1px solid darkkhaki; 
+
+        // @include circle();
+        background-color: white;
+
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    &__button {
+        position: absolute;
+        // @include setSize(100%, 100%);
+    }
+
+    &__container--off {
+        // @include slideContainer(-25%);
+        border: 1px solid darkslateblue;
+    }
+
+    &__container--on {
+        // @include slideContainer(0%);
+        border: 1px solid dimgrey;
+    }
+
+    &__container--header {
+        // @include setSize(100%, 100px);
+        border: 1px solid fuchsia;
+    }
+
+    &__container--body {
+        border: 1px solid mediumslateblue;
+    }
+
+    &__container--footer {
+        position: absolute;
+        bottom: 0px;
+
+        // @include setSize(100%, 100px);
+        border: 1px solid salmon;
+    }
+}
+

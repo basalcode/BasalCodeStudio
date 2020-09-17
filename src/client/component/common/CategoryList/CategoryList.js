@@ -1,8 +1,8 @@
+/* module */
 import React, { useState, useEffect } from 'react';
 
+/* component */
 import Section from './Section';
-
-import './CategoryList.scss';
 
 const CategoryList = ({ link }) => {
     const [sections, setSections] = useState({});

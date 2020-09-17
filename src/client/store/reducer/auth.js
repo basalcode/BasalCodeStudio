@@ -1,3 +1,4 @@
+/* store */
 import { 
     LOG_IN,
     LOG_IN_FAILURE,
@@ -8,7 +9,7 @@ import {
     LOG_OUT,
     LOG_OUT_SUCCESS, 
     LOG_OUT_FAILURE 
-} from '../action/auth'
+} from 'store/action/auth'
 
 const initialState = {
     login: false,

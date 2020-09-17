@@ -1,6 +1,8 @@
+/* module */
 import React, { useState } from 'react';
 
-import { isPassword } from 'library/verifyForm';
+/* lib */
+import { isPassword } from 'lib/verifyForm';
 
 const Password = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');

@@ -1,10 +1,12 @@
+/* module */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import MainLobby from 'page/MainLobby/MainLobby';
-import Blog from 'page/Blog/Blog';
-import Auth from 'page/Auth/Auth';
-import NotFound from 'page/NotFound/NotFound';
+/* component */
+import MainLobby from 'component/page/MainLobby/MainLobby';
+import Blog from 'component/page/Blog/Blog';
+import Auth from 'component/page/Auth/Auth';
+import NotFound from 'component/page/NotFound/NotFound';
 
 const App = () => {
     return (

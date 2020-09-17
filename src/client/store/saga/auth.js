@@ -1,10 +1,15 @@
+/* module */
 import { all, call, put, fork, takeLatest } from 'redux-saga/effects';
 
-import { LOG_IN, CHECK_LOG_IN, LOG_OUT } from 'action/auth';
-import { login as loginAPI } from 'api/db/auth';
-import { checkLogin as checkLoginAPI } from 'api/session/auth';
-import { logout as logoutAPI } from 'api/session/auth';
+/* api */
+import { 
+    login as loginAPI,
+    checkLogin as checkLoginAPI,
+    logout as logoutAPI
+} from 'api/session/auth';
 
+/* store */
+import { LOG_IN, CHECK_LOG_IN, LOG_OUT } from 'store/action/auth';
 import { 
     loginSuccess,
     loginFailure,
@@ -12,7 +17,7 @@ import {
     checkLoginFailure,
     logoutSuccess,
     logoutFailure 
-} from 'action/auth';
+} from 'store/action/auth';
 
 function* login(action) {
     try {

@@ -1,6 +1,5 @@
+/* module */
 import React, { useEffect } from 'react';
-
-
 
 const MainLobby = ({ history }) => {
     useEffect(() => {   

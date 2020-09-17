@@ -1,3 +1,4 @@
+/* constant */
 export const LOG_IN = 'LOG_IN';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
@@ -10,7 +11,7 @@ export const LOG_OUT = 'LOG_OUT';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
-// login
+/* login */
 export const login = (userEmail, userPassword, history, emailRef, passwordRef, messageRef) => {
     return {
         type: LOG_IN,
@@ -23,7 +24,7 @@ export const login = (userEmail, userPassword, history, emailRef, passwordRef, m
     }
 }
 
-// loginSuccess
+/* loginSuccess */
 export const loginSuccess = (email, user_name) => {
     return {
         type: LOG_IN_SUCCESS,
@@ -34,7 +35,7 @@ export const loginSuccess = (email, user_name) => {
 
 export const loginFailure = () => ({ type: LOG_IN_FAILURE })
 
-// loginCheck
+/* loginCheck */
 export const checkLogin = () => {
     return {
         type: CHECK_LOG_IN
@@ -52,7 +53,7 @@ export const checkLoginFailure = () => {
     return { type: CHECK_LOG_IN_FAILURE }
 }
 
-// logout
+/* logout */
 export const logout = () => ({ type: LOG_OUT })
 
 export const logoutSuccess = () => ({ type: LOG_OUT_SUCCESS })

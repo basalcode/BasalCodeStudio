@@ -1,6 +1,7 @@
+/* module */
 import React, { useState, useEffect } from 'react';
 
-function SectionSelector({onIndexChange}) {
+const SectionSelector = ({onIndexChange}) => {
     const [options, setOptions] = useState([]);
     const [sectionValue, setSectionValue] = useState(0);
 

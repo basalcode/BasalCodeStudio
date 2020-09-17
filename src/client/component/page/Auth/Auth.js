@@ -1,11 +1,12 @@
+/* module */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+/* component */
 import Login from './Login/Login';
 import Signup from './Signup/Signup';
 
 const Auth = ({ match }) => {
-    
     return (
         <div className="Auth">
             <Switch>

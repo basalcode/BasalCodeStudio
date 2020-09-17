@@ -1,8 +1,8 @@
+/* module */
 import React from 'react';
 
+/* component */
 import Category from './Category';
-
-import './Section.scss';
 
 const Section = ({ name, categories, link }) => {
 

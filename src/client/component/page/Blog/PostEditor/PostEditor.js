@@ -1,5 +1,7 @@
+/* module */
 import React, { useState, useRef } from 'react';
 
+/* component */
 import SectionSelector from './SectionSelector';
 import CategorySelector from './CategorySelector'
 

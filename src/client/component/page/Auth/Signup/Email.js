@@ -1,6 +1,8 @@
+/* module */
 import React, { useState } from 'react';
 
-import { isEmail } from 'library/verifyForm';
+/* lib */
+import { isEmail } from 'lib/verifyForm';
 
 const Email = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');

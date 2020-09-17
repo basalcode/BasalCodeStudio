@@ -1,5 +1,7 @@
+/* module */
 import React, { useState, useRef } from 'react';
 
+/* component */
 import Email from './Email';
 import Password from './Password';
 import ConfirmPassword from './ConfirmPassword';

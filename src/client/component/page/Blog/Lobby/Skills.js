@@ -1,5 +1,7 @@
+/* module */
 import React from 'react';
 
+/* asset */
 import htmlLogo from 'asset/logo/html.svg';
 import cssLogo from 'asset/logo/css.svg';
 import javascriptLogo from 'asset/logo/javascript.svg';

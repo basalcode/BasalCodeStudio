@@ -1,6 +1,8 @@
+/* module */
 import React, { useState } from 'react';
 
-import { hasNoSpecialCharacter } from 'library/verifyForm';
+/* lib */
+import { hasNoSpecialCharacter } from 'lib/verifyForm';
 
 const UserName = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');

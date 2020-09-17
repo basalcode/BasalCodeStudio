@@ -1,3 +1,4 @@
+/* module */
 import React, { useEffect, useState } from 'react';
 
 const ConfirmPassword = ({ onInputBlur, passwordText, forwardedRef }) => {
