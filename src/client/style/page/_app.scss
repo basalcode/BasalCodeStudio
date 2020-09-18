@@ -1,0 +1,39 @@
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "fontello";
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+body, #root, .App {
+    position: relative;
+
+    @include size(inherit, inherit);
+}
+
+.App {
+    background-color: #F1E3D2;
+
+    &__scroll {
+        &--on {
+            @include scroll-bar(true);
+        }
+        &--off {
+            @include scroll-bar(false);
+        }
+    }
+}
+
+a, button {
+    all: unset;
+}

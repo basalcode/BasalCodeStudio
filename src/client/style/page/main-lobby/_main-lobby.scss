@@ -1,41 +1,38 @@
-html {
-    overflow: hidden;
-}
-
-.Lobby {
-    position: relative;
-    // @include setSize(80vw, 100vh);
-    margin: auto;
+.MainLobby {
+    @include size(80vw, 100vh);
+    @include auto-margin();
 
     &__image {
-        $imageLink: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
+        @include centerAt(absolute);
+        @include size(600px, 1000px);
 
-        // @include moveCenter();
-        // @include setSize(600px, 1000px);
-
-        background-image: url($imageLink);
+        background-image: url(
+            'https://images.unsplash.com/photo-1564078516393-cf04bd966897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+        );
         background-position: center;
         background-size: cover;
     }
 
     &__circle {
-        // @include moveCenter();
-        // @include setSize(750px, 750px);
+        @include centerAt(absolute);
+        @include size(750px, 750px);
+        @include circle-border();
+        
         border: 1px solid white;
-        // @include circle();
         mix-blend-mode: difference;
     }
 
-    &__title {
-        // @include moveCenter();
+    &__text-container {
+        @include centerAt(absolute);
+        @include flex-vertical();
     }
     
     &__text {
         text-align: center;
         font-size: 72px;
         font-family: 'Cinzel', serif;
-        color: white;
         letter-spacing: 5px;
+        color: white;
         mix-blend-mode: difference;
     }
 }

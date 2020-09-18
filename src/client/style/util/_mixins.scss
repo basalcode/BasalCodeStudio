@@ -1,51 +1,73 @@
-$center: 50%;
-
-@mixin fullScreen($backgroundColor) {
-    $viewportWidth: 100vw;
-    $viewportHeight: 100vh;
-
-    width: $viewportWidth;
-    height: $viewportHeight;
-
-    overflow: hidden;
-
-    background-color: $backgroundColor;
+/* size */
+@mixin full-viewport() {
+    width: 100vw;
+    height: 100vh;
 }
 
-@mixin setSize($width: 0px, $height: 0px) {
+/* position */
+@mixin size($width: 0, $height: 0) {
     width: $width;
     height: $height;
 }
 
-@mixin setBox($padding, $border, $margin) {
-    padding: $padding;
-    border: $border;
-    margin: $margin;
+@mixin center-vertical() {
+    top: $MEDIAN;
+    transform: translateY(-$MEDIAN);
 }
 
-@mixin moveVerticalCenter($top: $center, $bottom: none, $position: absolute) {
+@mixin center-horizontal() {
+    left: $MEDIAN;
+    transform: translateX(-$MEDIAN);
+}
+
+@mixin center() {
+    top: $MEDIAN;
+    left: $MEDIAN;
+    transform: translate(-$MEDIAN, -$MEDIAN);
+}
+
+@mixin centerAt($position: relative) {
     position: $position;
-    top: $top;
-    bottom: $bottom;
-    transform: translateY(-$center);
+    @include center();
 }
 
-@mixin moveHorizontalCenter($left: $center, $right: none, $position: absolute) {
-    position: $position;
-    left: $left;
-    right: $right;
-    transform: translateX(-$center);
+/* flex */
+@mixin flex() {
+    display: flex;
 }
 
-@mixin moveCenter($top: $center, $left: $center, $bottom: none, $right: none, $position: absolute) {
-    position: $position;
-    top: $center;
-    left: $center;
-    bottom: $bottom;
-    right: $right;
-    transform: translate(-$center, -$center);
+@mixin flex-vertical() {
+    @include flex();
+    flex-direction: column;
 }
 
-@mixin circle($size: 50%) {
-    border-radius: $size;
+/* margin */
+@mixin auto-margin() {
+    margin:auto
+}
+
+/* border */
+@mixin circle-border() {
+    border-radius: $MEDIAN;
+}
+
+/* padding */
+
+/* text-align */
+@mixin center-content() {
+    text-align: center;
+}
+
+/* scroll-bar */
+@mixin scroll-bar($enable: true) {
+    @if $enable {
+        overflow: auto;
+    } @else {
+        overflow: hidden;
+    }
+}
+
+/* dev */
+@mixin dev-inspector() {
+    background-color: rgb(random(256), random(256), random(256));
 }

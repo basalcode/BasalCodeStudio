@@ -1,4 +1,9 @@
-@import 'base/base';
-@import 'common/common';
-@import 'page/page';
-@import 'util/util';
+@import 'util/index';
+
+@import 'base/index';
+
+@import 'common/index';
+
+@import 'layout/index';
+
+@import 'page/index';
