@@ -22,6 +22,7 @@ import App from 'component/page/App';
 
 /* style */
 import 'style/index.scss';
+import 'asset/fontello/css/fontello.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, composeWithDevTools(

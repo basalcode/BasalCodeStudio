@@ -1,44 +1,57 @@
-@mixin elementSetting($top, $width) {
+@mixin buttonAnimation($top, $width) {
     position: absolute;
     top: $top;
     right: 25%;
     width: $width;
 
+    background-color: black;
     border: 1.5px solid black;
-    background-color: navy;
     transition: width 1s;
 }
 
 .NavigationButton {
+    @include center-vertical();
+    @include size(50px, 50px);
+    @include circle-border();
+    
     position: absolute;
-    top: 0;
     right: 0;
 
-    // @include setSize(100%, 100%);
+    background-color: white;
 
-    &__on--first {
-        // @include elementSetting(25%, 50%);
+    &__first {
+        &--off {
+            @include buttonAnimation(25%, 50%);
+        }
+        &--on {
+            @include buttonAnimation(25%, 50%);
+        }
     }
-    &__on--second {
-        // @include elementSetting(40%, 40%);
+
+    &__second {
+        &--off {
+            @include buttonAnimation(40%, 50%);
+        }
+        &--on {
+            @include buttonAnimation(40%, 40%);
+        }
     }
-    &__on--third {
-        // @include elementSetting(55%, 30%);
+
+    &__third {
+        &--off {
+            @include buttonAnimation(55%, 50%);
+        }
+        &--on {
+            @include buttonAnimation(55%, 30%);
+        }
     }
-    &__on--fourth {
-        // @include elementSetting(70%, 20%);
-    }
-    
-    &__off--first {
-        // @include elementSetting(25%, 50%);
-    }
-    &__off--second {
-        // @include elementSetting(40%, 50%);
-    }
-    &__off--third {
-        // @include elementSetting(55%, 50%);
-    }
-    &__off--fourth {
-        // @include elementSetting(70%, 50%);
+
+    &__fourth {
+        &--off {
+            @include buttonAnimation(70%, 50%);
+        }
+        &--on {
+            @include buttonAnimation(70%, 20%);
+        }
     }
 }

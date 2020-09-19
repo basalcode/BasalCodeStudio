@@ -1,7 +1,7 @@
 /* module */
 import React from 'react';
 
-const About = () => {
+const BlogLobbyAbout = () => {
     const textArray = [
         '이해하기 어려운 복잡함 속에서 단순함을 추구하는 것.',
         '압도적인 동작이 한줄의 코드로 맺어지는 순간의 짜릿함을 알기에,',
@@ -10,11 +10,11 @@ const About = () => {
     ]
 
     return (
-        <section className="BlogLobbyIntro">
-            <h1 className="BlogLobbyIntro__title">Intro</h1>
-            <p className="BlogLobbyIntro__paragraph">
+        <section className="BlogLobbyAbout">
+            <h1 className="BlogLobbyAbout__title">Intro</h1>
+            <p className="BlogLobbyAbout__paragraph">
                 {textArray.map(text => (
-                    <span className="BlogLobbyIntro__text">
+                    <span className="BlogLobbyAbout__text">
                         {text}
                     </span>
                 ))}
@@ -23,4 +23,4 @@ const About = () => {
     );
 }
 
-export default About;
+export default BlogLobbyAbout;

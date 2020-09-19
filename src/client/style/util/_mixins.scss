@@ -51,6 +51,10 @@
     border-radius: $MEDIAN;
 }
 
+@mixin round-border($width) {
+    border-radius: $width / 2;
+}
+
 /* padding */
 
 /* text-align */
@@ -65,6 +69,24 @@
     } @else {
         overflow: hidden;
     }
+}
+
+/* animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@mixin fade-in-off {
+    opacity: 0;
+}
+
+@mixin fade-in-on {
+    animation: fade-in 1.5s;    
 }
 
 /* dev */

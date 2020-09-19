@@ -1,7 +1,8 @@
 .Logo {
+    @include center-vertical();
+    
+    position: absolute;
     display: inline-block;
-    // @include moveVerticalCenter();
-    // border:1px solid red;
     margin: auto;
     cursor: pointer;
 
@@ -12,13 +13,13 @@
         letter-spacing: 3px;
     }
     
-    &__bottom-line {
-        // @include setSize();
+    &__underline {
+        width: 0px;
         border-bottom: 1px solid black;
         transition: width 1s;
     }
-    
-    &:hover &__bottom-line {
+
+    &:hover &__underline {
         width: 100%;
         transition: width 1s;
     }

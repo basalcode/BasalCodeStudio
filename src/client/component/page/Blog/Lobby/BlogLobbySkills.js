@@ -26,7 +26,7 @@ import pm2Logo from 'asset/logo/pm2.svg';
 // // import puttyLogo from 'asset/logo/putty.png';
 // import gitLogo from 'asset/logo/git.svg';
 
-const Skills = () => {
+const BlogLobbySkills = () => {
     const skillsObjects = [
         {
             subtitle: 'basics',
@@ -88,4 +88,4 @@ const Skills = () => {
     );
 }
 
-export default Skills;
+export default BlogLobbySkills;

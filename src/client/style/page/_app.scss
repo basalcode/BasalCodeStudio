@@ -21,6 +21,18 @@ body, #root, .App {
     @include size(inherit, inherit);
 }
 
+a, button, input {
+    all: unset;
+}
+
+a:hover, button:hover {
+    cursor: pointer;
+}
+
+a:visited {
+    color: black;
+}
+
 .App {
     background-color: #F1E3D2;
 
@@ -32,8 +44,4 @@ body, #root, .App {
             @include scroll-bar(false);
         }
     }
-}
-
-a, button {
-    all: unset;
 }

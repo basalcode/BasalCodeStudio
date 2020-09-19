@@ -5,17 +5,13 @@ import React, { useState, useEffect } from 'react';
 import Logo from './Logo';
 import NavigationButton from './NavigationButton';
 
-const Header = () => {
-    const [effectClassName, setEffectClassName] = useState('Header--before')
-    useEffect(() => {
-        const interval = 1500;
-        setTimeout(() => {
-            setEffectClassName('Header--after');
-        }, interval)
-    }, []);
-
+const Header = ({ fadeInOn }) => {
     return (
-        <header className={"Header " + effectClassName}>
+        <header className={`Header ${
+            fadeInOn ? 
+            "Header--fade-in-on" :
+            "Header--fade-in-off"
+        }`}>
             <Logo></Logo>
             <NavigationButton></NavigationButton>
         </header>

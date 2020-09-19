@@ -1,19 +1,19 @@
 /* module */
 import React, { useState, useEffect } from 'react';
 
-const Intro = () => {
-    const [blogLobbyClassName, setBlogLobbyClassName] = useState('BlogLobbyMain__animation--before');
+const BlogLobbyIntro = () => {
+    const [blogLobbyClassName, setBlogLobbyClassName] = useState('BlogLobbyIntro__animation--before');
     const [animationFinished, setAnimationFinished] = useState(false);
 
     const [titleContent, setTitleContent] = useState('');
     const [textIndex, setTextIndex] = useState(0);
     const [titleCaret, setTitleCaret] = useState(true);
     const [clearCaret, setClearCaret] = useState(false);
-    const [titleClassName, setTitleClassName] = useState('BlogLobbyMain__title--before');
+    const [titleClassName, setTitleClassName] = useState('BlogLobbyIntro__title--before');
 
-    const [greetingClassName, setGreetingClassName] = useState('BlogLobbyMain__greeting--before');
+    const [greetingClassName, setGreetingClassName] = useState('BlogLobbyIntro__greeting--before');
 
-    const [downArrowClassName, setDownArrowClassName] = useState('BlogLobbyMain__down-arrow--before');
+    const [downArrowClassName, setDownArrowClassName] = useState('BlogLobbyIntro__down-arrow--before');
 
     const title = 'Basal Code Studio';
 
@@ -22,7 +22,7 @@ const Intro = () => {
     useEffect(() => {
         const interval = 1500;
         setTimeout(() => {
-            setBlogLobbyClassName('BlogLobbyMain__animation--after');
+            setBlogLobbyClassName('BlogLobbyIntro__animation--after');
             setAnimationFinished(true);
         }, interval);
     }, []);
@@ -35,8 +35,8 @@ const Intro = () => {
 
                 setTimeout(() => {
                     setClearCaret(true);
-                    setTitleClassName("BlogLobbyMain__title--after");
-                    setGreetingClassName("BlogLobbyMain__greeting--after");
+                    setTitleClassName("BlogLobbyIntro__title--after");
+                    setGreetingClassName("BlogLobbyIntro__greeting--after");
                 }, animationFinishInterval);
             }
             const longInterval = 500;
@@ -64,25 +64,25 @@ const Intro = () => {
 
     useEffect(() => {
         if (clearCaret) {
-            setDownArrowClassName('BlogLobbyMain__down-arrow--after');
+            setDownArrowClassName('BlogLobbyIntro__down-arrow--after');
         }
     }, [clearCaret]);
 
     return (
-        <section className="BlogLobbyMain">
-            <div className={"BlogLobbyMain__background " + blogLobbyClassName}></div>
-            <div className="BlogLobbyMain__title">
+        <section className="BlogLobbyIntro">
+            <div className={"BlogLobbyIntro__background " + blogLobbyClassName}></div>
+            <div className="BlogLobbyIntro__title">
                 <span className={titleClassName}>{titleContent}</span>
                 <span className={titleClassName}>{titleCaret ? <span>_</span> : <span>&nbsp;</span>}</span>
             </div>
-            <div className="BlogLobbyMain__greeting">
+            <div className="BlogLobbyIntro__greeting">
                 <span className={greetingClassName}>{greetingText}</span>
             </div>
-            <div className="BlogLobbyMain__down-arrow">
+            <div className="BlogLobbyIntro__down-arrow">
                 <span className={downArrowClassName + " icon-down-open-big"}></span>
             </div>
         </section>
     );
 }
 
-export default Intro;
+export default BlogLobbyIntro;
