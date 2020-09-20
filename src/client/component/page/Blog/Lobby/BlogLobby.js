@@ -1,5 +1,5 @@
 /* module */
-import React from 'react';
+import React, { useState } from 'react';
 
 /* component */
 import BlogLobbyIntro from './BlogLobbyIntro';

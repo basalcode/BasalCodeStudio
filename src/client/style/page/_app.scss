@@ -1,39 +1,16 @@
-html {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: "fontello";
-}
-
-*, *:before, *:after {
-    -webkit-box-sizing: inherit;
-    -moz-box-sizing: inherit;
-    box-sizing: inherit;
-    padding: 0;
-    margin: 0;
-}
-
-body, #root, .App {
-    position: relative;
-
-    @include size(inherit, inherit);
-}
-
-a, button, input {
-    all: unset;
-}
-
-a:hover, button:hover {
-    cursor: pointer;
-}
-
-a:visited {
-    color: black;
-}
-
 .App {
+    @include size(100vw, 100vh);
+    
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scroll-behavior: smooth;
+
     background-color: #F1E3D2;
 
     &__scroll {

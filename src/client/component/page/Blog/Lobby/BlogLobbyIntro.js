@@ -17,7 +17,7 @@ const BlogLobbyIntro = () => {
 
     const title = 'Basal Code Studio';
 
-    console.log('component reactivate');
+    // console.log('component reactivate');
 
     useEffect(() => {
         const interval = 1500;
