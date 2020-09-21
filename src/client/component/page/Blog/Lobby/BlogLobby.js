@@ -8,11 +8,11 @@ import BlogLobbySkills from './BlogLobbySkills';
 
 const BlogLobby = () => {
     return (
-        <div className="BlogLobby">
+        <section className="BlogLobby">
             <BlogLobbyIntro></BlogLobbyIntro>
             <BlogLobbyAbout></BlogLobbyAbout>
             <BlogLobbySkills></BlogLobbySkills>
-        </div>
+        </section>
     );
 }
 

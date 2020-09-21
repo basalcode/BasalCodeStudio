@@ -35,7 +35,7 @@ const App = () => {
 
 
     return (
-        <div className={`App ${scrollAvailable ?
+        <section className={`App ${scrollAvailable ?
             'App__scroll--on' :
             'App__scroll--off'
             }`}
@@ -46,7 +46,7 @@ const App = () => {
                 <Route path='/auth' component={Auth} />
                 <Route component={NotFound} />
             </Switch>
-        </div>
+        </section>
     )
 }
 

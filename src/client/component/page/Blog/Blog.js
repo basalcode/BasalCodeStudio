@@ -28,7 +28,7 @@ const Blog = () => {
     }, []);
 
     return (
-        <div className="Blog">
+        <section className="Blog">
             <Header fadeInOn={fadeInOn} />
             <main className="Blog__main">
                 <Switch>
@@ -41,7 +41,7 @@ const Blog = () => {
             </main>
             <Footer fadeInOn={fadeInOn} />
             <FloatingUIs fadeInOn={fadeInOn} />
-        </div>
+        </section>
     );
 }
 

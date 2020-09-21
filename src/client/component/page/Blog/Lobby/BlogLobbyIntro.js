@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 
 const BlogLobbyIntro = () => {
+    
+
     const [blogLobbyClassName, setBlogLobbyClassName] = useState('BlogLobbyIntro__animation--before');
     const [animationFinished, setAnimationFinished] = useState(false);
 
