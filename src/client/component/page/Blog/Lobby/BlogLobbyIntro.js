@@ -1,10 +1,14 @@
 /* module */
 import React, { useState, useEffect } from 'react';
 
-const BlogLobbyIntro = () => {
-    
+/* asset */
+import links from 'asset/img/links/blogLobby';
 
-    const [blogLobbyClassName, setBlogLobbyClassName] = useState('BlogLobbyIntro__animation--before');
+/* lib */
+import shuffle from 'lib/array/shuffle';
+
+const BlogLobbyIntro = () => {
+    /* const [blogLobbyClassName, setBlogLobbyClassName] = useState('BlogLobbyIntro__animation--before');
     const [animationFinished, setAnimationFinished] = useState(false);
 
     const [titleContent, setTitleContent] = useState('');
@@ -18,8 +22,6 @@ const BlogLobbyIntro = () => {
     const [downArrowClassName, setDownArrowClassName] = useState('BlogLobbyIntro__down-arrow--before');
 
     const title = 'Basal Code Studio';
-
-    // console.log('component reactivate');
 
     useEffect(() => {
         const interval = 1500;
@@ -68,21 +70,46 @@ const BlogLobbyIntro = () => {
         if (clearCaret) {
             setDownArrowClassName('BlogLobbyIntro__down-arrow--after');
         }
-    }, [clearCaret]);
+    }, [clearCaret]); */
+
+    const [pictureLink, setPictureLink] = useState('');
+
+    useEffect(() => {
+        const changeInterval = 5000;
+
+        const pictureLinkArray = Object.values(links);
+        let shuffledLinkArray = shuffle(pictureLinkArray);
+
+        let linkIndex = 0;
+        
+        setPictureLink(shuffledLinkArray[linkIndex]);
+        linkIndex++;
+
+        window.setInterval(() => {
+            setPictureLink(shuffledLinkArray[linkIndex]);
+            linkIndex++;
+
+            if (linkIndex >= pictureLinkArray.length) {
+                shuffledLinkArray = shuffle(pictureLinkArray);
+                linkIndex = 0;
+            }
+        }, changeInterval)
+    }, []);
 
     return (
         <section className="BlogLobbyIntro">
-            <div className={"BlogLobbyIntro__background " + blogLobbyClassName}></div>
-            <div className="BlogLobbyIntro__title">
-                <span className={titleClassName}>{titleContent}</span>
-                <span className={titleClassName}>{titleCaret ? <span>_</span> : <span>&nbsp;</span>}</span>
-            </div>
-            <div className="BlogLobbyIntro__greeting">
-                <span className={greetingClassName}>{greetingText}</span>
-            </div>
-            <div className="BlogLobbyIntro__down-arrow">
-                <span className={downArrowClassName + " icon-down-open-big"}></span>
-            </div>
+            <section className="BlogLobbyIntro__picture-frame-container">
+                <div className="BlogLobbyIntro__picture-frame">
+                    <img className="BlogLobbyIntro__picture"
+                        src={pictureLink}></img>
+                </div>
+            </section>
+            <section className="BlogLobbyIntro__content-container">
+                <div className="BlogLobbyIntro__greeting">
+                    <div className="BlogLobbyIntro__greeting-text"></div>
+                    <span className="BlogLobbyIntro__greeting-caret"></span>
+                </div>
+            </section>
         </section>
     );
 }

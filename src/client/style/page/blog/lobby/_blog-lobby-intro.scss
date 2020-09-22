@@ -1,5 +1,48 @@
 .BlogLobbyIntro {
-    width: 100%;
+    // @include dev-inspector();
+    @include size(100%, 100vh);
+    padding: 5%;
+    // border: 1px solid crimson;
+
+    font-family: 'Noto Serif KR', serif;
+
+    &__picture-frame-container {
+        // @include dev-inspector();
+
+    }
+
+    &__picture-frame {
+
+    }
+
+    &__picture {
+        @include size(500px, 500px);
+
+        object-fit: cover;
+        transition: all 1s;
+    }
+
+    &__content-container {
+        // @include dev-inspector();
+
+
+    }
+
+    &__greeting {
+
+    }
+
+    &__greeting-text {
+
+    }
+
+    &__greeting-caret {
+
+    }
+}
+
+/* .BlogLobbyIntro {
+    @include dev-inspector();
     @include size(100%, 100vh);
     padding: 5%;
     // border: 1px solid crimson;
@@ -33,4 +76,4 @@
 
         font-size: 1.5rem;
     }
-}
+} */

@@ -1,5 +1,5 @@
 .BlogLobby {
-    // @include dev-inspector();   
-    @include size(1800px, inherit);
+    @include size(inherit, inherit);
+    max-width: 1800px;
     margin: auto;
 }
