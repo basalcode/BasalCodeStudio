@@ -29,11 +29,22 @@
     }
 
     &__greeting {
-
+        @include dev-inspector();
+        @include size(200px, 40px);
     }
 
     &__greeting-text {
+        @include dev-inspector();
+        @include size(180px, 35px);
 
+        display: flex;
+    }
+
+    &__greeting-character {
+        @include dev-inspector();
+        @include size(20px, 20px);
+
+        margin-right: 1px;
     }
 
     &__greeting-caret {

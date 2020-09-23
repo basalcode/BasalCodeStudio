@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 /* asset */
 import links from 'asset/img/links/blogLobby';
@@ -75,26 +75,79 @@ const BlogLobbyIntro = () => {
     const [pictureLink, setPictureLink] = useState('');
 
     useEffect(() => {
-        const changeInterval = 5000;
+        const changeInterval = 10000;
 
-        const pictureLinkArray = Object.values(links);
-        let shuffledLinkArray = shuffle(pictureLinkArray);
+        const pictureLinks = Object.values(links);
+        let shuffledLinks = shuffle(pictureLinks);
 
         let linkIndex = 0;
-        
-        setPictureLink(shuffledLinkArray[linkIndex]);
+
+        setPictureLink(shuffledLinks[linkIndex]);
         linkIndex++;
 
         window.setInterval(() => {
-            setPictureLink(shuffledLinkArray[linkIndex]);
+            setPictureLink(shuffledLinks[linkIndex]);
             linkIndex++;
 
-            if (linkIndex >= pictureLinkArray.length) {
-                shuffledLinkArray = shuffle(pictureLinkArray);
+            if (linkIndex >= pictureLinks.length) {
+                shuffledLinks = shuffle(pictureLinks);
                 linkIndex = 0;
             }
-        }, changeInterval)
+        }, changeInterval);
     }, []);
+
+    const [textAnimation, setTextAnimation] = useState({
+        display: [],
+        charIndex: 0,
+        animationIndex: 0,
+        isCleared: false
+    })
+
+    const titleText = 'BasalCodeStudio';
+
+    const maxRepeat = 10;
+    const animationChars = [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+        'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=',
+        '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'
+    ];
+    const shuffledChars = useMemo(() => shuffle(animationChars).slice(0, maxRepeat), []);
+    
+    useEffect(() => {
+        const animationInterval = 100;
+        if (!textAnimation.isCleared) {
+            setTimeout(() => {
+                if (titleText[textAnimation.charIndex] === shuffledChars[textAnimation.animationIndex] ||
+                    textAnimation.animationIndex >= maxRepeat) {
+                    const tempArray = textAnimation.display.slice();
+                    tempArray[textAnimation.charIndex] = titleText[textAnimation.charIndex];
+
+                    setTextAnimation(previous => ({
+                        ...previous, 
+                        display: tempArray,
+                        charIndex: textAnimation.charIndex + 1,
+                        animationIndex: 0,
+                        isCleared: textAnimation.charIndex + 1 >= titleText.length ?
+                            true : false
+                    }));
+                    console.log(textAnimation);
+                    return;
+                }
+
+                const tempArray = textAnimation.display.slice();
+                tempArray[textAnimation.charIndex] = shuffledChars[textAnimation.animationIndex];
+                setTextAnimation(previous => ({
+                    ...previous, 
+                    display: tempArray,
+                    animationIndex: textAnimation.animationIndex + 1,
+                }));
+                console.log(textAnimation);
+            }, animationInterval);
+        }
+    }, [textAnimation]);
 
     return (
         <section className="BlogLobbyIntro">
@@ -106,7 +159,14 @@ const BlogLobbyIntro = () => {
             </section>
             <section className="BlogLobbyIntro__content-container">
                 <div className="BlogLobbyIntro__greeting">
-                    <div className="BlogLobbyIntro__greeting-text"></div>
+                    <div className="BlogLobbyIntro__greeting-text">
+                        {textAnimation.display.map(element =>
+                            <span class="BlogLobbyIntro__greeting-character">
+                                {element}
+                            </span>
+                        )}
+
+                    </div>
                     <span className="BlogLobbyIntro__greeting-caret"></span>
                 </div>
             </section>
