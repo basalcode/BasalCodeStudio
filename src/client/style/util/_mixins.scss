@@ -93,4 +93,5 @@
 /* dev */
 @mixin dev-inspector() {
     background-color: rgb(random(256), random(256), random(256));
+    border: 1px solid rgb(random(256), random(256), random(256));
 }

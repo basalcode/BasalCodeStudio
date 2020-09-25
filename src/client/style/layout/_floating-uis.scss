@@ -3,6 +3,7 @@
     @include size(calc(100% - 100px), 100px);
 
     position: fixed;
+    z-index: 1;
 
     &--fade-in-off {
         @include fade-in-off();

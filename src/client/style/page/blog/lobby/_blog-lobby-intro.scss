@@ -1,50 +1,58 @@
 .BlogLobbyIntro {
     // @include dev-inspector();
     @include size(100%, 100vh);
-    padding: 5%;
-    // border: 1px solid crimson;
 
-    font-family: 'Noto Serif KR', serif;
+    position: relative;
 
-    &__picture-frame-container {
+    &__frame-container {
         // @include dev-inspector();
+        @include center();
+        @include size(1200px, 800px);
 
+        display: flex;
+        position: relative;
+    }
+
+    &__frame {
+        // @include dev-inspector();
+        @include size(50%, 100%);
     }
 
     &__picture-frame {
+        // @include dev-inspector();
+        @include size(80%, 100%);
 
+        margin-left: auto;
     }
 
     &__picture {
-        @include size(500px, 500px);
+        @include size(100%, 100%);
 
         object-fit: cover;
-        transition: all 1s;
-    }
-
-    &__content-container {
-        // @include dev-inspector();
-
-
     }
 
     &__greeting {
         // @include dev-inspector();
-        // @include size(200px, 40px);
+        @include center-vertical();
+        @include size(100%, 20%);
+
+        position: relative;
     }
 
-    &__greeting-text {
-        // @include dev-inspector();
-        // @include size(180px, 35px);
+    &__greeting-content {
+        @include size(100%, 50%);
 
-        display: flex;
+        padding-left: 80px;
     }
 
-    &__greeting-character {
-        // @include dev-inspector();
-        @include size(20px, 20px);
+    &__greeting-welcom {
+        font-family: 'Courier Prime', monospace;
+        font-size: 42px;
+    }
 
-        margin-right: 1px;
+    &__greeting-display {
+        font-family: 'Cinzel', serif;
+        font-size: 48px;
     }
 
     &__greeting-caret {
@@ -52,40 +60,3 @@
         @include size(20px, 20px);
     }
 }
-
-/* .BlogLobbyIntro {
-    @include dev-inspector();
-    @include size(100%, 100vh);
-    padding: 5%;
-    // border: 1px solid crimson;
-
-    font-family: 'Noto Serif KR', serif;
-
-    &__title {
-        text-align: center;
-
-        // border: 1px solid cyan;
-        margin: 20px auto;
-
-        font-size: 2rem;
-        text-decoration: underline;
-    }
-    
-    &__paragraph {
-        display: flex;
-        flex-direction: column;
-
-        // border: 1px solid cyan;
-        margin: auto;
-        width: 80%;
-    }
-
-    &__text {
-        text-align: center;
-        
-        // border: 1px solid violet;
-        margin: 15px auto;
-
-        font-size: 1.5rem;
-    }
-} */

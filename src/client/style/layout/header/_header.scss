@@ -1,7 +1,9 @@
 .Header {
-    position: fixed;
     @include center-horizontal();
     @include size(95vw, 60px);
+    
+    position: fixed;
+    z-index: 1;
 
     &--fade-in-off {
         @include fade-in-off();

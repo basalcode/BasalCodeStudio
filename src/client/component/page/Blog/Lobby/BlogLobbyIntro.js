@@ -28,11 +28,15 @@ const BlogLobbyIntro = () => {
             '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'
         ];
         const shuffledChars = shuffle(animationChars);
-        const maxRepeat = 10;
+        const animationInterval = 100;
+        const repeatMin = 3;
+        const repeatMax = 10;
+        const maxRepeat = Math.floor(((Math.random() * repeatMax) + repeatMin) % repeatMax);
         return {
             titleText: titleText,
             animationChars: animationChars,
             shuffledChars: shuffledChars,
+            animationInterval: animationInterval,
             maxRepeat: maxRepeat
         };
     }, [textAnimation]);
@@ -60,7 +64,7 @@ const BlogLobbyIntro = () => {
     }, []);
 
     useEffect(() => {
-        const animationInterval = 100;
+        const animationInterval = textData.animationInterval;
 
         const isCleared = textAnimation.isCleared;
         if (!isCleared) {
@@ -108,26 +112,35 @@ const BlogLobbyIntro = () => {
 
     return (
         <section className="BlogLobbyIntro">
-            <section className="BlogLobbyIntro__picture-frame-container">
-                <div className="BlogLobbyIntro__picture-frame">
-                    <img className="BlogLobbyIntro__picture"
-                        src={pictureLink}></img>
+            <div className="BlogLobbyIntro__frame-container">
+                <div className="BlogLobbyIntro__frame">
+                    <section className="BlogLobbyIntro__picture-frame">
+                        <img className="BlogLobbyIntro__picture"
+                            src={pictureLink}></img>
+                    </section>
                 </div>
-            </section>
-            <section className="BlogLobbyIntro__content-container">
-                <div className="BlogLobbyIntro__greeting">
-                    <div className="BlogLobbyIntro__greeting-text">
-                        {textAnimation.display.map(element =>
-                            <span class="BlogLobbyIntro__greeting-character">
-                                {element}
+                <div className="BlogLobbyIntro__frame">
+                    <section className="BlogLobbyIntro__greeting">
+                        <div className="
+                            BlogLobbyIntro__greeting-content
+                            BlogLobbyIntro__greeting-welcom">
+                            Welcom To
+                        </div>
+                        <div className="
+                            BlogLobbyIntro__greeting-content
+                            BlogLobbyIntro__greeting-display">
+                            {textAnimation.display.map(element =>
+                                <span class="BlogLobbyIntro__greeting-character">
+                                    {element}
+                                </span>
+                            )}
+                            <span className="BlogLobbyIntro__greeting-caret">
+                                {caretOn}
                             </span>
-                        )}
-                        <span className="BlogLobbyIntro__greeting-caret">
-                            {caretOn}
-                        </span>
-                    </div>
+                        </div>
+                    </section>
                 </div>
-            </section>
+            </div>
         </section>
     );
 }
