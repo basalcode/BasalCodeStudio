@@ -1,4 +1,55 @@
-@keyframes fade-in{
+.BlogLobbyAbout {
+    // @include dev-inspector();
+    @include size(100%, 100vh);
+
+    position: relative;
+
+    &__frame-container {
+        // @include dev-inspector();
+        
+        @include center();
+        @include size(1200px, 800px);
+
+        position: relative;
+        display: flex;
+    }
+
+    &__frame {
+        // @include dev-inspector();
+        @include size(50%, 100%);
+    }
+
+    &__about {
+        // @include dev-inspector();
+        @include center-vertical();
+
+        position: relative;
+    }
+
+    &__about-title {
+        // @include dev-inspector();
+
+        padding-left: 50px;
+        // margin-bottom: 50px;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 42px;
+        text-decoration: underline;
+    }
+
+    &__about-paragraph {
+        padding: 40px;
+        
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.5rem;
+    }
+
+    &__about-text {
+        margin-bottom: 10px;
+    }
+}
+
+/* @keyframes fade-in{
     from {
         opacity: 0;
     }
@@ -85,4 +136,4 @@
             animation: fade-in 1.5s;
         }
     }
-}
+} */

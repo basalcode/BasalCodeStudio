@@ -26,9 +26,24 @@
     }
 
     &__picture {
-        @include size(100%, 100%);
-
+        @include dev-inspector();
+        @include size(480px, 800px);
+        
+        position: fixed;
+        // left: 50%;
         object-fit: cover;
+
+        &--intro-page {
+
+        }
+        
+        &--about-page {
+
+        }
+
+        &--skills-page {
+            
+        }
     }
 
     &__greeting {
@@ -37,26 +52,26 @@
         @include size(100%, 20%);
 
         position: relative;
-    }
 
-    &__greeting-content {
-        @include size(100%, 50%);
-
-        padding-left: 80px;
-    }
-
-    &__greeting-welcom {
-        font-family: 'Courier Prime', monospace;
-        font-size: 42px;
-    }
-
-    &__greeting-display {
-        font-family: 'Cinzel', serif;
-        font-size: 48px;
-    }
-
-    &__greeting-caret {
-        // @include dev-inspector();
-        @include size(20px, 20px);
+        &-content {
+            @include size(100%, 50%);
+    
+            padding-left: 80px;
+        }
+    
+        &-welcom {
+            font-family: 'Courier Prime', monospace;
+            font-size: 42px;
+        }
+    
+        &-display {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+        }
+    
+        &-caret {
+            // @include dev-inspector();
+            @include size(20px, 20px);
+        }
     }
 }

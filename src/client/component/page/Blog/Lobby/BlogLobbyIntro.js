@@ -28,7 +28,7 @@ const BlogLobbyIntro = () => {
             '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'
         ];
         const shuffledChars = shuffle(animationChars);
-        const animationInterval = 100;
+        const animationInterval = 120;
         const repeatMin = 3;
         const repeatMax = 10;
         const maxRepeat = Math.floor(((Math.random() * repeatMax) + repeatMin) % repeatMax);
@@ -110,12 +110,23 @@ const BlogLobbyIntro = () => {
         }, caretInterval)
     }, [caretOn]);
 
+    const [page, setPage] = useState(0);
+    const picturePosition = [
+        'BlogLobbyIntro__picture--intro-page',
+        'BlogLobbyIntro__picture--about-page',
+        'BlogLobbyIntro__picture--skills-page'
+    ]
+
     return (
         <section className="BlogLobbyIntro">
             <div className="BlogLobbyIntro__frame-container">
                 <div className="BlogLobbyIntro__frame">
                     <section className="BlogLobbyIntro__picture-frame">
-                        <img className="BlogLobbyIntro__picture"
+                        <img className="
+                            BlogLobbyIntro__picture
+                            BlogLobbyIntro__picture--intro-page
+                            BlogLobbyIntro__picture--about-page
+                            BlogLobbyIntro__picture--skills-page"
                             src={pictureLink}></img>
                     </section>
                 </div>
