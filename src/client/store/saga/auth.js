@@ -19,6 +19,7 @@ import {
     logoutFailure 
 } from 'store/action/auth';
 
+/* login */
 function* login(action) {
     try {
         action.emailRef.current.value = '';
@@ -48,6 +49,7 @@ function* watchLogin() {
     yield takeLatest(LOG_IN, login);
 }
 
+/* checkLogin */
 function* checkLogin(action) {
     try {
         const resolve = yield call(checkLoginAPI);
@@ -62,6 +64,7 @@ function* watchCheckLogin() {
     yield takeLatest(CHECK_LOG_IN, checkLogin);
 }
 
+/* logout */
 function* logout(action) {
     try {
         const resolve = yield call(logoutAPI);

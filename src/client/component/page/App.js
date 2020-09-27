@@ -1,6 +1,7 @@
 /* module */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 /* component */
 import Prologue from 'component/page/Prologue/Prologue';
@@ -11,9 +12,13 @@ import NotFound from 'component/page/NotFound/NotFound';
 /* lib */
 import scrollPage from 'lib/scroll/scrollPage'
 
+/* store */
+import { page as pageAction } from 'store/action/blog';
+
 const App = () => {
     const appRef = useRef(null);
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const [scrollAvailable, setScrollAvailable] = useState(true);
 
@@ -28,11 +33,13 @@ const App = () => {
         })
     }, [history]);
 
-    
     useEffect(() => {
-        scrollPage.addEvent(appRef.current);
+        scrollPage.addEvent(appRef.current, {
+            wheel: (pageIndex, destination) => {
+                dispatch(pageAction(pageIndex));
+            }
+        });
     }, [])
-
 
     return (
         <section className={`App ${scrollAvailable ?

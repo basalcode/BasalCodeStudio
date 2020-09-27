@@ -1,5 +1,6 @@
 /* module */
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 /* asset */
 import links from 'asset/img/links/blogLobby';
@@ -110,7 +111,7 @@ const BlogLobbyIntro = () => {
         }, caretInterval)
     }, [caretOn]);
 
-    const [page, setPage] = useState(0);
+    const pageIndex = useSelector(store => store.blog.index, []);
     const picturePosition = [
         'BlogLobbyIntro__picture--intro-page',
         'BlogLobbyIntro__picture--about-page',
@@ -120,18 +121,19 @@ const BlogLobbyIntro = () => {
     return (
         <section className="BlogLobbyIntro">
             <div className="BlogLobbyIntro__frame-container">
+                <section className="BlogLobbyIntro__frame">
+                    <img className={
+                        picturePosition[pageIndex] +
+                        ` BlogLobbyIntro__picture`
+                    }
+                        src={pictureLink} />
+                </section>
                 <div className="BlogLobbyIntro__frame">
-                    <section className="BlogLobbyIntro__picture-frame">
-                        <img className="
-                            BlogLobbyIntro__picture
-                            BlogLobbyIntro__picture--intro-page
-                            BlogLobbyIntro__picture--about-page
-                            BlogLobbyIntro__picture--skills-page"
-                            src={pictureLink}></img>
-                    </section>
-                </div>
-                <div className="BlogLobbyIntro__frame">
-                    <section className="BlogLobbyIntro__greeting">
+                    <section className={
+                        `BlogLobbyIntro__greeting ` +
+                        (pageIndex === 0 ?
+                            `BlogLobbyIntro__greeting--appear` :
+                            `BlogLobbyIntro__greeting--disappear`)}>
                         <div className="
                             BlogLobbyIntro__greeting-content
                             BlogLobbyIntro__greeting-welcom">

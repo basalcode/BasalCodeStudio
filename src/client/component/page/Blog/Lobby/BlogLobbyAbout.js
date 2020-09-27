@@ -1,5 +1,6 @@
 /* module */
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const BlogLobbyAbout = () => {
     const textArray = [
@@ -11,11 +12,18 @@ const BlogLobbyAbout = () => {
         'BasalCodeStudio에 오신 것을 환영합니다.'
     ]
 
+    const pageIndex = useSelector(store => store.blog.index, []);
+
     return (
         <section className="BlogLobbyAbout">
             <div className="BlogLobbyAbout__frame-container">
                 <div className="BlogLobbyAbout__frame">
-                    <article className= "BlogLobbyAbout__about">
+                    <article className= {
+                            `BlogLobbyAbout__about ` + 
+                            (pageIndex === 1 ?
+                            `BlogLobbyAbout__about--appear` :
+                            `BlogLobbyAbout__about--disappear`)
+                            }>
                         <h1 className="BlogLobbyAbout__about-title">ABOUT</h1>
                         <p className="BlogLobbyAbout__about-paragraph">
                             {textArray.map(text => (
@@ -26,7 +34,10 @@ const BlogLobbyAbout = () => {
                         </p>
                     </article>
                 </div>
-                <section className="BlogLobbyAbout__frame"></section>
+                <section className="
+                    BlogLobbyAbout__frame
+                    BlogLobbyAbout__picture
+                "></section>
             </div>
         </section>
     );

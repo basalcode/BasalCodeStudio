@@ -1,4 +1,4 @@
-/* store */
+/* constant */
 import { 
     LOG_IN,
     LOG_IN_FAILURE,

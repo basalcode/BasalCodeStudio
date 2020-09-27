@@ -86,13 +86,29 @@
         opacity: 1;
     }
 }
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
 
-@mixin fade-in-off {
+@mixin fade-in-off() {
     opacity: 0;
 }
 
-@mixin fade-in-on {
-    animation: fade-in 1.5s;    
+@mixin fade-in-on() {
+    animation: fade-in 1.5s;
+}
+
+@mixin fade-out-off() {
+    opacity: 1;
+}
+
+@mixin fade-out-on() {
+    animation: fade-out 1.5s;
 }
 
 /* dev */

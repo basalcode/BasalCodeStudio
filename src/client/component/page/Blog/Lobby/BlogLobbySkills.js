@@ -23,7 +23,7 @@ import mysqlLogo from 'asset/img/logo/mysql.svg';
 import pm2Logo from 'asset/img/logo/pm2.svg';
 
 // import npmLogo from 'asset/img/logo/npm.svg';
-// // import puttyLogo from 'asset/img/logo/putty.png';
+// import puttyLogo from 'asset/img/logo/putty.png';
 // import gitLogo from 'asset/img/logo/git.svg';
 
 const BlogLobbySkills = () => {

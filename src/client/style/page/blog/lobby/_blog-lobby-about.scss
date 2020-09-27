@@ -24,6 +24,15 @@
         @include center-vertical();
 
         position: relative;
+        transition: left 1s;
+
+        &--appear {
+            left: 0;
+        }
+
+        &--disappear {
+            left: -100%;
+        }
     }
 
     &__about-title {
@@ -47,93 +56,8 @@
     &__about-text {
         margin-bottom: 10px;
     }
-}
 
-/* @keyframes fade-in{
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
+    &__picture {
+        // @include dev-inspector();
     }
 }
-
-@mixin downArrow() {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    @include setSize(7rem, 4rem);
-
-    text-align: center;
-    font-size: 72px;
-    color: black;
-}
-
-.BlogLobbyAbout {
-    // @include setSize(100%, 100vh);
-    // border: 1px solid cornflowerblue;
-
-    font-family: 'Courier Prime', monospace;
-    font-size: 72px;
-    color: white;
-
-    &__background {
-        $url: 'https://images.unsplash.com/photo-1457364887197-9150188c107b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80';
-        // @include moveCenter();
-        
-        background-image: url($url);
-        background-size: cover;
-        background-attachment: scroll;
-        background-position: center;
-    }
-
-    &__animation--before {
-        // @include setSize(100vw, 100vh);
-        transition: width 1s, height 1s;
-    }
-
-    &__animation--after {
-        // @include setSize(40vw, 50vh);
-        transition: width 1s, height 1s;
-    }
-    
-    &__title {
-        // @include moveCenter();
-        width: 60%;
-        text-align: center;
-        &--before {
-            
-        }
-        &--after {
-            display: none;
-        }
-    }
-
-    &__greeting {
-        &--before {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;   
-        }
-        &--after {
-            // @include moveCenter();
-               
-            animation: fade-in 1s;
-            transition: top 1s;
-        }
-    }
-
-    &__down-arrow {
-        &--before {
-            // @include downArrow();
-            opacity: 0;
-        }
-        &--after {
-            // @include downArrow();
-            animation: fade-in 1.5s;
-        }
-    }
-} */

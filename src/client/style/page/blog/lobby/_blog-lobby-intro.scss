@@ -6,11 +6,12 @@
 
     &__frame-container {
         // @include dev-inspector();
-        @include center();
-        @include size(1200px, 800px);
+        @include size(65%, 65%);
 
         display: flex;
         position: relative;
+        top: calc((100vh - 65%) / 2);
+        margin: auto;
     }
 
     &__frame {
@@ -18,31 +19,27 @@
         @include size(50%, 100%);
     }
 
-    &__picture-frame {
-        // @include dev-inspector();
-        @include size(80%, 100%);
-
-        margin-left: auto;
-    }
-
     &__picture {
-        @include dev-inspector();
-        @include size(480px, 800px);
-        
+        // @include dev-inspector();
+        @include size(20% , 65%);
+
         position: fixed;
-        // left: 50%;
         object-fit: cover;
+        transition: top 1s, left 1s;
 
         &--intro-page {
-
+            top: 17.5%;
+            left: 30%;
         }
         
         &--about-page {
-
+            top: 17.5%;
+            left: 50%;
         }
 
         &--skills-page {
-            
+            top : -100%;
+            left: 50%;
         }
     }
 
@@ -52,6 +49,19 @@
         @include size(100%, 20%);
 
         position: relative;
+        &--appear {
+            @include fade-out-off();    
+
+            left: 0;
+            transition: left 1s;
+        }
+
+        &--disappear {
+            @include fade-out-on();
+
+            left: 100%;
+            transition: left 1s;
+        }
 
         &-content {
             @include size(100%, 50%);
