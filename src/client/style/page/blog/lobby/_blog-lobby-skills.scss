@@ -1,4 +1,84 @@
 .BlogLobbySkills {
+    // @include dev-inspector();
+
+    @include size(100%, 100vh);
+
+    position: relative;
+
+    &__container {
+        // @include dev-inspector();
+        @include center();
+        @include size(65%, 65%);
+
+        width: 80%;
+
+        position: relative;
+    }
+
+    &__title {
+        margin-bottom: 30px;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 42px;
+        text-decoration: underline;
+    }
+
+    &__content-container {
+        // @include dev-inspector();
+
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__content-title {
+        margin-bottom: 20px;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 24px;
+        text-decoration: underline;
+    }
+
+    &__content {
+        // @include dev-inspector();
+
+        width: 50%;
+    }
+
+    &__content-body-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        margin-bottom: 2%;
+    }
+
+    &__content-body {
+        // @include dev-inspector();
+        @include round-border(50%);
+
+        display: flex;
+        flex-direction: column;
+
+        margin: 1%;
+        padding: 1%;
+
+        background: gray;
+        mix-blend-mode: saturation;
+    }
+
+    &__logo {
+        @include size(50px, 50px);
+        
+        margin: auto;
+    }
+
+    &__text {
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+/* .BlogLobbySkills {
     width: 100%;
     padding: 5%;
     // border: 1px solid cyan;
@@ -60,4 +140,4 @@
 
         // border: 1px solid cornflowerblue;
     }
-}
+} */

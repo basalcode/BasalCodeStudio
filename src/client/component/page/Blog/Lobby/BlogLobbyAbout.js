@@ -16,8 +16,8 @@ const BlogLobbyAbout = () => {
 
     return (
         <section className="BlogLobbyAbout">
-            <div className="BlogLobbyAbout__frame-container">
-                <div className="BlogLobbyAbout__frame">
+            <div className="BlogLobbyAbout__container">
+                <div className="BlogLobbyAbout__content">
                     <article className= {
                             `BlogLobbyAbout__about ` + 
                             (pageIndex === 1 ?
@@ -35,7 +35,7 @@ const BlogLobbyAbout = () => {
                     </article>
                 </div>
                 <section className="
-                    BlogLobbyAbout__frame
+                    BlogLobbyAbout__content
                     BlogLobbyAbout__picture
                 "></section>
             </div>

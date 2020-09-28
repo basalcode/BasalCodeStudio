@@ -120,14 +120,14 @@ const BlogLobbyIntro = () => {
 
     return (
         <section className="BlogLobbyIntro">
-            <div className="BlogLobbyIntro__frame-container">
-                <section className="BlogLobbyIntro__frame">
+            <div className="BlogLobbyIntro__container">
+                <div className="BlogLobbyIntro__frame">
                     <img className={
                         picturePosition[pageIndex] +
                         ` BlogLobbyIntro__picture`
                     }
                         src={pictureLink} />
-                </section>
+                </div>
                 <div className="BlogLobbyIntro__frame">
                     <section className={
                         `BlogLobbyIntro__greeting ` +

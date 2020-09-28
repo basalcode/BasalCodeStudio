@@ -4,17 +4,17 @@
 
     position: relative;
 
-    &__frame-container {
+    &__container {
         // @include dev-inspector();
         
         @include center();
-        @include size(1200px, 800px);
+        @include size(65%, 65%);
 
         position: relative;
         display: flex;
     }
 
-    &__frame {
+    &__content {
         // @include dev-inspector();
         @include size(50%, 100%);
     }
