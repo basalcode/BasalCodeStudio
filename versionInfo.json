@@ -1,0 +1,12 @@
+{
+    "version" : [
+        {
+            "number": "0.1",
+            "description": "Bump version to migrate from javascript to react."
+        },
+        {
+            "number": "0.2",
+            "description": "Impelement prototype of blog lobby page."
+        }
+    ]
+}
