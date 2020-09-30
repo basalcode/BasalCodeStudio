@@ -1,7 +1,7 @@
 /* module */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 /* component */
 import Prologue from 'component/page/Prologue/Prologue';
@@ -16,12 +16,20 @@ import scrollPage from 'lib/scroll/scrollPage'
 import { page as pageAction } from 'store/action/blog';
 
 const App = () => {
-    const appRef = useRef(null);
+    /* router */
     const history = useHistory();
+    
+    /* Ref */
+    const appRef = useRef(null);
+
+    /* store */
     const dispatch = useDispatch();
 
+    /* state */
     const [scrollAvailable, setScrollAvailable] = useState(true);
 
+    /* useEffect */
+    // prevent scroll on specific route
     useEffect(() => {
         history.location.pathname === '/' ?
             setScrollAvailable(false) :
@@ -33,6 +41,7 @@ const App = () => {
         })
     }, [history]);
 
+    // set scroll in page height unit
     useEffect(() => {
         scrollPage.addEvent(appRef.current, {
             wheel: (pageIndex, destination) => {

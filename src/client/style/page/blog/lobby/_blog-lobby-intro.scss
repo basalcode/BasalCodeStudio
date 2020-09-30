@@ -19,30 +19,6 @@
         @include size(50%, 100%);
     }
 
-    &__picture {
-        // @include dev-inspector();
-        @include size(20% , 65%);
-
-        position: fixed;
-        object-fit: cover;
-        transition: top 1s, left 1s;
-
-        &--intro-page {
-            top: 17.5%;
-            left: 30%;
-        }
-        
-        &--about-page {
-            top: 17.5%;
-            left: 50%;
-        }
-
-        &--skills-page {
-            top : -100%;
-            left: 50%;
-        }
-    }
-
     &__greeting {
         // @include dev-inspector();
         @include center-vertical();

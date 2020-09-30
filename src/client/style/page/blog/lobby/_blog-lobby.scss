@@ -2,4 +2,35 @@
     @include size(inherit, inherit);
     max-width: 1800px;
     margin: auto;
+
+    position: relative;
+
+    &__picture {
+        // @include dev-inspector();
+        @include size(20% , 65%);
+
+        position: fixed;
+        object-fit: cover;
+        transition: top 1s, left 1s;
+
+        &--intro {
+            top: 17.5%;
+            left: 30%;
+        }
+        
+        &--about {
+            top: 17.5%;
+            left: 50%;
+        }
+
+        &--skills {
+            top: -100%;
+            left: 50%;
+        }
+
+        &--contact {
+            top: -100%;
+            left: 50%;
+        }
+    }
 }

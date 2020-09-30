@@ -16,10 +16,13 @@ import Footer from 'component/layout/Footer';
 import FloatingUIs from 'component/layout/FloatingUIs';
 
 const Blog = () => {
-    const [fadeInOn, setFadeInOn] = useState(false)
-
+    /* router */
     const match = useRouteMatch();
+    
+    /* state */
+    const [fadeInOn, setFadeInOn] = useState(false);
 
+    /* useEffect */
     useEffect(() => {
         const interval = 1500;
         setTimeout(() => {

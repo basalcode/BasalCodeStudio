@@ -2,22 +2,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-/* asset */
-import links from 'asset/img/links/blogLobby';
-
 /* lib */
 import shuffle from 'lib/array/shuffle';
 
 const BlogLobbyIntro = () => {
-    const [pictureLink, setPictureLink] = useState('');
+    /* store */
+    const pageIndex = useSelector(store => store.blog.index, []);
+    
+    /* state */
     const [textAnimation, setTextAnimation] = useState({
         display: [],
         charIndex: 0,
         animationIndex: 0,
         isCleared: false
-    })
+    });
     const [caretOn, setCaretOn] = useState('_');
 
+    /* useMemo */
     const textData = useMemo(() => {
         const titleText = 'BasalCodeStudio';
         const animationChars = [
@@ -32,38 +33,18 @@ const BlogLobbyIntro = () => {
         const animationInterval = 120;
         const repeatMin = 3;
         const repeatMax = 10;
-        const maxRepeat = Math.floor(((Math.random() * repeatMax) + repeatMin) % repeatMax);
+        const randomRepeat = Math.floor(((Math.random() * repeatMax) + repeatMin) % repeatMax);
         return {
             titleText: titleText,
             animationChars: animationChars,
             shuffledChars: shuffledChars,
             animationInterval: animationInterval,
-            maxRepeat: maxRepeat
+            randomRepeat: randomRepeat
         };
     }, [textAnimation]);
 
-    useEffect(() => {
-        const changeInterval = 10000;
-
-        const pictureLinks = Object.values(links);
-        let shuffledLinks = shuffle(pictureLinks);
-
-        let linkIndex = 0;
-
-        setPictureLink(shuffledLinks[linkIndex]);
-        linkIndex++;
-
-        window.setInterval(() => {
-            setPictureLink(shuffledLinks[linkIndex]);
-            linkIndex++;
-
-            if (linkIndex >= pictureLinks.length) {
-                shuffledLinks = shuffle(pictureLinks);
-                linkIndex = 0;
-            }
-        }, changeInterval);
-    }, []);
-
+    /* useEffect */
+    // random text animation
     useEffect(() => {
         const animationInterval = textData.animationInterval;
 
@@ -75,10 +56,9 @@ const BlogLobbyIntro = () => {
                 const animationIndex = textAnimation.animationIndex;
                 const titleText = textData.titleText;
                 const shuffledChars = textData.shuffledChars;
-                const maxRepeat = textData.maxRepeat;
+                const randomRepeat = textData.randomRepeat;
 
-                if (/* titleText[charIndex] === shuffledChars[animationIndex] || */
-                    animationIndex >= maxRepeat) {
+                if (animationIndex >= randomRepeat) {
                     const tempArray = display.slice();
                     tempArray[charIndex] = titleText[charIndex];
 
@@ -98,36 +78,24 @@ const BlogLobbyIntro = () => {
                 setTextAnimation(previous => ({
                     ...previous,
                     display: tempArray,
-                    animationIndex: animationIndex + 1,
+                    animationIndex: animationIndex + 1
                 }));
             }, animationInterval);
         }
     }, [textAnimation]);
 
+    // caret animation
     useEffect(() => {
         const caretInterval = 500;
         window.setTimeout(() => {
             caretOn === '_' ? setCaretOn('') : setCaretOn('_');
-        }, caretInterval)
+        }, caretInterval);
     }, [caretOn]);
-
-    const pageIndex = useSelector(store => store.blog.index, []);
-    const picturePosition = [
-        'BlogLobbyIntro__picture--intro-page',
-        'BlogLobbyIntro__picture--about-page',
-        'BlogLobbyIntro__picture--skills-page'
-    ]
 
     return (
         <section className="BlogLobbyIntro">
             <div className="BlogLobbyIntro__container">
-                <div className="BlogLobbyIntro__frame">
-                    <img className={
-                        picturePosition[pageIndex] +
-                        ` BlogLobbyIntro__picture`
-                    }
-                        src={pictureLink} />
-                </div>
+                <div className="BlogLobbyIntro__frame"></div>
                 <div className="BlogLobbyIntro__frame">
                     <section className={
                         `BlogLobbyIntro__greeting ` +
