@@ -4,4 +4,76 @@
     @include size(100%, 100vh);
 
     position: relative;
+
+    &__container {
+        @include center();
+        @include size(65%, 65%);
+
+        position: relative;
+        display: flex;
+    }
+
+    &__content {
+        // @include dev-inspector();
+        @include size(50%, 100%);
+
+        position: relative;
+    }
+
+    &__contact {
+        // @include dev-inspector();
+        @include center-vertical();
+
+        position: relative;
+
+        padding-left: 50px;
+    }
+
+    &__title {
+        // @include dev-inspector();
+
+        margin-bottom: 40px;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 42px;
+        text-decoration: underline;
+    }
+
+    &__form {
+        // @include dev-inspector();
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__text {
+        @include size(80%, 40px);
+        @include round-border(5px);
+
+        margin-bottom: 15px;
+        border: 1px solid gray;
+        padding: 5px 20px;
+
+        background-color: white;
+    }
+
+    &__text-area {
+        @include size(80%, 200px);
+
+        padding: 15px 20px;
+
+        overflow: auto;
+    }
+
+    &__submit {
+        @include size(25%, 40px);
+        @include round-border(5px);
+
+        border: 1px solid gray;
+        padding: 5px 0px;
+
+        text-align: center;
+
+        background-color: white;
+    }
 }

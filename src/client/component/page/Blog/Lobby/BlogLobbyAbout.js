@@ -38,7 +38,6 @@ const BlogLobbyAbout = () => {
                 </div>
                 <section className="
                     BlogLobbyAbout__content
-                    BlogLobbyAbout__picture
                 "></section>
             </div>
         </section>
