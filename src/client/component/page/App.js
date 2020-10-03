@@ -41,14 +41,17 @@ const App = () => {
         })
     }, [history]);
 
-    // set scroll in page height unit
+    // set page scroll in height unit
     useEffect(() => {
         scrollPage.addEvent(appRef.current, {
             wheel: (pageIndex, destination) => {
                 dispatch(pageAction(pageIndex));
+            },
+            keyboard: (pageIndex, destination) => {
+                dispatch(pageAction(pageIndex));
             }
         });
-    }, [])
+    }, []);
 
     return (
         <section className={`App ${scrollAvailable ?

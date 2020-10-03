@@ -20,7 +20,7 @@
     }
 
     &__about {
-        @include dev-inspector();
+        // @include dev-inspector();
         @include center-vertical();
 
         position: relative;

@@ -1,18 +1,35 @@
 const scrollVariables = (() => {
-    const PreventedKeys = {
-        SPACE_BAR: 32,
-        PAGE_UP: 33,
-        PAGE_DOWN: 34,
-        END: 35,
-        HOME: 36,
-        LEFT: 37,
-        UP: 38,
-        RIGHT: 39,
-        DOWN: 40
-    };
-    
+    const scrollableKeys = {
+        NextPage: {
+            SPACE_BAR: 32,
+            PAGE_DOWN: 34,
+            RIGHT: 39,
+            DOWN: 40
+        },
+        PreviousPage: {
+            PAGE_UP: 33,
+            LEFT: 37,
+            UP: 38
+        },
+        HOME_PAGE: 36,
+        END_PAGE: 35,
+        TAB: 9
+    }
+
+    const formElements = {
+        form: () => {
+            return document.querySelectorAll('form');
+        },
+        input: () => {
+            return document.querySelectorAll('input');
+        },
+        textarea: () => {
+            return document.querySelectorAll('textarea');
+        }
+    }
+
     const wheelEvent = 'onWheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-    
+
     const eventOption = (() => {
         let passiveSupported = false;
         try {
@@ -28,12 +45,13 @@ const scrollVariables = (() => {
         } catch (error) {
             passiveSupported = false;
         }
-    
+
         return passiveSupported ? { passive: false } : false;
     })();
 
     return {
-        PreventedKeys: PreventedKeys,
+        scrollableKeys: scrollableKeys,
+        formElements: formElements,
         wheelEvent: wheelEvent,
         eventOption: eventOption
     }

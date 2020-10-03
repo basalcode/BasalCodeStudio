@@ -73,8 +73,8 @@ const BlogLobbyContact = () => {
                                 autoComplete="off"
                                 onChange={onTitleChange} />
                             <textarea className="
-        BlogLobbyContact__text
-        BlogLobbyContact__text-area"
+                                    BlogLobbyContact__text
+                                    BlogLobbyContact__text-area"
                                 name="message"
                                 value={message}
                                 placeholder="message"
