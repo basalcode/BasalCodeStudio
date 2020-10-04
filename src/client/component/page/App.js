@@ -3,17 +3,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+/* lib */
+import scrollPage from 'lib/scroll/scrollPage'
+
+/* store */
+import { page as pageAction } from 'store/action/blog';
+
 /* component */
 import Prologue from 'component/page/Prologue/Prologue';
 import Blog from 'component/page/Blog/Blog';
 import Auth from 'component/page/Auth/Auth';
 import NotFound from 'component/page/NotFound/NotFound';
 
-/* lib */
-import scrollPage from 'lib/scroll/scrollPage'
-
-/* store */
-import { page as pageAction } from 'store/action/blog';
 
 const App = () => {
     /* router */
@@ -43,13 +44,8 @@ const App = () => {
 
     // set page scroll in height unit
     useEffect(() => {
-        scrollPage.addEvent(appRef.current, {
-            wheel: (pageIndex, destination) => {
-                dispatch(pageAction(pageIndex));
-            },
-            keyboard: (pageIndex, destination) => {
-                dispatch(pageAction(pageIndex));
-            }
+        scrollPage.addEvent(appRef.current, (pageIndex) => {
+            dispatch(pageAction(pageIndex));
         });
     }, []);
 

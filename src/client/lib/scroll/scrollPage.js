@@ -20,66 +20,25 @@ const scrollPage = (() => {
             count: null
         }
     }
-    let callBackOption = {
-        wheel: null,
-        scroll: null,
-        wheelButton: null,
-        keyboard: null
-    }
+    let callBackOption = null;
     let formFocused = false;
     let formPageIndex = [];
     let fousedFormElement = null;
 
     /* function */
-    const moveScroll = (direction, edge = false) => {
+    const moveScroll = (pageIndex) => {
         let pageScrolled = false;
-
-        if (edge) {
-            if (direction > 0) {
-                const endPageIndex = target.page.count - 1;
-                const endPagePosition = target.page.startPosition(endPageIndex);
-
-                if (currentPageIndex === endPageIndex) { return pageScrolled; }
-
-                currentPageIndex = endPageIndex;
-                destination = endPagePosition;
-                pageScrolled = true;
-            }
-            if (direction < 0) {
-                const START_NUMBER = 0;
-                if (currentPageIndex === START_NUMBER) { return pageScrolled; }
-
-                currentPageIndex = START_NUMBER;
-                destination = START_NUMBER;
-                pageScrolled = true;
-            }
-        } else {
-            if (direction > 0) {
-                const nextPageIndex = currentPageIndex + 1;
-                const nextPageStart = target.page.startPosition(nextPageIndex);
-                const pageCount = target.page.count;
-
-                if (currentPageIndex >= pageCount - 1) {
-                    scrollLock = false;
-                    return pageScrolled;
-                }
-                currentPageIndex = nextPageIndex;
-                destination = nextPageStart;
-                pageScrolled = true;
-            }
-            if (direction < 0) {
-                const previousPageIndex = currentPageIndex - 1;
-                const previousPageStart = target.page.startPosition(previousPageIndex);
-
-                if (previousPageIndex < 0) {
-                    scrollLock = false;
-                    return pageScrolled;
-                }
-                currentPageIndex = previousPageIndex;
-                destination = previousPageStart;
-                pageScrolled = true;
-            }
+        scrollLock = true;
+        
+        const validIndex = pageIndex >= 0 && pageIndex < target.page.count;
+        if (!validIndex) { 
+            scrollLock = false;
+            return pageScrolled; 
         }
+        
+        currentPageIndex = pageIndex;
+        destination = target.page.startPosition(pageIndex);
+        pageScrolled = true;
 
         const formExistOnPage = formPageIndex.indexOf(currentPageIndex) >= 0;
         if (!formExistOnPage && fousedFormElement) {
@@ -98,13 +57,16 @@ const scrollPage = (() => {
         if (!scrollLock) {
             scrollLock = true;
 
-            const direction = event.deltaY;
-            const pageScrolled = moveScroll(direction);
+            let pageIndex = currentPageIndex;
+            if (event.deltaY > 0) { pageIndex++; }
+            if (event.deltaY < 0) { pageIndex--; }
+            
+            const pageScrolled = moveScroll(pageIndex);
 
             if (pageScrolled) {
                 /* call back option */
-                if (callBackOption.wheel) {
-                    callBackOption.wheel(currentPageIndex, destination);
+                if (callBackOption) {
+                    callBackOption(currentPageIndex);
                 }
             }
         }
@@ -116,9 +78,6 @@ const scrollPage = (() => {
         const scrollY = target.scrollTop;
 
         if (scrollY === destination) {
-            if (callBackOption.scroll) {
-                callBackOption.scroll();
-            }
             scrollLock = false;
         }
     }
@@ -128,9 +87,6 @@ const scrollPage = (() => {
         const MIDDLE_CLICK = 1;
         if (event.button === MIDDLE_CLICK) {
             event.preventDefault();
-            if (callBackOption.wheelButton) {
-                callBackOption.wheelButton();
-            }
         }
     }
 
@@ -180,13 +136,13 @@ const scrollPage = (() => {
                 if (keyInput === nextPage) {
                     event.preventDefault();
 
-                    const NEXT_PAGE = 1;
-                    const pageScrolled = moveScroll(NEXT_PAGE);
+                    const nextPage = currentPageIndex + 1;
+                    const pageScrolled = moveScroll(nextPage);
 
                     if (pageScrolled) {
                         /* call back option */
-                        if (callBackOption.keyboard) {
-                            callBackOption.keyboard(currentPageIndex, destination);
+                        if (callBackOption) {
+                            callBackOption(currentPageIndex);
                         }
                     }
 
@@ -201,13 +157,13 @@ const scrollPage = (() => {
                 if (keyInput === previousPage) {
                     event.preventDefault();
 
-                    const PREVIOUS_PAGE = -1;
-                    const pageScrolled = moveScroll(PREVIOUS_PAGE);
+                    const previousPage = currentPageIndex - 1;
+                    const pageScrolled = moveScroll(previousPage);
 
                     if (pageScrolled) {
                         /* call back option */
-                        if (callBackOption.keyboard) {
-                            callBackOption.keyboard(currentPageIndex, destination);
+                        if (callBackOption) {
+                            callBackOption(currentPageIndex);
                         }
                     }
 
@@ -221,16 +177,13 @@ const scrollPage = (() => {
             if (keyInput === homePage) {
                 event.preventDefault();
 
-                const HOME_DIRECTION = -1;
-                const IS_EDGE_KEY = true;
-                const pageScrolled = moveScroll(HOME_DIRECTION, IS_EDGE_KEY);
+                const HOME_PAGE_INDEX = 0;
+                const pageScrolled = moveScroll(HOME_PAGE_INDEX);
 
                 if (pageScrolled) {
                     /* call back option */
-                    if (callBackOption.keyboard) {
-                        const HOME_PAGE = 0;
-                        const DESTINATION = 0;
-                        callBackOption.keyboard(HOME_PAGE, DESTINATION);
+                    if (callBackOption) {
+                        callBackOption(HOME_PAGE_INDEX);
                     }
                 }
 
@@ -242,17 +195,13 @@ const scrollPage = (() => {
             if (keyInput === endPage) {
                 event.preventDefault();
 
-                const END_DIRECTION = 1;
-                const IS_EDGE_KEY = true;
-                const pageScrolled = moveScroll(END_DIRECTION, IS_EDGE_KEY);
+                const endPageIndex = target.page.count - 1;
+                const pageScrolled = moveScroll(endPageIndex);
 
                 if (pageScrolled) {
                     /* call back option */
-                    if (callBackOption.keyboard) {
-                        const END_PAGE = target.page.count - 1;
-                        const DESTINATION = target.page.startPosition(END_PAGE);
-
-                        callBackOption.keyboard(END_PAGE, DESTINATION);
+                    if (callBackOption) {
+                        callBackOption(endPageIndex);
                     }
                 }
 
@@ -280,7 +229,8 @@ const scrollPage = (() => {
         fousedFormElement = null;
     }
 
-    const addEvent = (targetRef, option = {}) => {
+    const addEvent = (targetRef, callBackFunction) => {
+        /* init variable */
         target = {
             ...target,
             element: targetRef,
@@ -290,14 +240,7 @@ const scrollPage = (() => {
                 count: Math.floor(targetRef.scrollHeight / window.innerHeight)
             }
         }
-
-        callBackOption = {
-            ...callBackOption,
-            wheel: option.wheel,
-            scroll: option.scroll,
-            wheelButton: option.wheelButton,
-            keyboard: option.keyboard
-        };
+        callBackOption = callBackFunction;
 
         /* add event */
         // wheel
@@ -339,7 +282,8 @@ const scrollPage = (() => {
         });
     }
     return {
-        addEvent: addEvent
+        addEvent: addEvent,
+        moveScroll: moveScroll
     };
 })();
 
