@@ -1,13 +1,13 @@
 /* module */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 /* lib */
 import scrollPage from 'lib/scroll/scrollPage'
 
 /* store */
-import { page as pageAction } from 'store/action/blog';
+import { lobbyPage as lobbyPageAction } from 'store/action/blog';
 
 /* component */
 import Prologue from 'component/page/Prologue/Prologue';
@@ -25,6 +25,7 @@ const App = () => {
 
     /* store */
     const dispatch = useDispatch();
+    const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* state */
     const [scrollAvailable, setScrollAvailable] = useState(true);
@@ -45,15 +46,17 @@ const App = () => {
     // set page scroll in height unit
     useEffect(() => {
         scrollPage.addEvent(appRef.current, (pageIndex) => {
-            dispatch(pageAction(pageIndex));
+            dispatch(lobbyPageAction(pageIndex));
         });
     }, []);
 
     return (
-        <section className={`App ${scrollAvailable ?
-            'App__scroll--on' :
-            'App__scroll--off'
-            }`}
+        <section className={
+            `App ` +
+            `${scrollAvailable ?
+                'App__scroll--on ' :
+                'App__scroll--off '}` +
+            `${nightModeOn ? 'App--night-mode ' : ' '}`}
             ref={appRef}>
             <Switch>
                 <Route exact path='/' component={Prologue} />

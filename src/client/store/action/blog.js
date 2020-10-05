@@ -1,9 +1,9 @@
 /* constant */
-export const PAGE = 'PAGE';
+export const LOBBY_PAGE = 'LOBBY_PAGE';
 
-export const page = (index) => {
+export const lobbyPage = (index) => {
     return {
-        type: PAGE,
+        type: LOBBY_PAGE,
         index: index
     };
 }

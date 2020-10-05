@@ -1,20 +1,18 @@
 /* module */
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /* lib */
 import scrollPage from 'lib/scroll/scrollPage'
 
 /* store */
-import { page as pageAction } from 'store/action/blog';
+import { lobbyPage as lobbyPageAction } from 'store/action/blog';
+import { nightMode as nightModeAction } from 'store/action/app';
 
 const FloatingUIs = ({ fadeInOn }) => {
     /* store */
     const dispatch = useDispatch();
-    const pageIndex = useSelector(store => store.blog.index);
-
-    /* constant */
-    const [nightModeOn, setNightModeOn] = useState(false);
+    const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* event handler */
     // email button
@@ -23,7 +21,7 @@ const FloatingUIs = ({ fadeInOn }) => {
         const pageScrolled = scrollPage.moveScroll(CONTACT_PAGE_INDEX);
 
         if (pageScrolled) {
-            dispatch(pageAction(CONTACT_PAGE_INDEX));
+            dispatch(lobbyPageAction(CONTACT_PAGE_INDEX));
         }
     }
 
@@ -33,13 +31,13 @@ const FloatingUIs = ({ fadeInOn }) => {
         const pageScrolled = scrollPage.moveScroll(TOP_PAGE_INDEX);
 
         if (pageScrolled) {
-            dispatch(pageAction(TOP_PAGE_INDEX));
+            dispatch(lobbyPageAction(TOP_PAGE_INDEX));
         }
     }
 
     // night mode button
     const toogleNightMode = event => {
-        setNightModeOn(nightModeOn ? false : true);
+        dispatch(nightModeAction(!nightModeOn));
     }
 
     return (

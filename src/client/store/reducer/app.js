@@ -1,18 +1,18 @@
 /* constant */
 import {
-    LOBBY_PAGE
-} from 'store/action/blog';
+    NIGHT_MODE
+} from 'store/action/app';
 
 const initialState = {
-    index: 0
+    nightModeOn: false
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case LOBBY_PAGE:
+        case NIGHT_MODE:
             return {
                 ...state,
-                index: action.index
+                nightModeOn: action.nightModeOn
             }
         default: return { ...state }
     }
