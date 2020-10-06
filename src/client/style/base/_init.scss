@@ -28,7 +28,7 @@ a, button, input, textarea {
     all: unset;
 }
 
-a:hover, button:hover {
+a:hover, button:hover, input[type="submit"]:hover {
     cursor: pointer;
 }
 

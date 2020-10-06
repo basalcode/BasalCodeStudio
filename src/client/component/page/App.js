@@ -15,7 +15,6 @@ import Blog from 'component/page/Blog/Blog';
 import Auth from 'component/page/Auth/Auth';
 import NotFound from 'component/page/NotFound/NotFound';
 
-
 const App = () => {
     /* router */
     const history = useHistory();

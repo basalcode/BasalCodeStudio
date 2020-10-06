@@ -11,7 +11,8 @@
     }
     scroll-behavior: smooth;
 
-    background-color: #F1E3D2;
+    background-color: $DAYMODE_BACKGROUND_COLOR;
+    transition: border-color 1s, background-color 1s, color 1s;
 
     &__scroll {
         &--on {
@@ -19,6 +20,62 @@
         }
         &--off {
             @include scroll-bar(false);
+        }
+    }
+
+    &--night-mode {
+        background-color: $NIGHTMODE_BACKGROUND_COLOR;
+
+        /* default night mode style */
+        * {
+            /* border */
+            border-color: $NIGHTMODE_BORDER_COLOR;
+            border-width: $NIGHTMODE_BORDER_WIDTH;
+
+            /* font */
+            color: $NIGHTMODE_COLOR;
+            font-weight: $NIGHTMODE_FONT_WEIGHT;
+        }
+
+        input[type="text"], textarea {
+            border-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--TEXT_FIELD;
+            color: $NIGHTMODE_COLOR--TEXT_FIELD;
+            font-size: $NIGHTMODE_FONT_SIZE--TEXT_FIELD;
+            font-weight: $NIGHTMODE_FONT_WEIGHT--TEXT_FIELD;
+        }
+
+        ::-webkit-input-placeholder { /* Edge */
+            color: $NIGHTMODE_COLOR--PLACE_HOLDER;
+            font-size: $NIGHTMODE_FONT_SIZE--PLACE_HOLDER;
+            font-weight: 800;
+        }
+          
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: $NIGHTMODE_COLOR--PLACE_HOLDER;
+            font-size: $NIGHTMODE_FONT_SIZE--PLACE_HOLDER;
+            font-weight: $NIGHTMODE_FONT_WEIGHT--PLACE_HOLDER;
+        }
+          
+        ::placeholder {
+            color: $NIGHTMODE_COLOR--PLACE_HOLDER;
+            font-size: $NIGHTMODE_FONT_SIZE--PLACE_HOLDER;
+            font-weight: $NIGHTMODE_FONT_WEIGHT--PLACE_HOLDER;
+        }
+
+        input[type="submit"] {
+            border-color: $NIGHTMODE_BORDER_COLOR--SUBMIT_BUTTON;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--SUBMIT_BUTTON;
+
+            color: $NIGHTMODE_COLOR--SUBMIT_BUTTON;
+            font-size: $NIGHTMODE_FONT_SIZE--SUBMIT_BUTTON;
+            font-weight: $NIGHTMODE_FONT_WEIGHT--SUBMIT_BUTTON;
+            
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: $NIGHTMODE_BACKGROUND_COLOR--SUBMIT_BUTTON_HOVER;
+            }
         }
     }
 }

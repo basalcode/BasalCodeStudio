@@ -44,9 +44,9 @@ const FloatingUIs = ({ fadeInOn }) => {
         <aside className={
             `FloatingUIs ` +
             `${fadeInOn ?
-                "FloatingUIs--fade-in-on" :
-                "FloatingUIs--fade-in-off"
-            }`}>
+                "FloatingUIs--fade-in-on " :
+                "FloatingUIs--fade-in-off "}` +
+            `${nightModeOn ? "FloatingUIs--night-mode " : " "}`}>
             <section className="
                 FloatingUIs__ui-container
                 FloatingUIs__left-container">
@@ -56,7 +56,7 @@ const FloatingUIs = ({ fadeInOn }) => {
                     icon-github-1"
                     href="https://github.com/basalcode"
                     target="_blank" />
-                <a className="
+                <button className="
                     FloatingUIs__ui
                     FloatingUIs__ui-bottom
                     icon-mail-1"
@@ -69,7 +69,7 @@ const FloatingUIs = ({ fadeInOn }) => {
                     className="
                         FloatingUIs__ui
                         FloatingUIs__ui-top
-                        icon-up-small"
+                        icon-up-open"
                     onClick={scrollTop} />
                 <button className={
                     `FloatingUIs__ui ` +

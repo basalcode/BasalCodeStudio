@@ -1,3 +1,12 @@
+/* variable */
+// day mode
+$NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON: hsl(234, 100%, 77%);
+
+$NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
+$NIGHTMODE_BORDER_WIDTH--NAVIGATION_BUTTON_LINE: 0.1rem;
+$NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
+
+/* mixin */
 @mixin buttonAnimation($top, $width) {
     position: absolute;
     top: $top;
@@ -18,6 +27,16 @@
     right: 0;
 
     background-color: white;
+
+    &--night-mode {
+        background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON;
+
+        & div {
+            border-color: $NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE;
+            border-width: $NIGHTMODE_BORDER_WIDTH--NAVIGATION_BUTTON_LINE;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE;
+        }
+    }
 
     &__first {
         &--off {

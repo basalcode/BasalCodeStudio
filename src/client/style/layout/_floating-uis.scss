@@ -1,3 +1,8 @@
+/* varibale */
+$NIGHTMODE_BORDER_COLOR--FLOATING_UIS: hsl(234, 100%, 77%);
+$NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS: hsl(234, 100%, 77%);
+$NIGHTMODE_COLOR--FLOATING_UIS: hsl(0, 0%, 100%);
+
 .FloatingUIs {
     @include center-horizontal();
     @include size(calc(100% - 100px), 100px);
@@ -36,18 +41,18 @@
 
     &__ui {
         @include center-horizontal();
-        @include size(30px, 30px);
+        @include size(2rem, 2rem);
         @include circle-border();
 
         position: absolute;
-        border: 2.5px solid black;
+        border: 0.2rem solid black;
         background-color: white;
 
         &::before {
             @include center();
 
             position: absolute;
-            font-size: 24px;
+            font-size: 1.5rem;
         }
     }
 
@@ -67,6 +72,14 @@
         &--on {
             color:white;
             background-color: black
+        }
+    }
+
+    &--night-mode {
+        & a, button {
+            border-color: $NIGHTMODE_BORDER_COLOR--FLOATING_UIS;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS;
+            color: $NIGHTMODE_COLOR--FLOATING_UIS;
         }
     }
 }
