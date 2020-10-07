@@ -1,10 +1,16 @@
+$NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
+
 .Logo {
     @include center-vertical();
     
     position: absolute;
     display: inline-block;
     margin: auto;
-    cursor: pointer;
+
+    &:hover &__underline {
+        width: 100%;
+        transition: width 1s;
+    }
 
     &__text {
         text-align: center;
@@ -19,8 +25,7 @@
         transition: width 1s;
     }
 
-    &:hover &__underline {
-        width: 100%;
-        transition: width 1s;
+    &--night-mode &__underline{
+        border-color: $NIGHTMODE_BORDER_COLOR--LOGO;
     }
 }

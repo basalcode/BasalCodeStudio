@@ -30,8 +30,9 @@ const scrollPage = (() => {
         let pageScrolled = false;
         scrollLock = true;
         
-        const validIndex = pageIndex >= 0 && pageIndex < target.page.count;
-        if (!validIndex) { 
+        const validIndexRange = pageIndex >= 0 && pageIndex < target.page.count;
+        const isNewPageIndex = currentPageIndex !== pageIndex;
+        if (!validIndexRange || !isNewPageIndex) { 
             scrollLock = false;
             return pageScrolled; 
         }

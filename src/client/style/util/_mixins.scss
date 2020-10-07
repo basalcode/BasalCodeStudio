@@ -111,6 +111,10 @@
     animation: fade-out 1.5s;
 }
 
+@mixin colors-transition($DELAY) {
+    transition: border-color $DELAY, background-color $DELAY, color $DELAY;
+}
+
 /* dev */
 @mixin dev-inspector() {
     background-color: rgb(random(256), random(256), random(256));

@@ -6,6 +6,12 @@ $NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
 $NIGHTMODE_BORDER_WIDTH--NAVIGATION_BUTTON_LINE: 0.1rem;
 $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
 
+// hover
+$NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_HOVER: hsl(152, 84%, 7%);
+
+$NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
+$NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
+
 /* mixin */
 @mixin buttonAnimation($top, $width) {
     position: absolute;
@@ -14,13 +20,13 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
     width: $width;
 
     background-color: black;
-    border: 1.5px solid black;
-    transition: width 1s;
+    border-bottom: 2px solid black;
+    transition: width 0.8s;
 }
 
 .NavigationButton {
     @include center-vertical();
-    @include size(50px, 50px);
+    @include size(2.8rem, 2.8rem);
     @include circle-border();
     
     position: absolute;
@@ -28,14 +34,19 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
 
     background-color: white;
 
-    &--night-mode {
-        background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON;
+    &:hover {
+        @include colors-transition(0.5s);
+
+        background-color: black;
 
         & div {
-            border-color: $NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE;
-            border-width: $NIGHTMODE_BORDER_WIDTH--NAVIGATION_BUTTON_LINE;
-            background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE;
+            border-color: white;
+            background-color: white;
         }
+    }
+
+    &__bar {
+        height: 0;
     }
 
     &__first {
@@ -43,7 +54,7 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
             @include buttonAnimation(25%, 50%);
         }
         &--on {
-            @include buttonAnimation(25%, 50%);
+            @include buttonAnimation(25%, 40%);
         }
     }
 
@@ -52,7 +63,7 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
             @include buttonAnimation(40%, 50%);
         }
         &--on {
-            @include buttonAnimation(40%, 40%);
+            @include buttonAnimation(40%, 30%);
         }
     }
 
@@ -61,7 +72,7 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
             @include buttonAnimation(55%, 50%);
         }
         &--on {
-            @include buttonAnimation(55%, 30%);
+            @include buttonAnimation(55%, 20%);
         }
     }
 
@@ -70,7 +81,28 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE: hsl(0, 0%, 100%);
             @include buttonAnimation(70%, 50%);
         }
         &--on {
-            @include buttonAnimation(70%, 20%);
+            @include buttonAnimation(70%, 10%);
+        }
+    }
+
+    &--night-mode {
+        background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON;
+
+        &:hover {
+            @include colors-transition($BUTTON_TRANSITION_DELAY);
+
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_HOVER;
+
+            & div {
+                border-color: $NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE_HOVER;
+                background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER;
+            }
+        }
+
+        & div {
+            border-color: $NIGHTMODE_BORDER_COLOR--NAVIGATION_BUTTON_LINE;
+            border-width: $NIGHTMODE_BORDER_WIDTH--NAVIGATION_BUTTON_LINE;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE;
         }
     }
 }

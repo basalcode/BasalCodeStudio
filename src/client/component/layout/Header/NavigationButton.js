@@ -22,6 +22,7 @@ const NavigationButton = () => {
             onClick={toggleButtonAnimation}> {
                 classNameArray.map(element =>
                     <div className={
+                        `NavigationButton__bar ` + 
                         `NavigationButton__${element}` + 
                         `--${animationOn ? 'on' : 'off'}`
                     }></div>

@@ -1,10 +1,8 @@
 /* global */
 $MEDIAN: 50%;
+$BUTTON_TRANSITION_DELAY: 0.2s;
 
 /* clolor */
-/* day mode */
-$DAYMODE_BACKGROUND_COLOR: hsl(33, 53%, 88%);
-
 /* night mode */
 // default
 $NIGHTMODE_BORDER_COLOR: hsl(232, 60%, 40%);
@@ -34,8 +32,8 @@ $NIGHTMODE_FONT_SIZE--SUBMIT_BUTTON: 1rem;
 $NIGHTMODE_FONT_WEIGHT--SUBMIT_BUTTON: 700;
 
 
-
-// examples
+/* examples */
+// night
 $TEXT_BACKGROUND: hsl(248, 46%, 9%);
 $TEXT_PURPLE: hsl(293, 100%, 71%);
 $TEXT_MILD_PURPLE: hsl(231, 37%, 53%);
@@ -55,6 +53,12 @@ $CONTAINER_PURLE:hsl(254, 41%, 27%);
 $CONTAINER_GRAY: hsl(242, 25%, 25%);
 
 $BLUR_BACKGROUND: hsl(242, 41%, 19%);
+
+// day
+$DAYMODE_BACKGROUND_COLOR: hsl(33, 53%, 88%);
+$DAYMODE_BACKGROUND_COLOR2: hsl(232, 60%, 40%);
+$DAYMODE_BORDER_COLOR: hsl(234, 100%, 77%);
+$DAYMODE_COLOR: hsl(0, 0%, 0%);
 
 
 

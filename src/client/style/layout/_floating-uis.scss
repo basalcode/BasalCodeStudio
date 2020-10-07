@@ -3,6 +3,10 @@ $NIGHTMODE_BORDER_COLOR--FLOATING_UIS: hsl(234, 100%, 77%);
 $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS: hsl(234, 100%, 77%);
 $NIGHTMODE_COLOR--FLOATING_UIS: hsl(0, 0%, 100%);
 
+$NIGHTMODE_BORDER_COLOR--FLOATING_UIS_HOVER:hsl(152, 84%, 7%);
+$NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS_HOVER: hsl(152, 84%, 7%);
+$NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
+
 .FloatingUIs {
     @include center-horizontal();
     @include size(calc(100% - 100px), 100px);
@@ -54,6 +58,14 @@ $NIGHTMODE_COLOR--FLOATING_UIS: hsl(0, 0%, 100%);
             position: absolute;
             font-size: 1.5rem;
         }
+
+        &:hover {
+            border-color: hsl(0, 0%, 0%);
+            background-color: hsl(0, 0%, 0%);
+            color: hsl(0, 0%, 100%);
+            
+            @include colors-transition($BUTTON_TRANSITION_DELAY);
+        }
     }
 
     &__ui-top {
@@ -80,6 +92,16 @@ $NIGHTMODE_COLOR--FLOATING_UIS: hsl(0, 0%, 100%);
             border-color: $NIGHTMODE_BORDER_COLOR--FLOATING_UIS;
             background-color: $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS;
             color: $NIGHTMODE_COLOR--FLOATING_UIS;
+
+            @include colors-transition($BUTTON_TRANSITION_DELAY);
+
+            &:hover {
+                border-color: $NIGHTMODE_BORDER_COLOR--FLOATING_UIS_HOVER;
+                background-color: $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS_HOVER;
+                color: $NIGHTMODE_COLOR--FLOATING_UIS_HOVER;
+
+                
+            }
         }
     }
 }
