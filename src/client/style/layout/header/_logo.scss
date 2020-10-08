@@ -25,6 +25,10 @@ $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
         transition: width 1s;
     }
 
+    &--night-mode &__text {
+        color: $NIGHTMODE_COLOR;
+    }
+
     &--night-mode &__underline{
         border-color: $NIGHTMODE_BORDER_COLOR--LOGO;
     }

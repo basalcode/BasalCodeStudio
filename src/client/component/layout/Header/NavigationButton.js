@@ -20,14 +20,14 @@ const NavigationButton = () => {
         <div className={`NavigationButton ` + 
             `${nightModeOn ? 'NavigationButton--night-mode ' : ' '}`}
             onClick={toggleButtonAnimation}> {
-                classNameArray.map(element =>
+                classNameArray.map((element, index) =>
                     <div className={
                         `NavigationButton__bar ` + 
                         `NavigationButton__${element}` + 
-                        `--${animationOn ? 'on' : 'off'}`
-                    }></div>
-                )
-            }
+                        `--${animationOn ? 'on' : 'off'}`}
+                        key={index}></div>
+                    )
+                }
         </div>
     );
 }

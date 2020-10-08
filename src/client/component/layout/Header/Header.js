@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /* component */
 import Logo from './Logo';

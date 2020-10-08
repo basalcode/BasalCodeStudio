@@ -110,8 +110,9 @@ const BlogLobbyIntro = () => {
                         <div className="
                             BlogLobbyIntro__greeting-content
                             BlogLobbyIntro__greeting-display">
-                            {textAnimation.display.map(element =>
-                                <span class="BlogLobbyIntro__greeting-character">
+                            {textAnimation.display.map((element, index) =>
+                                <span className="BlogLobbyIntro__greeting-character"
+                                    key={index}>
                                     {element}
                                 </span>
                             )}

@@ -27,13 +27,14 @@ const BlogLobbyAbout = () => {
                             `BlogLobbyAbout__about--disappear`)
                             }>
                         <h1 className="BlogLobbyAbout__about-title">ABOUT</h1>
-                        <p className="BlogLobbyAbout__about-paragraph">
-                            {textArray.map(text => (
-                                <div className="BlogLobbyAbout__about-text">
+                        <div className="BlogLobbyAbout__about-paragraph">
+                            {textArray.map((text, index) => (
+                                <p className="BlogLobbyAbout__about-text"
+                                    key={index}>
                                     {text}
-                                </div>
+                                </p>
                             ))}
-                        </p>
+                        </div>
                     </article>
                 </div>
                 <section className="

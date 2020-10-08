@@ -12,7 +12,6 @@ import PostEditor from 'component/page/Blog/PostEditor/PostEditor';
 
 // layout
 import Header from 'component/layout/Header/Header';
-import Footer from 'component/layout/Footer';
 import FloatingUIs from 'component/layout/FloatingUIs';
 
 const Blog = () => {
@@ -42,7 +41,6 @@ const Blog = () => {
                     <Route path={`${match.path}/post-editor`} component={PostEditor} />
                 </Switch>
             </main>
-            <Footer fadeInOn={fadeInOn} />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

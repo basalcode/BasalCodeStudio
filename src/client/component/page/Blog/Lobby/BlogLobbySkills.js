@@ -68,14 +68,16 @@ const BlogLobbySkills = () => {
             <div className="BlogLobbySkills__container">
                 <h1 className="BlogLobbySkills__title">Skills</h1>
                 <div className="BlogLobbySkills__content-container">
-                    {Object.keys(skillsObjects).map(title =>
-                        <div className="BlogLobbySkills__content">
+                    {Object.keys(skillsObjects).map((title, index) =>
+                        <div className="BlogLobbySkills__content"
+                            key={index}>
                             <h2 className="BlogLobbySkills__content-title">
                                 {title}
                             </h2>
                             <div className="BlogLobbySkills__content-body-container">
-                                {skillsObjects[title].map(content =>
-                                    <div className="BlogLobbySkills__content-body">
+                                {skillsObjects[title].map((content, index) =>
+                                    <div className="BlogLobbySkills__content-body"
+                                        key={index}>
                                         <img className="BlogLobbySkills__logo"
                                             src={content.imagePath} />
                                         <div className="BlogLobbySkills__text">

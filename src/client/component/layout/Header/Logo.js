@@ -10,13 +10,10 @@ const Logo = () => {
         <div className={
             `Logo ` +
             `${nightModeOn ? "Logo--night-mode " : " "}`}>
-            <Link to="/blog/lobby">
-                <a className="Logo__text">
+            <Link className="Logo__text" to="/blog/lobby">
                     BasalCodeStudio
                     <div className="Logo__underline"></div>
-                </a>
             </Link>
-
         </div>
     );
 }
