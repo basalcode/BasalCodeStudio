@@ -1,18 +1,38 @@
+$IMAGE_APPEAR_DELAY: 1s;
+$IMAGE_DISAPPEAR_DELAY: 2s;
+
 .BlogLobby {
+    // @include dev-inspector();
     @include size(inherit, inherit);
     max-width: 1800px;
     margin: auto;
 
     position: relative;
 
-    &__picture {
+    &__picture-container {
         // @include dev-inspector();
         @include size(20% , 65%);
 
         position: fixed;
-        object-fit: cover;
-        transition: top 1s, left 1s;
+        overflow: hidden;
 
+        
+        transition: top 1s, left 1s;
+    }
+
+    &__picture {
+        // @include dev-inspector();
+        @include size(100% , 100%);
+
+        position: absolute;
+        top: 0;
+        left: 100%;
+
+        object-fit: cover;
+        transition-delay: $IMAGE_DISAPPEAR_DELAY;
+    }
+
+    &__page {
         &--intro {
             top: 17.5%;
             left: 30%;
@@ -31,6 +51,23 @@
         &--contact {
             top: -100%;
             left: 50%;
+        }
+    }
+
+    &__image {
+        &--disappear {
+            left: 100%;
+        }
+
+        &--remain {
+            left: 0;
+        }
+
+        &--appear {
+            left: 0;
+
+            z-index: 1;
+            transition: left $IMAGE_APPEAR_DELAY;
         }
     }
 }
