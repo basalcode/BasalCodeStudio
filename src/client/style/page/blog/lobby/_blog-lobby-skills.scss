@@ -25,12 +25,15 @@
 
     &__content-container {
         // @include dev-inspector();
+        @include size(100%, 100%);
+        border: 1px solid blue;
 
         display: flex;
         flex-wrap: wrap;
     }
+}
 
-    &__content-title {
+    /*&__content-title {
         margin-bottom: 20px;
 
         font-family: 'Noto Serif KR', serif;
@@ -78,7 +81,7 @@
     }
 }
 
-/* .BlogLobbySkills {
+.BlogLobbySkills {
     width: 100%;
     padding: 5%;
     // border: 1px solid cyan;
@@ -140,4 +143,4 @@
 
         // border: 1px solid cornflowerblue;
     }
-} */
+}*/

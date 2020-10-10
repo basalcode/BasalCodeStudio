@@ -1,0 +1,8 @@
+.CircleLayout {
+    @include dev-inspector();
+    @include size(40rem, 40rem);
+    @include circle-border();
+
+    transform: rotate(360);
+    transition: transform 1s;
+}

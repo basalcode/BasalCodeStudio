@@ -1,11 +1,13 @@
 /* module */
-import React from 'react';
+import React, { useState } from 'react';
 
 /* asset */
+//basic
 import htmlLogo from 'asset/img/logo/html.svg';
 import cssLogo from 'asset/img/logo/css.svg';
 import javascriptLogo from 'asset/img/logo/javascript.svg';
 
+// 
 import awsLogo from 'asset/img/logo/aws.svg';
 import awsRoute53 from 'asset/img/logo/aws-route53.svg';
 import awsEC2 from 'asset/img/logo/aws-ec2.svg';
@@ -22,13 +24,19 @@ import nodejsLogo from 'asset/img/logo/nodejs.svg';
 import nginxLogo from 'asset/img/logo/nginx.svg';
 import expressLogo from 'asset/img/logo/express.svg';
 import mysqlLogo from 'asset/img/logo/mysql.svg';
-import pm2Logo from 'asset/img/logo/pm2.svg';
 
+import pm2Logo from 'asset/img/logo/pm2.svg';
 import npmLogo from 'asset/img/logo/npm.svg';
 import puttyLogo from 'asset/img/logo/putty.png';
 import gitLogo from 'asset/img/logo/git.svg';
 
+/* component */
+import CircleLayout from 'component/layout/CircleLayout';
+
 const BlogLobbySkills = () => {
+    const [categoryIndex, setCategoryIndex] = useState(0); // will change to props
+    const [category, setCategory] = useState([]);
+
     const skillsObjects = {
         basics: [
             { imagePath: htmlLogo, text: 'HTML' },
@@ -63,31 +71,37 @@ const BlogLobbySkills = () => {
         ]
     };
 
+    const onSelectChange = index => {
+        setCategoryIndex(index);
+    }
+
+    useState(() => {
+        const categoryTitles = Object.keys(skillsObjects);
+        const selectedCategory = skillsObjects[categoryTitles[categoryIndex]];
+
+        setCategory(selectedCategory);
+    }, [categoryIndex]);
+
     return (
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
                 <h1 className="BlogLobbySkills__title">Skills</h1>
                 <div className="BlogLobbySkills__content-container">
-                    {Object.keys(skillsObjects).map((title, index) =>
-                        <div className="BlogLobbySkills__content"
-                            key={index}>
-                            <h2 className="BlogLobbySkills__content-title">
-                                {title}
-                            </h2>
-                            <div className="BlogLobbySkills__content-body-container">
-                                {skillsObjects[title].map((content, index) =>
-                                    <div className="BlogLobbySkills__content-body"
-                                        key={index}>
-                                        <img className="BlogLobbySkills__logo"
-                                            src={content.imagePath} />
-                                        <div className="BlogLobbySkills__text">
-                                            {content.text}
-                                        </div>
-                                    </div>
-                                )}
+                    <CircleLayout 
+                        contents={skillsObjects} 
+                        onSelectChange={onSelectChange}/>
+                    <div className="CircleLayout__">
+                        {category.map((content, index) =>
+                            <div className="CircleLayout__"
+                                key={index}>
+                                <img className="CircleLayout__"
+                                    src={content.imagePath} />
+                                <div className="CircleLayout__">
+                                    {content.text}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
         </section>

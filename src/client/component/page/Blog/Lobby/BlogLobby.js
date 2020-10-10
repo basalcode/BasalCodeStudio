@@ -50,7 +50,7 @@ const BlogLobby = () => {
 
     // image slide
     useEffect(() => {
-        const changeInterval = 2000;
+        const changeInterval = 20000;
         window.setTimeout(() => {
             const pictureCount = pictures.length;
             setImageIndex({
@@ -69,9 +69,12 @@ const BlogLobby = () => {
                 {pictures.map((picture, index) => 
                     <img className={
                         `BlogLobby__picture ` +
-                        `${imageIndex.previous === index ? "BlogLobby__image--disappear " : " "}` + 
-                        `${imageIndex.current === index ? "BlogLobby__image--remain " : " "}` + 
-                        `${imageIndex.next === index ? "BlogLobby__image--appear " : " "}`}
+                        `${imageIndex.previous === index ? 
+                            "BlogLobby__image--disappear " : " "}` + 
+                        `${imageIndex.current === index ? 
+                            "BlogLobby__image--remain " : " "}` + 
+                        `${imageIndex.next === index ? 
+                            "BlogLobby__image--appear " : " "}`}
                         key={index}
                         src={picture} />
                 )}
