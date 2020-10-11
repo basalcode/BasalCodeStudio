@@ -71,12 +71,13 @@ const BlogLobbySkills = () => {
         ]
     };
 
+    const categoryTitles = Object.keys(skillsObjects);
+
     const onSelectChange = index => {
         setCategoryIndex(index);
     }
 
     useState(() => {
-        const categoryTitles = Object.keys(skillsObjects);
         const selectedCategory = skillsObjects[categoryTitles[categoryIndex]];
 
         setCategory(selectedCategory);
@@ -87,21 +88,22 @@ const BlogLobbySkills = () => {
             <div className="BlogLobbySkills__container">
                 <h1 className="BlogLobbySkills__title">Skills</h1>
                 <div className="BlogLobbySkills__content-container">
-                    <CircleLayout 
-                        contents={skillsObjects} 
-                        onSelectChange={onSelectChange}/>
-                    <div className="CircleLayout__">
+                    <CircleLayout
+                        elements={categoryTitles}
+                        onSelectChange={onSelectChange} />
+                    <section className="BlogLobbySkills__item-section">
                         {category.map((content, index) =>
-                            <div className="CircleLayout__"
+                            <div className="BlogLobbySkills__item-list"
                                 key={index}>
-                                <img className="CircleLayout__"
+                                <img className="BlogLobbySkills__item"
                                     src={content.imagePath} />
-                                <div className="CircleLayout__">
+                                <div className="BlogLobbySkills__item-title">
                                     {content.text}
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            </div>)}
+                        <div className="BlogLobbySkills__item-description"></div>
+                    </section>
+
                 </div>
             </div>
         </section>

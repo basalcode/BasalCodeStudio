@@ -31,116 +31,24 @@
         display: flex;
         flex-wrap: wrap;
     }
-}
 
-    /*&__content-title {
-        margin-bottom: 20px;
+    &__item-section {
 
-        font-family: 'Noto Serif KR', serif;
-        font-size: 24px;
-        text-decoration: underline;
     }
 
-    &__content {
-        // @include dev-inspector();
+    &__item-list {
 
-        width: 50%;
     }
 
-    &__content-body-container {
-        display: flex;
-        flex-wrap: wrap;
-
-        margin-bottom: 2%;
+    &__item {
+        @include size(10rem, 10rem);
     }
 
-    &__content-body {
-        // @include dev-inspector();
-        @include round-border(50%);
+    &__item-title {
 
-        display: flex;
-        flex-direction: column;
-
-        margin: 1%;
-        padding: 1%;
-
-        background: gray;
-        mix-blend-mode: saturation;
     }
 
-    &__logo {
-        @include size(50px, 50px);
-        
-        margin: auto;
-    }
+    &__item-description {
 
-    &__text {
-        font-family: 'Nanum Myeongjo', serif;
-        font-size: 1.5rem;
-        text-align: center;
     }
 }
-
-.BlogLobbySkills {
-    width: 100%;
-    padding: 5%;
-    // border: 1px solid cyan;
-
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-
-    &__title {
-        text-align: center;
-        margin: 20px auto;
-
-        font-size: 2rem;
-        text-decoration: underline;
-        // border: 1px solid red;
-    }
-    &__content-container {
-        display: inline-block;
-        // border: 2px solid green;
-        margin: auto;
-        // text-align: center;
-    }
-    &__content {
-        // border: 1px solid cornflowerblue;
-    }
-    &__subtitle {
-        text-align: left;
-        // width: 100%;
-        margin:20px auto 10px auto;
-
-        font-weight: lighter;
-        font-size: 1.5rem;
-        text-decoration: underline;
-
-        // border: 1px solid cyan;
-    }
-
-    &__description-container {
-        display: flex;
-        flex-wrap: wrap;
-
-        // border: 1px solid cyan;
-        margin: auto;
-    }
-    &__description {
-        display: flex;
-        flex-direction: column;
-
-        margin: 10px;
-    }
-    &__description-image {
-        // @include setSize(100px, 100px);
-        // border: 1px solid crimson;
-    }
-    &__description-text {
-        // @include setSize(100px, 50px);
-        text-align: center;
-
-        font-size: 1.5rem;
-
-        // border: 1px solid cornflowerblue;
-    }
-}*/
