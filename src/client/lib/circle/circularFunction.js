@@ -1,11 +1,12 @@
 const circularFunctions = (() => {
+    /* function */
     const toRadian = (degree) => {
         return degree * (Math.PI / 180);
     }
 
     const getCirclePosition = (degree, radius) => {
-        const x = Math.floor(Math.cos(degree) * radius);
-        const y = Math.floor(Math.sin(degree) * radius);
+        const x = Math.cos(degree) * radius;
+        const y = Math.sin(degree) * radius;
 
         return { x: x, y: y };
     }
@@ -20,14 +21,17 @@ const circularFunctions = (() => {
 
         const circlePositions = [];
 
-        let degree = angleStart;
+        let degree = clockwise ? angleStart : -angleStart;
         for (let i = 0; i < amount; i++) {
-            degree = (degree + angleInterval) % angleRange;
-
             const circlePosition = getCirclePosition(degree, radius);
-            if (!clockwise) { circlePosition.y = -circlePosition.y; }
-
+            
+            circlePosition.x = circlePosition.x + radius;
+            circlePosition.y = circlePosition.y + radius;
             circlePositions.push(circlePosition);
+
+            degree = clockwise ? 
+                (degree + angleInterval) % angleRange :
+                (degree - angleInterval) % angleRange;
         }
 
         return circlePositions;

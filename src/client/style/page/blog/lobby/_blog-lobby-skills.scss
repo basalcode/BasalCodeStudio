@@ -24,31 +24,47 @@
     }
 
     &__content-container {
-        // @include dev-inspector();
         @include size(100%, 100%);
         border: 1px solid blue;
 
         display: flex;
-        flex-wrap: wrap;
+    }
+
+    &__category-section {
+        
+        border: 2px solid red;
     }
 
     &__item-section {
+        @include dev-inspector();
+        @include size(50%, 100%);
 
+        display: flex;
+        flex-direction: column;
+        border: 1px solid greenyellow;
     }
 
-    &__item-list {
+    &__item-container-list {
+        display: flex;
+        border: 1px solid blue;
+    }
 
+    &__item-container {
+        border: 1px solid pink;
     }
 
     &__item {
         @include size(10rem, 10rem);
+
     }
 
     &__item-title {
-
+        // @include dev-inspector();
+        @include size(100px, 100px);
     }
 
     &__item-description {
-
+        @include dev-inspector();
+        @include size(50px, 100%);
     }
 }

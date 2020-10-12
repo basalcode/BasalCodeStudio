@@ -1,15 +1,24 @@
 .CircleLayout {
-    @include dev-inspector();
+    // @include dev-inspector();
     @include size(40rem, 40rem);
     @include circle-border();
-
-    // transform: rotate(360);
-    // transition: transform 1s;
+    @include rotate(20s);
 
     position: relative;
 
+    border: 3px solid floralwhite;
+    
+
     &__category {
+        @include dev-inspector();
+        @include size(100px, 100px);
+        @include rotate(20s, false);
+        
         position: absolute;
-        transition-timing-function: linear;
+    }
+
+    &__category-title {
+        border: 1px solid cadetblue;
+        cursor: pointer;
     }
 }

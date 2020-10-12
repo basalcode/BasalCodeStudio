@@ -115,6 +115,34 @@
     transition: border-color $DELAY, background-color $DELAY, color $DELAY;
 }
 
+@keyframes rotate-clockwise {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-counter-clockwise {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@mixin rotate($delay: 1s, $clockwise: true) {
+    @if ($clockwise) {
+        animation: rotate-clockwise $delay infinite;
+        animation-timing-function: linear;
+    } @else {
+        animation: rotate-counter-clockwise $delay infinite;
+        animation-timing-function: linear;
+    }
+}
+
 /* dev */
 @mixin dev-inspector() {
     background-color: rgb(random(256), random(256), random(256));

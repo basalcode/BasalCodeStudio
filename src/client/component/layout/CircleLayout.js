@@ -5,65 +5,50 @@ import React, { useState, useEffect } from 'react';
 import circle from 'lib/circle/circularFunction';
 
 const CircleLayout = (props) => {
-    const [contentStyle, setContentStyle] = useState([]);
+    /* state */
+    const [contentStyle, setContentStyle] = useState({});
+    const [componentStyle, setComponentStlye] = useState({});
 
+    /* props */
     const elements = props.elements;
-    // console.log('elements', elements)
-    const elementAmount = elements.length;
+    const diameter = props.diameter;
 
-    const diameter = 500;
-
-    const onSelectChange = event => {
-        const target = event.target;
-        props.onSelectChange(target.key);
+    /* event handler */
+    const onSelectChange = index => {
+        props.onSelectChange(index);
     }
 
+    /* useEffect */
     useEffect(() => {
-        const multiplyPosition = 3;
-        const positionAmount = elementAmount * multiplyPosition;
+        setComponentStlye({
+            width: diameter + 'rem',
+            height: diameter + 'rem'
+        });
 
-        const circlePositions = circle.getCirclePositions(diameter, positionAmount, false, 90);
-        const radius = diameter / 2;
-        console.log(circlePositions);
+        const elementAmount = elements.length;
+        const circlePositions = circle.getCirclePositions(diameter, elementAmount, false, 90);
 
-        const frameInterval = 2000;
+        const elementDiameter = 5;
 
-        let positionIndex = 0;
-        setInterval(() => {
-            let newStyles = [];
-            for (let i = 0; i < elementAmount; i++) {
-                const elementIndex = 
-                    (i * multiplyPosition + positionIndex) % positionAmount;
-                console.log('=====elementIndex=====', elementIndex);
-
-                const top = `${(circlePositions[elementIndex].y + radius) + 'px'}`;
-                const left = `${(circlePositions[elementIndex].x + radius) + 'px'}`;
-                const interval = `${frameInterval / 1000}`;
-
-                console.log('[top, left]', top, left);
-
-                const style = {
-                    top: top,
-                    left: left,
-                    transition: `top ${interval}s, left ${interval}s`
-                };
-                newStyles.push(style);
-            }
-            positionIndex = (positionIndex + 1) % positionAmount;
-            console.log('newStyles', newStyles);
-            
-            setContentStyle(newStyles);
-        }, frameInterval);
-    }, [])
+        const styles = [];
+        for (let i = 0; i < elementAmount; i++) {
+            styles.push({
+                top: (circlePositions[i].y - (elementDiameter / 2)) + 'rem',
+                left: (circlePositions[i].x - (elementDiameter / 2)) + 'rem',
+            });
+        }
+        setContentStyle(styles);
+    }, []);
 
     return (
-        <div className="CircleLayout">
+        <div className="CircleLayout"
+            style={componentStyle}>
             {Object.keys(elements).map((title, index) =>
                 <div className="CircleLayout__category"
                     style={contentStyle[index]}
-                    key={index}
-                    onClick={onSelectChange}>
-                    <h2 className="CircleLayout__category-title">
+                    key={index}>
+                    <h2 className="CircleLayout__category-title"
+                        onClick={event => onSelectChange(index)}>
                         {elements[index]}
                     </h2>
                 </div>
