@@ -4,7 +4,8 @@ import {
 } from 'store/action/blog';
 
 const initialState = {
-    index: 0
+    index: 0,
+    scrollOn: false
 }
 
 export default (state = initialState, action) => {
@@ -12,7 +13,8 @@ export default (state = initialState, action) => {
         case LOBBY_PAGE:
             return {
                 ...state,
-                index: action.index
+                index: action.index,
+                scrollOn: action.scrollOn
             }
         default: return { ...state }
     }

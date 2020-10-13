@@ -16,7 +16,6 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
         position: fixed;
         overflow: hidden;
 
-        
         transition: top 1s, left 1s;
     }
 
@@ -33,23 +32,28 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
     }
 
     &__page {
-        &--intro {
+        &-intro {
             top: 17.5%;
             left: 30%;
         }
         
-        &--about {
+        &-about {
             top: 17.5%;
             left: 50%;
         }
 
-        &--skills {
-            top: -100%;
-            left: 50%;
+        &-skills {
+            top: 17.5%;
+            left: 30%;
+
+            &--on {
+                top: 110%;
+                left: 50%;
+            }
         }
 
-        &--contact {
-            top: -100%;
+        &-contact {
+            top: 17.5%;
             left: 50%;
         }
     }

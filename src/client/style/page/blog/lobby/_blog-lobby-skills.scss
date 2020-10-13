@@ -31,15 +31,31 @@
     }
 
     &__category-section {
-        
+        @include size(50%, 100%);
+
+        position: relative;
         border: 2px solid red;
+
+        transition: left 1s;
+
+        &--appear {
+            left: 50%;
+        }
+
+        &--disappear {
+            left: 100%;
+        }
+
+        &--select-on {
+            left: 0;
+        }
     }
 
     &__item-section {
         @include dev-inspector();
         @include size(50%, 100%);
 
-        display: flex;
+        display: none;
         flex-direction: column;
         border: 1px solid greenyellow;
     }

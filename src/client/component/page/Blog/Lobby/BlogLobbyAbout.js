@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const BlogLobbyAbout = () => {
+const BlogLobbyAbout = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
     
@@ -22,7 +22,7 @@ const BlogLobbyAbout = () => {
                 <div className="BlogLobbyAbout__content">
                     <article className= {
                             `BlogLobbyAbout__about ` + 
-                            (pageIndex === 1 ?
+                            (pageIndex === props.index ?
                             `BlogLobbyAbout__about--appear` :
                             `BlogLobbyAbout__about--disappear`)
                             }>

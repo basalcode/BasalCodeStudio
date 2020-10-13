@@ -1,5 +1,6 @@
 /* module */
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 /* asset */
 import htmlLogo from 'asset/img/logo/html.svg';
@@ -31,10 +32,16 @@ import puttyLogo from 'asset/img/logo/git.svg';
 /* component */
 import CircleLayout from 'component/layout/CircleLayout';
 
-const BlogLobbySkills = () => {
+const BlogLobbySkills = (props) => {
+    /* store */
+    const pageIndex = useSelector(store => store.blog.index, []);
+    const scrollOn = useSelector(store => store.blog.scrollOn);
+
     /* state */
     const [categoryIndex, setCategoryIndex] = useState(0); // will change to props
     const [currentItems, setCurrentItems] = useState([]);
+
+    const [itemSelected, setItemSelected] = useState(false);
 
     /* constant */
     const itemDatas = {
@@ -86,31 +93,46 @@ const BlogLobbySkills = () => {
     const circleLayoutDiameter = 40;
 
     /* event handler */
-    const onSelectChange = index => {
+    const onSelect = index => {
         setCategoryIndex(index);
+        setItemSelected(true);
+        props.onSelect(true);
     }
 
     /* useEffect */
+    // display category items
     useEffect(() => {
         const selectedCategoryName = categories[categoryIndex];
         const selectedCategoryItems = itemDatas[selectedCategoryName].items;
-        console.log('selectedCategoryName', selectedCategoryName);
-        console.log('categoryIndex', categoryIndex);
-        console.log('selectedCategoryItems', selectedCategoryItems);
 
         setCurrentItems(selectedCategoryItems);
     }, [categoryIndex]);
+
+    // deactivate page layout
+    useEffect(() => {
+        if (scrollOn) {
+            setItemSelected(false);
+            props.onSelect(false);
+        }
+    }, [scrollOn]);
 
     return (
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
                 <h1 className="BlogLobbySkills__title">Skills</h1>
                 <div className="BlogLobbySkills__content-container">
-                    <section className="BlogLobbySkills__category-section">
+                    <section className={
+                        `BlogLobbySkills__category-section ` +
+                        `${pageIndex === props.index ?
+                            "BlogLobbySkills__category-section--appear " :
+                            "BlogLobbySkills__category-section--disappear "}` +
+                        `${itemSelected ?
+                            "BlogLobbySkills__category-section--select-on " :
+                            " "}`}>
                         <CircleLayout
                             diameter={circleLayoutDiameter}
                             elements={categories}
-                            onSelectChange={onSelectChange} />
+                            onSelect={onSelect} />
                     </section>
                     <section className="BlogLobbySkills__item-section">
                         <div className="BlogLobbySkills__item-container-list">

@@ -1,7 +1,11 @@
 /* module */
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const BlogLobbyContact = () => {
+const BlogLobbyContact = (props) => {
+    /* store */
+    const pageIndex = useSelector(store => store.blog.index, []);
+
     /* state */
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -45,8 +49,10 @@ const BlogLobbyContact = () => {
     return (
         <section className="BlogLobbyContact">
             <div className="BlogLobbyContact__container">
-                <section className="BlogLobbyContact__content"></section>
-                <section className="BlogLobbyContact__content">
+                <section className={`BlogLobbyContact__content ` +
+                        `${pageIndex === props.index ?
+                        "BlogLobbyContact__content--appear " :
+                        "BlogLobbyContact__content--disappear "}`}>
                     <div className="BlogLobbyContact__contact">
                         <h1 className="BlogLobbyContact__title">Contact</h1>
                         <form className="BlogLobbyContact__form" 
@@ -86,6 +92,7 @@ const BlogLobbyContact = () => {
                         </form>
                     </div>
                 </section>
+                <section className="BlogLobbyContact__content"></section>
             </div>
         </section>
     );

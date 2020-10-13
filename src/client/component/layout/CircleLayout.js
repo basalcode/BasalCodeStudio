@@ -14,8 +14,8 @@ const CircleLayout = (props) => {
     const diameter = props.diameter;
 
     /* event handler */
-    const onSelectChange = index => {
-        props.onSelectChange(index);
+    const onSelect = index => {
+        props.onSelect(index);
     }
 
     /* useEffect */
@@ -48,7 +48,7 @@ const CircleLayout = (props) => {
                     style={contentStyle[index]}
                     key={index}>
                     <h2 className="CircleLayout__category-title"
-                        onClick={event => onSelectChange(index)}>
+                        onClick={event => onSelect(index)}>
                         {elements[index]}
                     </h2>
                 </div>

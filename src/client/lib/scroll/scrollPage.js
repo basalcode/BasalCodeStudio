@@ -20,7 +20,11 @@ const scrollPage = (() => {
             count: null
         }
     }
-    let callBackOption = null;
+    let callBackOption = {
+        scrollStart: null,
+        scrollFinish: null
+    };
+
     let formFocused = false;
     let formPageIndex = [];
     let fousedFormElement = null;
@@ -66,8 +70,8 @@ const scrollPage = (() => {
 
             if (pageScrolled) {
                 /* call back option */
-                if (callBackOption) {
-                    callBackOption(currentPageIndex);
+                if (callBackOption.scrollStart) {
+                    callBackOption.scrollStart(currentPageIndex, scrollLock);
                 }
             }
         }
@@ -80,6 +84,10 @@ const scrollPage = (() => {
 
         if (scrollY === destination) {
             scrollLock = false;
+            /* call back option */
+            if (callBackOption.scrollFinish) {
+                callBackOption.scrollFinish(currentPageIndex, scrollLock);
+            }
         }
     }
 
@@ -142,8 +150,8 @@ const scrollPage = (() => {
 
                     if (pageScrolled) {
                         /* call back option */
-                        if (callBackOption) {
-                            callBackOption(currentPageIndex);
+                        if (callBackOption.scrollStart) {
+                            callBackOption.scrollStart(currentPageIndex, scrollLock);
                         }
                     }
 
@@ -163,8 +171,8 @@ const scrollPage = (() => {
 
                     if (pageScrolled) {
                         /* call back option */
-                        if (callBackOption) {
-                            callBackOption(currentPageIndex);
+                        if (callBackOption.scrollStart) {
+                            callBackOption.scrollStart(currentPageIndex, scrollLock);
                         }
                     }
 
@@ -183,8 +191,8 @@ const scrollPage = (() => {
 
                 if (pageScrolled) {
                     /* call back option */
-                    if (callBackOption) {
-                        callBackOption(HOME_PAGE_INDEX);
+                    if (callBackOption.scrollStart) {
+                        callBackOption.scrollStart(HOME_PAGE_INDEX, scrollLock);
                     }
                 }
 
@@ -201,8 +209,8 @@ const scrollPage = (() => {
 
                 if (pageScrolled) {
                     /* call back option */
-                    if (callBackOption) {
-                        callBackOption(endPageIndex);
+                    if (callBackOption.scrollStart) {
+                        callBackOption.scrollStart(endPageIndex, scrollLock);
                     }
                 }
 
@@ -230,7 +238,7 @@ const scrollPage = (() => {
         fousedFormElement = null;
     }
 
-    const addEvent = (targetRef, callBackFunction) => {
+    const addEvent = (targetRef, callBackFunctions) => {
         /* init variable */
         target = {
             ...target,
@@ -241,7 +249,7 @@ const scrollPage = (() => {
                 count: Math.floor(targetRef.scrollHeight / window.innerHeight)
             }
         }
-        callBackOption = callBackFunction;
+        callBackOption = callBackFunctions;
 
         /* add event */
         // wheel

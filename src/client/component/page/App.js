@@ -44,9 +44,17 @@ const App = () => {
 
     // set page scroll in height unit
     useEffect(() => {
-        scrollPage.addEvent(appRef.current, (pageIndex) => {
-            dispatch(lobbyPageAction(pageIndex));
-        });
+        scrollPage.addEvent(
+            appRef.current, 
+            {
+                scrollStart: (pageIndex, scrollLock) => {
+                    dispatch(lobbyPageAction(pageIndex, scrollLock));
+                },
+                scrollFinish: (pageIndex, scrollLock) => {
+                    dispatch(lobbyPageAction(pageIndex, scrollLock));
+                }
+            }
+        );
     }, []);
 
     return (

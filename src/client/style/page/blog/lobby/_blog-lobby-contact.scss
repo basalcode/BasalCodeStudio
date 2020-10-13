@@ -18,6 +18,15 @@
         @include size(50%, 100%);
 
         position: relative;
+        transition: left 1s;
+
+        &--appear {
+            left: 0;
+        }
+
+        &--disappear {
+            left: -100%;
+        }
     }
 
     &__contact {

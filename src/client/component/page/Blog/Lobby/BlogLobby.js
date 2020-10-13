@@ -26,13 +26,23 @@ const BlogLobby = () => {
         next: 0,
     });
 
+    const [skillsPageOn, setSkillsPageOn] = useState(false);
+
     /* constant */
     const pagePosition = [
-        "BlogLobby__page--intro",
-        "BlogLobby__page--about",
-        "BlogLobby__page--skills",
-        "BlogLobby__page--contact"
+        "-intro",
+        "-about",
+        "-skills",
+        "-contact"
     ];
+
+    /* variable */
+    let indexCounter = 0;
+
+    /* event hadler */
+    const onSelect = isSelected => {
+        setSkillsPageOn(isSelected);
+    }
 
     /* useEffect */
     // init
@@ -65,7 +75,10 @@ const BlogLobby = () => {
         <section className="BlogLobby">
             <div className={
                 `BlogLobby__picture-container ` + 
-                `${pagePosition[pageIndex]}`}>
+                `BlogLobby__page${pagePosition[pageIndex]} ` + 
+                `${skillsPageOn ? 
+                    "BlogLobby__page-skills--on " :
+                    ""}`}>
                 {pictures.map((picture, index) => 
                     <img className={
                         `BlogLobby__picture ` +
@@ -79,10 +92,10 @@ const BlogLobby = () => {
                         src={picture} />
                 )}
             </div>
-            <BlogLobbyIntro></BlogLobbyIntro>
-            <BlogLobbyAbout></BlogLobbyAbout>
-            <BlogLobbySkills></BlogLobbySkills>
-            <BlogLobbyContact></BlogLobbyContact>
+            <BlogLobbyIntro index={indexCounter++} />
+            <BlogLobbyAbout index={indexCounter++} />
+            <BlogLobbySkills index={indexCounter++} onSelect={onSelect}/>
+            <BlogLobbyContact index={indexCounter++} />
         </section>
     );
 }

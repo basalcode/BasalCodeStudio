@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 /* lib */
 import shuffle from 'lib/array/shuffle';
 
-const BlogLobbyIntro = () => {
+const BlogLobbyIntro = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
     
@@ -99,7 +99,7 @@ const BlogLobbyIntro = () => {
                 <div className="BlogLobbyIntro__frame">
                     <section className={
                         `BlogLobbyIntro__greeting ` +
-                        (pageIndex === 0 ?
+                        (pageIndex === props.index ?
                             `BlogLobbyIntro__greeting--appear` :
                             `BlogLobbyIntro__greeting--disappear`)}>
                         <div className="
