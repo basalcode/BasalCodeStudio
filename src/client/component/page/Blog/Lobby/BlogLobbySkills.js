@@ -90,10 +90,12 @@ const BlogLobbySkills = (props) => {
         }
     };
     const categories = Object.keys(itemDatas);
-    const circleLayoutDiameter = 40;
+    const circleLayoutDiameter = 30;
 
     /* event handler */
     const onSelect = index => {
+        
+
         setCategoryIndex(index);
         setItemSelected(true);
         props.onSelect(true);
@@ -119,7 +121,6 @@ const BlogLobbySkills = (props) => {
     return (
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
-                <h1 className="BlogLobbySkills__title">Skills</h1>
                 <div className="BlogLobbySkills__content-container">
                     <section className={
                         `BlogLobbySkills__category-section ` +
@@ -129,12 +130,15 @@ const BlogLobbySkills = (props) => {
                         `${itemSelected ?
                             "BlogLobbySkills__category-section--select-on " :
                             " "}`}>
-                        <CircleLayout
-                            diameter={circleLayoutDiameter}
-                            elements={categories}
-                            onSelect={onSelect} />
+                        <div className="BlogLobbySkills__circle-layout-container">
+                            <CircleLayout
+                                diameter={circleLayoutDiameter}
+                                elements={categories}
+                                onSelect={onSelect} />
+                        </div>
                     </section>
                     <section className="BlogLobbySkills__item-section">
+                        <h1 className="BlogLobbySkills__title">Skills</h1>
                         <div className="BlogLobbySkills__item-container-list">
                             {currentItems.map((item, index) =>
                                 <div className="BlogLobbySkills__item-container"
@@ -144,11 +148,10 @@ const BlogLobbySkills = (props) => {
                                     <div className="BlogLobbySkills__item-title">
                                         {item.title}
                                     </div>
+                                    <div className="BlogLobbySkills__item-description">
+                                    </div>
                                 </div>
                             )}
-                        </div>
-                        <div className="BlogLobbySkills__item-description">
-
                         </div>
                     </section>
                 </div>

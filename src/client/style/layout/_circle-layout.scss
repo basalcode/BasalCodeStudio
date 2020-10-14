@@ -1,24 +1,38 @@
+$CIRCLELAYOUT_ROTATE: 35s;
+
 .CircleLayout {
     // @include dev-inspector();
-    @include size(40rem, 40rem);
     @include circle-border();
-    @include rotate(20s);
+    @include rotate($CIRCLELAYOUT_ROTATE, false, true);
 
-    position: relative;
-
-    border: 3px solid floralwhite;
-    
+    position: absolute;
+    top: 50%;
+    left: 50%;
 
     &__category {
-        @include dev-inspector();
-        @include size(100px, 100px);
-        @include rotate(20s, false);
+        // @include dev-inspector();
+        @include size(6rem, 6rem);
+        @include circle-border();
+        @include rotate($CIRCLELAYOUT_ROTATE, true, false);
         
         position: absolute;
+
+        border: 2px solid black;
+        cursor: pointer;
+    }
+
+    &__inner-line {
+        @include circle-border();
+        @include center();
+        @include size(23rem, 23rem);
+
+        position: absolute;
+        border: 2px solid black;
     }
 
     &__category-title {
-        border: 1px solid cadetblue;
-        cursor: pointer;
+        @include center();
+
+        position: absolute;
     }
 }

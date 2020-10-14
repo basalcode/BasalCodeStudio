@@ -5,8 +5,8 @@ const circularFunctions = (() => {
     }
 
     const getCirclePosition = (degree, radius) => {
-        const x = Math.cos(degree) * radius;
-        const y = Math.sin(degree) * radius;
+        const x = Math.floor(Math.cos(degree) * radius);
+        const y = Math.floor(Math.sin(degree) * radius);
 
         return { x: x, y: y };
     }

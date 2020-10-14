@@ -27,13 +27,15 @@ const CircleLayout = (props) => {
 
         const elementAmount = elements.length;
         const circlePositions = circle.getCirclePositions(diameter, elementAmount, false, 90);
+        console.log('[circlePositions]', circlePositions);
 
         const elementDiameter = 5;
+        const manualAdjustment = 0.2;
 
         const styles = [];
         for (let i = 0; i < elementAmount; i++) {
             styles.push({
-                top: (circlePositions[i].y - (elementDiameter / 2)) + 'rem',
+                top: (circlePositions[i].y - (elementDiameter / 2)) - manualAdjustment + 'rem',
                 left: (circlePositions[i].x - (elementDiameter / 2)) + 'rem',
             });
         }
@@ -43,12 +45,14 @@ const CircleLayout = (props) => {
     return (
         <div className="CircleLayout"
             style={componentStyle}>
+            <div className="CircleLayout__inner-line"></div>
             {Object.keys(elements).map((title, index) =>
                 <div className="CircleLayout__category"
                     style={contentStyle[index]}
-                    key={index}>
-                    <h2 className="CircleLayout__category-title"
-                        onClick={event => onSelect(index)}>
+                    key={index}
+                    onClick={event => onSelect(index)}>
+                    
+                    <h2 className="CircleLayout__category-title">
                         {elements[index]}
                     </h2>
                 </div>

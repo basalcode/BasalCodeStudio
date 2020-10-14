@@ -133,14 +133,39 @@
     }
 }
 
-@mixin rotate($delay: 1s, $clockwise: true) {
-    @if ($clockwise) {
-        animation: rotate-clockwise $delay infinite;
-        animation-timing-function: linear;
-    } @else {
-        animation: rotate-counter-clockwise $delay infinite;
-        animation-timing-function: linear;
+@keyframes rotate-clockwise-center {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
     }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes rotate-counter-clockwise-center {
+    from {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+@mixin rotate($delay: 1s, $clockwise: true, $center: true) {
+    @if ($clockwise) {
+        @if ($center) {
+            animation: rotate-clockwise-center $delay infinite;
+        } @else {
+            animation: rotate-clockwise $delay infinite;
+        }
+    } @else {
+        @if ($center) {
+            animation: rotate-counter-clockwise-center $delay infinite;
+        } @else {
+            animation: rotate-counter-clockwise $delay infinite;
+        }
+    }
+    animation-timing-function: linear;
 }
 
 /* dev */
