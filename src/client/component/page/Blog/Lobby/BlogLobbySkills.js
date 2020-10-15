@@ -42,6 +42,7 @@ const BlogLobbySkills = (props) => {
     const [currentItems, setCurrentItems] = useState([]);
 
     const [itemSelected, setItemSelected] = useState(false);
+    const [itemAnimationOn, setItemAnimationOn] = useState(false);
 
     /* constant */
     const itemDatas = {
@@ -94,25 +95,32 @@ const BlogLobbySkills = (props) => {
 
     /* event handler */
     const onSelect = index => {
-        
-
+        setItemAnimationOn(false);
         setCategoryIndex(index);
         setItemSelected(true);
+        
         props.onSelect(true);
     }
 
     /* useEffect */
     // display category items
     useEffect(() => {
-        const selectedCategoryName = categories[categoryIndex];
-        const selectedCategoryItems = itemDatas[selectedCategoryName].items;
+        if (pageIndex === props.index) {
+            const interval = 1000;
 
-        setCurrentItems(selectedCategoryItems);
-    }, [categoryIndex]);
+            const selectedCategoryName = categories[categoryIndex];
+            const selectedCategoryItems = itemDatas[selectedCategoryName].items;
+            setTimeout(() => {
+                setItemAnimationOn(true);
+                setCurrentItems(selectedCategoryItems);
+            }, interval);
+        }
+    }, [itemSelected, itemAnimationOn, categoryIndex]);
 
     // deactivate page layout
     useEffect(() => {
         if (scrollOn) {
+            setItemAnimationOn(false);
             setItemSelected(false);
             props.onSelect(false);
         }
@@ -137,9 +145,16 @@ const BlogLobbySkills = (props) => {
                                 onSelect={onSelect} />
                         </div>
                     </section>
-                    <section className="BlogLobbySkills__item-section">
-                        <h1 className="BlogLobbySkills__title">Skills</h1>
-                        <div className="BlogLobbySkills__item-container-list">
+                    <section className={
+                        `BlogLobbySkills__item-section ` +
+                        `${itemSelected ?
+                            "BlogLobbySkills__item-section--appear" :
+                            "BlogLobbySkills__item-section--disappear"}`}>
+                        <h1 className={"BlogLobbySkills__title "}>Skills</h1>
+                        <div className={`BlogLobbySkills__item-container-list ` +
+                            `${itemAnimationOn ?
+                                "BlogLobbySkills__item-container-list--on" :
+                                "BlogLobbySkills__item-container-list--off"}`}>
                             {currentItems.map((item, index) =>
                                 <div className="BlogLobbySkills__item-container"
                                     key={index}>
