@@ -111,6 +111,40 @@
     animation: fade-out 1.5s;
 }
 
+@keyframes disappear {
+    from {
+        opacity: 1;
+        visibility: visible;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        visibility: hidden;
+    }
+    to {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@mixin disappear($delay) {
+    animation: disappear $delay;
+    animation-fill-mode: forwards;
+    transition: visibility $delay, opacity $delay linear forwards;
+}
+
+@mixin appear($delay) {
+    animation: appear $delay;
+    animation-fill-mode: forwards;
+    transition: visibility $delay, opacity $delay linear forwards;
+}
+
 @mixin colors-transition($DELAY) {
     transition: border-color $DELAY, background-color $DELAY, color $DELAY;
 }

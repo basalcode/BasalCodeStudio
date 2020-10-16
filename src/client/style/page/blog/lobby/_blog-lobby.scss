@@ -11,7 +11,7 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
 
     &__picture-container {
         // @include dev-inspector();
-        @include size(20% , 65%);
+        @include size(20% , 55%);
 
         position: fixed;
         overflow: hidden;
@@ -34,27 +34,27 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
     &__page {
         &-intro {
             top: 17.5%;
-            left: 30%;
+            left: 25%;
         }
         
         &-about {
             top: 17.5%;
-            left: 50%;
+            left: 55%;
         }
 
         &-skills {
             top: 17.5%;
-            left: 30%;
+            left: 25%;
 
             &--on {
                 top: 110%;
-                left: 50%;
+                left: 55%;
             }
         }
 
         &-contact {
             top: 17.5%;
-            left: 50%;
+            left: 55%;
         }
     }
 

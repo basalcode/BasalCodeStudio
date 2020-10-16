@@ -51,10 +51,9 @@ const CircleLayout = (props) => {
                     style={contentStyle[index]}
                     key={index}
                     onClick={event => onSelect(index)}>
-                    
-                    <h2 className="CircleLayout__category-title">
+                    <div className="CircleLayout__category-title">
                         {elements[index]}
-                    </h2>
+                    </div>
                 </div>
             )}
         </div>

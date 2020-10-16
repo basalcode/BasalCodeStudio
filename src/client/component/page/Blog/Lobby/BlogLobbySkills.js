@@ -26,8 +26,8 @@ import mysqlLogo from 'asset/img/logo/mysql.svg';
 import pm2Logo from 'asset/img/logo/pm2.svg';
 
 import npmLogo from 'asset/img/logo/npm.svg';
-import gitLogo from 'asset/img/logo/putty.png';
-import puttyLogo from 'asset/img/logo/git.svg';
+import gitLogo from 'asset/img/logo/git.svg';
+import puttyLogo from 'asset/img/logo/putty.png';
 
 /* component */
 import CircleLayout from 'component/layout/CircleLayout';
@@ -38,15 +38,16 @@ const BlogLobbySkills = (props) => {
     const scrollOn = useSelector(store => store.blog.scrollOn);
 
     /* state */
-    const [categoryIndex, setCategoryIndex] = useState(0); // will change to props
+    const [categoryIndex, setCategoryIndex] = useState(0);
+    const [itemSelected, setItemSelected] = useState(false);
     const [currentItems, setCurrentItems] = useState([]);
 
-    const [itemSelected, setItemSelected] = useState(false);
-    const [itemAnimationOn, setItemAnimationOn] = useState(false);
+    const [itemContainerListStyle, setItemContainerListStyle] = useState({});
+    const [itemSizeStyle, setItemSizeStyle] = useState({});
 
     /* constant */
     const itemDatas = {
-        basics: {
+        Basics: {
             items: [
                 { imagePath: htmlLogo, title: "HTML" },
                 { imagePath: cssLogo, title: "CSS" },
@@ -54,7 +55,7 @@ const BlogLobbySkills = (props) => {
             ],
             description: []
         },
-        host: {
+        Host: {
             items: [
                 { imagePath: awsLogo, title: "AWS" },
                 { imagePath: awsEC2Logo, title: "AWS EC2" },
@@ -63,7 +64,7 @@ const BlogLobbySkills = (props) => {
                 { imagePath: httpsLogo, title: "HTTPS" }],
             description: []
         },
-        frontEnd: {
+        Front: {
             items: [
                 { imagePath: sassLogo, title: "SASS" },
                 { imagePath: reactLogo, title: "React" },
@@ -72,7 +73,7 @@ const BlogLobbySkills = (props) => {
                 { imagePath: reduxSagaLogo, title: "Redux Saga" }
             ], description: []
         },
-        backEnd: {
+        Back: {
             items: [
                 { imagePath: nodejsLogo, title: "NodeJS" },
                 { imagePath: nginxLogo, title: "NGINX" },
@@ -81,7 +82,7 @@ const BlogLobbySkills = (props) => {
                 { imagePath: pm2Logo, title: "PM2" }],
             description: []
         },
-        others: {
+        Others: {
             items: [
                 { imagePath: npmLogo, title: "NPM" },
                 { imagePath: gitLogo, title: "git" },
@@ -95,10 +96,16 @@ const BlogLobbySkills = (props) => {
 
     /* event handler */
     const onSelect = index => {
-        setItemAnimationOn(false);
+        if (index !== categoryIndex) {
+            setItemContainerListStyle({
+                height: '0',
+                overflow: 'hidden'
+            });
+        }
+
         setCategoryIndex(index);
         setItemSelected(true);
-        
+
         props.onSelect(true);
     }
 
@@ -110,19 +117,32 @@ const BlogLobbySkills = (props) => {
 
             const selectedCategoryName = categories[categoryIndex];
             const selectedCategoryItems = itemDatas[selectedCategoryName].items;
+            const itemsAmount = selectedCategoryItems.length;
+            const itemHeight = 8;
+            const itemPadding = 0.2;
             setTimeout(() => {
-                setItemAnimationOn(true);
+                setItemContainerListStyle({
+                    height: (itemHeight * itemsAmount) + 'rem',
+                    overflow: 'auto'
+                });
+                setItemSizeStyle({
+                    height: itemHeight + 'rem',
+                    padding: `${itemPadding / 2}rem 1rem`
+                });
                 setCurrentItems(selectedCategoryItems);
             }, interval);
         }
-    }, [itemSelected, itemAnimationOn, categoryIndex]);
+    }, [itemSelected, categoryIndex]);
 
     // deactivate page layout
     useEffect(() => {
         if (scrollOn) {
-            setItemAnimationOn(false);
-            setItemSelected(false);
+            setItemContainerListStyle({
+                height: '0',
+                overflow: 'hidden'
+            });
             props.onSelect(false);
+            setItemSelected(false);
         }
     }, [scrollOn]);
 
@@ -130,45 +150,52 @@ const BlogLobbySkills = (props) => {
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
                 <div className="BlogLobbySkills__content-container">
-                    <section className={
-                        `BlogLobbySkills__category-section ` +
-                        `${pageIndex === props.index ?
-                            "BlogLobbySkills__category-section--appear " :
-                            "BlogLobbySkills__category-section--disappear "}` +
-                        `${itemSelected ?
-                            "BlogLobbySkills__category-section--select-on " :
-                            " "}`}>
-                        <div className="BlogLobbySkills__circle-layout-container">
-                            <CircleLayout
-                                diameter={circleLayoutDiameter}
-                                elements={categories}
-                                onSelect={onSelect} />
-                        </div>
-                    </section>
-                    <section className={
-                        `BlogLobbySkills__item-section ` +
-                        `${itemSelected ?
-                            "BlogLobbySkills__item-section--appear" :
-                            "BlogLobbySkills__item-section--disappear"}`}>
-                        <h1 className={"BlogLobbySkills__title "}>Skills</h1>
-                        <div className={`BlogLobbySkills__item-container-list ` +
-                            `${itemAnimationOn ?
-                                "BlogLobbySkills__item-container-list--on" :
-                                "BlogLobbySkills__item-container-list--off"}`}>
-                            {currentItems.map((item, index) =>
-                                <div className="BlogLobbySkills__item-container"
-                                    key={index}>
-                                    <img className="BlogLobbySkills__item"
-                                        src={item.imagePath} />
-                                    <div className="BlogLobbySkills__item-title">
-                                        {item.title}
-                                    </div>
-                                    <div className="BlogLobbySkills__item-description">
-                                    </div>
+                    <h1 className={"BlogLobbySkills__title"}>Skills</h1>
+                    <div className="BlogLobbySkills__section-container">
+                        <section className={
+                            `BlogLobbySkills__category-section ` +
+                            `${pageIndex === props.index ?
+                                "BlogLobbySkills__category-section--appear " :
+                                "BlogLobbySkills__category-section--disappear "}` +
+                            `${itemSelected ?
+                                "BlogLobbySkills__category-section--select-on " :
+                                " "}`}>
+                            <div className="BlogLobbySkills__circle-layout-container">
+                                <CircleLayout
+                                    diameter={circleLayoutDiameter}
+                                    elements={categories}
+                                    onSelect={onSelect} />
+                            </div>
+                        </section>
+                        <section className={
+                            `BlogLobbySkills__item-section ` +
+                            `${itemSelected ?
+                                "BlogLobbySkills__item-section--appear" :
+                                "BlogLobbySkills__item-section--disappear"}`}>
+                            <article className={"BlogLobbySkills__items-container"}>
+                                <div className={"BlogLobbySkills__item-container-list"}
+                                    style={itemContainerListStyle}>
+                                    {currentItems.map((item, index) =>
+                                        <div className="BlogLobbySkills__item-container"
+                                            style={itemSizeStyle}
+                                            key={index}>
+                                            <div className="BlogLobbySkills__item-toggle">
+                                                <div className="BlogLobbySkills__item">
+                                                    <img className="BlogLobbySkills__item-image"
+                                                        src={item.imagePath} />
+                                                </div>
+                                                <div className="BlogLobbySkills__item-title">
+                                                    {item.title}
+                                                </div>
+                                            </div>
+                                            <div className="BlogLobbySkills__item-description">
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    </section>
+                            </article>
+                        </section>
+                    </div>
                 </div>
             </div>
         </section>

@@ -1,12 +1,9 @@
 .BlogLobbySkills {
-    // @include dev-inspector();
-
     @include size(100%, 100vh);
 
     position: relative;
 
     &__container {
-        // @include dev-inspector();
         @include center();
         @include size(65%, 65%);
 
@@ -19,10 +16,29 @@
         @include size(100%, 100%);
 
         display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        position: relative;
+        top: 0;
+        left: 0;
+
+        padding-left: 50%;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 42px;
+        text-decoration: underline;
+    }
+
+    &__section-container {
+        @include size(100%, 100%);
+        position: relative;
+
+        display: flex;
     }
 
     &__category-section {
-        // @include dev-inspector();
         @include size(50%, 100%);
 
         position: relative;
@@ -42,7 +58,7 @@
     }
 
     &__circle-layout-container {
-        @include center();
+        @include center-horizontal();
         @include size(37rem, 37rem);
         @include circle-border();
 
@@ -51,39 +67,41 @@
     }
 
     &__item-section {
-        @include dev-inspector();
         @include size(50%, 100%);
-
+        
         position: relative;
-        flex-direction: column;
+        transition: left 1s;
 
         &--disappear {
-            display: none;
+            top: 0;
+            left: 100%;            
             @include fade-in-off();
         }
 
         &--appear {
-            display: default;
+            top: 0;
+            left: 0;
             @include fade-in-on();
         }
     }
 
-    &__title {
-        position: relative;
-        top: 0;
-        left: 0;
+    &__items-container {
+        @include center-horizontal();
 
-        margin-bottom: 30px;
-        
-        font-family: 'Noto Serif KR', serif;
-        font-size: 42px;
-        text-decoration: underline;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+
+        width: 100%;
     }
 
     &__item-container-list {
+        @include round-border(10px);
+
         display: flex;
         flex-direction: column;
-        border: 1px solid blue;
+        border: 1px solid black;
+        border-bottom-width: 2px;
 
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -92,38 +110,50 @@
         }
         
         transition: height 1s;
-        
-
-        &--off {
-            height: 0;
-            overflow: hidden;
-        }
-
-        &--on {
-            height: 80%;
-            overflow: auto;
-        }
     }
 
     &__item-container {
-        @include dev-inspector();
-        @include size(100%, 8rem);
-
         display: flex;
-        border: 1px solid pink;
+        width: 100%;
+
+        border: 1px solid black;
+    }
+
+    &__item-toggle {
+        @include size(5rem, 100%);
+
+        position: relative;
+    }
+
+    &__item-toggle:hover &__item {
+        @include disappear(1s);
+    }
+
+    &__item-toggle:hover &__item-title {
+        @include appear(1s);
     }
 
     &__item {
-        @include size(8rem, 100%);
+        @include appear(1s);
+        @include size(100%, 100%);
+
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &__item-image {
+        @include size(100%, 100%);
     }
 
     &__item-title {
-        @include dev-inspector();
-        @include size(8rem, 100%);
+        @include center;
+        @include disappear(1s); 
+        
+        position: absolute;
     }
 
     &__item-description {
-        @include dev-inspector();
-        @include size(8rem, 100%);
+        @include size(5rem, 100%);
     }
 }
