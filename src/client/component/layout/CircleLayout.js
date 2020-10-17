@@ -45,7 +45,6 @@ const CircleLayout = (props) => {
     return (
         <div className="CircleLayout"
             style={componentStyle}>
-            <div className="CircleLayout__inner-line"></div>
             {Object.keys(elements).map((title, index) =>
                 <div className="CircleLayout__category"
                     style={contentStyle[index]}
@@ -56,6 +55,7 @@ const CircleLayout = (props) => {
                     </div>
                 </div>
             )}
+            <div className="CircleLayout__inner-line"></div>
         </div>
     );
 }

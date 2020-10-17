@@ -19,18 +19,6 @@
         flex-direction: column;
     }
 
-    &__title {
-        position: relative;
-        top: 0;
-        left: 0;
-
-        padding-left: 50%;
-
-        font-family: 'Noto Serif KR', serif;
-        font-size: 42px;
-        text-decoration: underline;
-    }
-
     &__section-container {
         @include size(100%, 100%);
         position: relative;
@@ -43,56 +31,76 @@
 
         position: relative;
         transition: left 1s;
+        
 
         &--disappear {
             left: 100%;
+            transition-delay: 0.2s;
         }
 
         &--appear {
-            left: 50%;
-        }
-
-        &--select-on {
             left: 0;
+            transition-delay: 0.4s;
         }
     }
 
     &__circle-layout-container {
-        @include center-horizontal();
         @include size(37rem, 37rem);
         @include circle-border();
 
         position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        
         border: 2px solid black;
+        transition: left 1s;
+        z-index: 1;
+
+        &--on {
+            left: 0;
+        }
+
+        &--off {
+            left: 100%;
+        }
     }
 
     &__item-section {
         @include size(50%, 100%);
         
         position: relative;
-        transition: left 1s;
-
-        &--disappear {
-            top: 0;
-            left: 100%;            
-            @include fade-in-off();
-        }
-
-        &--appear {
-            top: 0;
-            left: 0;
-            @include fade-in-on();
-        }
     }
 
     &__items-container {
-        @include center-horizontal();
-
         display: flex;
         flex-direction: column;
         position: absolute;
-
+        top: 1.8rem;
+        left: 0;
         width: 100%;
+        transform: translateY(-50%);
+        transition: top 1s, left 1s;
+        transition-delay: 0.4s;
+        
+        &--on {
+            top: 50%;
+        }
+    }
+
+    &__title {
+        position: relative;
+        left: 180%;
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 42px;
+        text-decoration: underline;
+
+        transition: left 1s;
+        
+        &--appear {
+            left: 0;
+            transition-delay: 0.7s;
+        }
     }
 
     &__item-container-list {
@@ -100,6 +108,8 @@
 
         display: flex;
         flex-direction: column;
+        position: relative;
+
         border: 1px solid black;
         border-bottom-width: 2px;
 
@@ -109,7 +119,21 @@
             display: none;
         }
         
-        transition: height 1s;
+        transition: height 1s, left 1s;
+
+        &--disappear {
+            // @include fade-in-off();
+
+            top: 0;
+            left: 150%;
+        }
+
+        &--appear {
+            // @include fade-in-on();
+
+            top: 0;
+            left: 0;
+        }
     }
 
     &__item-container {
@@ -126,15 +150,15 @@
     }
 
     &__item-toggle:hover &__item {
-        @include disappear(1s);
+        @include disappear(0.5s);
     }
 
     &__item-toggle:hover &__item-title {
-        @include appear(1s);
+        @include appear(0.5s);
     }
 
     &__item {
-        @include appear(1s);
+        @include appear(0.5s);
         @include size(100%, 100%);
 
         position: absolute;
@@ -151,6 +175,9 @@
         @include disappear(1s); 
         
         position: absolute;
+
+        font-family: 'Domine', serif;
+        font-size: 2rem;
     }
 
     &__item-description {

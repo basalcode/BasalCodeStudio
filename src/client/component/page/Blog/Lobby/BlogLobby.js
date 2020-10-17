@@ -75,6 +75,9 @@ const BlogLobby = () => {
         <section className="BlogLobby">
             <div className={
                 `BlogLobby__picture-container ` + 
+                `${skillsPageOn ? 
+                    "BlogLobby__picture-container--on " :
+                    ""}` +
                 `BlogLobby__page${pagePosition[pageIndex]} ` + 
                 `${skillsPageOn ? 
                     "BlogLobby__page-skills--on " :

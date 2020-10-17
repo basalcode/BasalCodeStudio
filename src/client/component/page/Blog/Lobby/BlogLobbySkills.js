@@ -150,30 +150,35 @@ const BlogLobbySkills = (props) => {
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
                 <div className="BlogLobbySkills__content-container">
-                    <h1 className={"BlogLobbySkills__title"}>Skills</h1>
                     <div className="BlogLobbySkills__section-container">
                         <section className={
                             `BlogLobbySkills__category-section ` +
                             `${pageIndex === props.index ?
                                 "BlogLobbySkills__category-section--appear " :
-                                "BlogLobbySkills__category-section--disappear "}` +
+                                "BlogLobbySkills__category-section--disappear "}`}>
+                            <div className={`BlogLobbySkills__circle-layout-container ` +
                             `${itemSelected ?
-                                "BlogLobbySkills__category-section--select-on " :
-                                " "}`}>
-                            <div className="BlogLobbySkills__circle-layout-container">
+                                "BlogLobbySkills__circle-layout-container--on" :
+                                "BlogLobbySkills__circle-layout-container--off"}`}>
                                 <CircleLayout
                                     diameter={circleLayoutDiameter}
                                     elements={categories}
                                     onSelect={onSelect} />
                             </div>
                         </section>
-                        <section className={
-                            `BlogLobbySkills__item-section ` +
-                            `${itemSelected ?
-                                "BlogLobbySkills__item-section--appear" :
-                                "BlogLobbySkills__item-section--disappear"}`}>
-                            <article className={"BlogLobbySkills__items-container"}>
-                                <div className={"BlogLobbySkills__item-container-list"}
+                        <section className={"BlogLobbySkills__item-section"}>
+                            <article className={`BlogLobbySkills__items-container ` + 
+                                    `${itemSelected ?
+                                        "BlogLobbySkills__items-container--on" :
+                                        "BlogLobbySkills__items-container--off"}`}>
+                                <h1 className={`BlogLobbySkills__title ` + 
+                                    `${pageIndex === props.index ?
+                                        "BlogLobbySkills__title--appear" :
+                                        ""}`}>Skills</h1>
+                                <div className={`BlogLobbySkills__item-container-list ` +
+                                    `${itemSelected ?
+                                        "BlogLobbySkills__item-container-list--appear" :
+                                        "BlogLobbySkills__item-container-list--disappear"}`}
                                     style={itemContainerListStyle}>
                                     {currentItems.map((item, index) =>
                                         <div className="BlogLobbySkills__item-container"

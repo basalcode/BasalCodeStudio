@@ -30,6 +30,12 @@ $CIRCLELAYOUT_ROTATE: 35s;
         }
     }
 
+    &__category-title {
+        @include center();
+
+        position: absolute;
+    }
+
     &__inner-line {
         @include circle-border();
         @include center();
@@ -37,11 +43,5 @@ $CIRCLELAYOUT_ROTATE: 35s;
 
         position: absolute;
         border: 2px solid black;
-    }
-
-    &__category-title {
-        @include center();
-
-        position: absolute;
     }
 }

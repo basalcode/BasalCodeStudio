@@ -16,7 +16,12 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
         position: fixed;
         overflow: hidden;
 
-        transition: top 1s, left 1s;
+        transition: top 1s, left 1s, width 1s, height 1s;
+
+        &--on {
+            @include circle-border();
+            @include size(22.8rem, 22.8rem);
+        }
     }
 
     &__picture {
@@ -47,8 +52,8 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
             left: 25%;
 
             &--on {
-                top: 110%;
-                left: 55%;
+                top: 36%;
+                left: 18.8%;
             }
         }
 
