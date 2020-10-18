@@ -21,7 +21,7 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
     }
     
     &--fade-in-on {
-        @include fade-in-on();
+        @include fade-in-on(1.5s);
 
         bottom: 50px;
         transition: bottom 1s;

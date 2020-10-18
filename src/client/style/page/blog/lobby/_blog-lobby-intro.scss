@@ -33,7 +33,7 @@
         }
 
         &--disappear {
-            @include fade-out-on();
+            @include fade-out-on(1.5s);
 
             left: 100%;
             transition: left 1s;

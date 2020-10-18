@@ -1,19 +1,19 @@
-$CIRCLELAYOUT_ROTATE: 35s;
+$CIRCLE_DISPLAY_INNER_CIRCLE_SIZE: 23rem;
+$CIRCLE_DISPLAY_ROTATE: 35s;
 
-.CircleLayout {
-    // @include dev-inspector();
+
+.CircleDisplay {
     @include circle-border();
-    @include rotate($CIRCLELAYOUT_ROTATE, false, true);
+    @include rotate($CIRCLE_DISPLAY_ROTATE, false, true);
 
     position: absolute;
     top: 50%;
     left: 50%;
 
     &__category {
-        // @include dev-inspector();
         @include size(6rem, 6rem);
         @include circle-border();
-        @include rotate($CIRCLELAYOUT_ROTATE, true, false);
+        @include rotate($CIRCLE_DISPLAY_ROTATE, true, false);
         
         position: absolute;
         border: 2px solid black;
@@ -39,7 +39,9 @@ $CIRCLELAYOUT_ROTATE: 35s;
     &__inner-line {
         @include circle-border();
         @include center();
-        @include size(23rem, 23rem);
+        @include size(
+            $CIRCLE_DISPLAY_INNER_CIRCLE_SIZE, 
+            $CIRCLE_DISPLAY_INNER_CIRCLE_SIZE);
 
         position: absolute;
         border: 2px solid black;

@@ -30,7 +30,8 @@ import gitLogo from 'asset/img/logo/git.svg';
 import puttyLogo from 'asset/img/logo/putty.png';
 
 /* component */
-import CircleLayout from 'component/layout/CircleLayout';
+import CircleDisplay from 'component/layout/CircleDisplay';
+import ImageDisplay from 'component/layout/ImageDispaly';
 
 const BlogLobbySkills = (props) => {
     /* store */
@@ -38,6 +39,8 @@ const BlogLobbySkills = (props) => {
     const scrollOn = useSelector(store => store.blog.scrollOn);
 
     /* state */
+    const [skillsPageOn, setSkillsPageOn] = useState(false);
+
     const [categoryIndex, setCategoryIndex] = useState(0);
     const [itemSelected, setItemSelected] = useState(false);
     const [currentItems, setCurrentItems] = useState([]);
@@ -46,6 +49,7 @@ const BlogLobbySkills = (props) => {
     const [itemSizeStyle, setItemSizeStyle] = useState({});
 
     /* constant */
+    const location = 'BlogLobbySkills';
     const itemDatas = {
         Basics: {
             items: [
@@ -105,11 +109,19 @@ const BlogLobbySkills = (props) => {
 
         setCategoryIndex(index);
         setItemSelected(true);
-
+        setSkillsPageOn(true);
         props.onSelect(true);
     }
 
     /* useEffect */
+    // skills page
+    useEffect(() => {
+        const SkillsPageIndex = 2;
+        if (pageIndex !== SkillsPageIndex) {
+            setSkillsPageOn(false);
+        }
+    }, [pageIndex]);
+
     // display category items
     useEffect(() => {
         if (pageIndex === props.index) {
@@ -146,6 +158,8 @@ const BlogLobbySkills = (props) => {
         }
     }, [scrollOn]);
 
+    
+
     return (
         <section className="BlogLobbySkills">
             <div className="BlogLobbySkills__container">
@@ -160,7 +174,8 @@ const BlogLobbySkills = (props) => {
                             `${itemSelected ?
                                 "BlogLobbySkills__circle-layout-container--on" :
                                 "BlogLobbySkills__circle-layout-container--off"}`}>
-                                <CircleLayout
+                                <ImageDisplay location={location} skillsPageOn={skillsPageOn} />
+                                <CircleDisplay
                                     diameter={circleLayoutDiameter}
                                     elements={categories}
                                     onSelect={onSelect} />

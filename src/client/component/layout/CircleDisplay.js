@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 /* lib */
 import circle from 'lib/circle/circularFunction';
 
-const CircleLayout = (props) => {
+const CircleDisplay = (props) => {
     /* state */
     const [contentStyle, setContentStyle] = useState({});
     const [componentStyle, setComponentStlye] = useState({});
@@ -27,7 +27,6 @@ const CircleLayout = (props) => {
 
         const elementAmount = elements.length;
         const circlePositions = circle.getCirclePositions(diameter, elementAmount, false, 90);
-        console.log('[circlePositions]', circlePositions);
 
         const elementDiameter = 5;
         const manualAdjustment = 0.2;
@@ -43,21 +42,21 @@ const CircleLayout = (props) => {
     }, []);
 
     return (
-        <div className="CircleLayout"
+        <div className="CircleDisplay"
             style={componentStyle}>
             {Object.keys(elements).map((title, index) =>
-                <div className="CircleLayout__category"
+                <div className="CircleDisplay__category"
                     style={contentStyle[index]}
                     key={index}
                     onClick={event => onSelect(index)}>
-                    <div className="CircleLayout__category-title">
+                    <div className="CircleDisplay__category-title">
                         {elements[index]}
                     </div>
                 </div>
             )}
-            <div className="CircleLayout__inner-line"></div>
+            <div className="CircleDisplay__inner-line"></div>
         </div>
     );
 }
 
-export default CircleLayout;
+export default CircleDisplay;

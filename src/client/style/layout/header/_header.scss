@@ -11,7 +11,7 @@
         top: 0;
     }
     &--fade-in-on {
-        @include fade-in-on();
+        @include fade-in-on(1.5s);
         
         top: 40px;
         transition: top 1s;

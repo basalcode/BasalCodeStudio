@@ -99,16 +99,16 @@
     opacity: 0;
 }
 
-@mixin fade-in-on() {
-    animation: fade-in 1.5s;
+@mixin fade-in-on($delay) {
+    animation: fade-in $delay;
 }
 
 @mixin fade-out-off() {
     opacity: 1;
 }
 
-@mixin fade-out-on() {
-    animation: fade-out 1.5s;
+@mixin fade-out-on($delay) {
+    animation: fade-out $delay;
 }
 
 @keyframes disappear {
