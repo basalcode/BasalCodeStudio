@@ -33,14 +33,15 @@ const scrollPage = (() => {
     const moveScroll = (pageIndex) => {
         let pageScrolled = false;
         scrollLock = true;
-        
+
         const validIndexRange = pageIndex >= 0 && pageIndex < target.page.count;
         const isNewPageIndex = currentPageIndex !== pageIndex;
-        if (!validIndexRange || !isNewPageIndex) { 
+        if (!validIndexRange || !isNewPageIndex) {
             scrollLock = false;
-            return pageScrolled; 
+
+            return pageScrolled;
         }
-        
+
         currentPageIndex = pageIndex;
         destination = target.page.startPosition(pageIndex);
         pageScrolled = true;
@@ -65,7 +66,7 @@ const scrollPage = (() => {
             let pageIndex = currentPageIndex;
             if (event.deltaY > 0) { pageIndex++; }
             if (event.deltaY < 0) { pageIndex--; }
-            
+
             const pageScrolled = moveScroll(pageIndex);
 
             if (pageScrolled) {
@@ -266,7 +267,7 @@ const scrollPage = (() => {
         // keyboard
         window.addEventListener('keydown', preventScrollKeys, false);
 
-        // form
+        // page index of which form exist
         const forms = variables.formElements.form();
         forms.forEach(form => {
             const formHeightPosition = form.getBoundingClientRect().y;
@@ -278,9 +279,9 @@ const scrollPage = (() => {
             }
         });
 
+        // prevent form keyboard scroll
         const inputs = variables.formElements.input();
         const textareas = variables.formElements.textarea();
-
         inputs.forEach(input => {
             input.addEventListener('focus', formFocusWatcher, false);
             input.addEventListener('blur', formBlurWatcher, false);
@@ -290,8 +291,65 @@ const scrollPage = (() => {
             textarea.addEventListener('blur', formBlurWatcher, false);
         });
     }
+
+    const historyUpdate = (targetRef) => {
+        /* update variable */
+        target = {
+            ...target,
+            page: {
+                ...target.page,
+                count: Math.floor(targetRef.scrollHeight / window.innerHeight)
+            }
+        }
+    }
+
+    const removeEvent = (targetRef) => {
+        /* init variable */
+        target = {
+            element: null,
+            height: null,
+            page: {
+                ...target.page,
+                count: null
+            }
+        }
+        callBackOption = null;
+
+        /* remove event */
+        // wheel
+        targetRef.removeEventListener('DOMMouseScroll', pageScrollHandler, false); // FireFox
+        targetRef.removeEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
+        targetRef.removeEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
+
+        // scroll
+        targetRef.removeEventListener('scroll', scrollPositionWatcher, false);
+
+        // wheel button 
+        window.removeEventListener('mousedown', preventMiddleClick, false);
+
+        // keyboard
+        window.removeEventListener('keydown', preventScrollKeys, false);
+
+        // page index of which form exist
+        formPageIndex = [];
+
+        // prevent form keyboard scroll
+        const inputs = variables.formElements.input();
+        const textareas = variables.formElements.textarea();
+        inputs.forEach(input => {
+            input.removeEventListener('focus', formFocusWatcher, false);
+            input.removeEventListener('blur', formBlurWatcher, false);
+        });
+        textareas.forEach(textarea => {
+            textarea.removeEventListener('focus', formFocusWatcher, false);
+            textarea.removeEventListener('blur', formBlurWatcher, false);
+        });
+    }
+
     return {
         addEvent: addEvent,
+        historyUpdate: historyUpdate,
+        removeEvent: removeEvent,
         moveScroll: moveScroll
     };
 })();

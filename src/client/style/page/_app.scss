@@ -1,9 +1,7 @@
 .App {
     @include size(100vw, 100vh);
-    
-    overflow-x: hidden;
-    overflow-y: auto;
 
+    /* scroll bar invisible option */
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {

@@ -116,8 +116,7 @@ const BlogLobbySkills = (props) => {
     /* useEffect */
     // skills page
     useEffect(() => {
-        const SkillsPageIndex = 2;
-        if (pageIndex !== SkillsPageIndex) {
+        if (pageIndex !== props.index) {
             setSkillsPageOn(false);
         }
     }, [pageIndex]);
@@ -171,10 +170,13 @@ const BlogLobbySkills = (props) => {
                                 "BlogLobbySkills__category-section--appear " :
                                 "BlogLobbySkills__category-section--disappear "}`}>
                             <div className={`BlogLobbySkills__circle-layout-container ` +
-                            `${itemSelected ?
-                                "BlogLobbySkills__circle-layout-container--on" :
-                                "BlogLobbySkills__circle-layout-container--off"}`}>
-                                <ImageDisplay location={location} skillsPageOn={skillsPageOn} />
+                                `${itemSelected ?
+                                    "BlogLobbySkills__circle-layout-container--on" :
+                                    "BlogLobbySkills__circle-layout-container--off"}`}>
+                                <ImageDisplay 
+                                    location={location} 
+                                    skillsPageOn={skillsPageOn}
+                                    activated={skillsPageOn} />
                                 <CircleDisplay
                                     diameter={circleLayoutDiameter}
                                     elements={categories}

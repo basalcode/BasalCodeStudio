@@ -25,7 +25,10 @@ const BlogLobby = () => {
 
     return (
         <section className="BlogLobby">
-            <ImageDisplay location={location} skillsPageOn={skillsPageOn} />
+            <ImageDisplay 
+                location={location} 
+                skillsPageOn={skillsPageOn} 
+                activated={!skillsPageOn} />
             <BlogLobbyIntro index={indexCounter++} />
             <BlogLobbyAbout index={indexCounter++} />
             <BlogLobbySkills index={indexCounter++} onSelect={onSelect} />

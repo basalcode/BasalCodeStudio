@@ -11,7 +11,7 @@ import shuffle from 'lib/array/shuffle';
 const ImageDispaly = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
-    
+
     /* props */
     const skillsPageOn = props.skillsPageOn;
     const location = props.location;
@@ -44,32 +44,37 @@ const ImageDispaly = (props) => {
             current: 1,
             next: 2
         });
-        console.log('render')
     }, []);
 
     // image slide
     useEffect(() => {
-        const changeInterval = 20000;
-        window.setTimeout(() => {
-            const pictureCount = pictures.length;
-            setImageIndex({
-                previous: (imageIndex.previous + 1) % pictureCount,
-                current: (imageIndex.current + 1) % pictureCount,
-                next: (imageIndex.next + 1) % pictureCount
-            });
-        }, changeInterval);
-    }, [imageIndex]);
+        let target;
+        if (props.activated) {
+            const changeInterval = 7000;
+            target = window.setTimeout(() => {
+                const pictureCount = pictures.length;
+                setImageIndex({
+                    previous: (imageIndex.previous + 1) % pictureCount,
+                    current: (imageIndex.current + 1) % pictureCount,
+                    next: (imageIndex.next + 1) % pictureCount
+                });
+            }, changeInterval);
+        } else {
+            clearTimeout(target);
+        }
+
+    }, [props.activated, imageIndex]);
 
     return (
         <div className={
             `ImageDisplay ` +
             `${location === 'BlogLobby' ?
                 (`ImageDisplay__page${pagePosition[pageIndex]} ` +
-                "ImageDisplay__blog-lobby ") :
+                    "ImageDisplay__blog-lobby ") :
                 ""}` +
-            `${location === 'BlogLobby' && skillsPageOn ? 
+            `${location === 'BlogLobby' && skillsPageOn ?
                 ("ImageDisplay__blog-lobby--skills-page-on " +
-                "ImageDisplay__page-skills--on "): ""}` +
+                    "ImageDisplay__page-skills--on ") : ""}` +
             `${location === 'BlogLobbySkills' ? "ImageDisplay__blog-lobby-skills " : ""} ` +
             `${location === 'BlogLobbySkills' && skillsPageOn ?
                 "ImageDisplay__blog-lobby-skills--skills-page-on " : ""} `}>
@@ -77,11 +82,11 @@ const ImageDispaly = (props) => {
                 <img className={
                     `ImageDisplay__picture ` +
                     `${imageIndex.previous === index ?
-                        "ImageDisplay__image--disappear " : " "}` +
+                        "ImageDisplay__image--disappear " : ""}` +
                     `${imageIndex.current === index ?
-                        "ImageDisplay__image--remain " : " "}` +
+                        "ImageDisplay__image--remain " : ""}` +
                     `${imageIndex.next === index ?
-                        "ImageDisplay__image--appear " : " "}`}
+                        "ImageDisplay__image--appear " : ""}`}
                     key={index}
                     src={picture} />
             )}

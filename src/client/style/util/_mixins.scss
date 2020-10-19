@@ -69,11 +69,10 @@
 
 /* scroll-bar */
 @mixin scroll-bar($enable: true) {
+    overflow-x: hidden;
+
     @if $enable {
-        overflow-x: hidden;
-        overflow-y: auto;
-    } @else {
-        overflow: hidden;
+        overflow-y: scroll;
     }
 }
 

@@ -27,18 +27,26 @@ const App = () => {
     const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* state */
-    const [scrollAvailable, setScrollAvailable] = useState(true);
+    const [scrollAvailable, setScrollAvailable] = useState(false);
 
     /* useEffect */
     // prevent scroll on specific route
     useEffect(() => {
-        history.location.pathname === '/' ?
-            setScrollAvailable(false) :
+        if (history.location.pathname === '/') {
+            setScrollAvailable(false);
+        } else {
             setScrollAvailable(true);
+        }
+
+        /* on route change */
         return history.listen((location) => {
-            location.pathname === '/' ?
-                setScrollAvailable(false) :
+            scrollPage.historyUpdate(appRef.current);
+
+            if (location.pathname === '/') {
+                setScrollAvailable(false);
+            } else {
                 setScrollAvailable(true);
+            }
         })
     }, [history]);
 
