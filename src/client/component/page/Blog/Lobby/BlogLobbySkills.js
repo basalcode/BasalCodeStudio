@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 /* asset */
@@ -41,17 +41,26 @@ const BlogLobbySkills = (props) => {
     /* state */
     const [skillsPageOn, setSkillsPageOn] = useState(false);
 
-    const [categoryIndex, setCategoryIndex] = useState(0);
+    const [categoryIndex, setCategoryIndex] = useState(-1);
     const [itemSelected, setItemSelected] = useState(false);
     const [currentItems, setCurrentItems] = useState([]);
 
+    const [progressNumber, setProgressNumber] = useState(0);
+
     const [itemContainerListStyle, setItemContainerListStyle] = useState({});
     const [itemSizeStyle, setItemSizeStyle] = useState({});
+    const [guageBarStyle, setGuageBarStyle] = useState({});
+    const [guageBarBackgroundStyle, setGuageBarBackgroundStyle] = useState({});
+
+    /* useRef */
+    const progressBarRef = useRef(0);
+    const progressGaugeRef = useRef(0);
 
     /* constant */
     const location = 'BlogLobbySkills';
     const itemDatas = {
         Basics: {
+            proficiency: 100,
             items: [
                 { imagePath: htmlLogo, title: "HTML" },
                 { imagePath: cssLogo, title: "CSS" },
@@ -60,37 +69,44 @@ const BlogLobbySkills = (props) => {
             description: []
         },
         Host: {
+            proficiency: 95,
             items: [
                 { imagePath: awsLogo, title: "AWS" },
                 { imagePath: awsEC2Logo, title: "AWS EC2" },
-                { imagePath: awsRoute53Logo, title: "AWS Route53" },
-                { imagePath: ubuntuLogo, title: "Ubuntu" },
-                { imagePath: httpsLogo, title: "HTTPS" }],
+                { imagePath: awsRoute53Logo, title: "AWS Route53" }
+            ],
             description: []
         },
         Front: {
+            proficiency: 100,
             items: [
                 { imagePath: sassLogo, title: "SASS" },
                 { imagePath: reactLogo, title: "React" },
                 { imagePath: reactRouterLogo, title: "React Router" },
                 { imagePath: reduxLogo, title: "Redux" },
                 { imagePath: reduxSagaLogo, title: "Redux Saga" }
-            ], description: []
+            ],
+            description: []
         },
         Back: {
+            proficiency: 95,
             items: [
                 { imagePath: nodejsLogo, title: "NodeJS" },
                 { imagePath: nginxLogo, title: "NGINX" },
                 { imagePath: expressLogo, title: "Express" },
                 { imagePath: mysqlLogo, title: "mySQL" },
-                { imagePath: pm2Logo, title: "PM2" }],
+                { imagePath: pm2Logo, title: "PM2" }
+            ],
             description: []
         },
         Others: {
+            proficiency: 100,
             items: [
                 { imagePath: npmLogo, title: "NPM" },
                 { imagePath: gitLogo, title: "git" },
-                { imagePath: puttyLogo, title: "PuTTY" }
+                { imagePath: puttyLogo, title: "PuTTY" },
+                { imagePath: ubuntuLogo, title: "Ubuntu" },
+                { imagePath: httpsLogo, title: "HTTPS" }
             ],
             description: []
         }
@@ -105,6 +121,29 @@ const BlogLobbySkills = (props) => {
                 height: '0',
                 overflow: 'hidden'
             });
+
+            const progressBar = progressBarRef.current;
+            const gaugeBar = progressGaugeRef.current;
+
+            resizeEvent.observe(gaugeBar);
+
+            setGuageBarStyle({
+                width: 0
+            });
+
+            const timeout = 2000;
+            setTimeout(() => {
+                const categoryName = categories[index];
+                const percentage = itemDatas[categoryName].proficiency;
+                const borderSize = 4;
+                const gaugeBarWidth = Math.floor(
+                    (progressBar.offsetWidth - borderSize) / 100 * percentage
+                );
+
+                setGuageBarStyle({
+                    width: gaugeBarWidth + 'px'
+                }); 
+            }, timeout);
         }
 
         setCategoryIndex(index);
@@ -113,11 +152,38 @@ const BlogLobbySkills = (props) => {
         props.onSelect(true);
     }
 
+    // gauge bar
+    const resizeEvent = new ResizeObserver(elements => {
+        elements.forEach(element => {
+            const contentBoxSize = element.contentBoxSize[0];
+            const porgressBarWidth = progressBarRef.current.offsetWidth;
+            const gaugeBarwidth = Math.floor(contentBoxSize.inlineSize);
+            const borderSize = 4;
+            const percentage = Math.floor(
+                gaugeBarwidth / (porgressBarWidth - borderSize * 2) * 100
+            );
+
+            console.log('[progress]', gaugeBarwidth, '/', porgressBarWidth);
+
+            setProgressNumber(percentage);
+        });
+    });
+
     /* useEffect */
     // skills page
     useEffect(() => {
         if (pageIndex !== props.index) {
+            setItemContainerListStyle({
+                height: '0',
+                overflow: 'hidden'
+            });
+            setGuageBarStyle({
+                width: 0
+            });
+            setCategoryIndex(-1);
+            setItemSelected(false);
             setSkillsPageOn(false);
+            props.onSelect(false);
         }
     }, [pageIndex]);
 
@@ -126,9 +192,9 @@ const BlogLobbySkills = (props) => {
         if (pageIndex === props.index) {
             const interval = 1000;
 
-            const selectedCategoryName = categories[categoryIndex];
-            const selectedCategoryItems = itemDatas[selectedCategoryName].items;
-            const itemsAmount = selectedCategoryItems.length;
+            const categoryName = categories[categoryIndex];
+            const categoryItems = itemDatas[categoryName].items;
+            const itemsAmount = categoryItems.length;
             const itemHeight = 8;
             const itemPadding = 0.2;
             setTimeout(() => {
@@ -140,24 +206,10 @@ const BlogLobbySkills = (props) => {
                     height: itemHeight + 'rem',
                     padding: `${itemPadding / 2}rem 1rem`
                 });
-                setCurrentItems(selectedCategoryItems);
+                setCurrentItems(categoryItems);
             }, interval);
         }
     }, [itemSelected, categoryIndex]);
-
-    // deactivate page layout
-    useEffect(() => {
-        if (scrollOn) {
-            setItemContainerListStyle({
-                height: '0',
-                overflow: 'hidden'
-            });
-            props.onSelect(false);
-            setItemSelected(false);
-        }
-    }, [scrollOn]);
-
-    
 
     return (
         <section className="BlogLobbySkills">
@@ -173,25 +225,59 @@ const BlogLobbySkills = (props) => {
                                 `${itemSelected ?
                                     "BlogLobbySkills__circle-layout-container--on" :
                                     "BlogLobbySkills__circle-layout-container--off"}`}>
-                                <ImageDisplay 
-                                    location={location} 
+                                <ImageDisplay
+                                    location={location}
                                     skillsPageOn={skillsPageOn}
                                     activated={skillsPageOn} />
                                 <CircleDisplay
                                     diameter={circleLayoutDiameter}
                                     elements={categories}
+                                    activated={skillsPageOn}
                                     onSelect={onSelect} />
                             </div>
                         </section>
                         <section className={"BlogLobbySkills__item-section"}>
-                            <article className={`BlogLobbySkills__items-container ` + 
-                                    `${itemSelected ?
-                                        "BlogLobbySkills__items-container--on" :
-                                        "BlogLobbySkills__items-container--off"}`}>
-                                <h1 className={`BlogLobbySkills__title ` + 
+                            <article className={`BlogLobbySkills__items-container ` +
+                                `${itemSelected ?
+                                    "BlogLobbySkills__items-container--on" :
+                                    "BlogLobbySkills__items-container--off"}`}>
+                                <div className={
+                                    `BlogLobbySkills__title-container ` +
                                     `${pageIndex === props.index ?
-                                        "BlogLobbySkills__title--appear" :
-                                        ""}`}>Skills</h1>
+                                        "BlogLobbySkills__title-container--appear" :
+                                        ""}`}>
+
+                                    <h1 className="BlogLobbySkills__main-title">
+                                        Skills
+                                    </h1>
+                                    <div className={
+                                        `BlogLobbySkills__selected-category ` +
+                                        `${itemSelected &&
+                                        "BlogLobbySkills__selected-category--selected "}`}>
+                                        <h2 className="BlogLobbySkills__sub-title">
+                                            {`- ${categories[categoryIndex]}`}
+                                        </h2>
+                                        <div className="BlogLobbySkills__progress-bar-container">
+                                            <div className="BlogLobbySkills__progress-number">
+                                                {`${progressNumber} %`}
+                                            </div>
+                                            <div ref={progressBarRef}
+                                                className="BlogLobbySkills__progress-bar">
+                                                <div className={
+                                                        `BlogLobbySkills__progress-gauge ` +
+                                                        `${itemSelected &&
+                                                        `BlogLobbySkills__progress-gauge--activated `
+                                                        }`}
+                                                    ref={progressGaugeRef}
+                                                    style={guageBarStyle}>
+                                                        <div className="BlogLobbySkills__progress-gauge-background"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className={`BlogLobbySkills__item-container-list ` +
                                     `${itemSelected ?
                                         "BlogLobbySkills__item-container-list--appear" :

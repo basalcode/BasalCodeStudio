@@ -28,6 +28,11 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
             background-color: black;
             color: white;
         }
+
+        &--selected {
+            background-color: black;
+            color: white;
+        }
     }
 
     &__category-title {

@@ -87,21 +87,98 @@
         }
     }
 
-    &__title {
-        position: relative;
-        top: 10%;
-        left: 180%;
+    &__title-container {
+        @include size(100%, 80px);
 
-        font-family: 'Noto Serif KR', serif;
-        font-size: 42px;
-        text-decoration: underline;
+        display: flex;
+        position: relative;
+        top: 60px;
+        left: 180%;
 
         transition: left 1s;
         
         &--appear {
+            margin-bottom: 30px;
+            top: 0;
             left: 0;
             transition-delay: 0.7s;
         }
+    }
+
+    &__main-title {
+        @include size(20%, 100%);
+
+        font-family: 'Noto Serif KR', serif;
+        font-size: 3rem;
+        text-decoration: underline;
+    }
+
+    &__selected-category {
+        @include size(0%, 100%);
+        
+        display: flex;
+        position: relative;
+        top: 0;
+        left: 150%;
+        transition: left 1s, width 1s;
+
+        &--selected {
+            left: 0;
+            width: 80%;
+        }
+    }
+
+    &__sub-title {
+        @include size(30%, 100%);
+        min-width: 170px;
+
+        margin-right: 16px;
+        padding-top: 12px;
+
+        font-family: 'Great Vibes', cursive;
+        font-size: 3.4rem;
+    }
+
+    &__progress-bar-container {
+        @include size(70%, 100%);
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__progress-number {
+        @include size(100%, 50%);
+
+        text-align: right;
+    }
+
+    &__progress-bar {
+        @include size(100%, 50%);
+        @include round-border(25px);
+
+        overflow: hidden;
+
+        border: 2px solid black;
+    }
+
+    &__progress-gauge {
+        @include center-vertical();
+        @include size(0%, 85%);
+
+        position: relative;
+        border: 2px solid black;
+
+        // background-color: black;
+        transition-timing-function: ease;
+
+        &--activated {
+            transition-delay: 1s;
+            transition: width 1.5s;
+        }
+    }
+
+    &__progress-gauge-background {
+        
     }
 
     &__item-container-list {

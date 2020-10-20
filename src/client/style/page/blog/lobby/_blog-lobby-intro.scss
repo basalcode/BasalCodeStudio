@@ -1,11 +1,9 @@
 .BlogLobbyIntro {
-    // @include dev-inspector();
     @include size(100%, 100vh);
 
     position: relative;
 
     &__container {
-        // @include dev-inspector();
         @include size(65%, 65%);
 
         display: flex;
@@ -15,12 +13,10 @@
     }
 
     &__frame {
-        // @include dev-inspector();
         @include size(50%, 100%);
     }
 
     &__greeting {
-        // @include dev-inspector();
         @include center-vertical();
         @include size(100%, 20%);
 
@@ -42,22 +38,21 @@
         &-content {
             @include size(100%, 50%);
     
-            padding-left: 80px;
+            padding-left: 5rem;
         }
     
         &-welcom {
             font-family: 'Courier Prime', monospace;
-            font-size: 42px;
+            font-size: 2.6rem;
         }
     
         &-display {
             font-family: 'Cinzel', serif;
-            font-size: 48px;
+            font-size: 3px;
         }
     
         &-caret {
-            // @include dev-inspector();
-            @include size(20px, 20px);
+            @include size(1.25rem, 1.25rem);
         }
     }
 }

@@ -1,11 +1,9 @@
 .BlogLobbyAbout {
-    // @include dev-inspector();
     @include size(100%, 100vh);
 
     position: relative;
 
     &__container {
-        // @include dev-inspector();
         
         @include center();
         @include size(65%, 65%);
@@ -15,12 +13,10 @@
     }
 
     &__content {
-        // @include dev-inspector();
         @include size(50%, 100%);
     }
 
     &__about {
-        // @include dev-inspector();
         @include center-vertical();
 
         position: relative;
@@ -36,24 +32,21 @@
     }
 
     &__about-title {
-        // @include dev-inspector();
-
         margin-left: 50px;
-        // margin-bottom: 50px;
 
         font-family: 'Noto Serif KR', serif;
-        font-size: 42px;
+        font-size: 3rem;
         text-decoration: underline;
     }
 
     &__about-paragraph {
-        padding: 40px;
+        padding: 2.5rem;
         
         font-family: 'Nanum Myeongjo', serif;
         font-size: 1.5rem;
     }
 
     &__about-text {
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
     }
 }
