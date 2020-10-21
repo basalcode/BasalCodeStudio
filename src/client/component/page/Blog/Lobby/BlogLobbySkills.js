@@ -35,8 +35,8 @@ import ImageDisplay from 'component/layout/ImageDispaly';
 
 const BlogLobbySkills = (props) => {
     /* store */
+    const scroll = useSelector(store => store.blog.scroll, []); 
     const pageIndex = useSelector(store => store.blog.index, []);
-    const scrollOn = useSelector(store => store.blog.scrollOn);
 
     /* state */
     const [skillsPageOn, setSkillsPageOn] = useState(false);
@@ -45,6 +45,8 @@ const BlogLobbySkills = (props) => {
     const [itemSelected, setItemSelected] = useState(false);
     const [currentItems, setCurrentItems] = useState([]);
 
+    const [targetPercentage, setTargetPercentage] = useState(-1);
+    const [progressGaugeOn, setProgressGaugeOn] = useState(false);
     const [progressNumber, setProgressNumber] = useState(0);
 
     const [itemContainerListStyle, setItemContainerListStyle] = useState({});
@@ -123,27 +125,45 @@ const BlogLobbySkills = (props) => {
             });
 
             const progressBar = progressBarRef.current;
-            const gaugeBar = progressGaugeRef.current;
-
-            resizeEvent.observe(gaugeBar);
 
             setGuageBarStyle({
                 width: 0
             });
 
+            // progress gauge animation
             const timeout = 2000;
             setTimeout(() => {
+                const progressBarWidth = progressBar.offsetWidth;
+
                 const categoryName = categories[index];
                 const percentage = itemDatas[categoryName].proficiency;
                 const borderSize = 4;
                 const gaugeBarWidth = Math.floor(
-                    (progressBar.offsetWidth - borderSize) / 100 * percentage
+                    (progressBarWidth - borderSize) / 100 * percentage
                 );
 
                 setGuageBarStyle({
                     width: gaugeBarWidth + 'px'
-                }); 
+                });
+
+                // gauge background animation
+                setTargetPercentage(percentage);
             }, timeout);
+            setProgressGaugeOn(true);
+
+            // progress gauge background
+            const diagonalDegree = '45deg';
+            const diagonalLineWidth = 10;
+            const diagonalLineColor = 'hsl(33, 53%, 88%)';
+            const differentColor = 'white';
+
+            setGuageBarBackgroundStyle({
+                background: `repeating-linear-gradient(
+                    ${diagonalDegree},
+                    ${diagonalLineColor} 0px ${diagonalLineWidth}px,
+                    ${differentColor} ${diagonalLineWidth}px ${diagonalLineWidth * 2}px
+                )`
+            });
         }
 
         setCategoryIndex(index);
@@ -152,24 +172,40 @@ const BlogLobbySkills = (props) => {
         props.onSelect(true);
     }
 
-    // gauge bar
-    const resizeEvent = new ResizeObserver(elements => {
-        elements.forEach(element => {
-            const contentBoxSize = element.contentBoxSize[0];
-            const porgressBarWidth = progressBarRef.current.offsetWidth;
-            const gaugeBarwidth = Math.floor(contentBoxSize.inlineSize);
-            const borderSize = 4;
-            const percentage = Math.floor(
-                gaugeBarwidth / (porgressBarWidth - borderSize * 2) * 100
-            );
-
-            console.log('[progress]', gaugeBarwidth, '/', porgressBarWidth);
-
-            setProgressNumber(percentage);
-        });
-    });
-
     /* useEffect */
+    // gauge number
+    useEffect(() => {
+        if (targetPercentage >= 0 && 
+            categoryIndex >= 0 &&
+            pageIndex === props.index) {
+            const categoryName = categories[categoryIndex];
+            const targetPercentage = itemDatas[categoryName].proficiency;
+
+            const resizeEvent = new ResizeObserver(elements => {
+                elements.forEach(element => {
+                    const contentBoxSize = element.contentBoxSize[0];
+                    const porgressBarWidth = progressBarRef.current.offsetWidth;
+                    const gaugeBarWidth = contentBoxSize.inlineSize;
+
+                    const borderSize = 4;
+                    const percentage = Math.ceil(
+                        gaugeBarWidth / (porgressBarWidth - borderSize * 2) * 100
+                    );
+                    setProgressNumber(percentage);
+
+                    // gauge bar finish callback
+                    if (percentage === targetPercentage) {
+                        setProgressGaugeOn(false);
+                        setTargetPercentage(-1);
+                        setGuageBarBackgroundStyle({});
+                        resizeEvent.disconnect(progressGaugeRef.current);
+                    }
+                });
+            });
+            resizeEvent.observe(progressGaugeRef.current);
+        }
+    }, [targetPercentage]);
+
     // skills page
     useEffect(() => {
         if (pageIndex !== props.index) {
@@ -264,16 +300,20 @@ const BlogLobbySkills = (props) => {
                                             <div ref={progressBarRef}
                                                 className="BlogLobbySkills__progress-bar">
                                                 <div className={
-                                                        `BlogLobbySkills__progress-gauge ` +
-                                                        `${itemSelected &&
-                                                        `BlogLobbySkills__progress-gauge--activated `
-                                                        }`}
+                                                    `BlogLobbySkills__progress-gauge ` +
+                                                    `${itemSelected &&
+                                                    `BlogLobbySkills__progress-gauge--activated `
+                                                    }`}
                                                     ref={progressGaugeRef}
                                                     style={guageBarStyle}>
-                                                        <div className="BlogLobbySkills__progress-gauge-background"
-                                                            >
-                                                        </div>
+                                                    <div className={
+                                                        `BlogLobbySkills__progress-gauge-background ` +
+                                                        `${progressGaugeOn ?
+                                                            'BlogLobbySkills__progress-gauge-background--on ' :
+                                                            'BlogLobbySkills__progress-gauge-background--off '}`}
+                                                        style={guageBarBackgroundStyle}>
                                                     </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

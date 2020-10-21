@@ -159,6 +159,7 @@
         overflow: hidden;
 
         border: 2px solid black;
+        background-color: white;
     }
 
     &__progress-gauge {
@@ -168,8 +169,8 @@
         position: relative;
         border: 2px solid black;
 
-        // background-color: black;
         transition-timing-function: ease;
+        overflow: hidden;
 
         &--activated {
             transition-delay: 1s;
@@ -178,7 +179,30 @@
     }
 
     &__progress-gauge-background {
+        @include size(100%, 500%);
+        @keyframes repeat-motion {
+            from {
+                top: -400%;
+            }
+            to {
+                top: 0%;
+            }
+        }
+
+        position: relative;
+        left: 0;
         
+        transition: background-color 1.5s;
+
+        &--on {
+            animation: repeat-motion 1s infinite;
+            animation-timing-function: linear;
+        }
+
+        &--off {
+            background: initial;
+            background-color: black;
+        }
     }
 
     &__item-container-list {

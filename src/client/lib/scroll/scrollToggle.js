@@ -1,7 +1,7 @@
 import variables from './scrollVariables';
 
 const scrollToggle = (() => {
-    const PreventedKeys = variables.PreventedKeys;
+    const ScrollableKeys = variables.scrollableKeys;
     const wheelEvent = variables.wheelEvent;
     const eventOption = variables.eventOption;
 
@@ -20,7 +20,15 @@ const scrollToggle = (() => {
     }
 
     const preventScrollKeys = event => {
-        Object.values(PreventedKeys).forEach(element => {
+        Object.values(ScrollableKeys).forEach(element => {
+            if (element.constructor.name === "Object") {
+                Object.values(element).forEach(subElement => {
+                    if (subElement === event.keyCode) {
+                        event.preventDefault();
+                        return false;
+                    }        
+                });
+            }
             if (element === event.keyCode) {
                 event.preventDefault();
                 return false;

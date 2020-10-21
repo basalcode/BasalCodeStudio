@@ -4,9 +4,17 @@ const circularFunctions = (() => {
         return degree * (Math.PI / 180);
     }
 
+    const getCosineX = (degree, radius) => {
+        return Math.floor(Math.cos(degree) * radius);
+    }
+
+    const getSineY = (degree, radius) => {
+        return Math.floor(Math.sin(degree) * radius);
+    }
+
     const getCirclePosition = (degree, radius) => {
-        const x = Math.floor(Math.cos(degree) * radius);
-        const y = Math.floor(Math.sin(degree) * radius);
+        const x = getCosineX(degree, radius);
+        const y = getSineY(degree, radius);
 
         return { x: x, y: y };
     }
@@ -39,6 +47,8 @@ const circularFunctions = (() => {
 
     return {
         toRadian: toRadian,
+        getCosineX: getCosineX,
+        getSineY: getSineY,
         getCirclePosition: getCirclePosition,
         getCirclePositions: getCirclePositions
     };

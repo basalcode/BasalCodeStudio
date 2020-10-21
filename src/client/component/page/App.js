@@ -56,13 +56,15 @@ const App = () => {
             appRef.current, 
             {
                 scrollStart: (pageIndex, scrollLock) => {
-                    dispatch(lobbyPageAction(pageIndex, scrollLock));
+                    dispatch(lobbyPageAction(scrollPage, pageIndex, scrollLock));
                 },
                 scrollFinish: (pageIndex, scrollLock) => {
-                    dispatch(lobbyPageAction(pageIndex, scrollLock));
+                    dispatch(lobbyPageAction(scrollPage, pageIndex, scrollLock));
                 }
             }
         );
+        
+        dispatch(lobbyPageAction(scrollPage, 0, false));
     }, []);
 
     return (

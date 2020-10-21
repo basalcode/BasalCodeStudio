@@ -30,6 +30,10 @@ const scrollPage = (() => {
     let fousedFormElement = null;
 
     /* function */
+    const scrollLocker = (lock) => {
+        scrollLock = lock;
+    }
+
     const moveScroll = (pageIndex) => {
         let pageScrolled = false;
         scrollLock = true;
@@ -350,7 +354,8 @@ const scrollPage = (() => {
         addEvent: addEvent,
         historyUpdate: historyUpdate,
         removeEvent: removeEvent,
-        moveScroll: moveScroll
+        moveScroll: moveScroll,
+        scrollLocker: scrollLocker
     };
 })();
 
