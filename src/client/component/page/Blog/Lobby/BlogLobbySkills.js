@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 /* asset */
@@ -117,7 +117,7 @@ const BlogLobbySkills = (props) => {
     const circleLayoutDiameter = 30;
 
     /* event handler */
-    const onSelect = index => {
+    const onSelect = useMemo(() => index => {
         if (index !== categoryIndex) {
             setItemContainerListStyle({
                 height: '0',
@@ -170,11 +170,18 @@ const BlogLobbySkills = (props) => {
         setItemSelected(true);
         setSkillsPageOn(true);
         props.onSelect(true);
-    }
+
+        setProgressNumber(0);
+    });
 
     /* useEffect */
     // gauge number
     useEffect(() => {
+        console.log('[targetPercentage]', targetPercentage)
+        console.log('[categoryIndex]', categoryIndex)
+        console.log('[pageIndex]', pageIndex)
+        console.log('[props.index]', props.index)
+
         if (targetPercentage >= 0 && 
             categoryIndex >= 0 &&
             pageIndex === props.index) {
@@ -204,6 +211,10 @@ const BlogLobbySkills = (props) => {
             });
             resizeEvent.observe(progressGaugeRef.current);
         }
+        // setProgressGaugeOn(false);
+        setTargetPercentage(-1);
+        setProgressNumber(0);
+        // setGuageBarBackgroundStyle({});
     }, [targetPercentage]);
 
     // skills page
@@ -220,6 +231,8 @@ const BlogLobbySkills = (props) => {
             setItemSelected(false);
             setSkillsPageOn(false);
             props.onSelect(false);
+            
+            setProgressNumber(0);
         }
     }, [pageIndex]);
 
