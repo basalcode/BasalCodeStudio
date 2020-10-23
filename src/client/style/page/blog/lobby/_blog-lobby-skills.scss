@@ -242,7 +242,7 @@
     }
 
     &__item-toggle {
-        @include size(5rem, 100%);
+        @include size(20%, 100%);
 
         position: relative;
     }
@@ -279,6 +279,9 @@
     }
 
     &__item-description {
-        @include size(5rem, 100%);
+        @include size(80%, 100%);
+
+        position: relative;
+        border: 1px solid black;
     }
 }
