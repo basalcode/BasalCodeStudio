@@ -1,0 +1,125 @@
+/* module */
+import React, { useState, useEffect, useRef } from 'react';
+
+const ProgressBar = (props) => {
+    /* props */
+    const percentage = props.percentage;
+
+    /* state */
+    const [activated, setActivated] = useState(false);
+    const [progressNumber, setProgressNumber] = useState(0);
+
+    const [guageBarStyle, setGuageBarStyle] = useState({});
+    const [guageBarBackgroundStyle, setGuageBarBackgroundStyle] = useState({});
+
+    /* useRef */
+    const progressBarRef = useRef(0);
+    const progressGaugeRef = useRef(0);
+
+    /* useEffect */
+    // percentage change animation
+    const progressBar = progressBarRef.current;
+    useEffect(() => {
+        const animationTimeout = 2000;
+        setTimeout(() => {
+            /* constant */
+            const progressBarWidth = progressBar.offsetWidth;
+            const borderSize = 4;
+    
+            const gaugeBarWidth = Math.floor(
+                (progressBarWidth - borderSize) / 100 * percentage
+            );
+    
+            /* style */
+            setGuageBarStyle({
+                width: gaugeBarWidth + 'px'
+            });
+
+            /* setState */
+            setActivated(true);
+        }, animationTimeout);
+    
+        /* constant */
+        const diagonalDegree = '45deg';
+        const diagonalLineWidth = 10;
+        const diagonalLineColor = 'hsl(33, 53%, 88%)';
+        const reversalColor = 'white';
+    
+        /* style */
+        setGuageBarStyle({
+            width: 0
+        });
+
+        setGuageBarBackgroundStyle({
+            background: `repeating-linear-gradient(
+                ${diagonalDegree},
+                ${diagonalLineColor} 0px ${diagonalLineWidth}px,
+                ${reversalColor} ${diagonalLineWidth}px ${diagonalLineWidth * 2}px
+            )`
+        });
+
+        setProgressNumber(0);
+    }, [percentage]);
+
+    // gaugebar finish animation
+    useEffect(() => {
+        if (activated) {
+            const resizeEvent = new ResizeObserver(elements => {
+                elements.forEach(element => {
+                    /* constant */
+                    const contentBoxSize = element.contentBoxSize[0];
+                    const porgressBarWidth = progressBarRef.current.offsetWidth;    
+                    const gaugeBarWidth = contentBoxSize.inlineSize;
+    
+                    const borderSize = 4;
+                    const currentPercentage = Math.ceil(
+                        gaugeBarWidth / (porgressBarWidth - borderSize * 2) * 100
+                    );
+                    
+                    /* setState */
+                    setProgressNumber(currentPercentage);
+                        
+                    /* disconnect event */
+                    if (currentPercentage === percentage) {
+                        /* setState */
+                        setActivated(false);
+    
+                        setGuageBarBackgroundStyle({});
+    
+                        /* disconnect */
+                        resizeEvent.disconnect(progressGaugeRef.current);
+                    }
+                });
+            });
+            resizeEvent.observe(progressGaugeRef.current);
+        }
+    }, [activated]);
+
+    return (
+        <div className="ProgressBar">
+            <div className="ProgressBar__progress-number">
+                {`${progressNumber} %`}
+            </div>
+            <div className="ProgressBar__progress-bar"
+                ref={progressBarRef}>
+                <div className={
+                    `ProgressBar__progress-gauge ` +
+                    `${percentage &&
+                    `ProgressBar__progress-gauge--activated `
+                    }`}
+                    ref={progressGaugeRef}
+                    style={guageBarStyle}>
+                    <div className={
+                        `ProgressBar__progress-gauge-background ` +
+                        `${activated ?
+                            'ProgressBar__progress-gauge-background--on ' :
+                            'ProgressBar__progress-gauge-background--off '}`}
+                        style={guageBarBackgroundStyle}>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default ProgressBar;

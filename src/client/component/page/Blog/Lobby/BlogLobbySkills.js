@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 /* asset */
@@ -36,31 +36,21 @@ import gitLogo from 'asset/img/logo/git.svg';
 /* component */
 import CircleDisplay from 'component/layout/CircleDisplay';
 import ImageDisplay from 'component/layout/ImageDispaly';
+import ProgressBar from 'component/common/ProgressBar/ProgressBar';
 
 const BlogLobbySkills = (props) => {
     /* store */
-    const scroll = useSelector(store => store.blog.scroll, []); 
     const pageIndex = useSelector(store => store.blog.index, []);
 
     /* state */
-    const [skillsPageOn, setSkillsPageOn] = useState(false);
-
-    const [categoryIndex, setCategoryIndex] = useState(-1);
     const [itemSelected, setItemSelected] = useState(false);
-    const [currentItems, setCurrentItems] = useState([]);
+    const [categoryIndex, setCategoryIndex] = useState(-1);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const [targetPercentage, setTargetPercentage] = useState(-1);
-    const [progressGaugeOn, setProgressGaugeOn] = useState(false);
-    const [progressNumber, setProgressNumber] = useState(0);
+    const [percentage, setPercentage] = useState(0);
 
     const [itemContainerListStyle, setItemContainerListStyle] = useState({});
     const [itemSizeStyle, setItemSizeStyle] = useState({});
-    const [guageBarStyle, setGuageBarStyle] = useState({});
-    const [guageBarBackgroundStyle, setGuageBarBackgroundStyle] = useState({});
-
-    /* useRef */
-    const progressBarRef = useRef(0);
-    const progressGaugeRef = useRef(0);
 
     /* constant */
     const location = 'BlogLobbySkills';
@@ -155,148 +145,65 @@ const BlogLobbySkills = (props) => {
     const circleLayoutDiameter = 30;
 
     /* event handler */
-    const onSelect = useMemo(() => index => {
+    const onSelect = index => {
         if (index !== categoryIndex) {
+            /* constant */
+            const selectedCategoryData = Object.values(itemDatas)[index];
+            const percentage = selectedCategoryData.proficiency;
+
+            /* state */
+            setItemSelected(true);
+            setCategoryIndex(index);
+            setSelectedCategory(selectedCategoryData);
+            setPercentage(percentage);
+            props.onSelect(true);
+
+            /* style */ 
             setItemContainerListStyle({
                 height: '0',
                 overflow: 'hidden'
             });
-
-            const progressBar = progressBarRef.current;
-
-            setGuageBarStyle({
-                width: 0
-            });
-
-            // progress gauge animation
-            const timeout = 2000;
-            setTimeout(() => {
-                const progressBarWidth = progressBar.offsetWidth;
-
-                const categoryName = categories[index];
-                const percentage = itemDatas[categoryName].proficiency;
-                const borderSize = 4;
-                const gaugeBarWidth = Math.floor(
-                    (progressBarWidth - borderSize) / 100 * percentage
-                );
-
-                setGuageBarStyle({
-                    width: gaugeBarWidth + 'px'
-                });
-
-                // gauge background animation
-                setTargetPercentage(percentage);
-            }, timeout);
-            setProgressGaugeOn(true);
-
-            // progress gauge background
-            const diagonalDegree = '45deg';
-            const diagonalLineWidth = 10;
-            const diagonalLineColor = 'hsl(33, 53%, 88%)';
-            const differentColor = 'white';
-
-            setGuageBarBackgroundStyle({
-                background: `repeating-linear-gradient(
-                    ${diagonalDegree},
-                    ${diagonalLineColor} 0px ${diagonalLineWidth}px,
-                    ${differentColor} ${diagonalLineWidth}px ${diagonalLineWidth * 2}px
-                )`
-            });
         }
-
-        setCategoryIndex(index);
-        setItemSelected(true);
-        setSkillsPageOn(true);
-        props.onSelect(true);
-
-        setProgressNumber(0);
-    });
+    };
 
     /* useEffect */
-    // gauge number
-    useEffect(() => {
-        console.log('[targetPercentage]', targetPercentage)
-        console.log('[categoryIndex]', categoryIndex)
-        console.log('[pageIndex]', pageIndex)
-        console.log('[props.index]', props.index)
-
-        if (targetPercentage >= 0 && 
-            categoryIndex >= 0 &&
-            pageIndex === props.index) {
-            const categoryName = categories[categoryIndex];
-            const targetPercentage = itemDatas[categoryName].proficiency;
-
-            const resizeEvent = new ResizeObserver(elements => {
-                elements.forEach(element => {
-                    const contentBoxSize = element.contentBoxSize[0];
-                    const porgressBarWidth = progressBarRef.current.offsetWidth;
-                    const gaugeBarWidth = contentBoxSize.inlineSize;
-
-                    const borderSize = 4;
-                    const percentage = Math.ceil(
-                        gaugeBarWidth / (porgressBarWidth - borderSize * 2) * 100
-                    );
-                    setProgressNumber(percentage);
-
-                    // gauge bar finish callback
-                    if (percentage === targetPercentage) {
-                        setProgressGaugeOn(false);
-                        setTargetPercentage(-1);
-                        setGuageBarBackgroundStyle({});
-                        resizeEvent.disconnect(progressGaugeRef.current);
-                    }
-                });
-            });
-            resizeEvent.observe(progressGaugeRef.current);
-        }
-        // setProgressGaugeOn(false);
-        setTargetPercentage(-1);
-        setProgressNumber(0);
-        // setGuageBarBackgroundStyle({});
-    }, [targetPercentage]);
-
-    // skills page
+    // when escape from the page
     useEffect(() => {
         if (pageIndex !== props.index) {
+            /* state */
+            setItemSelected(false);
+            setCategoryIndex(-1);
+            setSelectedCategory(null);
+            setPercentage(0);
+            props.onSelect(false);
+
+            /* style */
             setItemContainerListStyle({
                 height: '0',
                 overflow: 'hidden'
             });
-            setGuageBarStyle({
-                width: 0
-            });
-            setCategoryIndex(-1);
-            setItemSelected(false);
-            setSkillsPageOn(false);
-            props.onSelect(false);
-            
-            setProgressNumber(0);
         }
     }, [pageIndex]);
 
-    // display category items
+    // skills item animation
     useEffect(() => {
         if (pageIndex === props.index) {
-            const interval = 1000;
-
-            const categoryName = categories[categoryIndex];
-            const categoryItems = itemDatas[categoryName].items;
+            const categoryItems = selectedCategory.items;
             const itemsAmount = categoryItems.length;
             const itemHeight = 8;
-            const itemPadding = 0.2;
+
+            const interval = 1000;
             setTimeout(() => {
                 setItemContainerListStyle({
                     height: (itemHeight * itemsAmount) + 'rem',
                     overflow: 'auto'
                 });
                 setItemSizeStyle({
-                    height: itemHeight + 'rem',
-                    padding: `${itemPadding / 2}rem 1rem`
+                    height: itemHeight + 'rem'
                 });
-                setCurrentItems(categoryItems);
             }, interval);
         }
-    }, [itemSelected, categoryIndex]);
+    }, [categoryIndex]);
 
     return (
         <section className="BlogLobbySkills">
@@ -314,12 +221,12 @@ const BlogLobbySkills = (props) => {
                                     "BlogLobbySkills__circle-layout-container--off"}`}>
                                 <ImageDisplay
                                     location={location}
-                                    skillsPageOn={skillsPageOn}
-                                    activated={skillsPageOn} />
+                                    skillsPageOn={itemSelected}
+                                    activated={itemSelected} />
                                 <CircleDisplay
                                     diameter={circleLayoutDiameter}
                                     elements={categories}
-                                    activated={skillsPageOn}
+                                    activated={itemSelected}
                                     onSelect={onSelect} />
                             </div>
                         </section>
@@ -344,29 +251,7 @@ const BlogLobbySkills = (props) => {
                                         <h2 className="BlogLobbySkills__sub-title">
                                             {`- ${categories[categoryIndex]}`}
                                         </h2>
-                                        <div className="BlogLobbySkills__progress-bar-container">
-                                            <div className="BlogLobbySkills__progress-number">
-                                                {`${progressNumber} %`}
-                                            </div>
-                                            <div ref={progressBarRef}
-                                                className="BlogLobbySkills__progress-bar">
-                                                <div className={
-                                                    `BlogLobbySkills__progress-gauge ` +
-                                                    `${itemSelected &&
-                                                    `BlogLobbySkills__progress-gauge--activated `
-                                                    }`}
-                                                    ref={progressGaugeRef}
-                                                    style={guageBarStyle}>
-                                                    <div className={
-                                                        `BlogLobbySkills__progress-gauge-background ` +
-                                                        `${progressGaugeOn ?
-                                                            'BlogLobbySkills__progress-gauge-background--on ' :
-                                                            'BlogLobbySkills__progress-gauge-background--off '}`}
-                                                        style={guageBarBackgroundStyle}>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <ProgressBar percentage={percentage} />
                                     </div>
                                 </div>
                                 <div className={`BlogLobbySkills__item-container-list ` +
@@ -374,7 +259,7 @@ const BlogLobbySkills = (props) => {
                                         "BlogLobbySkills__item-container-list--appear" :
                                         "BlogLobbySkills__item-container-list--disappear"}`}
                                     style={itemContainerListStyle}>
-                                    {currentItems.map((item, index) =>
+                                    {selectedCategory && selectedCategory.items.map((item, index) =>
                                         <div className="BlogLobbySkills__item-container"
                                             style={itemSizeStyle}
                                             key={index}>
@@ -383,13 +268,13 @@ const BlogLobbySkills = (props) => {
                                                     <img className="BlogLobbySkills__item-image"
                                                         src={item.imagePath} />
                                                 </div>
-                                                <div className="BlogLobbySkills__item-title">
+                                                <h2 className="BlogLobbySkills__item-title">
                                                     {item.title}
-                                                </div>
+                                                </h2>
                                             </div>
-                                            <div className="BlogLobbySkills__item-description">
+                                            <p className="BlogLobbySkills__item-description">
                                                 {item.description}
-                                            </div>
+                                            </p>
                                         </div>
                                     )}
                                 </div>
