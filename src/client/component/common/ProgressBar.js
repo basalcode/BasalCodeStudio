@@ -3,10 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const ProgressBar = (props) => {
     /* props */
+    const activated = props.activated;
     const percentage = props.percentage;
 
     /* state */
-    const [activated, setActivated] = useState(false);
+    const [animationOn, setAnimationOn] = useState(false);
     const [progressNumber, setProgressNumber] = useState(0);
 
     const [guageBarStyle, setGuageBarStyle] = useState({});
@@ -20,72 +21,78 @@ const ProgressBar = (props) => {
     // percentage change animation
     const progressBar = progressBarRef.current;
     useEffect(() => {
-        const animationTimeout = 2000;
-        setTimeout(() => {
+        if (activated) {
+            const animationTimeout = 1000;
+            setTimeout(() => {
+                /* constant */
+                const progressBarWidth = progressBar.offsetWidth;
+                const borderSize = 4;
+
+                const gaugeBarWidth = Math.floor(
+                    (progressBarWidth - borderSize) / 100 * percentage
+                );
+
+                /* state */
+                setAnimationOn(true);
+
+                setGuageBarStyle({
+                    width: gaugeBarWidth + 'px'
+                });
+
+            }, animationTimeout);
+
             /* constant */
-            const progressBarWidth = progressBar.offsetWidth;
-            const borderSize = 4;
-    
-            const gaugeBarWidth = Math.floor(
-                (progressBarWidth - borderSize) / 100 * percentage
-            );
-    
-            /* style */
+            const diagonalDegree = '45deg';
+            const diagonalLineWidth = 10;
+            const diagonalLineColor = 'hsl(33, 53%, 88%)';
+            const reversalColor = 'white';
+
+            /* state */
+            
+            setProgressNumber(0);
+
             setGuageBarStyle({
-                width: gaugeBarWidth + 'px'
+                width: 0
             });
 
-            /* setState */
-            setActivated(true);
-        }, animationTimeout);
-    
-        /* constant */
-        const diagonalDegree = '45deg';
-        const diagonalLineWidth = 10;
-        const diagonalLineColor = 'hsl(33, 53%, 88%)';
-        const reversalColor = 'white';
-    
-        /* style */
-        setGuageBarStyle({
-            width: 0
-        });
+            setGuageBarBackgroundStyle({
+                background: `repeating-linear-gradient(
+                    ${diagonalDegree},
+                    ${diagonalLineColor} 0px ${diagonalLineWidth}px,
+                    ${reversalColor} ${diagonalLineWidth}px ${diagonalLineWidth * 2}px
+                )`
+            });
+        }
+    }, [activated]);
 
-        setGuageBarBackgroundStyle({
-            background: `repeating-linear-gradient(
-                ${diagonalDegree},
-                ${diagonalLineColor} 0px ${diagonalLineWidth}px,
-                ${reversalColor} ${diagonalLineWidth}px ${diagonalLineWidth * 2}px
-            )`
-        });
-
-        setProgressNumber(0);
-    }, [percentage]);
-
-    // gaugebar finish animation
+    // gaugebar gauge and finish animation
     useEffect(() => {
-        if (activated) {
+        if (animationOn) {
             const resizeEvent = new ResizeObserver(elements => {
                 elements.forEach(element => {
                     /* constant */
                     const contentBoxSize = element.contentBoxSize[0];
-                    const porgressBarWidth = progressBarRef.current.offsetWidth;    
+                    const porgressBarWidth = progressBarRef.current.offsetWidth;
                     const gaugeBarWidth = contentBoxSize.inlineSize;
-    
+
                     const borderSize = 4;
                     const currentPercentage = Math.ceil(
                         gaugeBarWidth / (porgressBarWidth - borderSize * 2) * 100
                     );
-                    
-                    /* setState */
+
+                    /* set state */
                     setProgressNumber(currentPercentage);
-                        
+
                     /* disconnect event */
                     if (currentPercentage === percentage) {
-                        /* setState */
-                        setActivated(false);
-    
+                        /* set props */
+                        props.onFinished();
+
+                        /* set state */
+                        setAnimationOn(false);
+
                         setGuageBarBackgroundStyle({});
-    
+
                         /* disconnect */
                         resizeEvent.disconnect(progressGaugeRef.current);
                     }
@@ -93,7 +100,7 @@ const ProgressBar = (props) => {
             });
             resizeEvent.observe(progressGaugeRef.current);
         }
-    }, [activated]);
+    }, [animationOn]);
 
     return (
         <div className="ProgressBar">

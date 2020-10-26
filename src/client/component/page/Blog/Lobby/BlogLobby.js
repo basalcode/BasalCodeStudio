@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 /* component */
-import ImageDisplay from 'component/layout/ImageDispaly';
+import ImageDisplay from 'component/common/ImageDispaly';
 import BlogLobbyIntro from './BlogLobbyIntro';
 import BlogLobbyAbout from './BlogLobbyAbout';
 import BlogLobbySkills from './BlogLobbySkills';

@@ -3,23 +3,26 @@ import React, { useState, useEffect } from 'react';
 
 /* lib */
 import circle from 'lib/circle/circularFunction';
-import { withRouter } from 'react-router-dom';
 
 const CircleDisplay = (props) => {
+    /* props */
+    const activated = props.activated;
+    const reset = props.reset;
+    const elements = props.elements;
+    const diameter = props.diameter;
+
     /* state */
     const [currentSelected, setCurrentSelected] = useState(-1);
 
     const [contentStyle, setContentStyle] = useState({});
     const [componentStyle, setComponentStlye] = useState({});
 
-    /* props */
-    const elements = props.elements;
-    const diameter = props.diameter;
-
     /* event handler */
     const onSelect = index => {
-        setCurrentSelected(index);
-        props.onSelect(index);
+        if (activated) {
+            setCurrentSelected(index);
+            props.onSelect(index);
+        }
     }
 
     /* useEffect */
@@ -45,13 +48,20 @@ const CircleDisplay = (props) => {
         setContentStyle(styles);
     }, []);
 
+    // reset
+    useEffect(() => {
+        if (reset) {
+            setCurrentSelected(-1);
+        }
+    }, [reset]);
+
     return (
         <div className="CircleDisplay"
             style={componentStyle}>
             {Object.keys(elements).map((title, index) =>
                 <div className={`CircleDisplay__category ` +
-                    `${index === currentSelected && props.activated &&
-                        "CircleDisplay__category--selected "}`}
+                    `${index === currentSelected &&
+                    "CircleDisplay__category--selected "}`}
                     style={contentStyle[index]}
                     key={index}
                     onClick={event => onSelect(index)}>

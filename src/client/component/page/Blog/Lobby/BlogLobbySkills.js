@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import itemData from 'asset/img/logo/itemData';
 
 /* component */
-import CircleDisplay from 'component/layout/CircleDisplay';
-import ImageDisplay from 'component/layout/ImageDispaly';
-import ProgressBar from 'component/common/ProgressBar/ProgressBar';
+import CircleDisplay from 'component/common/CircleDisplay';
+import ImageDisplay from 'component/common/ImageDispaly';
+import ProgressBar from 'component/common/ProgressBar';
 
 const BlogLobbySkills = (props) => {
     /* store */
@@ -19,7 +19,9 @@ const BlogLobbySkills = (props) => {
     const [categoryIndex, setCategoryIndex] = useState(-1);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
+    // progreess bar
     const [percentage, setPercentage] = useState(0);
+    const [progressBarActivated, setProgressBarActivated] = useState(false);
 
     const [itemContainerListStyle, setItemContainerListStyle] = useState({});
     const [itemSizeStyle, setItemSizeStyle] = useState({});
@@ -31,7 +33,8 @@ const BlogLobbySkills = (props) => {
 
     /* event handler */
     const onSelect = index => {
-        if (index !== categoryIndex) {
+        if (index !== categoryIndex &&
+            !progressBarActivated) {
             /* constant */
             const selectedCategoryData = Object.values(itemData)[index];
             const percentage = selectedCategoryData.proficiency;
@@ -39,8 +42,12 @@ const BlogLobbySkills = (props) => {
             /* state */
             setItemSelected(true);
             setCategoryIndex(index);
-            setSelectedCategory(selectedCategoryData);
+            
+            // progress bar
+            setProgressBarActivated(true);
             setPercentage(percentage);
+
+
             props.onSelect(true);
 
             /* style */ 
@@ -59,7 +66,11 @@ const BlogLobbySkills = (props) => {
             setItemSelected(false);
             setCategoryIndex(-1);
             setSelectedCategory(null);
+
+            // progress bar
+            setProgressBarActivated(false);
             setPercentage(0);
+
             props.onSelect(false);
 
             /* style */
@@ -70,15 +81,18 @@ const BlogLobbySkills = (props) => {
         }
     }, [pageIndex]);
 
-    // skills item animation
+    // skills item container animation
     useEffect(() => {
         if (pageIndex === props.index) {
-            const categoryItems = selectedCategory.items;
-            const itemsAmount = categoryItems.length;
-            const itemHeight = 8;
-
             const interval = 1000;
             setTimeout(() => {
+                /* constant */
+                const selectedCategoryData = Object.values(itemData)[categoryIndex];
+                const categoryItems = selectedCategoryData.items;
+                const itemsAmount = categoryItems.length;
+                const itemHeight = 8;
+
+                /* style */
                 setItemContainerListStyle({
                     height: (itemHeight * itemsAmount) + 'rem',
                     overflow: 'auto'
@@ -86,6 +100,9 @@ const BlogLobbySkills = (props) => {
                 setItemSizeStyle({
                     height: itemHeight + 'rem'
                 });
+
+                /* setState */
+                setSelectedCategory(selectedCategoryData);
             }, interval);
         }
     }, [categoryIndex]);
@@ -105,13 +122,14 @@ const BlogLobbySkills = (props) => {
                                     "BlogLobbySkills__circle-layout-container--on" :
                                     "BlogLobbySkills__circle-layout-container--off"}`}>
                                 <ImageDisplay
-                                    location={location}
-                                    skillsPageOn={itemSelected}
-                                    activated={itemSelected} />
-                                <CircleDisplay
-                                    diameter={circleLayoutDiameter}
-                                    elements={categories}
                                     activated={itemSelected}
+                                    skillsPageOn={itemSelected} 
+                                    location={location}/>
+                                <CircleDisplay
+                                    activated={!progressBarActivated}
+                                    reset={!itemSelected}
+                                    elements={categories}
+                                    diameter={circleLayoutDiameter}
                                     onSelect={onSelect} />
                             </div>
                         </section>
@@ -136,7 +154,10 @@ const BlogLobbySkills = (props) => {
                                         <h2 className="BlogLobbySkills__sub-title">
                                             {`- ${categories[categoryIndex]}`}
                                         </h2>
-                                        <ProgressBar percentage={percentage} />
+                                        <ProgressBar 
+                                            activated={progressBarActivated}
+                                            percentage={percentage}
+                                            onFinished={() => setProgressBarActivated(false)} />
                                     </div>
                                 </div>
                                 <div className={`BlogLobbySkills__item-container-list ` +
