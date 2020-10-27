@@ -14,55 +14,67 @@ const BlogLobbyContact = (props) => {
 
     /* event handler */
     const onEmailChange = event => {
-        setEmail(event.target.value);
+        const value = event.target.value;
+
+        setEmail(value);
     }
 
     const onNameChange = event => {
         const value = event.target.value;
+
         setName(value);
     }
 
     const onTitleChange = event => {
         const value = event.target.value;
+
         setTitle(value);
     }
 
     const onMessageChange = event => {
         const value = event.target.value;
 
-        console.log(event.target.ctrlKey);
-        console.log(event.target.keycode);
         setMessage(value);
     }
 
     const onSubmitClick = event => {
         event.preventDefault();
 
-        const form = event.target;
-        const formData = new FormData();
+        const formData = {
+            email: email,
+            name: name,
+            title: title,
+            message: message
+        }
 
-        /* form.forEach(element => {
-            formData.append(element.name, element.value);
-        }); */
+        fetch('/mail', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(parsed => console.log(parsed));
     }
 
     return (
         <section className="BlogLobbyContact">
             <div className="BlogLobbyContact__container">
                 <section className={`BlogLobbyContact__content ` +
-                        `${pageIndex === props.index ?
+                    `${pageIndex === props.index ?
                         "BlogLobbyContact__content--appear " :
                         "BlogLobbyContact__content--disappear "}`}>
                     <div className="BlogLobbyContact__contact">
                         <h1 className="BlogLobbyContact__title">Contact</h1>
-                        <form className="BlogLobbyContact__form" 
+                        <form className="BlogLobbyContact__form"
                             onSubmit={onSubmitClick}>
-                            <input className="BlogLobbyContact__text" 
-                                type="text" 
-                                name="email" 
-                                value={email} 
-                                placeholder="your email" 
-                                autoComplete="off" 
+                            <input className="BlogLobbyContact__text"
+                                type="text"
+                                name="email"
+                                value={email}
+                                placeholder="your email"
+                                autoComplete="off"
                                 onChange={onEmailChange} />
                             <input className="BlogLobbyContact__text"
                                 type="text"
