@@ -9,7 +9,7 @@ const BlogLobbyContact = (props) => {
     /* state */
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [title, setTitle] = useState('');
+    const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
 
     /* event handler */
@@ -25,10 +25,10 @@ const BlogLobbyContact = (props) => {
         setName(value);
     }
 
-    const onTitleChange = event => {
+    const onSubjectChange = event => {
         const value = event.target.value;
 
-        setTitle(value);
+        setSubject(value);
     }
 
     const onMessageChange = event => {
@@ -41,9 +41,9 @@ const BlogLobbyContact = (props) => {
         event.preventDefault();
 
         const formData = {
-            email: email,
-            name: name,
-            title: title,
+            senderEmail: email,
+            senderName: name,
+            subject: subject,
             message: message
         }
 
@@ -85,11 +85,11 @@ const BlogLobbyContact = (props) => {
                                 onChange={onNameChange} />
                             <input className="BlogLobbyContact__text"
                                 type="text"
-                                name="title"
-                                value={title}
-                                placeholder="title"
+                                name="subject"
+                                value={subject}
+                                placeholder="subject"
                                 autoComplete="off"
-                                onChange={onTitleChange} />
+                                onChange={onSubjectChange} />
                             <textarea className="
                                     BlogLobbyContact__text
                                     BlogLobbyContact__text-area"
