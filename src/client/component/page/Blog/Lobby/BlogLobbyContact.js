@@ -40,20 +40,9 @@ const BlogLobbyContact = (props) => {
     const onSubmitClick = event => {
         event.preventDefault();
 
-        const formData = {
-            senderEmail: email,
-            senderName: name,
-            subject: subject,
-            message: message
-        }
+        console.log('email', email);
 
-        fetch('/mail', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
+        fetch(`/mail/verification?email=${email}`)
         .then(response => response.json())
         .then(parsed => console.log(parsed));
     }
