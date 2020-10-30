@@ -42,9 +42,8 @@ const BlogLobbyContact = (props) => {
 
         console.log('email', email);
 
-        fetch(`/mail/verification?email=${email}`)
-        .then(response => response.json())
-        .then(parsed => console.log(parsed));
+        fetch(`/email/verification?email=${email}`)
+        .then(response => console.log(response));;
     }
 
     return (
