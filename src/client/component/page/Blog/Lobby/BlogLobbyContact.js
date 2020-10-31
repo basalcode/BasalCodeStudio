@@ -11,6 +11,9 @@ const BlogLobbyContact = (props) => {
     const [name, setName] = useState('');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
+    const [authKey, setAuthKey] = useState('');
+
+    const [emailSent, setEmailSent] = useState(false);
 
     /* event handler */
     const onEmailChange = event => {
@@ -40,10 +43,71 @@ const BlogLobbyContact = (props) => {
     const onSubmitClick = event => {
         event.preventDefault();
 
-        console.log('email', email);
+        if (!emailSent) {
+            fetch(`/email/verification?email=${email}`)
+            .then(response => response.json())
+            .then(parsed => {
+                if (parsed.validity) {
+                    setEmailSent(true);
+                } else {
+                    window.alert('[Error] Failed to send a verification email. Please try it again later.');
+                }
+            });
+        } else {
+            fetch(`/email/send`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    authKey: authKey,
+                    formData: {
+                        email: email,
+                        name: name,
+                        subject: subject,
+                        message: message
+                    }
+                }
+            })
+            .then(response => response.json())
+            .then(parsed => {
+                if (parsed.validity) {
+                    setEmail('');
+                    setName('');
+                    setSubject('');
+                    setMessage('');
+                    setAuthKey('');
 
-        fetch(`/email/verification?email=${email}`)
-        .then(response => console.log(response));;
+                    setEmailSent(false);
+
+                    window.alert('[Message] Email has been successfully sent!');
+                } else {
+                    const statusCode = {
+                        FailToSendEmail: 2,
+                        WrongAuthKey: 3
+                    }
+
+                    if (parsed.code === statusCode.FailToSendEmail) {
+                        window.alert('[Error] Failed to send a verification email. Please try it again later.');
+                        return;
+                    }
+                    if (parsed.code === statusCode.WrongAuthKey) {
+                        setAuthKey('');
+
+                        window.alert('[Error] Your auth key is not match.');
+                        return;
+                    }
+                }
+            });
+        }
+    }
+
+    const onVerificationCodeChange = event => {
+        event.preventDefault();
+
+        const value = event.target.value;
+
+        setAuthKey(value);
     }
 
     return (
@@ -59,36 +123,46 @@ const BlogLobbyContact = (props) => {
                             onSubmit={onSubmitClick}>
                             <input className="BlogLobbyContact__text"
                                 type="text"
-                                name="email"
                                 value={email}
-                                placeholder="your email"
+                                placeholder="Your email"
                                 autoComplete="off"
                                 onChange={onEmailChange} />
                             <input className="BlogLobbyContact__text"
                                 type="text"
-                                name="name"
                                 value={name}
-                                placeholder="your name"
+                                placeholder="Your name"
                                 autoComplete="off"
                                 onChange={onNameChange} />
                             <input className="BlogLobbyContact__text"
                                 type="text"
-                                name="subject"
                                 value={subject}
-                                placeholder="subject"
+                                placeholder="Subject"
                                 autoComplete="off"
                                 onChange={onSubjectChange} />
                             <textarea className="
                                     BlogLobbyContact__text
                                     BlogLobbyContact__text-area"
-                                name="message"
                                 value={message}
-                                placeholder="message"
+                                placeholder="Message"
                                 autoComplete="off"
                                 onChange={onMessageChange} />
-                            <input className="BlogLobbyContact__submit"
-                                type="submit"
-                                value="Send Email" />
+                            <div className="BlogLobbyContact__submit-container">
+                                <input className={`BlogLobbyContact__submit ` +
+                                    emailSent ? 
+                                        "BlogLobbyContact__submit--email-sent" :
+                                        ""}
+                                    type="submit"
+                                    value="Send Email" />
+                                <input className={`BlogLobbyContact__auth-key ` + 
+                                    emailSent ?
+                                        "BlogLobbyContact__auth-key--on " :
+                                        ""}
+                                    type="text"
+                                    value={authKey}
+                                    placeholder="Verification Code"
+                                    autoComplete="off"
+                                    onChange={onVerificationCodeChange} />
+                            </div>
                         </form>
                     </div>
                 </section>

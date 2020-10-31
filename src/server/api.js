@@ -166,16 +166,18 @@ app.post('/email/send', (req, res) => {
 
         sendEmailToRecipient()
         .then(() => {
-            res.status(500).send({
-                validity: false,
-                message: 'An error has occurred during a sending email.',
-                code: 2
-            });
-        }, () => {
+            req.session.emailAuthKey = null;
+
             res.status(200).send({
                 validity: true,
                 message: 'The server has sent the email successfully.',
                 code: 1
+            });
+        }, () => {
+            res.status(500).send({
+                validity: false,
+                message: 'An error has occurred during a sending email.',
+                code: 2
             });
         });
 

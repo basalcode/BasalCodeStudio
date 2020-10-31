@@ -74,6 +74,12 @@
         overflow: auto;
     }
 
+    &__submit-container {
+        &--email-sent {
+
+        }
+    }
+
     &__submit {
         @include size(25%, 40px);
         @include round-border(5px);
@@ -84,5 +90,11 @@
         text-align: center;
 
         background-color: white;
+    }
+
+    &__auth-key {
+        &--on {
+            
+        }
     }
 }
