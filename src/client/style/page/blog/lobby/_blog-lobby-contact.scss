@@ -1,6 +1,4 @@
 .BlogLobbyContact {
-    // @include dev-inspector();
-
     @include size(100%, 100vh);
 
     position: relative;
@@ -14,7 +12,6 @@
     }
 
     &__content {
-        // @include dev-inspector();
         @include size(50%, 100%);
 
         position: relative;
@@ -30,7 +27,6 @@
     }
 
     &__contact {
-        // @include dev-inspector();
         @include center-vertical();
 
         position: relative;
@@ -39,8 +35,6 @@
     }
 
     &__title {
-        // @include dev-inspector();
-
         margin-bottom: 40px;
 
         font-family: 'Noto Serif KR', serif;
@@ -49,14 +43,12 @@
     }
 
     &__form {
-        // @include dev-inspector();
-
         display: flex;
         flex-direction: column;
     }
 
     &__text {
-        @include size(80%, 40px);
+        @include size(80%, 2.5rem);
         @include round-border(5px);
 
         margin-bottom: 15px;
@@ -67,7 +59,7 @@
     }
 
     &__text-area {
-        @include size(80%, 200px);
+        @include size(80%, 12.5rem);
 
         padding: 15px 20px;
 
@@ -75,26 +67,45 @@
     }
 
     &__submit-container {
-        &--email-sent {
+        @include size(100%, 3rem);
 
-        }
+        display: flex;
     }
 
     &__submit {
-        @include size(25%, 40px);
+        @include size(25%, 100%);
         @include round-border(5px);
 
         border: 1px solid gray;
-        padding: 5px 0px;
+        margin-right: 3.5rem;
 
         text-align: center;
+        color: white;
+        background-color: gray;
+        transition: background-color 1s;
 
-        background-color: white;
+        &--email-sent {
+            background-color: hsl(166, 80%, 42%);
+        }
+
+        &--down {
+            background-color: hsl(166, 80%, 32%);
+        }
     }
 
     &__auth-key {
+        @include size(0, 100%);
+        @include round-border(5px);
+        
+        padding: 0px 15px;
+
+        transition: width 0.5s;
+        transition-delay: 1s;
+
         &--on {
-            
+            width: 45%;
+            border: 1px solid gray;
+            background-color: white;
         }
     }
 }

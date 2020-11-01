@@ -13,7 +13,10 @@ const BlogLobbyContact = (props) => {
     const [message, setMessage] = useState('');
     const [authKey, setAuthKey] = useState('');
 
-    const [emailSent, setEmailSent] = useState(false);
+    const [submitLock, setSubmitLock] = useState(false);
+    const [authEmailSent, setAuthEmailSent] = useState(false);
+
+    const [submitButtonDown, setSubmitButtonDown] = useState(false);
 
     /* event handler */
     const onEmailChange = event => {
@@ -43,23 +46,25 @@ const BlogLobbyContact = (props) => {
     const onSubmitClick = event => {
         event.preventDefault();
 
-        if (!emailSent) {
-            fetch(`/email/verification?email=${email}`)
-            .then(response => response.json())
-            .then(parsed => {
-                if (parsed.validity) {
-                    setEmailSent(true);
-                } else {
-                    window.alert('[Error] Failed to send a verification email. Please try it again later.');
-                }
-            });
-        } else {
-            fetch(`/email/send`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: {
+        if (!submitLock) {
+            /* lock */
+            setSubmitLock(true);
+            
+            if (!authEmailSent) {
+                fetch(`/email/auth?email=${email}`)
+                    .then(response => response.json())
+                    .then(parsed => {
+                        if (parsed.validity) {
+                            setAuthEmailSent(true);
+                        } else {
+                            alert('[Error] Failed to send a authentication email. Please try it again later.');
+                        }
+
+                        /* unlock */
+                        setSubmitLock(false);
+                    });
+            } else {
+                const emailSendData = {
                     authKey: authKey,
                     formData: {
                         email: email,
@@ -68,46 +73,73 @@ const BlogLobbyContact = (props) => {
                         message: message
                     }
                 }
-            })
-            .then(response => response.json())
-            .then(parsed => {
-                if (parsed.validity) {
-                    setEmail('');
-                    setName('');
-                    setSubject('');
-                    setMessage('');
-                    setAuthKey('');
 
-                    setEmailSent(false);
+                fetch(`/email/send`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(emailSendData)
+                })
+                    .then(response => response.json())
+                    .then(parsed => {
+                        console.log('communication result');
 
-                    window.alert('[Message] Email has been successfully sent!');
-                } else {
-                    const statusCode = {
-                        FailToSendEmail: 2,
-                        WrongAuthKey: 3
-                    }
+                        if (parsed.validity) {
+                            setEmail('');
+                            setName('');
+                            setSubject('');
+                            setMessage('');
+                            setAuthKey('');
 
-                    if (parsed.code === statusCode.FailToSendEmail) {
-                        window.alert('[Error] Failed to send a verification email. Please try it again later.');
-                        return;
-                    }
-                    if (parsed.code === statusCode.WrongAuthKey) {
-                        setAuthKey('');
+                            setAuthEmailSent(false);
 
-                        window.alert('[Error] Your auth key is not match.');
-                        return;
-                    }
-                }
-            });
+                            window.alert('[Message] Email has been successfully sent!');
+                        } else {
+                            const statusCode = {
+                                FailToSendEmail: 2,
+                                WrongAuthKey: 3
+                            }
+
+                            if (parsed.code === statusCode.FailToSendEmail) {
+                                alert('[Error] Failed to send the email. Please try it again later.');
+                                return;
+                            }
+
+                            if (parsed.code === statusCode.WrongAuthKey) {
+                                setAuthKey('');
+
+                                alert('[Error] Your auth key is not match.');
+                            }
+                        }
+                        
+                        /* unlock */
+                        setSubmitLock(false);
+                    });
+            }
+        } else {
+            alert('[Error] You have already submit the email');
         }
     }
 
-    const onVerificationCodeChange = event => {
+    const onAuthKeyChange = event => {
         event.preventDefault();
 
         const value = event.target.value;
 
         setAuthKey(value);
+    }
+
+    const onSubmitButtonDown = event => {
+        event.preventDefault();
+
+        setSubmitButtonDown(true);
+    }
+
+    const onSubmitButtonUp = event => {
+        event.preventDefault();
+
+        setSubmitButtonDown(false);
     }
 
     return (
@@ -148,20 +180,27 @@ const BlogLobbyContact = (props) => {
                                 onChange={onMessageChange} />
                             <div className="BlogLobbyContact__submit-container">
                                 <input className={`BlogLobbyContact__submit ` +
-                                    emailSent ? 
+                                    `${authEmailSent ?
                                         "BlogLobbyContact__submit--email-sent" :
-                                        ""}
+                                        ""} ` + 
+                                    `${submitButtonDown ?
+                                        "BlogLobbyContact__submit--down" :
+                                        ""}`}
                                     type="submit"
-                                    value="Send Email" />
-                                <input className={`BlogLobbyContact__auth-key ` + 
-                                    emailSent ?
+                                    value={authEmailSent ?
+                                        "Send Email" :
+                                        "Check Email"}
+                                    onMouseDown={onSubmitButtonDown}
+                                    onMouseUp={onSubmitButtonUp} />
+                                <input className={`BlogLobbyContact__auth-key ` +
+                                    `${authEmailSent ?
                                         "BlogLobbyContact__auth-key--on " :
-                                        ""}
+                                        ""}`}
                                     type="text"
                                     value={authKey}
-                                    placeholder="Verification Code"
+                                    placeholder="Auth Key"
                                     autoComplete="off"
-                                    onChange={onVerificationCodeChange} />
+                                    onChange={onAuthKeyChange} />
                             </div>
                         </form>
                     </div>
@@ -173,7 +212,3 @@ const BlogLobbyContact = (props) => {
 }
 
 export default BlogLobbyContact;
-
-/*
-
-*/

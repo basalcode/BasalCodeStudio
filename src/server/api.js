@@ -24,7 +24,7 @@ const oAuth2 = require('../../.private/oAuth2');
 const email = require('../../.private/email');
 
 /* api */
-app.get('/email/verification', (req, res) => {
+app.get('/email/auth', (req, res) => {
     const ServerEmail = email.serverEmail;
 
     let transporter = nodemailer.createTransport({
@@ -106,12 +106,14 @@ app.get('/email/verification', (req, res) => {
         res.status(500).send({
             validity: false,
             message: 'An error has occurred during a sending email.',
-            code: 2
+            code: 3
         });
     });
 });
 
 app.post('/email/send', (req, res) => {
+    console.log('request /email/send start');
+
     let inputAuthKey = req.body.authKey;
     let sessionAuthKey = req.session.emailAuthKey;
     if (inputAuthKey === sessionAuthKey) {
@@ -180,8 +182,6 @@ app.post('/email/send', (req, res) => {
                 code: 2
             });
         });
-
-        
     } else {
         res.status(400).send({
             validity: false,
