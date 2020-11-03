@@ -45,6 +45,8 @@
     &__form {
         display: flex;
         flex-direction: column;
+
+        width: 100%;
     }
 
     &__text {
@@ -66,11 +68,25 @@
         overflow: auto;
     }
 
+    &__form-message {
+        @include size(87.5%, 1.5rem);
+
+        padding: 0 20px;
+        margin-bottom: 15px;
+        
+        background-color: hsl(159, 100%, 50%);
+        text-align: center;
+        transition: 1s;
+
+        &--error {
+            background-color: hsl(340, 85%, 61%);
+        }
+    }
+
     &__submit-container {
         @include size(100%, 3rem);
 
-        display: flex;
-    }
+        display: flex;    }
 
     &__submit {
         @include size(25%, 100%);

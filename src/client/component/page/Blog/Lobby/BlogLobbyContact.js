@@ -18,6 +18,9 @@ const BlogLobbyContact = (props) => {
 
     const [submitButtonDown, setSubmitButtonDown] = useState(false);
 
+    const [formMessage, setFormMessage] = useState('나누고 싶은 얘기가 있다면 문의주세요 :)');
+    const [formError, setFormError] = useState(false);
+
     /* event handler */
     const onEmailChange = event => {
         const value = event.target.value;
@@ -49,15 +52,20 @@ const BlogLobbyContact = (props) => {
         if (!submitLock) {
             /* lock */
             setSubmitLock(true);
-            
+
+            setFormMessage('요청중입니다...');
+            setFormError(false);
             if (!authEmailSent) {
                 fetch(`/email/auth?email=${email}`)
                     .then(response => response.json())
                     .then(parsed => {
                         if (parsed.validity) {
                             setAuthEmailSent(true);
+
+                            setFormMessage('입력한 메일로 인증코드가 발송되었습니다.');
+                            setFormError(false);
                         } else {
-                            alert('[Error] Failed to send a authentication email. Please try it again later.');
+                            alert('[에러] 인증 메일 전송이 실패했습니다. 관리자에게 문의하세요.');
                         }
 
                         /* unlock */
@@ -83,8 +91,6 @@ const BlogLobbyContact = (props) => {
                 })
                     .then(response => response.json())
                     .then(parsed => {
-                        console.log('communication result');
-
                         if (parsed.validity) {
                             setEmail('');
                             setName('');
@@ -94,7 +100,8 @@ const BlogLobbyContact = (props) => {
 
                             setAuthEmailSent(false);
 
-                            window.alert('[Message] Email has been successfully sent!');
+                            setFormMessage('메일이 성공적으로 전송되었습니다!');
+                            setFormError(false);
                         } else {
                             const statusCode = {
                                 FailToSendEmail: 2,
@@ -102,23 +109,26 @@ const BlogLobbyContact = (props) => {
                             }
 
                             if (parsed.code === statusCode.FailToSendEmail) {
-                                alert('[Error] Failed to send the email. Please try it again later.');
+                                alert('[에러] 이메일 전송이 실패했습니다. 관리자에게 문의하세요.');
+                                setFormError(false);
                                 return;
                             }
 
                             if (parsed.code === statusCode.WrongAuthKey) {
                                 setAuthKey('');
 
-                                alert('[Error] Your auth key is not match.');
+                                setFormMessage('입력하신 키가 올바르지 않습니다.');
+                                setFormError(true);
                             }
                         }
-                        
+
                         /* unlock */
                         setSubmitLock(false);
                     });
             }
         } else {
-            alert('[Error] You have already submit the email');
+            setFormMessage('메일이 전송 중입니다.');
+            setFormError(true);
         }
     }
 
@@ -178,11 +188,17 @@ const BlogLobbyContact = (props) => {
                                 placeholder="Message"
                                 autoComplete="off"
                                 onChange={onMessageChange} />
+                            <div className={`BlogLobbyContact__form-message ` +
+                                `${formError ?
+                                    "BlogLobbyContact__form-message--error" :
+                                    ""}`}>
+                                {formMessage}
+                            </div>
                             <div className="BlogLobbyContact__submit-container">
                                 <input className={`BlogLobbyContact__submit ` +
                                     `${authEmailSent ?
                                         "BlogLobbyContact__submit--email-sent" :
-                                        ""} ` + 
+                                        ""} ` +
                                     `${submitButtonDown ?
                                         "BlogLobbyContact__submit--down" :
                                         ""}`}
