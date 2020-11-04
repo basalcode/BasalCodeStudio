@@ -96,8 +96,6 @@ module.exports = (request, response) => {
                 });
         },
         send() {
-            console.log('request /email/send start');
-
             let inputAuthKey = request.body.authKey;
             let sessionAuthKey = request.session.emailAuthKey;
             if (inputAuthKey === sessionAuthKey) {
@@ -125,14 +123,14 @@ module.exports = (request, response) => {
                     to: RecipientEmail,
                     subject: formData.subject,
                     html: `
-                        <h1>${formData.subject}</h1>
-                        <h2>발신자 정보</h2>
+                        <h1>[Subject]: ${formData.subject}</h1>
+                        <h2>[Sender Information]</h2>
                         <p>
                         Email: ${formData.email}
                         <br />
                         Name: ${formData.name}
                         </p>
-                        <h2>내용</h2>
+                        <h2>[Message]</h2>
                         <p>${formData.message}</p>`
                 }
 

@@ -53,8 +53,29 @@ const BlogLobbyContact = (props) => {
             /* lock */
             setSubmitLock(true);
 
+            /* error */
+            const errorHandler = (message) => {
+                setFormMessage(message);
+                setFormError(true);
+                setSubmitLock(false);
+            }
+
+            if (email === '') {
+                return errorHandler('이메일을 입력해주세요.');;
+            }
+            if (name === '') {
+                return errorHandler('이름을 입력해주세요.');;
+            }
+            if (subject === '') {
+                return errorHandler('주제를 입력해주세요.');;
+            }
+            if (message === '') {
+                return errorHandler('메세지를 입력해주세요.');;
+            }
+
             setFormMessage('요청중입니다...');
             setFormError(false);
+            
             if (!authEmailSent) {
                 fetch(`/email/auth?email=${email}`)
                     .then(response => response.json())
