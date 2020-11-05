@@ -28,6 +28,8 @@ import mysqlLogo from 'asset/img/logo/mysql.svg';
 // others
 import npmLogo from 'asset/img/logo/npm.svg';
 import gitLogo from 'asset/img/logo/git.svg';
+import nodeMailer from 'asset/img/logo/node-mailer.png';
+import bcrypt from 'asset/img/logo/bcrypt.svg';
 
 const itemDatas = {
     Basics: {
@@ -41,78 +43,84 @@ const itemDatas = {
                 description: "CSS transition과 animation을 활용한 동적인 웹페이지 구성에 관심이 많습니다." },
             { imagePath: javascriptLogo,
                 title: "Javascript", 
-                description: "최신 Javascript 사용한 이벤트 처리, 서버와의 통신, 비동기 처리를 잘 다룹니다." }
+                description: "최신 Javascript 문법을 사용한 이벤트 처리, 서버와의 통신, 비동기 처리에 익숙합니다." }
         ]
     },
     Host: {
-        proficiency: 95,
+        proficiency: 90,
         items: [
             { imagePath: awsLogo, 
                 title: "AWS", 
                 description: "AWS를 사용해 해당 블로그를 개발하고 있습니다 :)" },
             { imagePath: awsEC2Logo, 
                 title: "AWS EC2", 
-                description: "AWS에서 서버를 할당받아 운영할 수 있습니다입니다." },
+                description: "AWS에서 서버를 할당받아 서비스를 운영할 수 있습니다." },
             { imagePath: awsRoute53Logo, 
                 title: "AWS Route53", 
-                description: "Amazon DNS 서버에 도메인을 등록해 서비스를 운영중입니다." },
+                description: "Amazon DNS 서버에 도메인을 등록해 현 서비스를 운영중입니다." },
             { imagePath: ubuntuLogo, 
                 title: "Ubuntu", 
-                description: "Ubuntu 운영체제를 사용해 서비스를 호스팅 하고 있습니다." },
+                description: "Ubuntu 운영체제를 이용하여 웹서버를 구현하고 서비스를 제공하고 있습니다." },
             { imagePath: httpsLogo, 
                 title: "Let's Encrypt", 
                 description: "SSL이 적용된 HTTPS 프로토콜을 사용한 서비스를 운영중입니다." }
         ]
     },
-    Frontend: {
-        proficiency: 100,
+    Front: {
+        proficiency: 95,
         items: [
             { imagePath: sassLogo, 
                 title: "SASS", 
-                description: "SASS와 BEM 네이밍 컨벤션을 조합하여 CSS의 단점을 극복해나가고 있습니다." },
+                description: "SASS와 BEM 네이밍 컨벤션을 조합하여 더 효과적인 웹 스타일링을 고민하고 있습니다." },
             { imagePath: reactLogo, 
                 title: "React", 
-                description: "견고한 Component의 설계에 관심을 가지고 React hook을 즐기는 중입니다." },
+                description: "유지보수와 재사용이 가능한 견고한 Component의 설계에 관심을 가지고 있습니다. Functional style의 Component를 선호합니다." },
             { imagePath: reactRouterLogo, 
                 title: "React Router", 
                 description: "SPA의 구성을 위해 React Router를 도입해 사용하고 있습니다." },
             { imagePath: reduxLogo, 
                 title: "Redux", 
-                description: "App의 전역적인 상태관리는 Redux를 도입해 사용하고 있고, 더 나은 사용방법을 연구중입니다." },
+                description: "App의 전역적인 상태관리는 Redux를 도입해 해결하고 있고, 더 나은 사용방법을 연구중입니다." },
             { imagePath: reduxSagaLogo, 
                 title: "Redux Saga", 
-                description: "비동기적인 상황을 처리하기 위한 Middleware로 Redux Saga를 도입해 사용합니다." }
+                description: "서버와의 통신 등 비동기적인 상황을 처리하기 위한 Middleware로 Redux Saga를 도입해 사용하고 있습니다." }
         ]
     },
-    Backend: {
+    Back: {
         proficiency: 95,
         items: [
             { imagePath: nodejsLogo, 
                 title: "Node.js", 
-                description: "Server Application를 제작하는 도구로 Node.js를 채택하여 사용하고 있습니다." },
+                description: "Server Application을 Node.js를 이용하여 제작할 수 있습니다." },
             { imagePath: nginxLogo, 
                 title: "NGINX", 
-                description: "Reserve proxy로 NGINX를 사용해 보안과 성능을 높여 서비를 운영 중입니다." },
+                description: "Reverse proxy로 NGINX를 사용해 보안과 성능을 높힌 서비를 운영 중입니다." },
             { imagePath: expressLogo, 
                 title: "Express", 
-                description: "Express Framework에 직접 설계한 REST API를 서비스에 적용해 보았습니다." },
+                description: "직접 설계한 REST API를 Express Framework를 사용하여 서비스에 적용해 보았습니다." },
             { imagePath: mysqlLogo, 
                 title: "MySQL", 
-                description: "MySQL을 사용해 Session과 Server 데이터를 저장하고, bcrypt를 이용해 hashing을 적용했습니다." },
+                description: "MySQL을 사용해 Session과 Server 데이터를 관리할 수 있고, privacy가 필요한 데이터는 bcrypt를 이용해 hashing을 적용했습니다." },
             { imagePath: pm2Logo, 
                 title: "PM2", 
                 description: "Node.js 프로세스를 PM2를 사용해 관리하고 있습니다." }
         ]
     },
     Others: {
-        proficiency: 100,
+        proficiency: 90,
         items: [
             { imagePath: npmLogo, 
                 title: "NPM", 
-                description: "Package Manager를 사용해 다양한 필요한 Modeule들을 다룰 수 있습니다." },
+                description: "Package Manager를 사용해 다양한 필요한 Module들을 다룰 수 있습니다." },
             { imagePath: gitLogo, 
                 title: "git", 
                 description: "git을 사용해 버전관리를 하고 있으며, Github repository에 꾸준히 업로드 중입니다." },
+            { imagePath: nodeMailer,
+                title: "nodeMailer",
+                description: "Nodemailer Package를 사용해 OAuth 2.0 방식의 이메일 전송 서비스를 구현하였습니다." },
+            { imagePath: bcrypt,
+                title: "bcrypt",
+                description: "bcrypt Package를 사용해 비밀번호와 같은 정보에 hashing을 적용했습니다." }
         ]
     }
 };

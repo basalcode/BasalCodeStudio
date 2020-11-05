@@ -5,9 +5,11 @@
     flex-direction: column;
     
     &__progress-number {
-        @include size(100%, 50%);
+        @include size(100%, 30%);
     
         text-align: right;
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1rem;
     }
     
     &__progress-bar {

@@ -35,7 +35,6 @@
 
         &--disappear {
             left: 100%;
-            // transition-delay: 0.1s;
         }
 
         &--appear {
@@ -93,7 +92,7 @@
         display: flex;
         position: relative;
         top: 60px;
-        left: 180%;
+        left: 60vw;
 
         transition: left 1s;
         
@@ -101,7 +100,7 @@
             margin-bottom: 30px;
             top: 0;
             left: 0;
-            transition-delay: 0.7s;
+            transition-delay: 0.5s;
         }
     }
 
@@ -119,7 +118,7 @@
         display: flex;
         position: relative;
         top: 0;
-        left: 150%;
+        left: 100vw;
         transition: left 1s, width 1s;
 
         &--selected {

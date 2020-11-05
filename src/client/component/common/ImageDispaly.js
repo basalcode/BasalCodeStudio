@@ -62,7 +62,6 @@ const ImageDispaly = (props) => {
         } else {
             clearTimeout(target);
         }
-
     }, [props.activated, imageIndex]);
 
     return (

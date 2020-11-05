@@ -47,7 +47,6 @@ const BlogLobbySkills = (props) => {
             setProgressBarActivated(true);
             setPercentage(percentage);
 
-
             props.onSelect(true);
 
             /* style */ 
