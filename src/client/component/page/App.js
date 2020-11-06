@@ -67,6 +67,11 @@ const App = () => {
         dispatch(lobbyPageAction(scrollPage, 0, false));
     }, []);
 
+    // auto fcous on App
+    useEffect(() => {
+        appRef.current.focus();
+    }, []);
+
     return (
         <section className={
             `App ` +

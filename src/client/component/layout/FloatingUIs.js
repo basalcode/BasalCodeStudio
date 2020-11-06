@@ -21,7 +21,7 @@ const FloatingUIs = ({ fadeInOn }) => {
         const pageScrolled = scrollPage.moveScroll(CONTACT_PAGE_INDEX);
 
         if (pageScrolled) {
-            dispatch(lobbyPageAction(CONTACT_PAGE_INDEX));
+            dispatch(lobbyPageAction(scrollPage, CONTACT_PAGE_INDEX, false));
         }
     }
 
@@ -31,7 +31,7 @@ const FloatingUIs = ({ fadeInOn }) => {
         const pageScrolled = scrollPage.moveScroll(TOP_PAGE_INDEX);
 
         if (pageScrolled) {
-            dispatch(lobbyPageAction(TOP_PAGE_INDEX));
+            dispatch(lobbyPageAction(scrollPage, TOP_PAGE_INDEX, false));
         }
     }
 
