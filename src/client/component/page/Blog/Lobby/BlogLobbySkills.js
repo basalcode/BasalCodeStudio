@@ -9,6 +9,7 @@ import itemData from 'asset/img/logo/itemData';
 import CircleDisplay from 'component/common/CircleDisplay';
 import ImageDisplay from 'component/common/ImageDispaly';
 import ProgressBar from 'component/common/ProgressBar';
+import TypingDisplay from '../../../common/TypingDisplay';
 
 const BlogLobbySkills = (props) => {
     /* store */
@@ -177,9 +178,9 @@ const BlogLobbySkills = (props) => {
                                                     {item.title}
                                                 </h2>
                                             </div>
-                                            <p className="BlogLobbySkills__item-description">
-                                                {item.description}
-                                            </p>
+                                            <div className="BlogLobbySkills__item-description">
+                                                <TypingDisplay fullText={item.description} />
+                                            </div>
                                         </div>
                                     )}
                                 </div>
