@@ -22,7 +22,7 @@ const TypingDisplay = (props) => {
 
         if (typingIndex < textLength) {
             const timer = fullText[typingIndex] === ' ' ?
-                Math.floor(Math.random() * 100) + 100 : 80;
+                Math.floor(Math.random() * 50) + 50 : 50;
             const timeout = setTimeout(() => {
                 const newText = typingText + fullText[typingIndex];
 
@@ -34,9 +34,11 @@ const TypingDisplay = (props) => {
 
             setTypingTimeout(timeout);
             setAnimationOn(true);
+            props.onActivated(true);
         } else {
             clearTimeout(typingTimeout);
             setAnimationOn(false);
+            props.onActivated(false);
         }
     }, [typingText]);
 

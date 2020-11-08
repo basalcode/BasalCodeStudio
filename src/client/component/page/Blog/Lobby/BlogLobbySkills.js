@@ -19,6 +19,8 @@ const BlogLobbySkills = (props) => {
     const [itemSelected, setItemSelected] = useState(false);
     const [categoryIndex, setCategoryIndex] = useState(-1);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [typingFinishCount, setTypingFinishCount] = useState(0);
+    const [typingFinished, setTypingFinished] = useState(false);
 
     // progreess bar
     const [percentage, setPercentage] = useState(0);
@@ -35,7 +37,9 @@ const BlogLobbySkills = (props) => {
     /* event handler */
     const onSelect = index => {
         if (index !== categoryIndex &&
-            !progressBarActivated) {
+            !progressBarActivated &&
+            typingFinished) {
+
             /* constant */
             const selectedCategoryData = Object.values(itemData)[index];
             const percentage = selectedCategoryData.proficiency;
@@ -43,20 +47,32 @@ const BlogLobbySkills = (props) => {
             /* state */
             setItemSelected(true);
             setCategoryIndex(index);
-            
+
             // progress bar
             setProgressBarActivated(true);
             setPercentage(percentage);
 
             props.onSelect(true);
+            
+            // typing finished
+            setTypingFinishCount(0);
+            setTypingFinished(false);
 
-            /* style */ 
+            /* style */
             setItemContainerListStyle({
                 height: '0',
                 overflow: 'hidden'
             });
+            console.log('clicked');
         }
     };
+
+    const onActivated = activated => {
+        if (!activated) {
+            const newCount = typingFinishCount + 1;
+            setTypingFinishCount(newCount);
+        }
+    }
 
     /* useEffect */
     // when escape from the page
@@ -70,7 +86,7 @@ const BlogLobbySkills = (props) => {
             // progress bar
             setProgressBarActivated(false);
             setPercentage(0);
-
+            
             props.onSelect(false);
 
             /* style */
@@ -83,8 +99,8 @@ const BlogLobbySkills = (props) => {
 
     // skills item container animation
     useEffect(() => {
+        const interval = 1000;
         if (pageIndex === props.index) {
-            const interval = 1000;
             setTimeout(() => {
                 /* constant */
                 const selectedCategoryData = Object.values(itemData)[categoryIndex];
@@ -101,11 +117,28 @@ const BlogLobbySkills = (props) => {
                     height: itemHeight + 'rem'
                 });
 
-                /* setState */
+                /* state */
                 setSelectedCategory(selectedCategoryData);
+                console.log('mount effect');
+            }, interval);
+        }
+        return () => {
+            setTimeout(() => {
+                console.log('unmount effect');
+                setSelectedCategory(null);
             }, interval);
         }
     }, [categoryIndex]);
+
+    // typing animation finished
+    useEffect(() => {
+        const categoryItemCount = selectedCategory ? selectedCategory.items.length : 0;
+        const finished = categoryItemCount === typingFinishCount ? true : false;
+
+        console.log();
+
+        setTypingFinished(finished);
+    }, [typingFinishCount]);
 
     return (
         <section className="BlogLobbySkills">
@@ -123,10 +156,10 @@ const BlogLobbySkills = (props) => {
                                     "BlogLobbySkills__circle-layout-container--off"}`}>
                                 <ImageDisplay
                                     activated={itemSelected}
-                                    skillsPageOn={itemSelected} 
-                                    location={location}/>
+                                    skillsPageOn={itemSelected}
+                                    location={location} />
                                 <CircleDisplay
-                                    activated={!progressBarActivated}
+                                    activated={!progressBarActivated && typingFinished}
                                     reset={!itemSelected}
                                     elements={categories}
                                     diameter={circleLayoutDiameter}
@@ -154,7 +187,7 @@ const BlogLobbySkills = (props) => {
                                         <h2 className="BlogLobbySkills__sub-title">
                                             {`- ${categories[categoryIndex]}`}
                                         </h2>
-                                        <ProgressBar 
+                                        <ProgressBar
                                             activated={progressBarActivated}
                                             percentage={percentage}
                                             onFinished={() => setProgressBarActivated(false)} />
@@ -179,7 +212,9 @@ const BlogLobbySkills = (props) => {
                                                 </h2>
                                             </div>
                                             <div className="BlogLobbySkills__item-description">
-                                                <TypingDisplay fullText={item.description} />
+                                                <TypingDisplay 
+                                                    fullText={item.description}
+                                                    onActivated={onActivated} />
                                             </div>
                                         </div>
                                     )}
