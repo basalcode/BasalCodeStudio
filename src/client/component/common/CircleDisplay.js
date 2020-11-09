@@ -1,10 +1,14 @@
 /* module */
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 /* lib */
 import circle from 'lib/circle/circularFunction';
 
 const CircleDisplay = (props) => {
+    /* store */
+    const nightModeOn = useSelector(store => store.app.nightModeOn, []);
+
     /* props */
     const activated = props.activated;
     const reset = props.reset;
@@ -59,18 +63,33 @@ const CircleDisplay = (props) => {
         <div className="CircleDisplay"
             style={componentStyle}>
             {Object.keys(elements).map((title, index) =>
-                <div className={`CircleDisplay__category ` +
-                    `${index === currentSelected &&
-                    "CircleDisplay__category--selected "}`}
+                <div className={"CircleDisplay__category " + 
+                    `${nightModeOn ?
+                        "CircleDisplay__category--night-mode" : ""} ` +
+                    `${index === currentSelected ?
+                        nightModeOn ?
+                        "CircleDisplay__category--night-mode-selected" :
+                        "CircleDisplay__category--selected" : 
+                        ""} `}
                     style={contentStyle[index]}
                     key={index}
                     onClick={event => onSelect(index)}>
-                    <div className="CircleDisplay__category-title">
+                    <div className={`CircleDisplay__category-title ` +
+                        `${nightModeOn ?
+                            "CircleDisplay__category-title--night-mode" : ""} ` +
+                        `${index === currentSelected ?
+                            nightModeOn ?
+                            "CircleDisplay__category-title--night-mode-selected" :
+                            "CircleDisplay__category-title--selected" : 
+                            ""} `}>
                         {elements[index]}
                     </div>
                 </div>
             )}
-            <div className="CircleDisplay__inner-line"></div>
+            <div className={"CircleDisplay__inner-line " +
+                `${nightModeOn ?
+                    "CircleDisplay__inner-line--night-mode" : ""}`}
+            ></div>
         </div>
     );
 }

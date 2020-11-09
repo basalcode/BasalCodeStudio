@@ -1,7 +1,11 @@
 /* module */
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 const ProgressBar = (props) => {
+    /* store */
+    const nightModeOn = useSelector(store => store.app.nightModeOn, []);
+
     /* props */
     const activated = props.activated;
     const percentage = props.percentage;
@@ -44,8 +48,8 @@ const ProgressBar = (props) => {
             /* constant */
             const diagonalDegree = '45deg';
             const diagonalLineWidth = 10;
-            const diagonalLineColor = 'hsl(33, 53%, 88%)';
-            const reversalColor = 'white';
+            const diagonalLineColor = !nightModeOn ? 'hsl(33, 53%, 88%)' : '';
+            const reversalColor = !nightModeOn ? 'white' : 'hsl(152, 84%, 7%)';
 
             /* state */
             
@@ -92,7 +96,6 @@ const ProgressBar = (props) => {
                         setAnimationOn(false);
 
                         setGuageBarBackgroundStyle({});
-
                         /* disconnect */
                         resizeEvent.disconnect(progressGaugeRef.current);
                     }

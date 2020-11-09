@@ -16,8 +16,10 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
         @include rotate($CIRCLE_DISPLAY_ROTATE, true, false);
         
         position: absolute;
-        border: 2px solid black;
-
+        border-width: 2px;
+        border-style: solid;
+        border-color: black;
+        
         font-family: 'Great Vibes', cursive;
         font-size: 2.2rem;
         cursor: pointer;
@@ -32,6 +34,22 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
         &--selected {
             background-color: black;
             color: white;
+        }
+
+        &--night-mode {
+            border-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD; 
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--TEXT_FIELD;
+            color: $NIGHTMODE_COLOR--TEXT_FIELD;
+        }
+
+        &--night-mode:hover {
+            background-color: $NIGHTMODE_COLOR--TEXT_FIELD;
+            color: $NIGHTMODE_COLOR;
+        }
+
+        &--night-mode-selected {
+            background-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
+            color: $NIGHTMODE_BACKGROUND_COLOR--TEXT_FIELD;
         }
     }
 
@@ -50,5 +68,9 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
 
         position: absolute;
         border: 2px solid black;
+        
+        &--night-mode {
+            border-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
+        }
     }
 }

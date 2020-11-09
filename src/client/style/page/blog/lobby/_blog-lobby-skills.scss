@@ -62,6 +62,10 @@
         &--off {
             left: 100%;
         }
+
+        &--night-mode {
+            border-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
+        }
     }
 
     &__item-section {
