@@ -1,7 +1,6 @@
 $CIRCLE_DISPLAY_INNER_CIRCLE_SIZE: 23rem;
 $CIRCLE_DISPLAY_ROTATE: 35s;
 
-
 .CircleDisplay {
     @include circle-border();
     @include rotate($CIRCLE_DISPLAY_ROTATE, false, true);

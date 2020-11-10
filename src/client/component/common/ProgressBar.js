@@ -48,7 +48,7 @@ const ProgressBar = (props) => {
             /* constant */
             const diagonalDegree = '45deg';
             const diagonalLineWidth = 10;
-            const diagonalLineColor = !nightModeOn ? 'hsl(33, 53%, 88%)' : '';
+            const diagonalLineColor = !nightModeOn ? 'hsl(33, 53%, 88%)' : 'hsl(159, 100%, 50%)';
             const reversalColor = !nightModeOn ? 'white' : 'hsl(152, 84%, 7%)';
 
             /* state */
@@ -107,23 +107,32 @@ const ProgressBar = (props) => {
 
     return (
         <div className="ProgressBar">
-            <div className="ProgressBar__progress-number">
+            <div className={"ProgressBar__progress-number " + 
+                `${nightModeOn ? 
+                    "ProgressBar__progress-number--night-mode" : ""} `}>
                 {`${progressNumber} %`}
             </div>
-            <div className="ProgressBar__progress-bar"
+            <div className={"ProgressBar__progress-bar " +
+                    `${nightModeOn ? 
+                        "ProgressBar__progress-bar--night-mode" : 
+                        ""} `}
                 ref={progressBarRef}>
                 <div className={
                     `ProgressBar__progress-gauge ` +
-                    `${percentage &&
-                    `ProgressBar__progress-gauge--activated `
-                    }`}
+                    `${percentage ?
+                        "ProgressBar__progress-gauge--activated" :
+                        ""} ` + 
+                    `${nightModeOn ? 
+                        "ProgressBar__progress-gauge--night-mode" : 
+                        ""} `}
                     ref={progressGaugeRef}
                     style={guageBarStyle}>
                     <div className={
                         `ProgressBar__progress-gauge-background ` +
-                        `${activated ?
-                            'ProgressBar__progress-gauge-background--on ' :
-                            'ProgressBar__progress-gauge-background--off '}`}
+                        `${!activated ? nightModeOn ?
+                            "ProgressBar__progress-gauge-background--off-night-mode" :
+                            "ProgressBar__progress-gauge-background--off" :
+                            "ProgressBar__progress-gauge-background--on" } `}
                         style={guageBarBackgroundStyle}>
                     </div>
                 </div>

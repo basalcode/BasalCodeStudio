@@ -1,0 +1,86 @@
+.ItemDisplay {
+    @include round-border(10px);
+
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    border: 1px solid black;
+    border-bottom-width: 2px;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    transition: height 1s, left 1s;
+
+    &--disappear {
+        top: 0;
+        left: 200%;
+    }
+
+    &--appear {
+        top: 0;
+        left: 0;
+    }
+    
+    &__item-container {
+        display: flex;
+        width: 100%;
+    
+        border: 2px solid black;
+    }
+    
+    &__item-toggle {
+        @include size(20%, 100%);
+    
+        position: relative;
+    }
+    
+    &__item-toggle:hover &__item {
+        @include disappear(0.4s);
+    }
+    
+    &__item-toggle:hover &__item-title {
+        @include appear(0.4s);
+    }
+    
+    &__item {
+        @include appear(0.5s);
+        @include size(100%, 100%);
+    
+        position: absolute;
+        top: 0;
+        left: 0;
+    
+        padding: 1rem;
+    }
+    
+    &__item-image {
+        @include size(100%, 100%);
+    }
+    
+    &__item-title {
+        @include center;
+        @include disappear(1s); 
+        
+        position: absolute;
+    
+        font-family: 'Domine', serif;
+        font-size: 1.5rem;
+    }
+    
+    &__item-description {
+        @include size(80%, 100%);
+    
+        position: relative;
+        width: 80%;
+    
+        padding: 1rem;
+    
+        font-family: 'Nanum Myeongjo', serif;
+        font-size: 1.2rem;
+    }
+}

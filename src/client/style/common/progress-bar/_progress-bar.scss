@@ -9,7 +9,12 @@
     
         text-align: right;
         font-family: 'Noto Serif KR', serif;
+        font-weight: bold;
         font-size: 1rem;
+
+        &--night-mode {
+            color: $TEXT_RED;
+        }
     }
     
     &__progress-bar {
@@ -20,6 +25,11 @@
         
         border: 2px solid black;
         background-color: white;
+
+        &--night-mode {
+            border-color: $NIGHTMODE_COLOR;
+            background-color: $NIGHTMODE_BACKGROUND_COLOR--TEXT_FIELD;
+        }
     }
     
     &__progress-gauge {
@@ -36,6 +46,10 @@
             transition-delay: 1s;
             transition: width 1s;
         }
+
+        &--night-mode {
+            border-color: $NIGHTMODE_BACKGROUND_COLOR--SUBMIT_BUTTON;
+        }
     }
     
     &__progress-gauge-background {
@@ -51,17 +65,21 @@
     
         position: relative;
         left: 0;
+
+        background: initial;
+        transition: background-color 1.5s;
         
-        transition: background-color 1s;
-    
         &--on {
-            animation: repeat-motion 1s infinite;
+            animation: repeat-motion 0.8s infinite;
             animation-timing-function: linear;
         }
-    
+
         &--off {
-            background: initial;
             background-color: black;
+        }
+
+        &--off-night-mode {
+            background-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
         }
     }
 }

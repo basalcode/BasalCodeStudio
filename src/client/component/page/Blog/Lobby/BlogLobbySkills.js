@@ -9,6 +9,7 @@ import itemData from 'asset/img/logo/itemData';
 import CircleDisplay from 'component/common/CircleDisplay';
 import ImageDisplay from 'component/common/ImageDispaly';
 import ProgressBar from 'component/common/ProgressBar';
+import ItemDisplay from 'component/common/ItemDisplay';
 
 const BlogLobbySkills = (props) => {
     /* store */
@@ -24,8 +25,8 @@ const BlogLobbySkills = (props) => {
     const [percentage, setPercentage] = useState(0);
     const [progressBarActivated, setProgressBarActivated] = useState(false);
 
-    const [itemContainerListStyle, setItemContainerListStyle] = useState({});
-    const [itemSizeStyle, setItemSizeStyle] = useState({});
+    // item display
+    const [itemDisplayActivated, setItemDisplayActivated] = useState(false);
 
     /* constant */
     const location = 'BlogLobbySkills';
@@ -36,7 +37,6 @@ const BlogLobbySkills = (props) => {
     const onSelect = index => {
         if (index !== categoryIndex &&
             !progressBarActivated) {
-
             /* constant */
             const selectedCategoryData = Object.values(itemData)[index];
             const percentage = selectedCategoryData.proficiency;
@@ -49,13 +49,10 @@ const BlogLobbySkills = (props) => {
             setProgressBarActivated(true);
             setPercentage(percentage);
 
-            props.onSelect(true);
+            // item display
+            setItemDisplayActivated(false);
 
-            /* style */
-            setItemContainerListStyle({
-                height: '0',
-                overflow: 'hidden'
-            });
+            props.onSelect(true);
         }
     };
 
@@ -66,19 +63,17 @@ const BlogLobbySkills = (props) => {
             /* state */
             setItemSelected(false);
             setCategoryIndex(-1);
+
             setSelectedCategory(null);
 
             // progress bar
             setProgressBarActivated(false);
             setPercentage(0);
             
+            // item display
+            setItemDisplayActivated(false);
+            
             props.onSelect(false);
-
-            /* style */
-            setItemContainerListStyle({
-                height: '0',
-                overflow: 'hidden'
-            });
         }
     }, [pageIndex]);
 
@@ -87,23 +82,13 @@ const BlogLobbySkills = (props) => {
         const interval = 1000;
         if (pageIndex === props.index) {
             setTimeout(() => {
-                /* constant */
                 const selectedCategoryData = Object.values(itemData)[categoryIndex];
-                const categoryItems = selectedCategoryData.items;
-                const itemsAmount = categoryItems.length;
-                const itemHeight = 8;
-
-                /* style */
-                setItemContainerListStyle({
-                    height: (itemHeight * itemsAmount) + 'rem',
-                    overflow: 'auto'
-                });
-                setItemSizeStyle({
-                    height: itemHeight + 'rem'
-                });
 
                 /* state */
                 setSelectedCategory(selectedCategoryData);
+                
+                // item display
+                setItemDisplayActivated(true);
             }, interval);
         }
         return () => {
@@ -168,30 +153,10 @@ const BlogLobbySkills = (props) => {
                                             onFinished={() => setProgressBarActivated(false)} />
                                     </div>
                                 </div>
-                                <div className={`BlogLobbySkills__item-container-list ` +
-                                    `${itemSelected ?
-                                        "BlogLobbySkills__item-container-list--appear" :
-                                        "BlogLobbySkills__item-container-list--disappear"}`}
-                                    style={itemContainerListStyle}>
-                                    {selectedCategory && selectedCategory.items.map((item, index) =>
-                                        <div className="BlogLobbySkills__item-container"
-                                            style={itemSizeStyle}
-                                            key={index}>
-                                            <div className="BlogLobbySkills__item-toggle">
-                                                <div className="BlogLobbySkills__item">
-                                                    <img className="BlogLobbySkills__item-image"
-                                                        src={item.imagePath} />
-                                                </div>
-                                                <h2 className="BlogLobbySkills__item-title">
-                                                    {item.title}
-                                                </h2>
-                                            </div>
-                                            <div className="BlogLobbySkills__item-description">
-                                                {item.description}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+                                <ItemDisplay
+                                    activated={itemDisplayActivated}
+                                    itemSelected={itemSelected}
+                                    selectedCategory={selectedCategory} />
                             </article>
                         </section>
                     </div>
