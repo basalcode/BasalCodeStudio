@@ -25,12 +25,21 @@
         top: 0;
         left: 0;
     }
+
+    &--night-mode {
+        border-color: $TEXT_MILD_PURPLE;
+    }
     
     &__item-container {
         display: flex;
         width: 100%;
     
         border: 2px solid black;
+
+        &--night-mode {
+            border-color: $TEXT_MILD_PURPLE;
+            background-color: $DEEP_DARK;
+        }
     }
     
     &__item-toggle {
@@ -56,6 +65,10 @@
         left: 0;
     
         padding: 1rem;
+
+        &--night-mode {
+            background-color: hsl(234, 80%, 80%);
+        }
     }
     
     &__item-image {
@@ -70,6 +83,10 @@
     
         font-family: 'Domine', serif;
         font-size: 1.5rem;
+
+        &--night-mode {
+            color: $TEXT_RED;
+        }
     }
     
     &__item-description {
@@ -82,5 +99,10 @@
     
         font-family: 'Nanum Myeongjo', serif;
         font-size: 1.2rem;
+
+        &--night-mode {
+            background-color: $HEADING_BACKGROUND;
+            color: $NIGHTMODE_COLOR--TEXT_FIELD;
+        }
     }
 }

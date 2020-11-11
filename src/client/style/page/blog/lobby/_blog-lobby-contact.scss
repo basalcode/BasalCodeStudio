@@ -81,12 +81,17 @@
         &--error {
             background-color: hsl(340, 85%, 61%);
         }
+
+        &--night-mode {
+            color: $DEEP_DARK;
+        }
     }
 
     &__submit-container {
         @include size(100%, 3rem);
 
-        display: flex;    }
+        display: flex;    
+    }
 
     &__submit {
         @include size(25%, 100%);

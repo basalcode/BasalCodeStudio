@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 const BlogLobbyContact = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
+    const nightModeOn = useSelector(store => store.app.nightModeOn, []);
 
     /* state */
     const [email, setEmail] = useState('');
@@ -211,8 +212,9 @@ const BlogLobbyContact = (props) => {
                                 onChange={onMessageChange} />
                             <div className={`BlogLobbyContact__form-message ` +
                                 `${formError ?
-                                    "BlogLobbyContact__form-message--error" :
-                                    ""}`}>
+                                    "BlogLobbyContact__form-message--error" : ""} ` +
+                                `${nightModeOn ? 
+                                    "BlogLobbyContact__form-message--night-mode" : ""} `}>
                                 {formMessage}
                             </div>
                             <div className="BlogLobbyContact__submit-container">

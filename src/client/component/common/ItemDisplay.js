@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const ItemDisplay = (props) => {
+    /* store */
+    const nightModeOn = useSelector(store => store.app.nightModeOn, []);
+
     /* props */
     const activated = props.activated;
     const itemSelected = props.itemSelected;
@@ -37,22 +41,32 @@ const ItemDisplay = (props) => {
             <div className={`ItemDisplay ` +
             `${itemSelected ?
                 "ItemDisplay--appear" :
-                "ItemDisplay--disappear"}`}
+                "ItemDisplay--disappear"} ` +
+            `${nightModeOn ?
+                "ItemDisplay--night-mode" : ""} `}
             style={itemContainerListStyle}>
             {selectedCategory && selectedCategory.items.map((item, index) =>
-                <div className="ItemDisplay__item-container"
+                <div className={"ItemDisplay__item-container " + 
+                    `${nightModeOn ? 
+                        "ItemDisplay__item-container--night-mode" : ""} `}
                     style={itemSizeStyle}
                     key={index}>
                     <div className="ItemDisplay__item-toggle">
-                        <div className="ItemDisplay__item">
+                        <div className={"ItemDisplay__item " +
+                            `${nightModeOn ?
+                                "ItemDisplay__item--night-mode" : ""} `}>
                             <img className="ItemDisplay__item-image"
                                 src={item.imagePath} />
                         </div>
-                        <h2 className="ItemDisplay__item-title">
+                        <h2 className={"ItemDisplay__item-title " +
+                            `${nightModeOn ?
+                                "ItemDisplay__item-title--night-mode" : ""} `}>
                             {item.title}
                         </h2>
                     </div>
-                    <div className="ItemDisplay__item-description">
+                    <div className={"ItemDisplay__item-description " +
+                        `${nightModeOn ?
+                            "ItemDisplay__item-description--night-mode" : ""} `}>
                         {item.description}
                     </div>
                 </div>
