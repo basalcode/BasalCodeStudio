@@ -14,6 +14,9 @@
 
     &__frame {
         @include size(50%, 100%);
+
+        position: relative;
+        transition: width 1s;
     }
 
     &__greeting {
@@ -21,6 +24,7 @@
         @include size(100%, 20%);
 
         position: relative;
+
         &--appear {
             @include fade-out-off();    
 
@@ -34,25 +38,61 @@
             left: 100%;
             transition: left 1s;
         }
+    }
 
-        &-content {
-            @include size(100%, 50%);
-    
-            padding-left: 5rem;
+    &__greeting-content {
+        @include size(100%, 50%);
+
+        padding-left: 5rem;
+    }
+
+    &__greeting-welcom {
+        font-family: 'Courier Prime', monospace;
+        font-size: 2.6rem;
+    }
+
+    &__greeting-display {
+        font-family: 'Cinzel', serif;
+        font-size: 3rem;
+    }
+
+    &__greeting-caret {
+        @include size(1.25rem, 1.25rem);
+    }
+}
+
+@media (max-width: 1600px) {
+    .BlogLobbyIntro {
+        &__image-display {
+            width: 0;
+        }
+
+        &__greeting {
+            min-width: 500px;
+        }
+
+        &__greeting-content {
+            padding-left: 0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .BlogLobbyIntro {
+        &__greeting-welcom {
+            font-size: 1.6rem;
+        }
+
+        &__greeting {
+            height: 15%;
         }
     
-        &-welcom {
-            font-family: 'Courier Prime', monospace;
-            font-size: 2.6rem;
+        &__greeting-display {
+            font-size: 2rem;
         }
-    
-        &-display {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-        }
-    
-        &-caret {
-            @include size(1.25rem, 1.25rem);
+
+        &__greeting-caret {
+            @include size(1rem, 1rem);
         }
     }
 }

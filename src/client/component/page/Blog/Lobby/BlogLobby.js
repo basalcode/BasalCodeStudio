@@ -10,7 +10,7 @@ import BlogLobbyContact from './BlogLobbyContact';
 
 const BlogLobby = () => {
     /* state */
-    const [skillsPageOn, setSkillsPageOn] = useState(false);
+    const [skillsPageSelected, setSkillsPageSelected] = useState(false);
 
     /* constant */
     const location = 'BlogLobby';
@@ -20,15 +20,14 @@ const BlogLobby = () => {
 
     /* event hadler */
     const onSelect = isSelected => {
-        setSkillsPageOn(isSelected);
+        setSkillsPageSelected(isSelected);
     }
 
     return (
         <section className="BlogLobby">
             <ImageDisplay 
                 location={location} 
-                skillsPageOn={skillsPageOn} 
-                activated={!skillsPageOn} />
+                activated={!skillsPageSelected} />
             <BlogLobbyIntro index={indexCounter++} />
             <BlogLobbyAbout index={indexCounter++} />
             <BlogLobbySkills index={indexCounter++} onSelect={onSelect} />

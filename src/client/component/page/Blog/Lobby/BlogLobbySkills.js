@@ -72,9 +72,8 @@ const BlogLobbySkills = (props) => {
             
             // item display
             setItemDisplayActivated(false);
-            
-            props.onSelect(false);
         }
+        props.onSelect(false);
     }, [pageIndex]);
 
     // skills item container animation

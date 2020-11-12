@@ -3,14 +3,44 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
 
 .ImageDisplay {
     transition: top 1s, left 1s, width 1s, height 1s;
+
+    top: 50%;
+    transform: translateY(-50%);
+
     &__blog-lobby {
-        @include size(20% , 55%);
+        @include size(20vw , 55vh);
 
         position: fixed;
         overflow: hidden;
+        
+        &--intro {
+            left: 25%;
+            transform: translate(0, -50%);
+        }
+        
+        &--about {
+            left: 55%;
+            transform: translate(0, -50%);
+        }
 
-        &--skills-page-on {
-            @include size(0, 55%);
+        &--skills {
+            left: 25%;
+            transform: translate(0, -50%);
+            
+            &--on {
+                left: 5%;
+            }
+        }
+
+        &--contact {
+            left: 55%;
+            transform: translate(0, -50%);
+        }
+
+        &--off {
+            left: 5vw;
+
+            width: 0;
         }
     }
 
@@ -22,13 +52,12 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
         position: relative;
         overflow: hidden;
 
-        &--skills-page-on {
+        &--on {
             @include size($CIRCLE_DISPLAY_INNER_CIRCLE_SIZE, $CIRCLE_DISPLAY_INNER_CIRCLE_SIZE);
         }
     }
 
     &__picture {
-        // @include dev-inspector();
         @include size(100% , 100%);
 
         position: absolute;
@@ -37,32 +66,6 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
 
         object-fit: cover;
         transition-delay: $IMAGE_DISAPPEAR_DELAY;
-    }
-
-    &__page {
-        &-intro {
-            top: 22%;
-            left: 25%;
-        }
-        
-        &-about {
-            top: 22%;
-            left: 55%;
-        }
-
-        &-skills {
-            top: 22%;
-            left: 25%;
-
-            &--on {
-                left: 5%;
-            }
-        }
-
-        &-contact {
-            top: 22%;
-            left: 55%;
-        }
     }
 
     &__image {
@@ -80,5 +83,15 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
             z-index: 1;
             transition: left $IMAGE_APPEAR_DELAY;
         }
+    }
+}
+
+@media (max-width: 1600px) {
+    .ImageDisplay {
+        @include size(20vw, 60vh);
+
+        top: 50vh;
+        left: 100vw;
+        transform: translate(-100%, -50%);
     }
 }

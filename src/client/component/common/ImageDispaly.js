@@ -1,5 +1,5 @@
 /* module */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 /* asset */
@@ -13,70 +13,72 @@ const ImageDispaly = (props) => {
     const pageIndex = useSelector(store => store.blog.index, []);
 
     /* props */
-    const skillsPageOn = props.skillsPageOn;
+    const activated = props.activated;
     const location = props.location;
 
     /* state */
-    const [pictures, setPictures] = useState([]);
+    const [imageDisplayTimeout, setImageDisplayTimeout] = useState(null);
     const [imageIndex, setImageIndex] = useState({
         previous: 0,
-        current: 0,
-        next: 0,
+        current: 1,
+        next: 2
     });
+    
+    /* useMemo */
+    const pictures = useMemo(() => shuffle(Object.values(links)), [links]);
 
     /* constant */
     const pagePosition = [
-        "-intro",
-        "-about",
-        "-skills",
-        "-contact"
+        "intro",
+        "about",
+        "skills",
+        "contact"
     ];
 
     /* useEffect */
-    // init
-    useEffect(() => {
-        const pictureLinks = Object.values(links);
-        const shuffledLinks = shuffle(pictureLinks);
-
-        setPictures(shuffledLinks);
-        setImageIndex({
-            previous: 0,
-            current: 1,
-            next: 2
-        });
-    }, []);
-
     // image slide
     useEffect(() => {
-        let target;
-        if (props.activated) {
+        console.log('[location]', location);
+        if (activated) {
+            console.log('[image display activated]');
             const changeInterval = 7000;
-            target = window.setTimeout(() => {
+            let target = setTimeout(() => {
                 const pictureCount = pictures.length;
                 setImageIndex({
                     previous: (imageIndex.previous + 1) % pictureCount,
                     current: (imageIndex.current + 1) % pictureCount,
                     next: (imageIndex.next + 1) % pictureCount
                 });
+                console.log('[pictureCount]', pictureCount);
             }, changeInterval);
+
+            setImageDisplayTimeout(target);
         } else {
-            clearTimeout(target);
+            console.log('[image display clear]');
+            clearTimeout(imageDisplayTimeout);
         }
-    }, [props.activated, imageIndex]);
+
+        console.log('image display event');
+        console.log('activated', activated);
+        console.log('imageIndex', imageIndex);
+    }, [activated, imageIndex]);
 
     return (
         <div className={
             `ImageDisplay ` +
-            `${location === 'BlogLobby' ?
-                (`ImageDisplay__page${pagePosition[pageIndex]} ` +
-                    "ImageDisplay__blog-lobby ") :
-                ""}` +
-            `${location === 'BlogLobby' && skillsPageOn ?
-                ("ImageDisplay__blog-lobby--skills-page-on " +
-                    "ImageDisplay__page-skills--on ") : ""}` +
-            `${location === 'BlogLobbySkills' ? "ImageDisplay__blog-lobby-skills " : ""} ` +
-            `${location === 'BlogLobbySkills' && skillsPageOn ?
-                "ImageDisplay__blog-lobby-skills--skills-page-on " : ""} `}>
+            // lobby
+            `${location === "BlogLobby" ? 
+                "ImageDisplay__blog-lobby" : ""} ` +
+            `${location === "BlogLobby" ? activated ?
+                `ImageDisplay__blog-lobby--${pagePosition[pageIndex]}` : 
+                "ImageDisplay__blog-lobby--off" : 
+                "" } ` +
+            // skills
+            `${location === "BlogLobbySkills" ? 
+                "ImageDisplay__blog-lobby-skills" : ""} ` +
+            `${location === "BlogLobbySkills" && activated ?
+                "ImageDisplay__blog-lobby-skills--on" : 
+                ""} `}>
             {pictures.map((picture, index) =>
                 <img className={
                     `ImageDisplay__picture ` +
