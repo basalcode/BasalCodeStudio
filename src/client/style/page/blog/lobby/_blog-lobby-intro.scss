@@ -67,12 +67,16 @@
             width: 0;
         }
 
+        &__content-frame {
+            @include size(100%, 100%);
+        }
+
         &__greeting {
             min-width: 500px;
         }
 
         &__greeting-content {
-            padding-left: 0;
+            padding-left: 10%;
         }
     }
 }
@@ -80,19 +84,32 @@
 @media (max-width: 768px) {
     .BlogLobbyIntro {
         &__greeting-welcom {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
         }
 
         &__greeting {
             height: 15%;
+            min-width: 0;
         }
     
         &__greeting-display {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         &__greeting-caret {
             @include size(1rem, 1rem);
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .BlogLobbyIntro {
+        &__greeting-welcom {
+            font-size: 1rem;
+        }
+
+        &__greeting-display {
+            font-size: 1.5rem;
         }
     }
 }

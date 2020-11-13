@@ -88,10 +88,35 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
 
 @media (max-width: 1600px) {
     .ImageDisplay {
-        @include size(20vw, 60vh);
+        &__blog-lobby {
+            @include size(20vw, 60vh);
 
-        top: 50vh;
-        left: 100vw;
-        transform: translate(-100%, -50%);
+            top: 50vh;
+            left: 100vw;
+            transform: translate(-100%, -50%);
+            &--skills {
+                width: 0;
+            }
+        }
+
+        &__blog-lobby-skills {
+            @include size(16rem, 16rem);
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    .ImageDisplay {
+        &__blog-lobby-skills {
+            @include size(8rem, 8rem);
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .ImageDisplay {
+        &__blog-lobby-skills { 
+            display: none;
+        }
     }
 }

@@ -95,8 +95,12 @@ const BlogLobbyIntro = (props) => {
     return (
         <section className="BlogLobbyIntro">
             <div className="BlogLobbyIntro__container">
-                <div className="BlogLobbyIntro__frame BlogLobbyIntro__image-display"></div>
-                <div className="BlogLobbyIntro__frame">
+                <div className="
+                    BlogLobbyIntro__frame 
+                    BlogLobbyIntro__image-display"></div>
+                <div className="
+                    BlogLobbyIntro__frame
+                    BlogLobbyIntro__content-frame">
                     <section className={
                         `BlogLobbyIntro__greeting ` +
                         (pageIndex === props.index ?

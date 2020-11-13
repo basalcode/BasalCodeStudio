@@ -2,9 +2,9 @@
     @include size(100%, 100vh);
 
     position: relative;
+    transition: width 1s;
 
     &__container {
-        
         @include center();
         @include size(65%, 65%);
 
@@ -12,7 +12,7 @@
         display: flex;
     }
 
-    &__content {
+    &__frame {
         @include size(50%, 100%);
     }
 
@@ -32,7 +32,8 @@
     }
 
     &__about-title {
-        margin-left: 50px;
+        margin-left: 2rem;
+        margin-bottom: 2rem;
 
         font-family: 'Noto Serif KR', serif;
         font-size: 3rem;
@@ -40,7 +41,7 @@
     }
 
     &__about-paragraph {
-        padding: 2.5rem;
+        margin-left: 2rem;
         
         font-family: 'Nanum Myeongjo', serif;
         font-size: 1.5rem;
@@ -48,5 +49,49 @@
 
     &__about-text {
         margin-bottom: 0.625rem;
+    }
+}
+
+@media (max-width: 1600px) {
+    .BlogLobbyAbout {
+        &__content-frame {
+            @include size(100%, 100%);
+        }
+
+        &__image-display {
+            width: 0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .BlogLobbyAbout {
+        &__container {
+            @include size(90%, 90%);
+        }
+
+        &__about-title {
+            font-size: 2.5rem;
+        }
+
+        &__about-paragraph {
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .BlogLobbyAbout {
+        &__container {
+            @include size(95%, 95%);
+        }
+        
+        &__about-title {
+            font-size: 2rem;
+        }
+
+        &__about-paragraph {
+            font-size: 0.8rem;
+        }
     }
 }

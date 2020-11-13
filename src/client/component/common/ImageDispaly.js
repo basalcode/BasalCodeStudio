@@ -38,9 +38,7 @@ const ImageDispaly = (props) => {
     /* useEffect */
     // image slide
     useEffect(() => {
-        console.log('[location]', location);
         if (activated) {
-            console.log('[image display activated]');
             const changeInterval = 7000;
             let target = setTimeout(() => {
                 const pictureCount = pictures.length;
@@ -49,18 +47,13 @@ const ImageDispaly = (props) => {
                     current: (imageIndex.current + 1) % pictureCount,
                     next: (imageIndex.next + 1) % pictureCount
                 });
-                console.log('[pictureCount]', pictureCount);
             }, changeInterval);
 
             setImageDisplayTimeout(target);
         } else {
-            console.log('[image display clear]');
             clearTimeout(imageDisplayTimeout);
         }
 
-        console.log('image display event');
-        console.log('activated', activated);
-        console.log('imageIndex', imageIndex);
     }, [activated, imageIndex]);
 
     return (
@@ -68,9 +61,9 @@ const ImageDispaly = (props) => {
             `ImageDisplay ` +
             // lobby
             `${location === "BlogLobby" ? 
-                "ImageDisplay__blog-lobby" : ""} ` +
-            `${location === "BlogLobby" ? activated ?
-                `ImageDisplay__blog-lobby--${pagePosition[pageIndex]}` : 
+                "ImageDisplay__blog-lobby " +
+                `ImageDisplay__blog-lobby--${pagePosition[pageIndex]}` : ""} ` +
+            `${location === "BlogLobby" && !activated ?
                 "ImageDisplay__blog-lobby--off" : 
                 "" } ` +
             // skills

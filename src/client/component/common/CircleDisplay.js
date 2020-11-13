@@ -13,11 +13,11 @@ const CircleDisplay = (props) => {
     const activated = props.activated;
     const reset = props.reset;
     const elements = props.elements;
-    const diameter = props.diameter;
 
     /* state */
     const [currentSelected, setCurrentSelected] = useState(-1);
 
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
     const [contentStyle, setContentStyle] = useState({});
     const [componentStyle, setComponentStlye] = useState({});
 
@@ -31,26 +31,54 @@ const CircleDisplay = (props) => {
 
     /* useEffect */
     useEffect(() => {
-        setComponentStlye({
-            width: diameter + 'rem',
-            height: diameter + 'rem'
-        });
+        if (viewportWidth > 1024) {
+            const defaultDiameter = 30;
+            let diameter;
 
-        const elementAmount = elements.length;
-        const circlePositions = circle.getCirclePositions(diameter, elementAmount, false, 90);
+            if (viewportWidth > 1600) {
+                diameter = defaultDiameter;
+            } else if (viewportWidth > 1300) {
+                diameter = 23;
+            } else {
+                diameter = 15;
+            }
+            
+            setComponentStlye({
+                width: diameter + 'rem',
+                height: diameter + 'rem'
+            });
 
-        const elementDiameter = 5;
-        const manualAdjustment = 0.2;
+            const elementAmount = elements.length;
+            const circlePositions = circle.getCirclePositions(diameter, elementAmount, false, 90);
 
-        const styles = [];
-        for (let i = 0; i < elementAmount; i++) {
-            styles.push({
-                top: (circlePositions[i].y - (elementDiameter / 2)) - manualAdjustment + 'rem',
-                left: (circlePositions[i].x - (elementDiameter / 2)) + 'rem',
+            const elementDiameter = 5;
+            const manualAdjustment = 0.2;
+
+            const styles = [];
+            for (let i = 0; i < elementAmount; i++) {
+                styles.push({
+                    top: (circlePositions[i].y - (elementDiameter / 2)) - manualAdjustment + 'rem',
+                    left: (circlePositions[i].x - (elementDiameter / 2)) + 'rem'
+                });
+            }
+            setContentStyle(styles);
+        } else {
+            const elementAmount = elements.length;
+            const styles = [];
+            for (let i = 0; i < elementAmount; i++) {
+                styles.push({
+                    top: 0,
+                    left: 0
+                });
+            }
+            setContentStyle(styles);
+            
+            setComponentStlye({
+                width: 'none',
+                height: 'none'
             });
         }
-        setContentStyle(styles);
-    }, []);
+    }, [viewportWidth]);
 
     // reset
     useEffect(() => {
@@ -58,6 +86,18 @@ const CircleDisplay = (props) => {
             setCurrentSelected(-1);
         }
     }, [reset]);
+
+    // viewport change
+    useEffect(() => {
+        const resizeEvent = (event) => {
+            setViewportWidth(window.innerWidth);
+        }
+
+        window.addEventListener('resize', resizeEvent);
+        return ()=> {
+            window.removeEventListener('resize', resizeEvent);
+        }
+    }, []);
 
     return (
         <div className="CircleDisplay"

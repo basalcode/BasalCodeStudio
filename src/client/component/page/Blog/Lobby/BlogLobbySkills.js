@@ -31,7 +31,6 @@ const BlogLobbySkills = (props) => {
     /* constant */
     const location = 'BlogLobbySkills';
     const categories = Object.keys(itemData);
-    const circleLayoutDiameter = 30;
 
     /* event handler */
     const onSelect = index => {
@@ -121,11 +120,10 @@ const BlogLobbySkills = (props) => {
                                     activated={!progressBarActivated}
                                     reset={!itemSelected}
                                     elements={categories}
-                                    diameter={circleLayoutDiameter}
                                     onSelect={onSelect} />
                             </div>
                         </section>
-                        <section className={"BlogLobbySkills__item-section"}>
+                        <section className="BlogLobbySkills__item-section">
                             <article className={`BlogLobbySkills__items-container ` +
                                 `${itemSelected ?
                                     "BlogLobbySkills__items-container--on" :

@@ -13,13 +13,15 @@ const BlogLobbyAbout = (props) => {
         '압도적인 동작이',
         '한줄의 코드로 맺어지는 순간의 짜릿함을 알기에,',
         '오늘도 새로운 세미콜론을 새겨넣기 위해 모험하는',
-        'BasalCodeStudio에 오신 것을 환영합니다.'
+        'BasalCodeStudio에 오신 것을 환영합니다;'
     ];
 
     return (
         <section className="BlogLobbyAbout">
             <div className="BlogLobbyAbout__container">
-                <div className="BlogLobbyAbout__content">
+                <div className="
+                    BlogLobbyAbout__frame
+                    BlogLobbyAbout__content-frame">
                     <article className= {
                             `BlogLobbyAbout__about ` + 
                             (pageIndex === props.index ?
@@ -38,7 +40,8 @@ const BlogLobbyAbout = (props) => {
                     </article>
                 </div>
                 <section className="
-                    BlogLobbyAbout__content
+                    BlogLobbyAbout__frame
+                    BlogLobbyAbout__image-display
                 "></section>
             </div>
         </section>

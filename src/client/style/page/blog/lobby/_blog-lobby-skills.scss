@@ -141,3 +141,43 @@
         font-size: 3.4rem;
     }
 }
+
+@media (max-width: 1600px) {
+    .BlogLobbySkills {
+        &__circle-layout-container {
+            @include size(30rem, 30rem);
+
+            &--on {
+                left: 0;
+            }
+    
+            &--off {
+                left: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    .BlogLobbySkills {
+        &__circle-layout-container { 
+            @include size(23rem, 23rem);
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .BlogLobbySkills {
+        &__circle-layout-container { 
+            border-radius: 0;
+            border-width: 0;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .BlogLobbySkills {
+        &__circle-layout-container { 
+        }
+    }
+}

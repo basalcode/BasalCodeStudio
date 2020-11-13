@@ -73,3 +73,44 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
         }
     }
 }
+
+@media (max-width: 1600px) {
+    .CircleDisplay {
+        &__inner-line {
+            @include size(16rem, 16rem);
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    .CircleDisplay {
+        &__inner-line {
+            @include size(8rem, 8rem);
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .CircleDisplay {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        top: 0;
+        left: 0;
+        
+        transform: none;
+        animation: none;
+        &__category {
+            @include size(10rem, 4rem);
+
+            position: relative;
+            border-radius: 0;
+
+            animation: none;
+        }
+
+        &__inner-line {
+            visibility: hidden;
+        }
+    }
+}
