@@ -13,13 +13,22 @@ const ItemDisplay = (props) => {
     /* state */
     const [itemContainerListStyle, setItemContainerListStyle] = useState({});
     const [itemSizeStyle, setItemSizeStyle] = useState({});
-
+    
+    /* useEffect */
     useEffect(() => {
         if (activated) {
             /* constant */
             const categoryItems = selectedCategory.items;
             const itemsAmount = categoryItems.length;
-            const itemHeight = 8;
+            let itemHeight;
+            if (window.innerWidth > 1300) {
+                itemHeight = 8;
+            } else if (window.innerWidth > 768) {
+                itemHeight = 6;
+            } else {
+                itemHeight = 5;
+            }
+
 
             /* style */
             setItemContainerListStyle({

@@ -134,16 +134,20 @@ const BlogLobbySkills = (props) => {
                                         "BlogLobbySkills__title-container--appear" :
                                         ""}`}>
 
-                                    <h1 className="BlogLobbySkills__main-title">
+                                    <h1 className={"BlogLobbySkills__main-title " +
+                                        `${!itemSelected ?
+                                            "BlogLobbySkills__main-title--unselected " : ""}`}>
                                         Skills
                                     </h1>
-                                    <div className={
-                                        `BlogLobbySkills__selected-category ` +
-                                        `${itemSelected &&
-                                        "BlogLobbySkills__selected-category--selected "}`}>
-                                        <h2 className="BlogLobbySkills__sub-title">
+                                    <h2 className={"BlogLobbySkills__sub-title " +
+                                        `${itemSelected ?
+                                            "BlogLobbySkills__sub-title--selected " : ""}`}>
                                             {`- ${categories[categoryIndex]}`}
-                                        </h2>
+                                    </h2>
+                                    <div className={
+                                        "BlogLobbySkills__progress-bar-container " +
+                                        `${itemSelected ?
+                                        "BlogLobbySkills__progress-bar-container--selected " : ""}`}>
                                         <ProgressBar
                                             activated={progressBarActivated}
                                             percentage={percentage}

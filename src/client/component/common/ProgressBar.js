@@ -17,6 +17,8 @@ const ProgressBar = (props) => {
     const [guageBarStyle, setGuageBarStyle] = useState({});
     const [guageBarBackgroundStyle, setGuageBarBackgroundStyle] = useState({});
 
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
     /* useRef */
     const progressBarRef = useRef(0);
     const progressGaugeRef = useRef(0);

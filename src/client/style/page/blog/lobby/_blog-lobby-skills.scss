@@ -90,7 +90,7 @@
     }
 
     &__title-container {
-        @include size(100%, 80px);
+        @include size(100%, 5rem);
 
         display: flex;
         position: relative;
@@ -110,35 +110,49 @@
     &__main-title {
         @include size(20%, 100%);
 
+        position: relative;
+        top: 0;
+        left: 0;
+
         font-family: 'Noto Serif KR', serif;
         font-size: 3rem;
         text-decoration: underline;
     }
 
-    &__selected-category {
-        @include size(0%, 100%);
+    &__sub-title {
+        @include size(50%, 100%);
+
+        position: relative;
+        top: 0;
+        left: 100vw;
+
+        padding-top: 1.2rem;
+        padding-left: 0.5rem;
+        
+        font-family: 'Great Vibes', cursive;
+        font-size: 2.8rem;
+
+        transition: left 1s;
+
+        &--selected {
+            left: 0;
+        }
+    }
+
+    &__progress-bar-container {
+        @include size(30%, 100%);
         
         display: flex;
         position: relative;
         top: 0;
         left: 100vw;
+
         transition: left 1s, width 1s;
 
         &--selected {
+            @include size(70%, 100%);
             left: 0;
-            width: 80%;
         }
-    }
-
-    &__sub-title {
-        @include size(30%, 100%);
-        min-width: 170px;
-
-        margin-right: 16px;
-        padding-top: 12px;
-
-        font-family: 'Great Vibes', cursive;
-        font-size: 3.4rem;
     }
 }
 
@@ -152,7 +166,15 @@
             }
     
             &--off {
-                left: 0;
+                left: 60%;
+            }
+        }
+
+        &__main-title {
+            transition: left 1s;
+
+            &--unselected {
+                left: -10%;
             }
         }
     }
@@ -160,24 +182,106 @@
 
 @media (max-width: 1300px) {
     .BlogLobbySkills {
+        &__container {
+            @include size(80%, 80%);
+        }
+
+        &__section-container {
+            flex-direction: column;
+        }
+
+        &__category-section {
+            @include size(100%, 20%);
+        }
+
         &__circle-layout-container { 
-            @include size(23rem, 23rem);
+            @include size(100%, 100%);
+
+            border-radius: 0;
+            border-width: 0;
+
+            &--off {
+                left: 0;
+            }
+        }
+
+        &__item-section {
+            @include size(100%, 80%);
+            
+            position: relative;
+        }
+
+        &__main-title {
+            transition: left 1s;
+
+            &--unselected {
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .BlogLobbySkills {
+        &__container {
+            @include size(80%, 90%);
+        }
+
         &__circle-layout-container { 
-            border-radius: 0;
-            border-width: 0;
+            position: relative;
+            transform: none;
+
+            top: 0;
+            left: 0;
+        }
+
+        &__item-section {
+            position: relative;
+        }
+
+        &__items-container {
+            transform: translateY(0);
+            
+            &--on {
+                top: 0;
+            }
+        }
+
+        &__title-container {
+            @include size(100%, 2.5rem);
+        }
+        
+        &__main-title {
+            font-size: 2rem;
+            padding-top: 0.5rem;
+        }
+
+        &__sub-title {
+            min-width: 0;
+            padding-top: 1rem;
+
+            font-size: 2.2rem;
         }
     }
 }
 
 @media (max-width: 425px) {
     .BlogLobbySkills {
-        &__circle-layout-container { 
+        &__container {
+            @include size(80%, 90%);
+        }
+    
+        &__main-title {
+            font-size: 1.5rem;
+            padding-top: 0.5rem;
+        }
+    
+        &__sub-title {
+            min-width: 0;
+            padding-top: 1.2rem;
+    
+            font-size: 1.5rem;
         }
     }
 }

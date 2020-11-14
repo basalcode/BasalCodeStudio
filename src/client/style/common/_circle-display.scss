@@ -84,33 +84,71 @@ $CIRCLE_DISPLAY_ROTATE: 35s;
 
 @media (max-width: 1300px) {
     .CircleDisplay {
-        &__inner-line {
-            @include size(8rem, 8rem);
-        }
-    }
-}
-
-@media (max-width: 1024px) {
-    .CircleDisplay {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-around;
+
         position: relative;
-        top: 0;
+        top: 50%;
         left: 0;
         
-        transform: none;
+        transform: translateY(-50%);
         animation: none;
         &__category {
-            @include size(10rem, 4rem);
+            @include size(6rem, 6rem);
 
             position: relative;
-            border-radius: 0;
+            // border-radius: 0;
+            margin: 0.5rem;
 
             animation: none;
         }
 
         &__inner-line {
             visibility: hidden;
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    .CircleDisplay {
+        &__category {
+            @include size(5rem, 5rem);
+
+            font-size: 2rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .CircleDisplay {
+        // justify-content: center;
+        position: relative;
+        bottom: 0;
+        transform: none;
+        
+        &__category {
+            margin: 0;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .CircleDisplay {
+        &__category {
+            @include size(4rem, 4rem);
+
+            font-size: 1.5rem;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .CircleDisplay {
+        &__category {
+            @include size(3rem, 3rem);
+
+            font-size: 1.2rem;
         }
     }
 }

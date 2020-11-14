@@ -107,14 +107,6 @@ $IMAGE_DISAPPEAR_DELAY: 2s;
 
 @media (max-width: 1300px) {
     .ImageDisplay {
-        &__blog-lobby-skills {
-            @include size(8rem, 8rem);
-        }
-    }
-}
-
-@media (max-width: 1024px) {
-    .ImageDisplay {
         &__blog-lobby-skills { 
             display: none;
         }

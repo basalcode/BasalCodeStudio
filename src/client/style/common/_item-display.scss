@@ -18,7 +18,7 @@
 
     &--disappear {
         top: 0;
-        left: 200%;
+        left: 100vw;
     }
 
     &--appear {
@@ -64,7 +64,7 @@
         top: 0;
         left: 0;
     
-        padding: 1rem;
+        padding: 5%;
 
         &--night-mode {
             background-color: hsl(234, 80%, 80%);
@@ -99,10 +99,39 @@
     
         font-family: 'Nanum Myeongjo', serif;
         font-size: 1.2rem;
+        font-weight: bold;
 
         &--night-mode {
             background-color: $HEADING_BACKGROUND;
             color: $NIGHTMODE_COLOR--TEXT_FIELD;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .ItemDisplay {
+        &__item-title {
+            font-size: 1rem;
+        }
+
+        &__item-description {
+            padding: 0.8rem;            
+            
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .ItemDisplay {
+        &__item-title {
+            font-size: 0.8rem;
+        }
+
+        &__item-description {
+            padding: 0.4rem;            
+            
+            font-size: 0.8rem;
         }
     }
 }

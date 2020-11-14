@@ -1,5 +1,5 @@
 .ProgressBar {
-    @include size(70%, 100%);
+    @include size(100%, 100%);
 
     display: flex;
     flex-direction: column;
@@ -80,6 +80,36 @@
 
         &--off-night-mode {
             background-color: $NIGHTMODE_BORDER_COLOR--TEXT_FIELD;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .ProgressBar {
+        position: absolute;
+        top: 0.5rem;
+
+        &__progress-number {
+            @include size(100%, 50%);
+        }
+
+        &__progress-bar {
+            @include size(100%, 50%);
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .ProgressBar {
+        top: 0;
+
+        &__progress-number {
+            @include size(100%, 60%);
+            font-size: 0.8rem;
+        }
+    
+        &__progress-bar {
+            @include size(100%, 40%);
         }
     }
 }

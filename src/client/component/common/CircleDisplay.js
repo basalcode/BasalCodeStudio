@@ -31,16 +31,14 @@ const CircleDisplay = (props) => {
 
     /* useEffect */
     useEffect(() => {
-        if (viewportWidth > 1024) {
+        if (viewportWidth > 1300) {
             const defaultDiameter = 30;
             let diameter;
 
             if (viewportWidth > 1600) {
                 diameter = defaultDiameter;
-            } else if (viewportWidth > 1300) {
-                diameter = 23;
             } else {
-                diameter = 15;
+                diameter = 23;
             }
             
             setComponentStlye({
@@ -73,10 +71,7 @@ const CircleDisplay = (props) => {
             }
             setContentStyle(styles);
             
-            setComponentStlye({
-                width: 'none',
-                height: 'none'
-            });
+            setComponentStlye(null);
         }
     }, [viewportWidth]);
 
