@@ -23,12 +23,12 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
     &--fade-in-on {
         @include fade-in-on(1.5s);
 
-        bottom: 50px;
+        bottom: 3rem;
         transition: bottom 1s;
     }
 
     &__ui-container {
-        $width: 40px;
+        $width: 2.5rem;
         @include size($width, 100%);
         @include round-border($width);
         
@@ -102,6 +102,30 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
 
                 
             }
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .FloatingUIs {
+        &--fade-in-on {
+            bottom: 2rem;
+        }
+
+        &__ui-container {
+            @include size(50%, 2.5rem);
+            
+            display: flex;
+            justify-content: space-around;
+            bottom: 0;
+        }
+        
+        &__ui {
+            position: relative;
+            top: 0;
+            left: 0;
+
+            transform: none;
         }
     }
 }

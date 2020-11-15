@@ -14,7 +14,7 @@ $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
 
     &__text {
         text-align: center;
-        font-size: 30px;
+        font-size: 2rem;
         font-family: 'Cinzel', serif;
         letter-spacing: 3px;
     }
@@ -31,5 +31,14 @@ $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
 
     &--night-mode &__underline{
         border-color: $NIGHTMODE_BORDER_COLOR--LOGO;
+    }
+}
+
+@media (max-width: 425px) {
+    .Logo {
+        &__text {
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+        }
     }
 }

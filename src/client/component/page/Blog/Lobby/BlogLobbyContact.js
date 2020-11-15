@@ -177,7 +177,8 @@ const BlogLobbyContact = (props) => {
     return (
         <section className="BlogLobbyContact">
             <div className="BlogLobbyContact__container">
-                <section className={`BlogLobbyContact__content ` +
+                <section className={"BlogLobbyContact__content " +
+                    "BlogLobbyContact__content-frame " +
                     `${pageIndex === props.index ?
                         "BlogLobbyContact__content--appear " :
                         "BlogLobbyContact__content--disappear "}`}>
@@ -244,7 +245,10 @@ const BlogLobbyContact = (props) => {
                         </form>
                     </div>
                 </section>
-                <section className="BlogLobbyContact__content"></section>
+                <section className="
+                    BlogLobbyContact__content 
+                    BlogLobbyContact__image-display
+                "></section>
             </div>
         </section>
     );

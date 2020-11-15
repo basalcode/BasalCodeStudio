@@ -106,3 +106,9 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
         }
     }
 }
+
+@media (max-width: 425px) {
+    .NavigationButton {
+        @include size(2.5rem, 2.5rem);
+    }
+}

@@ -13,7 +13,15 @@
     &--fade-in-on {
         @include fade-in-on(1.5s);
         
-        top: 40px;
+        top: 2.5rem;
         transition: top 1s;
+    }
+}
+
+@media (max-width: 425px) {
+    .Header {
+        &--fade-in-on {
+            top: 1.2rem;
+        }
     }
 }
