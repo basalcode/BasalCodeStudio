@@ -1,6 +1,8 @@
 /* lib */
 import variables from './scrollVariables';
 
+import { mouseWheel } from './pollyfill';
+
 const scrollPage = (() => {
     /* constant */
     const wheelEvent = variables.wheelEvent;
@@ -40,6 +42,7 @@ const scrollPage = (() => {
 
         const validIndexRange = pageIndex >= 0 && pageIndex < target.page.count;
         const isNewPageIndex = currentPageIndex !== pageIndex;
+
         if (!validIndexRange || !isNewPageIndex) {
             scrollLock = false;
 
@@ -67,9 +70,11 @@ const scrollPage = (() => {
         if (!scrollLock) {
             scrollLock = true;
 
+            let deltaY = event.deltaY;
             let pageIndex = currentPageIndex;
-            if (event.deltaY > 0) { pageIndex++; }
-            if (event.deltaY < 0) { pageIndex--; }
+            if (deltaY < 0) { pageIndex--; }
+            if (deltaY > 0) { pageIndex++; }
+
 
             const pageScrolled = moveScroll(pageIndex);
 
@@ -84,8 +89,8 @@ const scrollPage = (() => {
 
     // scroll
     const scrollPositionWatcher = event => {
-        const target = event.currentTarget;
-        const scrollY = target.scrollTop;
+        const eventTarget = event.currentTarget;
+        const scrollY = eventTarget.scrollTop;
 
         if (scrollY === destination) {
             scrollLock = false;
@@ -258,7 +263,8 @@ const scrollPage = (() => {
 
         /* add event */
         // wheel
-        targetRef.addEventListener('DOMMouseScroll', pageScrollHandler, false); // FireFox
+
+        targetRef.addEventListener('DOMMouseScroll', pageScrollHandler, {passive: false}); // FireFox
         targetRef.addEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
         targetRef.addEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
 
