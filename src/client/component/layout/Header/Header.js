@@ -5,15 +5,20 @@ import React from 'react';
 import Logo from './Logo';
 import NavigationButton from './NavigationButton';
 
-const Header = ({ fadeInOn }) => {
+const Header = (props) => {
+    const navigationButtonToggleHandler = toggle => {
+        props.onNavigationButtonToggle(toggle);
+    }
+
     return (
         <header className={`Header ${
-            fadeInOn ? 
+            props.fadeInOn ? 
             "Header--fade-in-on" :
             "Header--fade-in-off"
         }`}>
-            <Logo></Logo>
-            <NavigationButton></NavigationButton>
+            <Logo />
+            <NavigationButton 
+                onToggle={navigationButtonToggleHandler}/>
         </header>
     );
 }

@@ -24,10 +24,16 @@ const App = () => {
 
     /* store */
     const dispatch = useDispatch();
+    const pageIndex = useSelector(store => store.blog.index, []);
     const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* state */
     const [scrollAvailable, setScrollAvailable] = useState(false);
+
+    const [size, setSize] = useState({
+        innerHeight: window.innerHeight,
+        innerWidth: window.innerWidth
+    });
 
     /* useEffect */
     // prevent scroll on specific route
@@ -72,6 +78,15 @@ const App = () => {
         appRef.current.focus();
     }, []);
 
+    // viewport size change
+    useEffect(() => {
+        window.addEventListener('resize', event => {
+            const startPageIndex = 0;
+
+            scrollPage.moveScroll(pageIndex);
+        });
+    });
+
     return (
         <section className={
             `App ` +
@@ -79,7 +94,8 @@ const App = () => {
                 'App__scroll--on ' :
                 'App__scroll--off '}` +
             `${nightModeOn ? 'App--night-mode ' : ' '}`}
-            ref={appRef}>
+            ref={appRef}
+            >
             <Switch>
                 <Route exact path='/' component={Prologue} />
                 <Route path='/blog' component={Blog} />

@@ -13,6 +13,7 @@ import PostEditor from 'component/page/Blog/PostEditor/PostEditor';
 // layout
 import Header from 'component/layout/Header/Header';
 import FloatingUIs from 'component/layout/FloatingUIs';
+import Navigation from 'component/layout/Navigation';
 
 const Blog = () => {
     /* router */
@@ -20,18 +21,26 @@ const Blog = () => {
     
     /* state */
     const [fadeInOn, setFadeInOn] = useState(false);
+    const [sideBarOn, setSideBarOn] = useState(false);
+
+    /* event handler */
+    const navigationButtonToggleHandler = toggle => {
+        setSideBarOn(toggle);
+    }
 
     /* useEffect */
     useEffect(() => {
         const interval = 1500;
         setTimeout(() => {
             setFadeInOn(true);
-        }, interval)
+        }, interval);
     }, []);
 
     return (
         <section className="Blog">
-            <Header fadeInOn={fadeInOn} />
+            <Header 
+                fadeInOn={fadeInOn} 
+                onNavigationButtonToggle={navigationButtonToggleHandler}/>
             <main className="Blog__main">
                 <Switch>
                     <Route path={`${match.path}/`} component={BlogLobby} />
@@ -41,6 +50,7 @@ const Blog = () => {
                     <Route path={`${match.path}/post-editor`} component={PostEditor} />
                 </Switch>
             </main>
+            <Navigation activated={sideBarOn} />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

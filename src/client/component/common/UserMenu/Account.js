@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 /* store */
-import { logout as logoutAction } from 'action/authAction';
+import { logout as logoutAction } from 'store/action/auth';
 
 const Account = () => {
     const dispatch = useDispatch();

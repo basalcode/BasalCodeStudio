@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const NavigationButton = () => {
+const NavigationButton = (props) => {
     /* store */
     const nightModeOn = useSelector(store => store.app.nightModeOn);
 
@@ -12,14 +12,17 @@ const NavigationButton = () => {
     /* constant */
     const classNameArray = ['first', 'second', 'third', 'fourth'];
 
-    const toggleButtonAnimation = event => {
-        setAnimationOn(animationOn ? false : true);
+    const toggleHandler = event => {
+        const toggleResult = !animationOn;
+
+        setAnimationOn(toggleResult);
+        props.onToggle(toggleResult);
     }
 
     return (
         <div className={`NavigationButton ` + 
             `${nightModeOn ? 'NavigationButton--night-mode ' : ' '}`}
-            onClick={toggleButtonAnimation}> {
+            onClick={toggleHandler}> {
                 classNameArray.map((element, index) =>
                     <div className={
                         `NavigationButton__bar ` + 
