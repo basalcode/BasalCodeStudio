@@ -1,8 +1,6 @@
 /* lib */
 import variables from './scrollVariables';
 
-import { mouseWheel } from './pollyfill';
-
 const scrollPage = (() => {
     /* constant */
     const wheelEvent = variables.wheelEvent;
@@ -74,7 +72,6 @@ const scrollPage = (() => {
             let pageIndex = currentPageIndex;
             if (deltaY < 0) { pageIndex--; }
             if (deltaY > 0) { pageIndex++; }
-
 
             const pageScrolled = moveScroll(pageIndex);
 

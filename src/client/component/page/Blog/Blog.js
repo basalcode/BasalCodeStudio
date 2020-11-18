@@ -12,8 +12,9 @@ import PostEditor from 'component/page/Blog/PostEditor/PostEditor';
 
 // layout
 import Header from 'component/layout/Header/Header';
-import FloatingUIs from 'component/layout/FloatingUIs';
 import Navigation from 'component/layout/Navigation';
+import ScrollButtons from 'component/layout/ScrollButtons';
+import FloatingUIs from 'component/layout/FloatingUIs';
 
 const Blog = () => {
     /* router */
@@ -51,6 +52,7 @@ const Blog = () => {
                 </Switch>
             </main>
             <Navigation activated={sideBarOn} />
+            <ScrollButtons />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

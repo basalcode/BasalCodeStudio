@@ -1,0 +1,62 @@
+$ScrollButtons__gradient-size: 50%;
+
+.ScrollButtons {
+    @include size(2.5rem, 50vh);
+    @include center-vertical();
+
+    position: fixed;
+    right: 3.5rem;
+
+    &__button {
+        @include size(100%, 48%);
+        
+        position: absolute;
+
+        background-position: 0 0, 100% 0;
+        background-size: 2px 100%;
+        background-repeat: no-repeat;
+        
+        transition: background-color 0.4s, color 0.4s;
+
+        &:hover {
+            cursor: pointer;
+
+            background-repeat: repeat;
+            color: white;
+        }
+    }
+    
+    &__button-up {
+        top: 0;
+
+        border-bottom: 2px solid black;
+        background-image: 
+            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
+            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+    }
+
+    &__button-down {
+        bottom: 0;
+
+        border-top: 2px solid black;
+        background-image: 
+            linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
+            linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+    }
+
+    &__button-icon {
+        position: absolute;
+    }
+
+    &__button-icon-up {
+        @include center-horizontal();
+
+        bottom: 1rem;
+    }
+
+    &__button-icon-down {
+        @include center-horizontal();
+
+        top: 1rem;
+    }
+}

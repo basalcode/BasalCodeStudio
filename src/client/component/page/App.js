@@ -81,8 +81,6 @@ const App = () => {
     // viewport size change
     useEffect(() => {
         window.addEventListener('resize', event => {
-            const startPageIndex = 0;
-
             scrollPage.moveScroll(pageIndex);
         });
     });
