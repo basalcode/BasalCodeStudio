@@ -51,8 +51,8 @@ const Blog = () => {
                     <Route path={`${match.path}/post-editor`} component={PostEditor} />
                 </Switch>
             </main>
-            <Navigation activated={sideBarOn} />
             <ScrollButtons />
+            <Navigation activated={sideBarOn} />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

@@ -1,0 +1,17 @@
+$Construction__font-size: 2rem;
+
+.Construction {
+    @include center();
+
+    position: relative;
+
+    &__emoji {
+        font-size: $Construction__font-size * 3;
+        text-align: center;
+    }
+
+    &__text {
+        font-size: $Construction__font-size;
+        text-align: center;
+    }
+}

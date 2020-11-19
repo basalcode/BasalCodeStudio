@@ -1,9 +1,11 @@
+$Navigation__slide-size: 30rem;
+
 .Navigation {
-    @include size(20rem, 100vh);
+    @include size($Navigation__slide-size, 100vh);
 
     position: fixed;
     top: 0;
-    right: -20rem;
+    right: -$Navigation__slide-size;
     border: 2px solid black;
 
     background-color: $DAYMODE_BACKGROUND_COLOR;
@@ -15,14 +17,19 @@
     }
 
     &__header {
-
+        @include size(100%, 15%);
+        
+        border: 1px solid black;
     }
 
     &__body {
-
+        @include size(100%, 70%);
+        border: 1px solid black;
     }
 
     &__footer {
+        @include size(100%, 15%);
 
+        border: 1px solid black;
     }
 }

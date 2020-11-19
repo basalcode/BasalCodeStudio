@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 
 /* component */
 import UserMenu from 'component/common/UserMenu/UserMenu';
-import CategoryList from 'component/page/Blog/CategoryList/CategoryList';
+// import CategoryList from 'component/page/Blog/CategoryList/CategoryList';
+import Construction from 'component/common/Construction';
 
 const Navigation = (props) => {
     /* props */
@@ -16,7 +17,9 @@ const Navigation = (props) => {
                 <UserMenu />
             </div>
             <div className="Navigation__body">
-                <CategoryList link={true} />
+                <Construction />
+
+                {/* <CategoryList link={true} /> */}
             </div>
             <div className="Navigation__footer"></div>
         </div>
