@@ -12,7 +12,6 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
     @include size(calc(100% - 100px), 100px);
 
     position: fixed;
-    z-index: 1;
 
     &--fade-in-off {
         @include fade-in-off();

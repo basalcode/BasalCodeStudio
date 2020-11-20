@@ -7,7 +7,7 @@ const Construction = (props) => {
                 🚧
             </div>
             <p className="Construction__text">
-                Sorry, it is still on construction.
+                Sorry, it is under construction.
             </p>
         </div>
     );

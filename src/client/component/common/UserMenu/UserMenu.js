@@ -1,5 +1,5 @@
 /* module */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /* store */
@@ -11,17 +11,17 @@ import Account from './Account';
 
 const UserMenu = () => {
     const dispatch = useDispatch();
-    // const login = useSelector(store => store.auth.login);
+    const login = useSelector(store => store.auth.login);
 
-    // if (!login) {
-    //     dispatch(checkLoginAction());
-    // }
+    useEffect(() => {
+        if (!login) {
+            dispatch(checkLoginAction());
+        }
+    }, []);
 
     return (
-        <div className="Auth">
-            <div className="Auth__content">
-                {/* { login ? <Account /> : <LoginButton /> } */}
-            </div>
+        <div className="UserMenu">
+            { login ? <Account /> : <LoginButton /> }
         </div>
     );
 }

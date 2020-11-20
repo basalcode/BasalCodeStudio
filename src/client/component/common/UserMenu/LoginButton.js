@@ -2,18 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const LoginButton = () => {
     return (
-        <div className="Login">
-            <Link to={`/auth/login`}>
-                <div className="Login__content">
-                    <div className="Login__content-text">
-                        login
-                    </div>
-                </div>
+        <div className="LoginButton">
+            <Link className="LoginButton__text" to={`/auth/login`}>
+                BasalCodeStudio 로그인
             </Link>
         </div>
     );
 }
 
-export default Login;
+export default LoginButton;

@@ -13,6 +13,7 @@ const Navigation = (props) => {
     return (
         <div className={"Navigation " +
             `${activated ? "Navigation--on" : "Navigation--off"}`}>
+            
             <div className="Navigation__header">
                 <UserMenu />
             </div>

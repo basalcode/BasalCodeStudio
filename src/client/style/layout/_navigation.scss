@@ -24,6 +24,7 @@ $Navigation__slide-size: 30rem;
 
     &__body {
         @include size(100%, 70%);
+        
         border: 1px solid black;
     }
 
