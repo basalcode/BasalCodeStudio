@@ -1,22 +1,25 @@
 /* module */
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const NavigationButton = (props) => {
+/* store */
+import { navigation as navigationAction } from 'store/action/blog'
+
+const NavigationButton = () => {
     /* store */
+    const dispatch = useDispatch();
     const nightModeOn = useSelector(store => store.app.nightModeOn);
-
-    /* state */
-    const [animationOn, setAnimationOn] = useState(false);
+    const navigationButtonOn = useSelector(store => store.blog.navigationOn);
 
     /* constant */
     const classNameArray = ['first', 'second', 'third', 'fourth'];
 
     const toggleHandler = event => {
-        const toggleResult = !animationOn;
+        const toggleResult = !navigationButtonOn;
+        console.log('navigationButtonOn', navigationButtonOn);
 
-        setAnimationOn(toggleResult);
-        props.onToggle(toggleResult);
+
+        dispatch(navigationAction(toggleResult));
     }
 
     return (
@@ -27,7 +30,7 @@ const NavigationButton = (props) => {
                     <div className={
                         `NavigationButton__bar ` + 
                         `NavigationButton__${element}` + 
-                        `--${animationOn ? 'on' : 'off'}`}
+                        `--${navigationButtonOn ? 'on' : 'off'}`}
                         key={index}></div>
                     )
                 }

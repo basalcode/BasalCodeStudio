@@ -13,6 +13,7 @@ const FloatingUIs = ({ fadeInOn }) => {
     /* store */
     const dispatch = useDispatch();
     const nightModeOn = useSelector(store => store.app.nightModeOn);
+    const navigationOn = useSelector(store => store.blog.navigationOn);
 
     /* event handler */
     // email button
@@ -46,7 +47,8 @@ const FloatingUIs = ({ fadeInOn }) => {
             `${fadeInOn ?
                 "FloatingUIs--fade-in-on " :
                 "FloatingUIs--fade-in-off "}` +
-            `${nightModeOn ? "FloatingUIs--night-mode " : " "}`}>
+            `${nightModeOn ? "FloatingUIs--night-mode" : ""} ` +
+            `${navigationOn ? "FloatingUIs--navigation-on" : "" }`}>
             <section className="
                 FloatingUIs__ui-container
                 FloatingUIs__left-container">

@@ -1,18 +1,18 @@
 /* module */
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 /* component */
 import UserMenu from 'component/common/UserMenu/UserMenu';
 // import CategoryList from 'component/page/Blog/CategoryList/CategoryList';
 import Construction from 'component/common/Construction';
 
-const Navigation = (props) => {
-    /* props */
-    const activated = props.activated;
+const Navigation = () => {
+    const navigationOn = useSelector(store => store.blog.navigationOn);
 
     return (
         <div className={"Navigation " +
-            `${activated ? "Navigation--on" : "Navigation--off"}`}>
+            `${navigationOn ? "Navigation--on" : "Navigation--off"}`}>
             
             <div className="Navigation__header">
                 <UserMenu />

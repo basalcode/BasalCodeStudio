@@ -19,15 +19,9 @@ import FloatingUIs from 'component/layout/FloatingUIs';
 const Blog = () => {
     /* router */
     const match = useRouteMatch();
-    
+
     /* state */
     const [fadeInOn, setFadeInOn] = useState(false);
-    const [sideBarOn, setSideBarOn] = useState(false);
-
-    /* event handler */
-    const navigationButtonToggleHandler = toggle => {
-        setSideBarOn(toggle);
-    }
 
     /* useEffect */
     useEffect(() => {
@@ -39,10 +33,7 @@ const Blog = () => {
 
     return (
         <section className="Blog">
-            <Header 
-                fadeInOn={fadeInOn} 
-                onNavigationButtonToggle={navigationButtonToggleHandler}/>
-            <main className="Blog__main">
+            <main className="Blog__main ">
                 <Switch>
                     <Route path={`${match.path}/`} component={BlogLobby} />
                     <Route path={`${match.path}/category`} component={Category} />
@@ -51,8 +42,9 @@ const Blog = () => {
                     <Route path={`${match.path}/post-editor`} component={PostEditor} />
                 </Switch>
             </main>
-            <ScrollButtons />   
-            <Navigation activated={sideBarOn} />
+            <ScrollButtons />
+            <Navigation />
+            <Header fadeInOn={fadeInOn} />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

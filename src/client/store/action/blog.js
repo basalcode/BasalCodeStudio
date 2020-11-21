@@ -1,5 +1,6 @@
 /* constant */
 export const LOBBY_PAGE = 'LOBBY_PAGE';
+export const NAVIGATION = 'NAVIGATION';
 
 export const lobbyPage = (scroll, index, scrollOn) => {
     return {
@@ -8,4 +9,11 @@ export const lobbyPage = (scroll, index, scrollOn) => {
         index: index,
         scrollOn: scrollOn
     };
+}
+
+export const navigation = (navigationOn) => {
+    return {
+        type: NAVIGATION,
+        navigationOn: navigationOn    
+    }
 }

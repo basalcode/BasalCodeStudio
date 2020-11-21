@@ -8,6 +8,7 @@ import scrollPage from 'lib/scroll/scrollPage'
 const ScrollButtons = () => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
+    const navigationOn = useSelector(store => store.blog.navigationOn);
 
     /* event handler */
     const topButtonHandler = event => {
@@ -23,7 +24,8 @@ const ScrollButtons = () => {
     }
 
     return (
-        <div className="ScrollButtons">
+        <div className={"ScrollButtons " + 
+            `${navigationOn ? "ScrollButtons--navigation-on" : ""} `}>
             <div className="
                 ScrollButtons__button 
                 ScrollButtons__button-up"

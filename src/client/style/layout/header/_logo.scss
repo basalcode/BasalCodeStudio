@@ -4,8 +4,6 @@ $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
     @include center-vertical();
     
     position: absolute;
-    display: inline-block;
-    margin: auto;
 
     &:hover &__underline {
         width: 100%;

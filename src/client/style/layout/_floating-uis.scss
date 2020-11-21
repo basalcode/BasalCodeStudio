@@ -8,10 +8,10 @@ $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS_HOVER: hsl(152, 84%, 7%);
 $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
 
 .FloatingUIs {
-    @include center-horizontal();
-    @include size(calc(100% - 100px), 100px);
+    @include size(95vw, 6.25rem);
 
     position: fixed;
+    left: 2.5vw;
 
     &--fade-in-off {
         @include fade-in-off();
@@ -23,7 +23,11 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
         @include fade-in-on(1.5s);
 
         bottom: 3rem;
-        transition: bottom 1s;
+        transition: width 1s, bottom 1s;
+    }
+
+    &--navigation-on {
+        width: calc(95vw - 30rem);
     }
 
     &__ui-container {

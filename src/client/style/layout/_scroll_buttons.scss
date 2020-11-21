@@ -1,16 +1,24 @@
-$ScrollButtons__gradient-size: 50%;
+$ScrollButtons__gradient-size: 100%;
 
 .ScrollButtons {
-    @include size(2.5rem, 50vh);
+    @include size(2.5rem, 8rem);
     @include center-vertical();
 
     position: fixed;
-    right: 3.5rem;
+    right: 2.5%;
+
+    transition: right 1s;
+
+    &--navigation-on {
+        right: calc(2.5% + 30rem);
+    }
 
     &__button {
         @include size(100%, 48%);
         
         position: absolute;
+
+        border-radius: 10px;
 
         background-position: 0 0, 100% 0;
         background-size: 2px 100%;
@@ -29,19 +37,19 @@ $ScrollButtons__gradient-size: 50%;
     &__button-up {
         top: 0;
 
-        border-bottom: 2px solid black;
-        background-image: 
-            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
-            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
-    }
-
-    &__button-down {
-        bottom: 0;
-
         border-top: 2px solid black;
         background-image: 
-            linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
-            linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
+        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+    }
+    
+    &__button-down {
+        bottom: 0;
+        
+        border-bottom: 2px solid black;
+        background-image: 
+        linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
+            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
     }
 
     &__button-icon {
@@ -51,12 +59,12 @@ $ScrollButtons__gradient-size: 50%;
     &__button-icon-up {
         @include center-horizontal();
 
-        bottom: 1rem;
+        top: 1rem;
     }
-
+    
     &__button-icon-down {
         @include center-horizontal();
-
-        top: 1rem;
+        
+        bottom: 1rem;
     }
 }
