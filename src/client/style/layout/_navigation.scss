@@ -16,6 +16,17 @@ $Navigation__slide-size: 30rem;
         right: 0;
     }
 
+    &__exit-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        text-align: right;
+        font-size:2rem;
+
+        cursor: pointer;
+    }
+
     &__header {
         @include size(100%, 15%);
         

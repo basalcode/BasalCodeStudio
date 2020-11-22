@@ -1,5 +1,5 @@
 /* module */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /* component */
 import ImageDisplay from 'component/common/ImageDispaly';
@@ -22,6 +22,13 @@ const BlogLobby = () => {
     const onSelect = isSelected => {
         setSkillsPageSelected(isSelected);
     }
+
+    /* useEffect */
+    useEffect(() => {
+        return () => {
+            
+        }  
+    })
 
     return (
         <section className="BlogLobby">

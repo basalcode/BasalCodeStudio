@@ -49,8 +49,10 @@ const BlogLobbyIntro = (props) => {
         const animationInterval = textData.animationInterval;
 
         const isCleared = textAnimation.isCleared;
+
+        let timeout;
         if (!isCleared) {
-            window.setTimeout(() => {
+            timeout = window.setTimeout(() => {
                 const display = textAnimation.display;
                 const charIndex = textAnimation.charIndex;
                 const animationIndex = textAnimation.animationIndex;
@@ -82,14 +84,25 @@ const BlogLobbyIntro = (props) => {
                 }));
             }, animationInterval);
         }
+
+        /* unmount */
+        return () => {
+            clearTimeout(timeout);
+        }
     }, [textAnimation]);
 
     // caret animation
     useEffect(() => {
         const caretInterval = 500;
-        window.setTimeout(() => {
+
+        const timeout = setTimeout(() => {
             caretOn === '_' ? setCaretOn('') : setCaretOn('_');
         }, caretInterval);
+
+        /* unmount */
+        return () => {
+            clearTimeout(timeout);
+        }
     }, [caretOn]);
 
     return (

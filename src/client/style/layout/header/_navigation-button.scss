@@ -38,6 +38,7 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
         @include colors-transition(0.5s);
 
         background-color: black;
+        cursor: pointer;
 
         & div {
             border-color: white;

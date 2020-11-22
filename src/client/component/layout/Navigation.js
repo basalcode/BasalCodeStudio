@@ -1,6 +1,9 @@
 /* module */
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'; 
+import { useDispatch, useSelector } from 'react-redux';
+
+/* store */
+import { navigation as navigationAction } from 'store/action/blog';
 
 /* component */
 import UserMenu from 'component/common/UserMenu/UserMenu';
@@ -8,12 +11,27 @@ import UserMenu from 'component/common/UserMenu/UserMenu';
 import Construction from 'component/common/Construction';
 
 const Navigation = () => {
+    /* store */
+    const dispatch = useDispatch();
     const navigationOn = useSelector(store => store.blog.navigationOn);
+
+    /* event handler */
+    const navigationOff = event => {
+        dispatch(navigationAction(false));
+    }
+
+    /* useEffect */
+    useEffect(() => {
+
+        /* unmount */
+        return () => {
+            dispatch(navigationAction(false));
+        }  
+    }, []);
 
     return (
         <div className={"Navigation " +
             `${navigationOn ? "Navigation--on" : "Navigation--off"}`}>
-            
             <div className="Navigation__header">
                 <UserMenu />
             </div>
@@ -23,6 +41,11 @@ const Navigation = () => {
                 {/* <CategoryList link={true} /> */}
             </div>
             <div className="Navigation__footer"></div>
+
+            <div className="
+                Navigation__exit-button
+                icon-cancel"
+                onClick={navigationOff}></div>
         </div>
     );
 }

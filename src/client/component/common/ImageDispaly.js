@@ -38,9 +38,10 @@ const ImageDispaly = (props) => {
     /* useEffect */
     // image slide
     useEffect(() => {
+        let target;
         if (activated) {
             const changeInterval = 7000;
-            let target = setTimeout(() => {
+            target = setTimeout(() => {
                 const pictureCount = pictures.length;
                 setImageIndex({
                     previous: (imageIndex.previous + 1) % pictureCount,
@@ -53,7 +54,11 @@ const ImageDispaly = (props) => {
         } else {
             clearTimeout(imageDisplayTimeout);
         }
-
+        
+        /* unmount */
+        return () => {
+            clearTimeout(target);
+        }
     }, [activated, imageIndex]);
 
     return (

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 /* store */
-import { navigation as navigationAction } from 'store/action/blog'
+import { navigation as navigationAction } from 'store/action/blog';
 
 const NavigationButton = () => {
     /* store */
@@ -16,8 +16,6 @@ const NavigationButton = () => {
 
     const toggleHandler = event => {
         const toggleResult = !navigationButtonOn;
-        console.log('navigationButtonOn', navigationButtonOn);
-
 
         dispatch(navigationAction(toggleResult));
     }
