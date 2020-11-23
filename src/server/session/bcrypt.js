@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const saltRounds = require('../../../.private/bcrypt').saltRounds;
+const saltRounds = require('../../../.private/security/bcrypt').saltRounds;
 
 module.exports = {
     hash: (password) => {

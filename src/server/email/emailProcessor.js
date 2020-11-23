@@ -2,8 +2,8 @@
 const nodemailer = require('nodemailer');
 
 /* private */
-const oAuth2 = require('../../../.private/oAuth2');
-const email = require('../../../.private/email');
+const oAuth2 = require('../../../.private/security/oAuth2');
+const email = require('../../../.private/security/email');
 
 module.exports = (request, response) => {
     const type = request.params.type;

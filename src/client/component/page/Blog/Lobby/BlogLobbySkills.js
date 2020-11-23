@@ -1,15 +1,18 @@
 /* module */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 /* asset */
-import itemData from 'asset/img/logo/itemData';
+import images from 'asset/img/logo/images';
 
 /* component */
 import CircleDisplay from 'component/common/CircleDisplay';
 import ImageDisplay from 'component/common/ImageDispaly';
 import ProgressBar from 'component/common/ProgressBar';
 import ItemDisplay from 'component/common/ItemDisplay';
+
+/* text */
+import text from '~/../../.private/text/asset/img/logo/images';
 
 const BlogLobbySkills = (props) => {
     /* store */
@@ -21,12 +24,24 @@ const BlogLobbySkills = (props) => {
     const [categoryIndex, setCategoryIndex] = useState(-1);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    // progreess bar
     const [percentage, setPercentage] = useState(0);
     const [progressBarActivated, setProgressBarActivated] = useState(false);
 
-    // item display
     const [itemDisplayActivated, setItemDisplayActivated] = useState(false);
+
+    /* useMemo */
+    const itemData = useMemo(() => {
+        let index = 0;
+        Object.values(text).forEach((category) => {
+            category.items.forEach(item => {
+                item.imagePath = images[index];
+
+                index++;
+            });
+        })
+
+        return text;
+    }, []);
 
     /* constant */
     const location = 'BlogLobbySkills';

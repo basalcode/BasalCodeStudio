@@ -23,13 +23,6 @@ const BlogLobby = () => {
         setSkillsPageSelected(isSelected);
     }
 
-    /* useEffect */
-    useEffect(() => {
-        return () => {
-            
-        }  
-    })
-
     return (
         <section className="BlogLobby">
             <ImageDisplay 

@@ -1,4 +1,4 @@
-const privateDB = require('../../../.private/db');
+const privateDB = require('../../../.private/security/db');
 
 const ilog = require('../module/improvedConsoleLog');
 

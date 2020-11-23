@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux';
 /* lib */
 import shuffle from 'lib/array/shuffle';
 
+/* text */
+import text from '~/../../.private/text/page/blog/blogLobbyIntro';
+
 const BlogLobbyIntro = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
@@ -20,7 +23,7 @@ const BlogLobbyIntro = (props) => {
 
     /* useMemo */
     const textData = useMemo(() => {
-        const titleText = 'BasalCodeStudio';
+        const titleText = text.titleText;
         const animationChars = [
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
             'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -122,7 +125,7 @@ const BlogLobbyIntro = (props) => {
                         <div className="
                             BlogLobbyIntro__greeting-content
                             BlogLobbyIntro__greeting-welcom">
-                            Welcom To
+                            {text.welcome}
                         </div>
                         <div className="
                             BlogLobbyIntro__greeting-content
