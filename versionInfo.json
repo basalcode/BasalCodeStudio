@@ -6,7 +6,11 @@
         },
         {
             "number": "0.2",
-            "description": "Impelement prototype of blog lobby page."
+            "description": "Impelement prototype of the blog lobby page."
+        },
+        {
+            "number": "0.3",
+            "description": "Finish basic design of the blog lobby page."
         }
     ]
 }
