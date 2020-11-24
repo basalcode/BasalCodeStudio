@@ -13,6 +13,7 @@ import { lobbyPage as lobbyPageAction } from 'store/action/blog';
 import Prologue from 'component/page/Prologue/Prologue';
 import Blog from 'component/page/Blog/Blog';
 import Auth from 'component/page/Auth/Auth';
+import Resume from 'component/page/Resume/Resume';
 import NotFound from 'component/page/NotFound/NotFound';
 
 const App = () => {
@@ -98,6 +99,7 @@ const App = () => {
                 <Route exact path='/' component={Prologue} />
                 <Route path='/blog' component={Blog} />
                 <Route path='/auth' component={Auth} />
+                <Route path='/resume' component={Resume} />
                 <Route component={NotFound} />
             </Switch>
         </section>

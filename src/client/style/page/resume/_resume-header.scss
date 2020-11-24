@@ -1,0 +1,11 @@
+.ResumeHeader {
+    position: relative;
+    width: 100%;
+
+    &__title {
+        margin: 1.5rem 0;
+
+        font-size: 4rem;
+        text-align: right;
+    }
+}
