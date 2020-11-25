@@ -6,7 +6,8 @@ import text from '~/../../.private/text/page/resume/resume';
 
 const ResumeHeader = () => {
     /* constant */
-    const headerTitle = text.headerTitle;
+    const headerTitle = text.ResumeHeader.headerTitle;
+    const headerSubtitle = text.ResumeHeader.headerSubtitle
     
     return (
         <header className="ResumeHeader">
@@ -15,7 +16,9 @@ const ResumeHeader = () => {
                     <div key={index}>{titleElement}</div>
                 )}
             </h1>
-            <h2 className="ResumeHeader__subtitle"></h2>
+                <h2 className="ResumeHeader__subtitle">
+                    {headerSubtitle}
+                </h2>
         </header>
     );
 }

@@ -17,7 +17,7 @@ const scrollPage = (() => {
         page: {
             height: () => { return window.innerHeight; },
             startPosition: (pageIndex) => { return pageIndex * window.innerHeight; },
-            count: null
+            amount: null
         }
     }
     let callBackOption = {
@@ -38,7 +38,7 @@ const scrollPage = (() => {
         let pageScrolled = false;
         scrollLock = true;
 
-        const validIndexRange = pageIndex >= 0 && pageIndex < target.page.count;
+        const validIndexRange = pageIndex >= 0 && pageIndex < target.page.amount;
         const isNewPageIndex = currentPageIndex !== pageIndex;
 
         if (!validIndexRange || !isNewPageIndex) {
@@ -211,7 +211,7 @@ const scrollPage = (() => {
             if (keyInput === endPage) {
                 event.preventDefault();
 
-                const endPageIndex = target.page.count - 1;
+                const endPageIndex = target.page.amount - 1;
                 const pageScrolled = moveScroll(endPageIndex);
 
                 if (pageScrolled) {
@@ -245,28 +245,27 @@ const scrollPage = (() => {
         fousedFormElement = null;
     }
 
-    const addEvent = (targetRef, callBackFunctions) => {
+    const addEvent = (targetElement, callBackFunctions) => {
         /* init variable */
         target = {
             ...target,
-            element: targetRef,
-            height: targetRef.offsetHeight,
+            element: targetElement,
+            height: targetElement.offsetHeight,
             page: {
                 ...target.page,
-                count: Math.floor(targetRef.scrollHeight / window.innerHeight)
+                amount: Math.floor(targetElement.scrollHeight / window.innerHeight)
             }
         }
         callBackOption = callBackFunctions;
 
         /* add event */
         // wheel
-
-        targetRef.addEventListener('DOMMouseScroll', pageScrollHandler, {passive: false}); // FireFox
-        targetRef.addEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
-        targetRef.addEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
+        targetElement.addEventListener('DOMMouseScroll', pageScrollHandler, {passive: false}); // FireFox
+        targetElement.addEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
+        targetElement.addEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
 
         // scroll
-        targetRef.addEventListener('scroll', scrollPositionWatcher, false);
+        targetElement.addEventListener('scroll', scrollPositionWatcher, false);
 
         // wheel button 
         window.addEventListener('mousedown', preventMiddleClick, false);
@@ -299,37 +298,37 @@ const scrollPage = (() => {
         });
     }
 
-    const historyUpdate = (targetRef) => {
-        /* update variable */
+    const historyUpdate = (targetElement) => {
+        /* update variable on page change */
         target = {
             ...target,
             page: {
                 ...target.page,
-                count: Math.floor(targetRef.scrollHeight / window.innerHeight)
+                amount: Math.floor(targetElement.scrollHeight / window.innerHeight)
             }
         }
     }
 
-    const removeEvent = (targetRef) => {
+    const removeEvent = (targetElement) => {
         /* init variable */
         target = {
             element: null,
             height: null,
             page: {
                 ...target.page,
-                count: null
+                amount: null
             }
         }
         callBackOption = null;
 
         /* remove event */
         // wheel
-        targetRef.removeEventListener('DOMMouseScroll', pageScrollHandler, false); // FireFox
-        targetRef.removeEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
-        targetRef.removeEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
+        targetElement.removeEventListener('DOMMouseScroll', pageScrollHandler, {passive: false}); // FireFox
+        targetElement.removeEventListener(wheelEvent, pageScrollHandler, eventOption); // Modern desktop
+        targetElement.removeEventListener('touchmove', pageScrollHandler, eventOption); // Mobile
 
         // scroll
-        targetRef.removeEventListener('scroll', scrollPositionWatcher, false);
+        targetElement.removeEventListener('scroll', scrollPositionWatcher, false);
 
         // wheel button 
         window.removeEventListener('mousedown', preventMiddleClick, false);
