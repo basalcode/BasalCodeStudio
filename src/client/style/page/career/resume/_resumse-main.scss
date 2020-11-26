@@ -1,0 +1,126 @@
+.ResumeMain {
+    position: relative;
+    width: 100%;
+
+    font-family: 'Noto Sans KR', sans-serif;
+
+    &__section {
+    }
+
+    &__section-title {
+        padding-bottom: 2rem;
+        font-size: 4rem;
+        text-align: right;
+    }
+
+    &__content {
+        display: flex;
+
+        padding: 2rem 0;
+        border-top: 1px solid black;
+    }
+
+    &__content-header {
+        width: 45%;
+    }
+
+    &__content-header-title {
+        padding-bottom: 2rem;
+        font-size: 3rem;
+    }
+
+    &__content-body {
+        width: 55%;
+    }
+
+    &__content-body-category {
+        padding-bottom: 2rem;
+    }
+
+    &__content-body-title {
+        padding-bottom: 1.5rem;
+        font-size: 2.5rem;
+    }
+
+    &__content-body-description-container {
+        padding-bottom: 1.5rem;
+    }
+
+    &__content-body-subtitle {
+        padding-bottom: 0.2rem;        
+        font-size: 1.8rem;
+    }
+
+    &__content-body-description {
+        padding-left: 2rem;
+        padding-bottom: 0.5rem;
+
+        font-size: 1.5rem;
+    }
+
+    /* project */
+    &__project-address {
+        padding-bottom: 1rem;
+    }
+
+    &__project-address-title {
+        font-size: 1.5rem;
+    }
+    
+    &__project-link {
+
+    }
+
+    /* exprience */
+    &__expirence-title {
+        font-size: 2rem;
+    }
+
+    &__expirence-type {
+        font-size: 1rem;
+    }
+
+    &__expirence-date {
+        font-size: 1rem;
+    }
+
+    &__description {
+        font-size: 1.2rem;
+    }
+
+    /* licence */
+    &__licence-container {
+        
+
+        display: flex;
+        border-top: 1px solid black;
+
+        padding: 2rem 0;
+    }
+
+    &__licence {
+        width: 50%;
+        display: flex;
+    }
+
+    &__licence-header {
+        
+    }
+
+    &__licence-title {
+        font-size: 2rem;
+    }
+
+    &__licence-date {
+        font-size: 1rem;
+    }
+
+    &__licence-body {
+        padding-left: 3rem;
+    }
+
+    &__licence-grade {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}

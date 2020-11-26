@@ -13,12 +13,14 @@ const ResumeHeader = () => {
         <header className="ResumeHeader">
             <h1 className="ResumeHeader__title">
                 {headerTitle.map((titleElement, index) => 
-                    <div key={index}>{titleElement}</div>
+                    <p key={index}>{titleElement}</p>
                 )}
             </h1>
-                <h2 className="ResumeHeader__subtitle">
-                    {headerSubtitle}
-                </h2>
+            <h2 className="ResumeHeader__subtitle">
+                {headerSubtitle.map((subtitleElement, index) => 
+                    <p key={index}>{subtitleElement}</p>
+                )}
+            </h2>
         </header>
     );
 }

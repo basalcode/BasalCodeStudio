@@ -3,15 +3,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// /* store */
+/* store */
 import { appElement as appElementAction } from 'store/action/app';
+
+
 
 /* component */
 import Prologue from 'component/page/Prologue/Prologue';
 import Blog from 'component/page/Blog/Blog';
 import Auth from 'component/page/Auth/Auth';
-import Resume from 'component/page/Resume/Resume';
+import Career from 'component/page/Career/Career';
 import NotFound from 'component/page/NotFound/NotFound';
+
+import { pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const App = () => {
     /* router */
@@ -48,7 +53,7 @@ const App = () => {
                 <Route exact path='/' component={Prologue} />
                 <Route path='/blog' component={Blog} />
                 <Route path='/auth' component={Auth} />
-                <Route path='/resume' component={Resume} />
+                <Route path='/career' component={Career} />
                 <Route component={NotFound} />
             </Switch>
         </section>

@@ -1,0 +1,26 @@
+.PortFolioViewer {
+    @include size(100%, 100%);
+
+    &__file-container {
+        @include size(100%, 100%);
+        @include center-horizontal();
+
+        position: relative;
+        height: 70%;
+        border: 1px solid blue;
+    }
+
+    &__control-container {
+        height: 30%;
+        
+        border: 1px solid green;
+    }
+
+    &__download {
+        
+    }
+
+    &__button {
+
+    }
+}

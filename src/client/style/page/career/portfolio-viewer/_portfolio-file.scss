@@ -1,0 +1,21 @@
+.PortfolioFile {
+    @include size(100%, 100%);
+    border: 5px solid red;
+
+    &__page {
+        @include size(100%, 100%);
+
+        position: relative;
+        border: 2px solid black;
+    }
+
+    &__page > canvas {
+        @include center();
+
+        width: 80% !important;
+        height: 90% !important;
+
+        border: 5px solid green;
+        position: absolute;
+    }
+}
