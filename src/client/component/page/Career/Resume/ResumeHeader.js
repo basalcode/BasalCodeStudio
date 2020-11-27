@@ -2,7 +2,7 @@
 import React from 'react';
 
 /* text */
-import text from '~/../../.private/text/page/resume/resume';
+import text from '~/../../.private/text/page/career/resume/resume';
 
 const ResumeHeader = () => {
     /* constant */
