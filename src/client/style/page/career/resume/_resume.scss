@@ -1,8 +1,6 @@
 .Resume {
-    @include center-horizontal();
-
-    position: relative;
     width: 1024px;
+    margin: 0 auto;
 
     font-family: 'Noto Serif KR', serif;
 }

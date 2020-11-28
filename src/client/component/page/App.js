@@ -8,7 +8,7 @@ import { appElement as appElementAction } from 'store/action/app';
 
 
 
-/* component */
+/* component */ 
 import Prologue from 'component/page/Prologue/Prologue';
 import Blog from 'component/page/Blog/Blog';
 import Auth from 'component/page/Auth/Auth';
@@ -19,9 +19,6 @@ import { pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const App = () => {
-    /* router */
-    const history = useHistory();
-    
     /* Ref */
     const appRef = useRef(null);
 

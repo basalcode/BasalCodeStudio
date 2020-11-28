@@ -1,8 +1,12 @@
 /* module */
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 /* text */
 import text from '~/../../.private/text/page/career/portfolio/portfolio.json';
+
+/* file */
+import portfolio from '~/../../.private/file/portfolio/portfolio.pdf'
 
 /* component */
 import PortfolioFile from './PortfolioFile'
@@ -13,6 +17,10 @@ const PortfolioViewer = () => {
     const [pageIndex, setPageIndex] = useState(1);
 
     const [categoryIndex, setCategoryIndex] = useState(0);
+
+    const [progressBarStyle, setProgressBarStyle] = useState({
+        width: 0
+    });
 
     /* constant */
     const categories = text.category;
@@ -25,7 +33,7 @@ const PortfolioViewer = () => {
     /* event handler */
     const previousPageClicked = event => {
         const newPageIndex = pageIndex - 1 < 1 ? 1 : pageIndex - 1;
-        
+
         setPageIndex(newPageIndex);
 
         let categoryIndex = 0;
@@ -34,8 +42,7 @@ const PortfolioViewer = () => {
 
             if (categoryStartIndex <= newPageIndex) {
                 categoryIndex = index;
-
-                return ;
+                return;
             }
         })
 
@@ -54,7 +61,7 @@ const PortfolioViewer = () => {
             if (categoryStartIndex <= newPageIndex) {
                 categoryIndex = index;
 
-                return ;
+                return;
             }
         })
 
@@ -66,6 +73,13 @@ const PortfolioViewer = () => {
         setPageIndex(startIndex)
     }
 
+    /* useEffect */
+    useEffect(() => {
+        setProgressBarStyle({
+            width: `${Math.floor(pageIndex / pageAmount * 100)}%`
+        });
+    }, [pageIndex, pageAmount])
+
     return (
         <main className="PortfolioViewer">
             <section className="PortfolioViewer__header">
@@ -73,20 +87,26 @@ const PortfolioViewer = () => {
                 <h2 className="PortfolioViewer__header-subtitle"></h2>
             </section>
             <section className="PortfolioViewer__file-container">
-                <PortfolioFile 
+                <PortfolioFile
                     pageIndex={pageIndex}
                     onLoad={amount => setPageAmount(amount)} />
+                <div className="PortfolioViewer__file-progress-bar-container">
+                    <div className="PortfolioViewer__file-progress-bar"
+                        style={progressBarStyle}></div>
+                </div>
             </section>
             <section className="PortfolioViewer__control-container">
                 <section className="PortfolioViewer__download">
                     <h2 className="PortfolioViewer__download-title">Downlaod File</h2>
-                    <a className="PortfolioViewer__download-link"
-                        href="">{text.download}</a>
+                    <Link className="PortfolioViewer__download-link"
+                        to={portfolio} target="_blank" download={text.download}>
+                        {text.download}
+                    </Link>
                 </section>
                 <section className="PortfolioViewer__category">
                     <h2 className="PortfolioViewer__category-title">Projects</h2>
                     <div className="PortfolioViewer__category-button-container">
-                        {categories.map((category, index) => 
+                        {categories.map((category, index) =>
                             <button className="PortfolioViewer__category-button"
                                 key={index}
                                 onClick={event => categoryButtonClicked(index, category.start)}>

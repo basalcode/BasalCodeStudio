@@ -175,5 +175,4 @@ module.exports = (request, response) => {
     }
 
     route[type]();
-    console.log('test');
 }
