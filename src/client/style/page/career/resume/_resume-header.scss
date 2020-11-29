@@ -13,4 +13,9 @@
         text-align: right;
         padding-bottom: 3rem;
     }
+
+    &__test {
+        display: flex;
+        flex-direction: column;
+    }
 }

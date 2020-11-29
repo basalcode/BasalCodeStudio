@@ -5,6 +5,7 @@
     font-family: 'Noto Sans KR', sans-serif;
 
     &__section {
+        
     }
 
     &__section-title {
@@ -90,8 +91,6 @@
 
     /* licence */
     &__licence-container {
-        
-
         display: flex;
         border-top: 1px solid black;
 
@@ -122,5 +121,27 @@
     &__licence-grade {
         font-size: 2rem;
         font-weight: bold;
+    }
+
+    &__skills-container {
+        display: flex;
+        
+        border-top: 1px solid black;
+        padding: 2rem 0;
+    }
+
+    &__skills-subtitle {
+        width: 40%;
+        font-size: 2rem;
+    }
+
+    &__skills-description-container {
+        width: 60%;
+
+        font-size: 1.2rem;
+    }
+
+    &__skills-description {
+
     }
 }

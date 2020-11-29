@@ -6,20 +6,20 @@
     height: 100vh;
 
     &__header {
-        border-bottom: 1px solid black;
-        
-        margin: 1.5rem 0;
+        height: 8rem;
         text-align: right;
     }
     
     &__header-title {
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 4rem;
+
+        border-bottom: 1px solid black; 
     }
     
     &__header-subtitle {
-        font-family: 'Noto Sans KR', sans-serif;
-        font-size: 3rem;
+        font-family: 'Noto Serif KR', serif;
+        font-size: 1rem;
     }
 
     &__body {
@@ -28,7 +28,7 @@
 
     &__file-container {
         position: relative;
-        height: 70%;
+        height: 60%;
 
         margin-bottom: 0.5rem;
     }
@@ -53,7 +53,7 @@
         @include size(100%, 14rem);
 
         position: absolute;
-        bottom: 0;
+        height: 25%;
 
         font-family: 'Noto Sans KR', sans-serif;
     }

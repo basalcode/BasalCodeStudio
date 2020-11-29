@@ -10,7 +10,7 @@ const ResumeMain = () => {
 
     const licences = text.ResumeMain.licences;
     const experiences = text.ResumeMain.experiences;
-    const details = text.ResumeMain.details;
+    const skills = text.ResumeMain.skills;
 
     return (
         <main className="ResumeMain">
@@ -130,19 +130,20 @@ const ResumeMain = () => {
                 </section>
             </article>
             <article className="ResumeMain__section">
-                <h1 className="ResumeMain__section-title">Details</h1>
-                <ol>
-                    {Object.keys(details).map((categoryName, index) =>
-                        <article key={index}>
-                            <li>{categoryName}</li>
-                            <ul>
-                                {Object.values(details[categoryName]).map((detailItem, index) =>
-                                    <li key={index}>{detailItem}</li>
-                                )}
-                            </ul>
-                        </article>
-                    )}
-                </ol>
+                <h1 className="ResumeMain__section-title">Skills</h1>
+                {skills.map((category, index) =>
+                    <section className="ResumeMain__skills-container" key={index}>
+                        <h2 className="ResumeMain__skills-subtitle">{category.title}</h2>
+                        <ul className="ResumeMain__skills-description-container">
+                            {category.description.map((description, index) =>
+                                <li className="ResumeMain__skills-description"
+                                    key={index}>
+                                    {description}
+                                </li>
+                            )}
+                        </ul>
+                    </section>
+                )}
             </article>
         </main>
     );

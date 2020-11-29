@@ -84,7 +84,9 @@ const PortfolioViewer = () => {
         <main className="PortfolioViewer">
             <section className="PortfolioViewer__header">
                 <h1 className="PortfolioViewer__header-title">Portfolio</h1>
-                <h2 className="PortfolioViewer__header-subtitle"></h2>
+                {/* <h2 className="PortfolioViewer__header-subtitle">
+                    {text.header.subtitle}
+                </h2> */}
             </section>
             <section className="PortfolioViewer__file-container">
                 <PortfolioFile
