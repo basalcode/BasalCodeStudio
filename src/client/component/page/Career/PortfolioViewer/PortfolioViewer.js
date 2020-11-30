@@ -84,9 +84,9 @@ const PortfolioViewer = () => {
         <main className="PortfolioViewer">
             <section className="PortfolioViewer__header">
                 <h1 className="PortfolioViewer__header-title">Portfolio</h1>
-                {/* <h2 className="PortfolioViewer__header-subtitle">
+                <h2 className="PortfolioViewer__header-subtitle">
                     {text.header.subtitle}
-                </h2> */}
+                </h2>
             </section>
             <section className="PortfolioViewer__file-container">
                 <PortfolioFile
@@ -106,7 +106,7 @@ const PortfolioViewer = () => {
                     </Link>
                 </section>
                 <section className="PortfolioViewer__category">
-                    <h2 className="PortfolioViewer__category-title">Projects</h2>
+                    <h2 className="PortfolioViewer__category-title">Select Project</h2>
                     <div className="PortfolioViewer__category-button-container">
                         {categories.map((category, index) =>
                             <button className="PortfolioViewer__category-button"
@@ -121,7 +121,7 @@ const PortfolioViewer = () => {
                 </section>
                 <section className="PortfolioViewer__controller">
                     <h2 className="PortfolioViewer__controller-title">
-                        Page controller
+                        Page Controller
                     </h2>
                     <div className="PortfolioViewer__page-controller">
                         <button className="PortfolioViewer__button icon-left-open-2"

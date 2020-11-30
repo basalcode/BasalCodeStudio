@@ -30,12 +30,11 @@ const ResumeMain = () => {
                                     {project.title}
                                 </h2>
                                 {addressArray.map((address, index) =>
-                                    <section className="ResumeMain__project-address"
+                                    <section className="ResumeMain__project-link-container"
                                         key={index}>
-                                        <div className="ResumeMain__project-address-title">
+                                        <div className="ResumeMain__project-link-title">
                                             {address.title}
                                         </div>
-                                        <br />
                                         <a className="ResumeMain__project-link"
                                             href={address.link}>
                                             {address.link}
@@ -63,20 +62,31 @@ const ResumeMain = () => {
                                     <h2 className="ResumeMain__content-body-title">
                                         {feature.title}
                                     </h2>
-                                    {feature.content.map((content, index) =>
-                                        <div className="ResumeMain__content-body-description-container" key={index}>
-                                            <h3 className="ResumeMain__content-body-subtitle">
+                                    {feature.content.map((content, index) => {
+                                        const separator = content.description.length === 0;
+                                        
+                                        return (
+                                            <div className={separator ?
+                                                "ResumeMain__content-body-separator-container" :
+                                                "ResumeMain__content-body-description-container "}
+                                            key={index}>
+                                            <h3 className={separator ? 
+                                                    "ResumeMain__content-body-separator" :
+                                                    "ResumeMain__content-body-subtitle"}>
                                                 {content.subtitle}
                                             </h3>
-                                            <ul className="ResumeMain__content-body-description">
-                                            {content.description.map((description, index) => 
-                                                <li key={index}>
-                                                    {description}
-                                                </li>
-                                            )}
-                                            </ul>
+                                            {!separator &&
+                                                <ul className="ResumeMain__content-body-description">
+                                                {content.description.map((description, index) => 
+                                                    <li key={index}>
+                                                        {description}
+                                                    </li>
+                                                )}
+                                                </ul>
+                                            }
                                         </div>
-                                    )}
+                                        );
+                                    })}
                                 </section>
 
                                 <section className="ResumeMain__content-body-category">
@@ -132,16 +142,20 @@ const ResumeMain = () => {
             <article className="ResumeMain__section">
                 <h1 className="ResumeMain__section-title">Skills</h1>
                 {skills.map((category, index) =>
-                    <section className="ResumeMain__skills-container" key={index}>
-                        <h2 className="ResumeMain__skills-subtitle">{category.title}</h2>
-                        <ul className="ResumeMain__skills-description-container">
-                            {category.description.map((description, index) =>
-                                <li className="ResumeMain__skills-description"
-                                    key={index}>
-                                    {description}
-                                </li>
-                            )}
-                        </ul>
+                    <section className="ResumeMain__content" key={index}>
+                        <section className="ResumeMain__content-header">
+                            <h2 className="ResumeMain__skills-subtitle">{category.title}</h2>
+                        </section>
+                        <section className="ResumeMain__content-body">
+                            <ul className="ResumeMain__skills-description-container">
+                                {category.description.map((description, index) =>
+                                    <li className="ResumeMain__skills-description"
+                                        key={index}>
+                                        {description}
+                                    </li>
+                                )}
+                            </ul>
+                        </section>
                     </section>
                 )}
             </article>

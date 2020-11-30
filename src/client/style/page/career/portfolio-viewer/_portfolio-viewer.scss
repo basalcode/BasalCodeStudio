@@ -1,25 +1,22 @@
 .PortfolioViewer {
-    @include center-horizontal();
-    @include size(1440px, 100vh);
-
-    position: absolute;
-    height: 100vh;
+    width: 1440px;
+    margin: 0 auto;
 
     &__header {
-        height: 8rem;
         text-align: right;
+        border-bottom: 1px solid black; 
     }
     
     &__header-title {
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 4rem;
 
-        border-bottom: 1px solid black; 
+        padding-top: 1rem;
     }
     
     &__header-subtitle {
         font-family: 'Noto Serif KR', serif;
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
 
     &__body {
@@ -27,15 +24,14 @@
     }
 
     &__file-container {
-        position: relative;
-        height: 60%;
+        height: 810px;
 
-        margin-bottom: 0.5rem;
+        padding: 1rem 0;
     }
 
     &__file-progress-bar-container {
         width: 100%;
-        height: 0.4rem;
+        height: 0.5rem;
 
         background-color: $NIGHTMODE_BACKGROUND_COLOR--TEXT_FIELD;
     }
@@ -50,10 +46,9 @@
     }
 
     &__control-container {
-        @include size(100%, 14rem);
+        width: 100%;
 
-        position: absolute;
-        height: 25%;
+        position: relative;
 
         font-family: 'Noto Sans KR', sans-serif;
     }
@@ -73,6 +68,8 @@
 
     &__download-link {
         font-size: 1.5rem;
+        font-style: italic;
+        text-decoration: underline;
 
         &:hover {
             position: relative;
@@ -86,7 +83,7 @@
 
     &__category {
         @include center-horizontal();
-        @include size(30%, 100%);
+        @include size(40%, 100%);
 
         position: absolute;
     }
@@ -103,11 +100,10 @@
     }
 
     &__category-button {
-        @include size(6rem, 2.5rem);
+        @include size(45%, 2.5rem);
         @include round-border(10px);
 
         position :relative;
-        width: 45%;
         border: 2px solid black;
 
         margin-right: 1rem;
@@ -140,11 +136,12 @@
         position: absolute;
         left: 2rem;
         text-align: center;
+        font-size: 1.2rem;
     }
 
     &__controller {
         position: absolute;
-        right: 5rem;
+        right: 1rem;
     }
 
     &__controller-title {
@@ -174,9 +171,203 @@
     }
 
     &__page-index {
-        @include size(10rem, 5rem);
-
         text-align: center;
         font-size: 3rem;
+    }
+}
+
+@media (max-width: 1640px) {
+    .PortfolioViewer {
+        width: 1024px;
+        &__header-title {
+            font-size: 3.5rem;
+
+            padding-top: 0.8rem;
+        }
+
+        &__header-subtitle {
+            font-size: 1.2rem;
+        }
+
+        &__file-container {
+            height: 576px;
+
+            padding: 1rem 0;
+        }
+
+        &__download-title {
+            margin-bottom: 1.2rem;
+
+            font-size: 1.5rem;
+        }
+
+        &__download-link {
+            font-size: 1.5rem;
+
+            &:hover {
+                margin-left: 1rem;
+            }
+        }
+
+        &__category-title {
+            margin-bottom: 1.2rem;
+            
+            font-size: 1.5rem;
+        }
+
+        &__category-button {
+            @include size(45%, 2rem);
+
+            margin-right: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        &__category-button-indicator {
+            @include size(0.7rem, 0.7rem);
+
+            left: 0.5rem;
+        }
+
+        &__category-button-text {
+            left: 1.8rem;
+            font-size: 1rem;
+        }
+
+        &__controller {
+            right: 0.8rem;
+        }
+
+        &__controller-title {
+            margin-bottom: 1.2rem;
+
+            font-size: 1.5rem;
+        }
+
+        &__page-controller {
+            font-size: 2rem;
+        }
+
+        &__page-controller-tittle {
+            font-size: 2rem;
+        }
+
+        &__button {
+            font-size: 2.5rem;
+        }
+
+        &__page-index {
+            font-size: 2.5rem;
+        }
+    }
+}
+
+@media (max-width: 1224px) {
+    .PortfolioViewer {
+        width: 768px;
+        &__header-title {
+            font-size: 3rem;
+
+            padding-top: 1rem;
+        }
+
+        &__header-subtitle {
+            font-size: 1rem;
+        }
+
+        &__file-container {
+            height: 432px;
+
+            padding: 0.8rem 0;
+        }
+
+        &__download-title {
+            margin-bottom: 1rem;
+
+            font-size: 1.2rem;
+        }
+
+        &__download-link {
+            font-size: 1.2rem;
+
+            &:hover {
+                margin-left: 1rem;
+            }
+        }
+
+        &__category-title {
+            margin-bottom: 1rem;
+            
+            font-size: 1.2rem;
+        }
+
+        &__category-button {
+            @include size(45%, 1.5rem);
+
+            margin-right: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        &__category-button-indicator {
+            @include size(0.5rem, 0.5rem);
+
+            left: 0.2rem;
+        }
+
+        &__category-button-text {
+            left: 1.1rem;
+            font-size: 0.8rem;
+        }
+
+        &__controller {
+            right: 0.6rem;
+        }
+
+        &__controller-title {
+            margin-bottom: 1rem;
+
+            font-size: 1.2rem;
+        }
+
+        &__page-controller {
+            font-size: 2rem;
+        }
+
+        &__page-controller-tittle {
+            font-size: 2rem;
+        }
+
+        &__button {
+            font-size: 2rem;
+        }
+
+        &__page-index {
+            font-size: 2rem;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .PortfolioViewer{
+        width: 95%;
+
+        &__header {
+            text-align: left;
+        }
+
+        &__file-container {
+            display: none;
+        }
+
+        &__download {
+            padding: 2rem 0;
+        }
+    
+        &__category {
+            display: none;
+        }
+    
+        &__controller {
+            display: none;
+        }
     }
 }

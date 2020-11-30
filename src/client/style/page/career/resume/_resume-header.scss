@@ -12,10 +12,79 @@
     &__subtitle {
         text-align: right;
         padding-bottom: 3rem;
+        
+        font-size: 1.5rem;
     }
 
     &__test {
         display: flex;
         flex-direction: column;
+    }
+}
+
+@media (max-width: 1440px) {
+    .ResumeHeader {
+        &__title {
+            margin: 1rem 0;
+
+            font-size: 3.5rem;
+        }
+
+        &__subtitle {
+            padding-bottom: 2rem;
+
+            font-size: 1.3rem;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .ResumeHeader {
+        &__title {
+            margin-top: 1rem;
+            margin-bottom: 0.8rem;
+
+            font-size: 3rem;
+        }
+
+        &__subtitle {
+            padding-bottom: 1rem;
+
+            font-size: 1.1rem;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .ResumeHeader {
+        &__title {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+
+            font-size: 2.5rem;
+        }
+
+        &__subtitle {
+            padding-bottom: 1rem;
+
+            font-size: 0.9rem;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .ResumeHeader {
+        &__title {
+            margin-top: 1rem;
+            margin-bottom: 0.2rem;
+
+            font-size: 2rem;
+        }
+
+        &__subtitle {
+            padding-bottom: 0.5rem;
+
+            font-size: 0.7rem;
+        }
     }
 }
