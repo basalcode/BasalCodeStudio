@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 /* store */
 import { appElement as appElementAction } from 'store/action/app';
 
-
-
 /* component */ 
 import Prologue from 'component/page/Prologue/Prologue';
 import Blog from 'component/page/Blog/Blog';
@@ -27,7 +25,7 @@ const App = () => {
     const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     // /* state */
-    const [scrollAvailable, setScrollAvailable] = useState(false);
+    const [scrollAvailable, setScrollAvailable] = useState(true);
 
     /* useEffect */
     // auto fcous on App

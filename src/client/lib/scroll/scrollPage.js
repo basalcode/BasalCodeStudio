@@ -250,7 +250,7 @@ const scrollPage = (() => {
         target = {
             ...target,
             element: targetElement,
-            height: targetElement.offsetHeight,
+            height: window.innerHeight,
             page: {
                 ...target.page,
                 amount: Math.floor(targetElement.scrollHeight / window.innerHeight)

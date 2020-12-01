@@ -1,26 +1,36 @@
 /* module */
-import React, { setState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 /* lib */
 import scrollPage from 'lib/scroll/scrollPage'
 
+/* store */
+import { lobbyPage as lobbyPageAction } from 'store/action/blog';
+
 const ScrollButtons = () => {
     /* store */
+    const dispatch = useDispatch();
     const pageIndex = useSelector(store => store.blog.index, []);
     const navigationOn = useSelector(store => store.blog.navigationOn);
 
     /* event handler */
     const topButtonHandler = event => {
         const previousPageIndex = pageIndex - 1;
+        const pageScrolled = scrollPage.moveScroll(previousPageIndex);
 
-        scrollPage.moveScroll(previousPageIndex);
+        if (pageScrolled) {
+            dispatch(lobbyPageAction(scrollPage, previousPageIndex, false));
+        }
     }
 
     const bottomButtonHandler = event => {
         const nextPageIndex = pageIndex + 1;
+        const pageScrolled = scrollPage.moveScroll(nextPageIndex);
 
-        scrollPage.moveScroll(nextPageIndex);
+        if (pageScrolled) {
+            dispatch(lobbyPageAction(scrollPage, nextPageIndex, false));
+        }
     }
 
     return (
