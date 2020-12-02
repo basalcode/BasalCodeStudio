@@ -8,11 +8,14 @@ const app = express();
 // with server-side rendering
 app.use('/', express.static(path.resolve(__dirname, '../../build')));
 
-app.get('*', (req, res, next) => {
+app.use('*', (req, res, next) => {  
+
+    console.log(req.originalUrl);
+    console.log('req.path', req.path);
     if (req.path.split('/')[1] === 'static') {
         return next();
     }
-    console.log('[Production Server]', __dirname);
+    // console.log('[Production Server]', __dirname);
 
     res.sendFile(path.resolve(__dirname, '../../build/index.html'));
 });

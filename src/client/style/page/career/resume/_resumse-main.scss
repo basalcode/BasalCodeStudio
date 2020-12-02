@@ -43,7 +43,7 @@
     }
     
     &__project-link {
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     
     &__content-body {
@@ -182,7 +182,7 @@
         }
         
         &__project-link {
-            font-size: 0.8rem;
+            font-size: 1.1rem;
         }
 
         &__content-body-category {
@@ -295,7 +295,7 @@
         }
 
         &__project-link {
-            font-size: 0.6rem;
+            font-size: 0.8rem;
         }
 
         &__content-body-category {
@@ -408,11 +408,11 @@
         }
 
         &__project-link {
-            font-size: 0.5rem;
+            font-size: 0.7rem;
         }
 
         &__content-body-category {
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.8rem;
         }
         
         &__content-body-title {
@@ -514,6 +514,10 @@
             border-top: 1px solid black;
         }
 
+        &__project-link {
+            font-size: 0.8rem;
+        }
+
         &__skills-description-container {
             padding-left: 1.5rem;
         }
@@ -548,7 +552,6 @@
         }
 
         &__project-link {
-            font-size: 0.8rem;
         }
 
         &__content-body-category {

@@ -64,7 +64,6 @@ module.exports = (request, response) => {
                     <br />
                     BasalCode</p>`
             }
-            console.log('test');
 
             const sendVerificationEmail = () => {
                 return new Promise((resolve, reject) => {

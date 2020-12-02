@@ -81,6 +81,8 @@ const BlogLobbyContact = (props) => {
                 fetch(`/email/auth?email=${email}`)
                     .then(response => response.json())
                     .then(parsed => {
+                        console.log('parsed', parsed);
+
                         if (parsed.validity) {
                             setAuthEmailSent(true);
 

@@ -37,7 +37,7 @@ const ResumeMain = () => {
                                         </div>
                                         <a className="ResumeMain__project-link"
                                             href={address.link}>
-                                            {address.link}
+                                            {`${index === 0 ? "📌" : "💻"} ` + address.link}
                                         </a>
                                         
                                     </section>
