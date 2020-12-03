@@ -39,7 +39,6 @@ const ResumeMain = () => {
                                             href={address.link}>
                                             {`${index === 0 ? "📌" : "💻"} ` + address.link}
                                         </a>
-                                        
                                     </section>
                                 )}
                             </header>

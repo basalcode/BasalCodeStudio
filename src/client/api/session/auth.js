@@ -1,51 +1,58 @@
+import axios from 'axios';
+
 export const login = () => {
     return new Promise((resolve, reject) => {
-        fetch('/auth/update/login?session=true')
-        .then(response => response.json())
-        .then(result => {
-            const isSuccess = result.validity;
-            if (isSuccess) {
-                const loginSuccess = result.value;
-                resolve(loginSuccess);
-            } else {
-                const loginFailedMessage = result.value;
-                reject(loginFailedMessage);
-            }
+        axios.put('/api/session/login', {
+            data: { session: true }
         })
+            .then(response => {
+                console.log('response', response);
+                const isSuccess = response.validity;
+                if (isSuccess) {
+                    const loginSuccess = response.value;
+                    resolve(loginSuccess);
+                } else {
+                    const loginFailedMessage = response.value;
+                    reject(loginFailedMessage);
+                }
+            })
+            .catch(error => console.log(error));
     })
 }
 
 export const checkLogin = () => {
     return new Promise((resolve, reject) => {
-        fetch('/auth/read/login')
-            .then(response => response.json())
-            .then(result => {
-                const isSuccess = result.validity;
+        axios.get('/api/session/login')
+            .then(response => {
+                console.log('response', response);
+                const isSuccess = response.validity;
                 if (isSuccess) {
-                    const loginObject = result.value;
+                    const loginObject = response.value;
                     resolve(loginObject);
                 } else {
-                    const noSessionValueMessage = result.value;
+                    const noSessionValueMessage = response.value;
                     reject(noSessionValueMessage);
                 }
             })
+            .catch(error => console.log(error));
     })
 }
 
 export const logout = () => {
     return new Promise((resolve, reject) => {
-        fetch('/auth/delete/login')
-        .then(response => response.json())
-        .then(result => {
-            const isSuccess = result.validity;
-            if (isSuccess) {
-                const logoutSuccessMessage = result.value;
-                resolve(logoutSuccessMessage);
-            } else {
-                const logoutFailedMessage = result.value;
-                reject(logoutFailedMessage);
-            }
-        })
+        axios.delete('/api/session/login')
+            .then(response => {
+                console.log('response', response);
+                const isSuccess = response.validity;
+                if (isSuccess) {
+                    const logoutSuccessMessage = response.value;
+                    resolve(logoutSuccessMessage);
+                } else {
+                    const logoutFailedMessage = response.value;
+                    reject(logoutFailedMessage);
+                }
+            })
+            .catch(error => console.log(error));
     })
 }
 

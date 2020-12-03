@@ -8,15 +8,16 @@ module.exports = function (request, response) {
     if (!response) {
         throw new Error('[Error] authProcessor.js: There is no \'response\' parameter.');
     }
+
     const InputType = {
-        CREATE: 'create',
-        READ: 'read',
-        UPDATE: 'update',
-        DELETE: 'delete'
+        CREATE: 'POST',
+        READ: 'GET',
+        UPDATE: 'PUT',
+        DELETE: 'DELETE'
     }
 
-    const sessionName = request.params.session;
-    const inputType = request.params.inputType;
+    const sessionName = request.params.type;
+    const inputType = request.method;
 
     ilog.all({ sessionName: sessionName });
     ilog.all({ inputType: inputType });
@@ -34,6 +35,8 @@ module.exports = function (request, response) {
         throw new Error('[Error] authProcessor.js: Invalid inputType.');
     }
 
+    ilog.middle(' Session Start ');
+
     let sessionResult = {
         validity: null,
         value: null
@@ -41,9 +44,8 @@ module.exports = function (request, response) {
 
     const sessionOperator = {
         [InputType.READ]() {
-            const session = request.session[sessionName];
-            ilog.all({[request.session[sessionName]]: request.session[sessionName]})
-            ilog.all({session:session})
+            const session = request.session.sessionName;
+            ilog.all({ session: session });
             if (session) {
                 sessionResult.validity = true;
                 sessionResult.value = session;
@@ -92,7 +94,6 @@ module.exports = function (request, response) {
     const validity = resultObject.validity;
     const value = resultObject.value;
 
-    ilog.middle(' Session Start ');
     ilog.all({ validity: validity });
     ilog.all({ value: value });
     ilog.middle(' Session Finish ');

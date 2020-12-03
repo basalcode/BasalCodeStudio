@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const login = (action) => {
     return new Promise((resolve, reject) => {
         let loginObject = {
@@ -5,12 +7,13 @@ export const login = (action) => {
             password: action.userPassword
         }
         const LOGIN_PAGE = 'login';
-        fetch(`/request/user/read/account?page=${LOGIN_PAGE}`, {
-            method: 'POST',
+        axios.get(`/api/db/account?page=${LOGIN_PAGE}`, {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(loginObject)
+            data: JSON.stringify(loginObject)
+        }).then(response => {
+            console.log(response);
         })
         .then(response => response.json())
         .then(result => {

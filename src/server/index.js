@@ -1,22 +1,17 @@
 const express = require('express');
-const fs = require('fs');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+// const axios = require('axios');
+// const fs = require('fs');
 const path = require('path');
-
 const app = express();
 
 /* production server */
-// with server-side rendering
 app.use('/', express.static(path.resolve(__dirname, '../../build')));
 
-app.use('*', (req, res, next) => {  
-
-    console.log(req.originalUrl);
-    console.log('req.path', req.path);
-    if (req.path.split('/')[1] === 'static') {
-        return next();
-    }
-    // console.log('[Production Server]', __dirname);
-
+app.use('/api', createProxyMiddleware('/api', { target: 'http://localhost:3030' }));
+app.use('/*', (req, res, next) => {
+    console.log('[Request build file]'); 
+    console.log('[originalUrl]', req.originalUrl);
     res.sendFile(path.resolve(__dirname, '../../build/index.html'));
 });
 

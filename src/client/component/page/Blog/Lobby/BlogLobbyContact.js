@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import axios from 'axios';
+
 const BlogLobbyContact = (props) => {
     /* store */
     const pageIndex = useSelector(store => store.blog.index, []);
@@ -78,12 +80,11 @@ const BlogLobbyContact = (props) => {
             setFormError(false);
             
             if (!authEmailSent) {
-                fetch(`/email/auth?email=${email}`)
-                    .then(response => response.json())
-                    .then(parsed => {
-                        console.log('parsed', parsed);
+                axios(`/email/auth?email=${email}`)
+                    .then(response => {
+                        console.log('response', response);
 
-                        if (parsed.validity) {
+                        if (response.validity) {
                             setAuthEmailSent(true);
 
                             setFormMessage('입력한 메일로 인증코드가 발송되었습니다.');
@@ -106,8 +107,7 @@ const BlogLobbyContact = (props) => {
                     }
                 }
 
-                fetch(`/email/send`, {
-                    method: 'POST',
+                axios.post(`/email/send`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },

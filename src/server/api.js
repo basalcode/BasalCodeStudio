@@ -17,10 +17,12 @@ const requestProcessor = require('./db/requestProcessor');
 const sessionProcessor = require('./session/sessionProcessor');
 const errorHandler = require('./errors');
 
+console.log('[API Server]');
+
 /* api */
-app.use('/email/:type', emailProcessor);
-app.use('/api/:dbType/:inputType/:contentType', requestProcessor);
-app.use('/auth/:inputType/:session', sessionProcessor);
+app.use('/api/email/:type', emailProcessor);
+app.use('/api/db/:type', requestProcessor);
+app.use('/api/session/:type', sessionProcessor);
 
 /* error handler */
 app.use((req, res, next) => {
