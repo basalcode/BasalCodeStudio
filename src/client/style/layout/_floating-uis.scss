@@ -8,42 +8,35 @@ $NIGHTMODE_BACKGROUND_COLOR--FLOATING_UIS_HOVER: hsl(152, 84%, 7%);
 $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
 
 .FloatingUIs {
-    @include size(95vw, 6.25rem);
-
     position: fixed;
-    left: 2.5vw;
-
-    &--fade-in-off {
-        @include fade-in-off();
-
-        bottom: 0;
-    }
-    
-    &--fade-in-on {
-        @include fade-in-on(1.5s);
-
-        bottom: 3rem;
-        transition: width 1s, bottom 1s;
-    }
-
-    &--navigation-on {
-        width: calc(95vw - 30rem);
-    }
 
     &__ui-container {
-        $width: 2.5rem;
-        @include size($width, 100%);
-        @include round-border($width);
+        @include size(2.5rem, 6rem);
+        @include round-border(50px);
         
-        position: absolute;
+        position: fixed;
+        bottom: 2rem;
+
+        &--fade-in-off {
+            @include fade-in-off();
+    
+            bottom: 0;
+        }
+        
+        &--fade-in-on {
+            @include fade-in-on(1s);
+    
+            bottom: 3rem;
+            transition: width 1s, bottom 1s;
+        }
     }
 
     &__left-container {
-        left: 0;
+        left: 2rem;
     }
 
     &__right-container {
-        right: 0;
+        right: 2rem;
     }
 
     &__ui {
@@ -120,8 +113,17 @@ $NIGHTMODE_COLOR--FLOATING_UIS_HOVER: hsl(159, 100%, 50%);
             
             display: flex;
             justify-content: space-around;
-            bottom: 0;
+            bottom: 1.5rem;
         }
+
+        &__left-container {
+            left: 0rem;
+        }
+    
+        &__right-container {
+            right: 0rem;
+        }
+    
         
         &__ui {
             position: relative;

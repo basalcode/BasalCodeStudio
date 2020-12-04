@@ -33,9 +33,9 @@ const BlogLobbyIntro = (props) => {
             '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'
         ];
         const shuffledChars = shuffle(animationChars);
-        const animationInterval = 120;
-        const repeatMin = 3;
-        const repeatMax = 10;
+        const animationInterval = 100;
+        const repeatMin = 15;
+        const repeatMax = 20;
         const randomRepeat = Math.floor(((Math.random() * repeatMax) + repeatMin) % repeatMax);
         return {
             titleText: titleText,

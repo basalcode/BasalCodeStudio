@@ -6,18 +6,21 @@ import { useSelector } from 'react-redux';
 import Logo from './Logo';
 import NavigationButton from './NavigationButton';
 
-const Header = (props) => {
+const Header = props => {
     /* store */
     const navigationOn = useSelector(store => store.blog.navigationOn);
 
+    /* props */
+    const fadeInOn = props.fadeInOn;
+
     return (
         <header className={"Header " +
-            `${props.fadeInOn ? 
+            `${fadeInOn ? 
                 "Header--fade-in-on" :
                 "Header--fade-in-off"} ` +
             `${navigationOn ? "Header--navigation-on" : ""} `}>
-            <Logo />
-            <NavigationButton />
+            <Logo fadeInOn={fadeInOn} />
+            <NavigationButton fadeInOn={fadeInOn} />
         </header>
     );
 }

@@ -64,38 +64,38 @@ const BlogLobbyContact = (props) => {
             }
 
             if (email === '') {
-                return errorHandler('이메일을 입력해주세요.');;
+                return errorHandler('이메일을 입력해주세요.');
             }
             if (name === '') {
-                return errorHandler('이름을 입력해주세요.');;
+                return errorHandler('이름을 입력해주세요.');
             }
             if (subject === '') {
-                return errorHandler('주제를 입력해주세요.');;
+                return errorHandler('주제를 입력해주세요.');
             }
             if (message === '') {
-                return errorHandler('메세지를 입력해주세요.');;
+                return errorHandler('메세지를 입력해주세요.');
             }
 
             setFormMessage('요청중입니다...');
             setFormError(false);
-            
+
             if (!authEmailSent) {
-                axios(`/email/auth?email=${email}`)
-                    .then(response => {
-                        console.log('response', response);
+                axios({
+                    method: 'GET',
+                    url: `/api/email/auth?email=${email}`
+                }).then(response => {
+                    if (response.data.validity) {
+                        setAuthEmailSent(true);
 
-                        if (response.validity) {
-                            setAuthEmailSent(true);
+                        setFormMessage('입력한 메일로 인증코드가 발송되었습니다.');
+                        setFormError(false);
+                    } else {
+                        alert('[에러] 인증 메일 전송이 실패했습니다. 관리자에게 문의하세요.');
+                    }
 
-                            setFormMessage('입력한 메일로 인증코드가 발송되었습니다.');
-                            setFormError(false);
-                        } else {
-                            alert('[에러] 인증 메일 전송이 실패했습니다. 관리자에게 문의하세요.');
-                        }
-
-                        /* unlock */
-                        setSubmitLock(false);
-                    });
+                    /* unlock */
+                    setSubmitLock(false);
+                });
             } else {
                 const emailSendData = {
                     authKey: authKey,
@@ -107,48 +107,49 @@ const BlogLobbyContact = (props) => {
                     }
                 }
 
-                axios.post(`/email/send`, {
+                axios({
+                    method: 'POST',
+                    url: `/api/email/send`,
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(emailSendData)
-                })
-                    .then(response => response.json())
-                    .then(parsed => {
-                        if (parsed.validity) {
-                            setEmail('');
-                            setName('');
-                            setSubject('');
-                            setMessage('');
-                            setAuthKey('');
+                    data: emailSendData
+                }).then(response => {
+                    if (response.data.validity) {
+                        setEmail('');
+                        setName('');
+                        setSubject('');
+                        setMessage('');
+                        setAuthKey('');
 
-                            setAuthEmailSent(false);
+                        setAuthEmailSent(false);
 
-                            setFormMessage('메일이 성공적으로 전송되었습니다!');
-                            setFormError(false);
-                        } else {
-                            const statusCode = {
-                                FailToSendEmail: 2,
-                                WrongAuthKey: 3
-                            }
-
-                            if (parsed.code === statusCode.FailToSendEmail) {
-                                alert('[에러] 이메일 전송이 실패했습니다. 관리자에게 문의하세요.');
-                                setFormError(false);
-                                return;
-                            }
-
-                            if (parsed.code === statusCode.WrongAuthKey) {
-                                setAuthKey('');
-
-                                setFormMessage('입력하신 키가 올바르지 않습니다.');
-                                setFormError(true);
-                            }
+                        setFormMessage('메일이 성공적으로 전송되었습니다!');
+                        setFormError(false);
+                    } else {
+                        const statusCode = {
+                            FailToSendEmail: 2,
+                            WrongAuthKey: 3
                         }
 
-                        /* unlock */
-                        setSubmitLock(false);
-                    });
+                        if (response.data.code === statusCode.FailToSendEmail) {
+                            alert('[에러] 이메일 전송이 실패했습니다. 관리자에게 문의하세요.');
+                            setFormError(false);
+                            setSubmitLock(false);
+                            return;
+                        }
+
+                        if (response.data.code === statusCode.WrongAuthKey) {
+                            setAuthKey('');
+
+                            setFormMessage('입력하신 키가 올바르지 않습니다.');
+                            setFormError(true);
+                        }
+                    }
+
+                    /* unlock */
+                    setSubmitLock(false);
+                });
             }
         } else {
             setFormMessage('메일이 전송 중입니다.');
@@ -216,7 +217,7 @@ const BlogLobbyContact = (props) => {
                             <div className={`BlogLobbyContact__form-message ` +
                                 `${formError ?
                                     "BlogLobbyContact__form-message--error" : ""} ` +
-                                `${nightModeOn ? 
+                                `${nightModeOn ?
                                     "BlogLobbyContact__form-message--night-mode" : ""} `}>
                                 {formMessage}
                             </div>

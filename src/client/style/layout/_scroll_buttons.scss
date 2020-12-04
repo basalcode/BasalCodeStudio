@@ -5,20 +5,17 @@ $ScrollButtons__gradient-size: 100%;
     @include center-vertical();
 
     position: fixed;
-    right: 2.5%;
+    right: 2rem;
 
     transition: right 1s;
 
-    &--navigation-on {
-        right: calc(2.5% + 30rem);
-    }
-
     &__button {
         @include size(100%, 48%);
+        @include round-border(5px);
         
         position: absolute;
 
-        border-radius: 10px;
+        // border-radius: 10px;
 
         background-position: 0 0, 100% 0;
         background-size: 2px 100%;

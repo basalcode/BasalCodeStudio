@@ -9,11 +9,14 @@ import scrollPage from 'lib/scroll/scrollPage'
 import { lobbyPage as lobbyPageAction } from 'store/action/blog';
 import { nightMode as nightModeAction } from 'store/action/app';
 
-const FloatingUIs = ({ fadeInOn }) => {
+const FloatingUIs = props => {
     /* store */
     const dispatch = useDispatch();
     const nightModeOn = useSelector(store => store.app.nightModeOn);
     const navigationOn = useSelector(store => store.blog.navigationOn);
+
+    /* props */
+    const fadeInOn = props.fadeInOn;
 
     /* event handler */
     // email button
@@ -44,14 +47,14 @@ const FloatingUIs = ({ fadeInOn }) => {
     return (
         <aside className={
             `FloatingUIs ` +
-            `${fadeInOn ?
-                "FloatingUIs--fade-in-on " :
-                "FloatingUIs--fade-in-off "}` +
             `${nightModeOn ? "FloatingUIs--night-mode" : ""} ` +
             `${navigationOn ? "FloatingUIs--navigation-on" : "" }`}>
-            <section className="
-                FloatingUIs__ui-container
-                FloatingUIs__left-container">
+            <section className={
+                "FloatingUIs__ui-container " + 
+                "FloatingUIs__left-container " +
+                `${fadeInOn ?
+                    "FloatingUIs__ui-container--fade-in-on" :
+                    "FloatingUIs__ui-container--fade-in-off"} `}>
                 <a className="
                     FloatingUIs__ui
                     FloatingUIs__ui-top
@@ -64,9 +67,12 @@ const FloatingUIs = ({ fadeInOn }) => {
                     icon-mail-1"
                     onClick={scrollContactPage} />
             </section>
-            <section className="
-                FloatingUIs__ui-container
-                FloatingUIs__right-container">
+            <section className={
+                "FloatingUIs__ui-container " +
+                "FloatingUIs__right-container " +
+                `${fadeInOn ?
+                    "FloatingUIs__ui-container--fade-in-on" :
+                    "FloatingUIs__ui-container--fade-in-off"} `}>
                 <button
                     className="
                         FloatingUIs__ui

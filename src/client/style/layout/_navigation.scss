@@ -9,22 +9,11 @@ $Navigation__slide-size: 30rem;
     border: 2px solid black;
 
     background-color: $DAYMODE_BACKGROUND_COLOR;
-    opacity: 0.6;
+    opacity: 0.8;
     transition: right 1s;
 
     &--on {
         right: 0;
-    }
-
-    &__exit-button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-
-        text-align: right;
-        font-size:2rem;
-
-        cursor: pointer;
     }
 
     &__header {
@@ -43,5 +32,29 @@ $Navigation__slide-size: 30rem;
         @include size(100%, 15%);
 
         border: 1px solid black;
+    }
+}
+
+@media (max-width: 1440px) {
+    .Navigation {
+
+    }
+}
+
+@media (max-width: 1024px) {
+    .Navigation {
+
+    }
+}
+
+@media (max-width: 768px) {
+    .Navigation {
+
+    }
+}
+
+@media (max-width: 425px) {
+    .Navigation {
+
     }
 }

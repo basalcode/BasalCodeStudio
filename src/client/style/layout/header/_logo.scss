@@ -1,9 +1,22 @@
 $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
 
 .Logo {
-    @include center-vertical();
-    
-    position: absolute;
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+
+    &--fade-in-off {
+        @include fade-in-off();
+
+        top: 0;
+    }
+
+    &--fade-in-on {
+        @include fade-in-on(1s);
+        
+        top: 2.5rem;
+        transition: width 1s, top 1s;
+    }
 
     &:hover &__underline {
         width: 100%;
@@ -32,8 +45,22 @@ $NIGHTMODE_BORDER_COLOR--LOGO: hsl(161, 83%, 60%);
     }
 }
 
+@media (max-width: 768px) {
+    .Logo {
+        top: 1.5rem;
+        left: 1.5rem;
+
+        &__text {
+            font-size: 1.8rem;
+        }
+    }
+}
+
 @media (max-width: 425px) {
     .Logo {
+        top: 1rem;
+        left: 1rem;
+
         &__text {
             font-size: 1.5rem;
             letter-spacing: 1.5px;

@@ -15,11 +15,6 @@ const Navigation = () => {
     const dispatch = useDispatch();
     const navigationOn = useSelector(store => store.blog.navigationOn);
 
-    /* event handler */
-    const navigationOff = event => {
-        dispatch(navigationAction(false));
-    }
-
     /* useEffect */
     useEffect(() => {
 
@@ -41,11 +36,6 @@ const Navigation = () => {
                 {/* <CategoryList link={true} /> */}
             </div>
             <div className="Navigation__footer"></div>
-
-            <div className="
-                Navigation__exit-button
-                icon-cancel"
-                onClick={navigationOff}></div>
         </div>
     );
 }

@@ -1,21 +1,6 @@
 .Header {
-    @include size(95vw, 3.75rem);
-    
     position: fixed;
-    left: 2.5vw;
-
-    &--fade-in-off {
-        @include fade-in-off();
-
-        top: 0;
-    }
-
-    &--fade-in-on {
-        @include fade-in-on(1.5s);
-        
-        top: 2.5rem;
-        transition: width 1s, top 1s;
-    }
+    left: 0;
 
     &--navigation-on {
         width: calc(95vw - 30rem);

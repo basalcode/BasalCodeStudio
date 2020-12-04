@@ -42,9 +42,9 @@ const Blog = () => {
                     <Route path={`${match.path}/post-editor`} component={PostEditor} />
                 </Switch>
             </main>
-            <ScrollButtons />
             <Navigation />
             <Header fadeInOn={fadeInOn} />
+            <ScrollButtons />
             <FloatingUIs fadeInOn={fadeInOn} />
         </section>
     );

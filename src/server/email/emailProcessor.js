@@ -95,6 +95,8 @@ module.exports = (request, response) => {
                 });
         },
         send() {
+            console.log('test point', request.body, request.data);
+
             let inputAuthKey = request.body.authKey;
             let sessionAuthKey = request.session.emailAuthKey;
             if (inputAuthKey === sessionAuthKey) {

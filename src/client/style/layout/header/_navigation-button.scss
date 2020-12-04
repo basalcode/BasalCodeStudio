@@ -25,14 +25,29 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
 }
 
 .NavigationButton {
-    @include center-vertical();
-    @include size(2.8rem, 2.8rem);
+    @include size(2.5rem, 2.5rem);
     @include circle-border();
     
-    position: absolute;
-    right: 0;
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+
+    border: 0.2rem solid black;
 
     background-color: white;
+
+    &--fade-in-off {
+        @include fade-in-off();
+
+        top: 0;
+    }
+
+    &--fade-in-on {
+        @include fade-in-on(1s);
+        
+        top: 2.5rem;
+        transition: width 1s, top 1s;
+    }
 
     &:hover {
         @include colors-transition(0.5s);
@@ -108,8 +123,20 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
     }
 }
 
+@media (max-width: 768px) {
+    .NavigationButton {
+        @include size(2.2rem, 2.2rem);
+
+        top: 1.5rem;
+        right: 1.5rem;
+    }
+}
+
 @media (max-width: 425px) {
-       .NavigationButton {
-        @include size(2.5rem, 2.5rem);
+    .NavigationButton {
+        @include size(2rem, 2rem);
+
+        top: 1rem;
+        right: 1rem;
     }
 }
