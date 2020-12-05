@@ -12,6 +12,7 @@ const ScrollButtons = () => {
     /* store */
     const dispatch = useDispatch();
     const pageIndex = useSelector(store => store.blog.index, []);
+    const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* event handler */
     const topButtonHandler = event => {
@@ -34,9 +35,10 @@ const ScrollButtons = () => {
 
     return (
         <div className="ScrollButtons">
-            <div className="
-                ScrollButtons__button 
-                ScrollButtons__button-up"
+            <div className={
+                "ScrollButtons__button " +
+                "ScrollButtons__button-up " + 
+                `${nightModeOn ? "ScrollButtons__button-up--night-mode-on" : ""} `}
                 type="button"
                 onClick={topButtonHandler}>
                 <div className="
@@ -44,9 +46,10 @@ const ScrollButtons = () => {
                     ScrollButtons__button-icon-up
                     icon-up-open-1"></div>
             </div>
-            <div className="
-                ScrollButtons__button 
-                ScrollButtons__button-down"
+            <div className={
+                "ScrollButtons__button " +
+                "ScrollButtons__button-down " + 
+                `${nightModeOn ? "ScrollButtons__button-down--night-mode-on" : ""} `}
                 type="button"
                 onClick={bottomButtonHandler}>
                 <div className="

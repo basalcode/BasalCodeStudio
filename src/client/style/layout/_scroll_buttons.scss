@@ -15,8 +15,6 @@ $ScrollButtons__gradient-size: 100%;
         
         position: absolute;
 
-        // border-radius: 10px;
-
         background-position: 0 0, 100% 0;
         background-size: 2px 100%;
         background-repeat: no-repeat;
@@ -36,8 +34,16 @@ $ScrollButtons__gradient-size: 100%;
 
         border-top: 2px solid black;
         background-image: 
-        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
-        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+        linear-gradient(to bottom, black 0%, $BLUR_BACKGROUND 100%), 
+        linear-gradient(to bottom, black 0%, $BLUR_BACKGROUND 100%);
+
+        &--night-mode-on {
+            border-top: 2px solid $DAYMODE_BORDER_COLOR ;
+
+            background-image: 
+            linear-gradient(to bottom, $DAYMODE_BORDER_COLOR 0%, $BLUR_BACKGROUND 100%), 
+            linear-gradient(to bottom, $DAYMODE_BORDER_COLOR 0%, $BLUR_BACKGROUND 100%);
+        }
     }
     
     &__button-down {
@@ -45,8 +51,16 @@ $ScrollButtons__gradient-size: 100%;
         
         border-bottom: 2px solid black;
         background-image: 
-        linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size), 
-            linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR $ScrollButtons__gradient-size);
+        linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR 100%), 
+        linear-gradient(to top, black 0%, $DAYMODE_BACKGROUND_COLOR 100%);
+
+        &--night-mode-on {
+            border-bottom: 2px solid $DAYMODE_BORDER_COLOR ;
+
+            background-image: 
+            linear-gradient(to top, $DAYMODE_BORDER_COLOR 0%, $BLUR_BACKGROUND 100%), 
+            linear-gradient(to top, $DAYMODE_BORDER_COLOR 0%, $BLUR_BACKGROUND 100%);
+        }
     }
 
     &__button-icon {

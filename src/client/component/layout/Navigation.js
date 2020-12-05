@@ -14,10 +14,10 @@ const Navigation = () => {
     /* store */
     const dispatch = useDispatch();
     const navigationOn = useSelector(store => store.blog.navigationOn);
+    const nightModeOn = useSelector(store => store.app.nightModeOn);
 
     /* useEffect */
     useEffect(() => {
-
         /* unmount */
         return () => {
             dispatch(navigationAction(false));
@@ -26,7 +26,8 @@ const Navigation = () => {
 
     return (
         <div className={"Navigation " +
-            `${navigationOn ? "Navigation--on" : "Navigation--off"}`}>
+            `${navigationOn ? "Navigation--on" : "Navigation--off"} ` +
+            `${nightModeOn ? "Navigation--night-mode-on" : ""}`}>
             <div className="Navigation__header">
                 <UserMenu />
             </div>

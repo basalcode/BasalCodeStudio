@@ -9,11 +9,15 @@ $Navigation__slide-size: 30rem;
     border: 2px solid black;
 
     background-color: $DAYMODE_BACKGROUND_COLOR;
-    opacity: 0.8;
+    opacity: 0.9;
     transition: right 1s;
 
     &--on {
         right: 0;
+    }
+
+    &--night-mode-on {
+        background-color: $BLUR_BACKGROUND;
     }
 
     &__header {
@@ -37,7 +41,7 @@ $Navigation__slide-size: 30rem;
 
 @media (max-width: 1440px) {
     .Navigation {
-
+        width: 25rem;
     }
 }
 
@@ -49,12 +53,17 @@ $Navigation__slide-size: 30rem;
 
 @media (max-width: 768px) {
     .Navigation {
-
+        
     }
 }
 
 @media (max-width: 425px) {
     .Navigation {
+        width: 100vw;
+        right: -100vw;
 
+        &--on {
+            right: 0;
+        }
     }
 }
