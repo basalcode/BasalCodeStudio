@@ -1,5 +1,6 @@
 /* module */
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 /* component */
 import Section from './Section';
@@ -33,16 +34,15 @@ const CategoryList = ({ link }) => {
     }
     const getSections = () => {
         return new Promise((resolve, reject) => {
-            fetch('/request/blog/read/categoryEditor')
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (result) {
-                    if (result.validity) {
-                        let categoryListObject = getCategoryListObject(result.value);
-                        resolve(categoryListObject);
-                    }
-                });
+            axios({
+                method: 'GET',
+                url: '/api/blog/categoryEditor',
+            }).then(response => {
+                if (response.data.validity) {
+                    let categoryListObject = getCategoryListObject(response.value);
+                    resolve(categoryListObject);
+                }
+            });
         })
     };
 
@@ -57,14 +57,13 @@ const CategoryList = ({ link }) => {
     return (
         <div className="CategoryList">
             <div className="CategoryList__sections">
-                {Object.values(sections).map(section => {
-                    return (<Section
+                {Object.values(sections).map(section => 
+                    <Section
                         key={section.id}
                         name={section.name}
                         categories={section.categories}
-                        link={link}
-                    ></Section>);
-                })}
+                        link={link} />
+                )}
             </div>
         </div>
     );

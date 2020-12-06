@@ -19,24 +19,6 @@ $Navigation__slide-size: 30rem;
     &--night-mode-on {
         background-color: $BLUR_BACKGROUND;
     }
-
-    &__header {
-        @include size(100%, 15%);
-        
-        border: 1px solid black;
-    }
-
-    &__body {
-        @include size(100%, 70%);
-        
-        border: 1px solid black;
-    }
-
-    &__footer {
-        @include size(100%, 15%);
-
-        border: 1px solid black;
-    }
 }
 
 @media (max-width: 1440px) {
@@ -53,7 +35,8 @@ $Navigation__slide-size: 30rem;
 
 @media (max-width: 768px) {
     .Navigation {
-        
+        padding-top: 0%;
+        padding-bottom: 0%;
     }
 }
 
@@ -61,6 +44,9 @@ $Navigation__slide-size: 30rem;
     .Navigation {
         width: 100vw;
         right: -100vw;
+
+        padding-top: 15%;
+        padding-bottom: 20%;
 
         &--on {
             right: 0;

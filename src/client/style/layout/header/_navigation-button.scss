@@ -25,7 +25,7 @@ $NIGHTMODE_BACKGROUND_COLOR--NAVIGATION_BUTTON_LINE_HOVER: hsl(159, 100%, 50%);
 }
 
 .NavigationButton {
-    @include size(2.5rem, 2.5rem);
+    @include size(2.7rem, 2.7rem);
     @include circle-border();
     
     position: fixed;

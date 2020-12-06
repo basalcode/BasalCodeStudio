@@ -12,7 +12,7 @@ import PostEditor from 'component/page/Blog/PostEditor/PostEditor';
 
 // layout
 import Header from 'component/layout/Header/Header';
-import Navigation from 'component/layout/Navigation';
+import Navigation from 'component/layout/Navigation/Navigation';
 import ScrollButtons from 'component/layout/ScrollButtons';
 import FloatingUIs from 'component/layout/FloatingUIs';
 

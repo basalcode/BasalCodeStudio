@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { navigation as navigationAction } from 'store/action/blog';
 
 /* component */
-import UserMenu from 'component/common/UserMenu/UserMenu';
-// import CategoryList from 'component/page/Blog/CategoryList/CategoryList';
-import Construction from 'component/common/Construction';
+import NavigationHeader from 'component/layout/Navigation/NavigationHeader/NavigationHeader';
+import NavigationBody from 'component/layout/Navigation/NavigationBody/NavigationBody';
+import NavigationFooter from 'component/layout/Navigation/NavigationFooter/NavigationFooter';
 
 const Navigation = () => {
     /* store */
@@ -28,15 +28,9 @@ const Navigation = () => {
         <div className={"Navigation " +
             `${navigationOn ? "Navigation--on" : "Navigation--off"} ` +
             `${nightModeOn ? "Navigation--night-mode-on" : ""}`}>
-            <div className="Navigation__header">
-                <UserMenu />
-            </div>
-            <div className="Navigation__body">
-                <Construction />
-
-                {/* <CategoryList link={true} /> */}
-            </div>
-            <div className="Navigation__footer"></div>
+            <NavigationHeader />
+            <NavigationBody />
+            <NavigationFooter />
         </div>
     );
 }

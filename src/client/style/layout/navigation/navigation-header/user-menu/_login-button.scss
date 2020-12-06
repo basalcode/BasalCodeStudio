@@ -1,0 +1,42 @@
+.LoginButton {
+    @include round-border(1rem);
+    @include size(20rem, 2.5rem);
+
+    position: absolute;
+    top: 2.5rem;
+    right: 6rem;
+
+    border: 3px solid black;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.4rem;
+
+    &:hover {
+        background-color: black;
+    }
+
+    &:hover &__text {
+        color: white;
+    }
+
+    &__text {
+        @include size(100%, 100%);
+    }
+}
+
+@media (max-width: 1440px) {
+    .LoginButton {
+        @include size(15rem, 2.5rem);
+
+        font-size: 1.2rem;
+        right: 7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .LoginButton {
+        @include center();
+
+        height: 2.2rem;
+        border: 2px solid black;
+    }
+}
