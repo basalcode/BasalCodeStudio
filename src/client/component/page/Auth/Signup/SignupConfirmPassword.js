@@ -1,7 +1,7 @@
 /* module */
 import React, { useEffect, useState } from 'react';
 
-const ConfirmPassword = ({ onInputBlur, passwordText, forwardedRef }) => {
+const SignupConfirmPassword = ({ onInputBlur, passwordText, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
     const [confirm, setConfirm] = useState('false');
@@ -63,4 +63,4 @@ const ConfirmPassword = ({ onInputBlur, passwordText, forwardedRef }) => {
     );
 }
 
-export default ConfirmPassword;
+export default SignupConfirmPassword;

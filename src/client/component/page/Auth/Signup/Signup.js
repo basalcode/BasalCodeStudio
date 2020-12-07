@@ -2,10 +2,10 @@
 import React, { useState, useRef } from 'react';
 
 /* component */
-import Email from './Email';
-import Password from './Password';
-import ConfirmPassword from './ConfirmPassword';
-import UserName from './UserName';
+import SignupEmail from './SignupEmail';
+import SignupPassword from './SignupPassword';
+import SignupConfirmPassword from './SignupConfirmPassword';
+import SignupUserName from './SignupUserName';
 
 const Signup = ({ history }) => {
     const [emailVerified, setEmailVerified] = useState(false);
@@ -90,36 +90,32 @@ const Signup = ({ history }) => {
         <div className="Signup">
             <form className="Signup"
                 onSubmit={onSubmitHandler}>
-                <Email
+                <SignupEmail
                     forwardedRef={emailRef}
                     onInputBlur={(text, verified) => {
                         setEmailText(text);
                         setEmailVerified(verified);
-                    }}
-                ></Email>
-                <Password
+                    }} />
+                <SignupPassword
                     forwardedRef={passwordRef}
                     confrimPasswordVerified={confirmPasswordVerified}
                     onInputBlur={(text, verified) => {
                         setPasswordText(text);
                         setPasswordVerified(verified);
-                    }}
-                ></Password>
-                <ConfirmPassword
+                    }} />
+                <SignupConfirmPassword
                     forwardedRef={confirmPasswordRef}
                     passwordText={passwordText}
                     onInputBlur={(text, verified) => {
                         setConfirmPasswordText(text);
                         setConfirmPasswordVerified(verified);
-                    }}
-                ></ConfirmPassword>
-                <UserName
+                    }} />
+                <SignupUserName
                     forwardedRef={userNameRef}
                     onInputBlur={(text, verified) => {
                         setUserNameText(text);
                         setUserNameVerified(verified);
-                    }}
-                ></UserName>
+                    }} />
                 <input className="Signup__sign-up" type="submit" value="Sign up" />
             </form>
         </div>

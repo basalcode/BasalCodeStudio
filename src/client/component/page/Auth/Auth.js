@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 /* component */
-import Login from './Login/Login';
+import Login from './Login';
 import Signup from './Signup/Signup';
 
 const Auth = ({ match }) => {

@@ -2,16 +2,13 @@
 import React, { useState } from 'react';
 
 /* lib */
-import { isPassword } from 'lib/verifyForm';
+import { hasNoSpecialCharacter } from 'lib/verifyForm';
 
-const Password = ({ onInputBlur, forwardedRef }) => {
+const SignupUserName = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
 
-    const onChangeHandler = (event) => {
-        const inputValue = event.target.value;
-        setText(inputValue);
-    }
+    const onChangeHandler = (event) => { setText(event.target.value); }
 
     const onBlurHandler = (event) => {
         const inputValue = event.target.value;
@@ -21,32 +18,32 @@ const Password = ({ onInputBlur, forwardedRef }) => {
         if (inputValue.length === 0) {
             const EMPTY_VALUE = 'Please fill out this field.';
             stateMessage = EMPTY_VALUE;
-        } else if (isPassword(inputValue)) {
+        } else if (hasNoSpecialCharacter(inputValue)) {
             const CONFIRM_MESSAGE = 'Great!'
             stateMessage = CONFIRM_MESSAGE;
             confirmed = true;
         } else {
-            const INVALID_PASSWORD = 'Password must contain 8 to 16 characters with a mix of letters, numbers and sepcial character.';
-            stateMessage = INVALID_PASSWORD;
+            const HAS_SPECIAL_CHARACTER = 'User name must not contain special character.';
+            stateMessage = HAS_SPECIAL_CHARACTER;
         }
-        
+
         setMessage(stateMessage);
-        onInputBlur(inputValue, confirmed);
+        onInputBlur(text, confirmed);
     }
 
     return (
-        <div className="Password">
-            <label>Password</label>
+        <div className="UserName">
+            <label>User Name</label>
             <input
                 ref={forwardedRef}
+                type="text"
                 value={text}
-                type="password"
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
             />
-            <div>{message}</div>
+            <div className="Signup__user-name--check">{message}</div>
         </div>
     );
 }
 
-export default Password;
+export default SignupUserName;

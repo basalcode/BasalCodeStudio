@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 /* lib */
 import { isEmail } from 'lib/verifyForm';
 
-const Email = ({ onInputBlur, forwardedRef }) => {
+const SignupEmail = ({ onInputBlur, forwardedRef }) => {
     const [text, setText] = useState('');
     const [message, setMessage] = useState('');
 
@@ -70,4 +70,4 @@ const Email = ({ onInputBlur, forwardedRef }) => {
     );
 }
 
-export default Email;
+export default SignupEmail;
