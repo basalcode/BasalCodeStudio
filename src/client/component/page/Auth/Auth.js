@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 /* component */
 import Login from './Login';
-import Signup from './Signup/Signup';
+import Signup from './Signup';
 
 const Auth = ({ match }) => {
     return (
