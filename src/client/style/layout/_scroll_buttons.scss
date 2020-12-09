@@ -34,8 +34,8 @@ $ScrollButtons__gradient-size: 100%;
 
         border-top: 2px solid black;
         background-image: 
-        linear-gradient(to bottom, black 0%, $BLUR_BACKGROUND 100%), 
-        linear-gradient(to bottom, black 0%, $BLUR_BACKGROUND 100%);
+        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR 100%), 
+        linear-gradient(to bottom, black 0%, $DAYMODE_BACKGROUND_COLOR 100%);
 
         &--night-mode-on {
             border-top: 2px solid $DAYMODE_BORDER_COLOR ;

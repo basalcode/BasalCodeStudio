@@ -75,7 +75,7 @@ const Login = () => {
     return (
         <section className="Login">
             <div className="Login__container">
-                <h1 className="Login__title">Login</h1>
+                <h1 className="Login__title">Log in</h1>
                 <form className="Login__form"
                     onSubmit={onSubmitHandler}>
                     <div className={

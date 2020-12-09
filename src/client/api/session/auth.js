@@ -2,11 +2,10 @@ import axios from 'axios';
 
 export const login = () => {
     return new Promise((resolve, reject) => {
-        axios.put('/api/session/login', {
-            data: { session: true }
-        })
-            .then(response => {
-                console.log('response', response);
+        axios({
+            method: 'PUT',
+            url: '/api/session/login'
+        }).then(response => {
                 const isSuccess = response.validity;
                 if (isSuccess) {
                     const loginSuccess = response.value;
@@ -22,9 +21,10 @@ export const login = () => {
 
 export const checkLogin = () => {
     return new Promise((resolve, reject) => {
-        axios.get('/api/session/login')
-            .then(response => {
-                console.log('response', response);
+        axios({
+            method: 'GET',
+            url: '/api/session/login'
+        }).then(response => {
                 const isSuccess = response.validity;
                 if (isSuccess) {
                     const loginObject = response.value;
@@ -40,9 +40,10 @@ export const checkLogin = () => {
 
 export const logout = () => {
     return new Promise((resolve, reject) => {
-        axios.delete('/api/session/login')
-            .then(response => {
-                console.log('response', response);
+        axios({
+            method: 'DELETE',
+            url: '/api/session/login'
+        }).then(response => {
                 const isSuccess = response.validity;
                 if (isSuccess) {
                     const logoutSuccessMessage = response.value;

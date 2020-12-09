@@ -1,7 +1,10 @@
 /* module */
 import React, { useState, useRef } from 'react';
 
-const Signup = ({ history }) => {
+/* lib */
+import { isEmail } from 'lib/verifyForm';
+
+const Signup = () => {
     /* state */
     const [emailData, setEmailData] = useState({
         input: '',
@@ -94,14 +97,14 @@ const Signup = ({ history }) => {
 
     /* event handler */
     // email
-    const onEmailChangeHandler = (event) => {
+    const onEmailChangeHandler = event => {
         setEmailData({
             ...emailData,
             input: event.target.value
         });
     }
 
-    const onEmailBlurHandler = async (event) => {
+    const onEmailBlurHandler = async event => {
         const inputValue = event.target.value;
 
         let message = '';
@@ -110,7 +113,7 @@ const Signup = ({ history }) => {
             const EMPTY_VALUE = '이메일을 입력해주세요.';
             message = EMPTY_VALUE;
             verified = false;
-        } else if (1/* isEmail(inputValue) */) {
+        } else if (isEmail(inputValue)) {
             // [message, verified] = await doesEmailNotExist();
         } else {
             const INVALID_EMAIL_ADDRESS = '유효하지 않은 이메일 주소입니다.'
@@ -126,14 +129,14 @@ const Signup = ({ history }) => {
     }
 
     // userName
-    const onUserNameChangeHandler = (event) => {
+    const onUserNameChangeHandler = event => {
         setUserNameData({
             ...userNameData,
             input: event.target.value
         });
     }
 
-    const onUserNameBlurHandler = (event) => {
+    const onUserNameBlurHandler = event => {
         const inputValue = event.target.value;
 
         let message = '';
@@ -158,14 +161,14 @@ const Signup = ({ history }) => {
     }
 
     // password
-    const onPasswordChangeHandler = (event) => {
+    const onPasswordChangeHandler = event => {
         setPasswordData({
             ...passwordData,
             input: event.target.value
         });
     }
 
-    const onPasswordBlurHandler = (event) => {
+    const onPasswordBlurHandler = event => {
         const inputValue = event.target.value;
 
         let message = '';
@@ -191,7 +194,7 @@ const Signup = ({ history }) => {
     }
 
     // confirmPassword
-    const onConfirmPasswordChangeHandler = (event) => {
+    const onConfirmPasswordChangeHandler = event => {
         setConfirmPasswordData({
             ...confirmPasswordData,
             input: event.target.value
@@ -233,13 +236,14 @@ const Signup = ({ history }) => {
     return (
         <section className="Signup">
             <div className="Signup__container">
-
-                <h1 className="Signup__title"></h1>
+                <h1 className="Signup__title">Sign up</h1>
                 <form className="Signup__form"
                     onSubmit={onSubmitHandler}>
-                    <div className="Signup__email">
+                    <div className={
+                        "Signup__item " +
+                        "Signup__email"}>
                         <div className="Signup__label-container">
-                            <label className="Signup__label">Email Address</label>
+                            <label className="Signup__label">Email</label>
                         </div>
                         <div className="Signup__input-container">
                             <input className={
@@ -251,11 +255,13 @@ const Signup = ({ history }) => {
                                 onChange={onEmailChangeHandler}
                                 onBlur={onEmailBlurHandler} />
                         </div>
-                        <div className="Signup__email--check">
+                        <div className="Signup__message">
                             {emailData.message}
                         </div>
                     </div>
-                    <div className="UserName">
+                    <div className={
+                        "Signup__item " +
+                        "UserName"}>
                         <div className="Signup__label-container">
                             <label>User Name</label>
                         </div>
@@ -269,11 +275,13 @@ const Signup = ({ history }) => {
                                 onChange={onUserNameChangeHandler}
                                 onBlur={onUserNameBlurHandler} />
                         </div>
-                        <div className="Signup__user-name--check">
+                        <div className="Signup__message">
                             {userNameData.message}
                         </div>
                     </div>
-                    <div className="Password">
+                    <div className={
+                        "Signup__item " +
+                        "Password"}>
                         <div className="Signup__label-container">
                             <label>Password</label>
                         </div>
@@ -287,11 +295,15 @@ const Signup = ({ history }) => {
                                 onChange={onPasswordChangeHandler}
                                 onBlur={onPasswordBlurHandler} />
                         </div>
-                        <div>{passwordData.message}</div>
+                        <div className="Signup__message">
+                            {passwordData.message}
+                        </div>
                     </div>
-                    <div className="ConfirmPassword">
+                    <div className={
+                        "Signup__item " +
+                        "ConfirmPassword"}>
                         <div className="Signup__label-container">
-                            <label>Password Confirm</label>
+                            <label>Password Confirmation</label>
                         </div>
                         <div className="Signup__input-container">
                             <input className={
@@ -304,9 +316,15 @@ const Signup = ({ history }) => {
                                 onBlur={onConfirmPasswordBlurHandler}
                             />
                         </div>
-                        <div>{confirmPasswordData.message}</div>
+                        <div className="Signup__message">
+                            {confirmPasswordData.message}
+                        </div>
                     </div>
-                    <input className="Signup__sign-up" type="submit" value="Sign up" />
+                    <div className="Signup__submit-container">
+                        <input className="Signup__submit"
+                            type="submit"
+                            value="Sign up" />
+                    </div>
                 </form>
             </div>
         </section>
