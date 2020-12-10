@@ -1,6 +1,9 @@
 /* module */
 import React, { useState, useRef } from 'react';
 
+/* api */
+import { get as getEmail } from 'api/user/email/email';
+
 /* lib */
 import { isEmail } from 'lib/verifyForm';
 
@@ -114,9 +117,10 @@ const Signup = () => {
             message = EMPTY_VALUE;
             verified = false;
         } else if (isEmail(inputValue)) {
-            // [message, verified] = await doesEmailNotExist();
+            console.log('test');
+            await getEmail(inputValue);
         } else {
-            const INVALID_EMAIL_ADDRESS = '유효하지 않은 이메일 주소입니다.'
+            const INVALID_EMAIL_ADDRESS = '유효하지 않은 이메일 주소입니다.';
             message = INVALID_EMAIL_ADDRESS;
             verified = false;
         }

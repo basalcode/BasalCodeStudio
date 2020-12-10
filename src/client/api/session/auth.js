@@ -1,21 +1,22 @@
 import axios from 'axios';
 
+// login
 export const login = () => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'PUT',
             url: '/api/session/login'
         }).then(response => {
-                const isSuccess = response.validity;
-                if (isSuccess) {
-                    const loginSuccess = response.value;
-                    resolve(loginSuccess);
-                } else {
-                    const loginFailedMessage = response.value;
-                    reject(loginFailedMessage);
-                }
-            })
-            .catch(error => console.log(error));
+            const isSuccess = response.validity;
+            if (isSuccess) {
+                const loginSuccess = response.value;
+                resolve(loginSuccess);
+            } else {
+                const loginFailedMessage = response.value;
+                reject(loginFailedMessage);
+            }
+        })
+        .catch(error => console.log(error));
     })
 }
 

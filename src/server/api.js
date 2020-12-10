@@ -12,6 +12,7 @@ const session = require('./session/session');
 app.use(session);
 
 /* api */
+const apiMiddleware = require('./apiMiddleware');
 const emailProcessor = require('./email/emailProcessor');
 const requestProcessor = require('./db/requestProcessor');
 const sessionProcessor = require('./session/sessionProcessor');
@@ -20,9 +21,11 @@ const errorHandler = require('./errors');
 console.log('[API Server]');
 
 /* api */
-app.use('/api/email/:type', emailProcessor);
-app.use('/api/db/:type', requestProcessor);
-app.use('/api/session/:type', sessionProcessor);
+app.use('/api/*', apiMiddleware);
+
+// app.use('/api/email/:type', emailProcessor);
+// app.use('/api/db/:type', requestProcessor);
+// app.use('/api/session/:type', sessionProcessor);
 
 /* error handler */
 app.use((req, res, next) => {
