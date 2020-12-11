@@ -18,7 +18,9 @@ const requestProcessor = require('./db/requestProcessor');
 const sessionProcessor = require('./session/sessionProcessor');
 const errorHandler = require('./errors');
 
+console.log('==================================================');
 console.log('[API Server]');
+console.log('==================================================');
 
 /* api */
 app.use('/api/*', apiMiddleware);

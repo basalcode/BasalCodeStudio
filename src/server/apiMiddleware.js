@@ -1,19 +1,27 @@
-module.exports = (req, res) => {
-    const uri = req.originalUrl.split('/api')[1];
-    const firstResource = uri.split('/')[1];
+const requestToTarget = require('./requestToTarget');
 
-    console.log('[uri]', uri);
-    console.log('[firstResource]', firstResource);
+module.exports = async (req, res) => {
+    const path = req.baseUrl.split('/api')[1];
 
-    switch(firstResource) {
-        case 'user':
-            console.log('user success!!');
-            break;
-        
-        default:
-            res.status(400).send('[Error] Incorrect url request');
-            break;
+    console.log('==================================================');
+    console.log('[WHERE] apiMiddleware');
+    console.log('---------------------INFO-------------------------');
+    console.log('[entire path]', path);
+    console.log('--------------------------------------------------');
+
+    let response = requestToTarget(req, path);
+
+    if (!response) {
+        console.log('---------------------MESSAGE----------------------');
+        console.log('[reponse error] Incorrect uri request');
+        console.log('--------------------------------------------------');
+        console.log('==================================================');
+        res.status(400).send('[Error] Incorrect uri request');
     }
 
-    res.status(200).send();
+    console.log('---------------------MESSAGE----------------------');
+    console.log('[response success] Successfully done');
+    console.log('--------------------------------------------------');
+    console.log('==================================================');
+    res.status(200).send(response);
 }
