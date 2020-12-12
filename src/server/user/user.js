@@ -1,9 +1,13 @@
 module.exports = req => {
     const method = req.method;
 
-    console.log('==========');
-    console.log('[method]', method);
-    console.log('[target] user');
+    log.line('user', { style: 'double' });
+    log.container({
+        title: 'STATE',
+        messages: [
+            { method: 'method' }
+        ]
+    });
 
     let response = true;
     switch (method) {

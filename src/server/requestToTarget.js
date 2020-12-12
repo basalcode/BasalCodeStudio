@@ -1,27 +1,37 @@
+const log = require(__dirname + '/../shared/fancyLogger');
+
 const requestToTarget = (req, path) => {
+    log.line('requestToTarget', { style: 'double' });
+
     let moduleExist = false;
     let targetModule = null;
     try {
-        console.log('[request] find module');
-
-        const moduleName = path.split('/')[path.split('/').length - 1];
-        console.log('[module]', '.' + path + '/' + moduleName);
-        targetModule = require('.' + path + '/' + moduleName);
+        log.line('ACTION');
+        log.message({MESSAGE: 'find target module'});
         
-        console.log('[request] path validation success!');
+        const moduleName = path.split('/')[path.split('/').length - 1];
+        const modulePath = '.' + path + '/' + moduleName
+
+        log.message({modulePath: modulePath});
+
+        targetModule = require(modulePath);
+
         moduleExist = true;
     } catch(error) {
-        console.log('[request] path validation failed!');
-        
         moduleExist = false;
     } finally {
         if (moduleExist) {
+            log.message({SUCCESS: 'path validation success!'});
+            log.line('');
+
             return targetModule(req);
         } else {
+            log.message({ERROR: 'path validation failed!'});
+            log.line('');
+
             return null;
         }
     }
 }
-
 
 module.exports = requestToTarget;

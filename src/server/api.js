@@ -18,13 +18,20 @@ const requestProcessor = require('./db/requestProcessor');
 const sessionProcessor = require('./session/sessionProcessor');
 const errorHandler = require('./errors');
 
-console.log('==================================================');
-console.log('[API Server]');
-console.log('==================================================');
+/* shared */
+const log = require(__dirname + '/../shared/fancyLogger');
+
+
+log.container({
+    title: 'RESPONSE',
+    messages: [
+        { START: 'Request to API Server' },
+
+    ]
+});
 
 /* api */
 app.use('/api/*', apiMiddleware);
-
 // app.use('/api/email/:type', emailProcessor);
 // app.use('/api/db/:type', requestProcessor);
 // app.use('/api/session/:type', sessionProcessor);
