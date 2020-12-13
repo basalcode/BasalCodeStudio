@@ -19,16 +19,12 @@ const sessionProcessor = require('./session/sessionProcessor');
 const errorHandler = require('./errors');
 
 /* shared */
-const log = require(__dirname + '/../shared/fancyLogger');
+const log = require(process.cwd() + '/../shared/fancyLogger');
 
-
-log.container({
-    title: 'RESPONSE',
-    messages: [
-        { START: 'Request to API Server' },
-
-    ]
-});
+log.line.double(' # [ REQUEST ] # ');
+log.message({ START: 'Request to API Server' })
+log.line.double('');
+log.print();
 
 /* api */
 app.use('/api/*', apiMiddleware);

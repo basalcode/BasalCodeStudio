@@ -117,7 +117,7 @@ const Signup = () => {
             message = EMPTY_VALUE;
             verified = false;
         } else if (isEmail(inputValue)) {
-            console.log('test');
+            console.log('test!!!!');
             await getEmail(inputValue);
         } else {
             const INVALID_EMAIL_ADDRESS = '유효하지 않은 이메일 주소입니다.';

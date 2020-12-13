@@ -1,13 +1,15 @@
+/* shared */
+const log = require(process.cwd() + '/../shared/fancyLogger');
+
 module.exports = req => {
     const method = req.method;
 
-    log.line('email', { style: 'double' });
-    log.container({
-        title: 'STATE',
-        messages: [
-            { method: method }
-        ]
-    });
+    log.line.double('email');
+    log.line.single('STATE');
+    log.message({ method: method });
+    log.line.single();
+    log.line.double();
+    log.print();
     
     let response = true;
     switch (method) {
@@ -23,6 +25,5 @@ module.exports = req => {
             break;
     }
 
-    console.log('==========');
     return response;
 }
