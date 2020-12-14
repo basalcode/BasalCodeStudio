@@ -8,9 +8,9 @@ const sessionSecretCode = require('../../../.private/security/session.js').sessi
 const storeOptions = {
     host: 'localhost',
     port: 3306,
-    user: privateDB.mysqlUser,
-    password: privateDB.mysqlPassword,
-    database: privateDB.databaseName.session,
+    user: privateDB.user,
+    password: privateDB.password,
+    database: privateDB.names.sessions,
     clearExpired: true,
     checkExpirationInterval: 900000,
     expiration: 8640000,
