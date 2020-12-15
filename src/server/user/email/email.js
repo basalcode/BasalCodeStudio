@@ -1,7 +1,10 @@
+/* query */
+const queryObject = require(process.cwd() + '/../../.private/query/api/user/email/email');
+
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
-module.exports = req => {
+module.exports = async (req, dbMember) => {
     const method = req.method;
 
     log.line.double('email');
@@ -16,6 +19,17 @@ module.exports = req => {
         case 'POST':
             break;
         case 'GET':
+            const emailValue = req.query.value;
+
+            const query = queryObject[method];
+            const values = [emailValue];
+
+            const dbResult = await dbMember.user.run(query, values);
+
+            console.log('*****************');
+            console.log('[dbResult]', dbResult);
+            console.log('*****************');
+
             break;
         case 'PUT':
             break;

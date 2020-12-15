@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     log.message({ path: path });
     log.line.single('');
 
-    let response = requestToTarget(req, path);
+    let response = await requestToTarget(req, path);
 
     if (response) {
         log.line.single('RESPONSE');

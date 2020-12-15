@@ -10,7 +10,7 @@ const storeOptions = {
     port: 3306,
     user: privateDB.user,
     password: privateDB.password,
-    database: privateDB.names.sessions,
+    database: privateDB.name.sessions,
     clearExpired: true,
     checkExpirationInterval: 900000,
     expiration: 8640000,

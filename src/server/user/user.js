@@ -1,7 +1,7 @@
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
-module.exports = req => {
+module.exports = async (req, dbMember) => {
     const method = req.method;
 
     log.line.double('user');

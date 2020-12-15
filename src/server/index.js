@@ -13,7 +13,7 @@ log.line.double();
 log.print();
 app.use('/api', createProxyMiddleware('/api', { target: 'http://localhost:3030' }));
 app.use('/*', (req, res, next) => {
-    console.log('[Request build file]'); 
+    console.log('[Request build file]');
     console.log('[originalUrl]', req.originalUrl);
     res.sendFile(path.resolve(__dirname, '../../build/index.html'));
 });
