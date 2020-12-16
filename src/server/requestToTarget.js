@@ -4,19 +4,18 @@ const log = require(process.cwd() + '/../shared/fancyLogger');
 const dbMember = require(process.cwd() + '/dbMember');
 
 const requestToTarget = async (req, path) => {
-    log.line.double('requestToTarget.js');
+    log.line.single('[ requestToTarget.js ]');
 
     let moduleExist = false;
     let targetModule = null;
     try {
-        log.line.single('ACTION');
+        log.container.double('ACTION');
         log.message({ MESSAGE: 'find target module' });
 
         const moduleName = path.split('/')[path.split('/').length - 1];
         const modulePath = '.' + path + '/' + moduleName;
 
         log.message({ modulePath: modulePath });
-        log.line.single();
 
         targetModule = require(modulePath);
 
@@ -27,18 +26,14 @@ const requestToTarget = async (req, path) => {
         moduleExist = false;
     } finally {
         if (moduleExist) {
-            log.line.single('RESPONSE');
+            log.container.double('RESPONSE');
             log.message({ SUCCESS: 'path validation success!' });
-            log.line.single('');
-            log.line.double('');
             log.print();
 
             return await targetModule(req, dbMember);
         } else {
-            log.line.single('RESPONSE');
+            log.line.double('RESPONSE');
             log.message({ ERROR: 'path validation failed!' });
-            log.line.single('');
-            log.line.double('');
             log.print();
 
             return null;

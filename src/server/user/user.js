@@ -2,16 +2,14 @@
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
 module.exports = async (req, dbMember) => {
+    log.line.single('[ user.js ]');
+
     const method = req.method;
 
-    log.line.double('user');
-    log.line.single('STATE');
+    log.container.double('STATE');
     log.message({ method: method });
-    log.line.single();
-    log.line.double();
-    log.print();
 
-    let response = true;
+    let response = null;
     switch (method) {
         case 'POST':
             break;
@@ -24,6 +22,8 @@ module.exports = async (req, dbMember) => {
         default:
             break;
     }
+
+    log.print();
 
     return response;
 }

@@ -11,10 +11,12 @@ app.use('/', express.static(path.resolve(__dirname, '../../build')));
 
 log.line.double();
 log.print();
+
 app.use('/api', createProxyMiddleware('/api', { target: 'http://localhost:3030' }));
 app.use('/*', (req, res, next) => {
-    console.log('[Request build file]');
-    console.log('[originalUrl]', req.originalUrl);
+    log.line.double('Request Build Files');
+    log.message({originalUrl: req.originalUrl});
+    log.print();
     res.sendFile(path.resolve(__dirname, '../../build/index.html'));
 });
 

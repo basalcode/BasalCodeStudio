@@ -7,11 +7,10 @@ const log = require(process.cwd() + '/../shared/fancyLogger');
 const type = require(process.cwd() + '/../shared/typeValidation');
 
 const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
-    log.line.double('dbMiidleware');
+    log.line.single('[ dbMiidleware.js ]');
 
-    log.line.single('ACTION');
+    log.container.double('ACTION');
     log.message({ MESSAGE: 'create db pool.' });
-    log.line.single();
 
     const dbPool = mysql.createPool({
         host: host,
@@ -22,32 +21,24 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
     }); 
 
     const run = async (query, values) => {
-        log.line.double('dbMiidleware.run()');
+        log.line.single('dbMiidleware.run()');
 
         try {
             const connection = await dbPool.getConnection(async connect => connect);
             try {
-                console.log('***********************');
-                console.log('[Query Type]', getTypeOf(query));
-                console.log('[Values Type]', getTypeOf(values));
-                console.log('***********************');
-                console.log('[is Query String]', type.isString(query));
-                console.log('[is Values Array]', type.isArray(values));
-                console.log('***********************');
-                console.log('[query]', query);
-                console.log('[values]', values);
-                console.log('***********************');
-
+                log.container.double('STATE');
+                log.message({ query: query });
+                log.message({ values: values });
 
                 if (type.isString(query) && type.isArray(values)) {
                     const [results, fields] = await connection.query(query, values);
 
                     response = results;
 
-                    log.line.single('ACTION');
+                    log.container.double('ACTION');
                     log.message({ MESSAGE: 'Request DB success!' });
+                    log.message({ MESSAGE: 'Single query mode' });
                     log.message({ response: response });
-                    log.line.single();
 
                     connection.release();
                 } else if (type.isArray(query) && type.isArray(values)) {
@@ -63,37 +54,32 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
                         response.push(results);
                     }
 
-                    log.line.single('ACTION');
+                    log.container.double('ACTION');
                     log.message({ MESSAGE: 'Request DB success!' });
+                    log.message({ MESSAGE: 'Multiple query mode' });
                     log.message({ response: response });
-                    log.line.single();
 
                     connection.release();
                 } else {
                     throw Error('Value type of query is not valid. Type is ' + getTypeOf(query) + '.');
                 }
             } catch(error) {
-                log.line.single('RESPONSE');
+                log.container.double('RESPONSE');
                 log.message({ ERROR: error });
-                log.line.single();
 
                 return false;
             }
         } catch(error) {
-            log.line.single('RESPONSE');
+            log.container.double('RESPONSE');
             log.message({ ERROR: error });
-            log.line.single();
 
             return false;
         }
-
-        log.line.double();
         log.print();
 
         return response;
     }
-
-    log.line.double();
+    
     log.print();
 
     return {

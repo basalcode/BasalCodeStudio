@@ -21,9 +21,9 @@ const errorHandler = require('./errors');
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
-log.line.double(' # [ REQUEST ] # ');
+log.line.star('R E Q U E S T');
 log.message({ START: 'Request to API Server' })
-log.line.double('');
+log.line.star('');
 log.print();
 
 /* api */

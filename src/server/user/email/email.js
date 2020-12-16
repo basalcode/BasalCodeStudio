@@ -5,16 +5,14 @@ const queryObject = require(process.cwd() + '/../../.private/query/api/user/emai
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
 module.exports = async (req, dbMember) => {
+    log.line.single('[ email.js ]');
+
     const method = req.method;
 
-    log.line.double('email');
-    log.line.single('STATE');
+    log.container.double('STATE');
     log.message({ method: method });
-    log.line.single();
-    log.line.double();
-    log.print();
     
-    let response = true;
+    let response = null;
     switch (method) {
         case 'POST':
             break;
@@ -26,10 +24,7 @@ module.exports = async (req, dbMember) => {
 
             const dbResult = await dbMember.user.run(query, values);
 
-            console.log('*****************');
-            console.log('[dbResult]', dbResult);
-            console.log('*****************');
-
+            response = dbResult;
             break;
         case 'PUT':
             break;
@@ -38,6 +33,10 @@ module.exports = async (req, dbMember) => {
         default:
             break;
     }
+
+    log.container.double('RESPONSE');
+    log.message({ response: response });
+    log.print();
 
     return response;
 }
