@@ -8,22 +8,32 @@ module.exports = async (req, res) => {
 
     const path = req.baseUrl.split('/api')[1];
 
-    log.container.double('STATE');
+    log.container.double('STATE: API request uri');
+    log.message({ originalUrl: req.originalUrl });
     log.message({ path: path });
-
     let response = await requestToTarget(req, path);
 
     if (response) {
-        log.container.double('RESPONSE');
-        log.message({ SUCCESS: 'Successfully done' });
-        log.print();
-
-        res.status(200).send(response);
+        log.container.double('RESULT: API response');
+        log.message({ response: response });
     } else {
-        log.container.double('RESPONSE');
-        log.message({ ERROR: 'Incorrect uri request' });
-        log.print();
-
-        res.status(400).send('[Error] Incorrect uri request');
+        response = {
+            statusCode: 500,
+            payload: null,
+            errorMessage: 'Empty response object.'
+        }
+        
+        log.container.double('RESULT: error');
+        log.message({ response: response });
     }
+    
+    
+    const statusCode = response.statusCode;
+
+    log.message({ statusCode: statusCode });
+    log.line.star('R E S P O N S E');
+
+    log.print();
+
+    res.status(statusCode).send(response);
 }

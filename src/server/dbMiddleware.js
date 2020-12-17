@@ -26,7 +26,7 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
         try {
             const connection = await dbPool.getConnection(async connect => connect);
             try {
-                log.container.double('STATE');
+                log.container.double('STATE: before db call');
                 log.message({ query: query });
                 log.message({ values: values });
 
@@ -35,7 +35,7 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
 
                     response = results;
 
-                    log.container.double('ACTION');
+                    log.container.double('ACTION: after db call');
                     log.message({ MESSAGE: 'Request DB success!' });
                     log.message({ MESSAGE: 'Single query mode' });
                     log.message({ response: response });
@@ -54,23 +54,23 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
                         response.push(results);
                     }
 
-                    log.container.double('ACTION');
+                    log.container.double('ACTION: after db call');
                     log.message({ MESSAGE: 'Request DB success!' });
                     log.message({ MESSAGE: 'Multiple query mode' });
                     log.message({ response: response });
 
                     connection.release();
                 } else {
-                    throw Error('Value type of query is not valid. Type is ' + getTypeOf(query) + '.');
+                    throw Error('Value type of query is not valid. Query is ' + getTypeOf(query) + ' type.');
                 }
             } catch(error) {
-                log.container.double('RESPONSE');
+                log.container.double('RESULT');
                 log.message({ ERROR: error });
 
                 return false;
             }
         } catch(error) {
-            log.container.double('RESPONSE');
+            log.container.double('RESULT');
             log.message({ ERROR: error });
 
             return false;

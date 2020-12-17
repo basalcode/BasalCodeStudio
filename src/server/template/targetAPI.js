@@ -1,12 +1,11 @@
 /* query */
-const queryObject = require(process.cwd() + '/../../.private/query/api/user/email/email');
+const queryObject = require(process.cwd() + '/../../.private/query/api/[ target query path ]');
 
 /* shared */
-const formValidation =  require(process.cwd() + '/../shared/formValidation');
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
 module.exports = async (req, dbMember) => {
-    log.line.single('[ email.js ]');
+    log.line.single('[ targetAPI.js ]');
 
     const method = req.method;
 
@@ -25,11 +24,11 @@ module.exports = async (req, dbMember) => {
             log.container.double('ACTION: verfy values');
             log.message({ MESSAGE: 'Verify input values...' });
             try {
-                if (!formValidation.isEmail(email)) {
+                if ('[ 검증식 ]') {
                     response = {
                         statusCode: 400,
                         payload: null,
-                        errorMessage: 'Invalid email address.'
+                        errorMessage: 'Invalid input value.'
                     };
 
                     log.container.double('RESULT: error');
@@ -40,7 +39,7 @@ module.exports = async (req, dbMember) => {
                 response = {
                     statusCode: 500,
                     payload: null,
-                    errorMessage: 'Failed to verify email'
+                    errorMessage: 'Failed to verify value.'
                 }
 
                 log.container.double('RESULT: error');
