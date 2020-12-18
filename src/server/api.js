@@ -28,9 +28,6 @@ log.print();
 
 /* api */
 app.use('/api/*', apiMiddleware);
-// app.use('/api/email/:type', emailProcessor);
-// app.use('/api/db/:type', requestProcessor);
-// app.use('/api/session/:type', sessionProcessor);
 
 /* error handler */
 app.use((req, res, next) => {

@@ -5,231 +5,211 @@ import React, { useState, useRef } from 'react';
 import { get as getEmail } from 'api/user/email/email';
 
 /* lib */
-import { isEmail } from 'lib/verifyForm';
+import { 
+    isEmail,
+    isEngKorNumber,
+    isPassword
+} from '~/../../shared/formValidation';
 
 const Signup = () => {
     /* state */
     const [emailData, setEmailData] = useState({
         input: '',
         message: '',
-        verified: false,
+        isValid: false,
+        isChanged: false,
         ref: useRef(null)
     });
     const [userNameData, setUserNameData] = useState({
         input: '',
         message: '',
-        verified: false,
+        isValid: false,
+        isChanged: false,
         ref: useRef(null)
     });
     const [passwordData, setPasswordData] = useState({
         input: '',
         message: '',
-        verified: false,
+        isValid: false,
+        isChanged: false,
         ref: useRef(null)
     });
     const [confirmPasswordData, setConfirmPasswordData] = useState({
         input: '',
         message: '',
-        verified: false,
+        isValid: false,
+        isChanged: false,
         ref: useRef(null)
     });
-
-    // const canSubmit = () => {
-    //     let permission = false;
-    //     if (emailData.verified !== true) {
-    //         emailData.ref.current.focus();
-    //     }
-    //     else if (userNameData.verified !== true) {
-    //         passwordData.ref.current.focus();
-    //     }
-    //     else if (passwordData.verified !== true) {
-    //         confirmPasswordData.ref.current.focus();
-    //     }
-    //     else if (confirmPasswordData.verified !== true) {
-    //         userNameData.ref.current.focus();
-    //     } else {
-    //         permission = true;
-    //     }
-    //     return permission;
-    // }
-    // const signup = () => {
-    //     return new Promise((resolve, reject) => {
-    //         let accountObject = {
-    //             email: emailText,
-    //             password: passwordText,
-    //             confirmPassword: confirmPasswordText,
-    //             userName: userNameText
-    //         }
-    //         fetch(`/request/user/create/account`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(accountObject)
-    //         })
-    //             .then(response => response.json())
-    //             .then(result => {
-    //                 const isSuccess = result.validity;
-    //                 if (isSuccess) {
-    //                     const CREATE_ACCOUNT_SUCCESS = result.value;
-    //                     resolve(CREATE_ACCOUNT_SUCCESS);
-    //                 } else {
-    //                     const CREATE_ACCOUNT_ERROR = result.value;
-    //                     reject(CREATE_ACCOUNT_ERROR);
-    //                 }
-    //             })
-    //     })
-    // }
-    // const onSubmitHandler = async (event) => {
-    //     const eventTarget = event.target;
-    //     event.preventDefault();
-    //     if (canSubmit()) {
-    //         await signup()
-    //             .then((resolve) => {
-    //                 eventTarget.reset();
-    //                 alert(resolve);
-    //                 history.push('/blog/lobby');
-    //             }, (reject) => {
-    //                 eventTarget.reset();
-    //                 alert(reject);
-    //                 history.replace('/signup');
-    //             });
-    //     }
-    // }
-
 
     /* event handler */
     // email
     const onEmailChangeHandler = event => {
         setEmailData({
             ...emailData,
-            input: event.target.value
+            input: event.target.value,
+            isChanged: true
         });
     }
 
     const onEmailBlurHandler = async event => {
+        if (!emailData.isChanged) return;
+
         const inputValue = event.target.value;
 
         let message = '';
-        let verified = false;
+        let isValid = false;
         if (inputValue.length === 0) {
-            const EMPTY_VALUE = '이메일을 입력해주세요.';
-            message = EMPTY_VALUE;
-            verified = false;
+            message = '이메일을 입력해주세요.';
+            isValid = false;
         } else if (isEmail(inputValue)) {
-            console.log('test!!!!');
-            await getEmail(inputValue);
+            const response = await getEmail(inputValue);
+            const availability = response.payload.availability;
+
+            if (availability) {
+                message = '사용 가능한 이메일입니다.';
+                isValid = true;
+            } else {
+                message = '이미 존재하는 이메일입니다.';
+                isValid = false;
+            }
         } else {
-            const INVALID_EMAIL_ADDRESS = '유효하지 않은 이메일 주소입니다.';
-            message = INVALID_EMAIL_ADDRESS;
-            verified = false;
+            message = '유효하지 않은 이메일 주소입니다.';
+            isValid = false;
         }
 
         setEmailData({
             ...emailData,
-            message: message
+            message: message,
+            isValid: isValid,
+            isChanged: false
         });
-        // onInputBlur(text, confirmed);
     }
 
     // userName
     const onUserNameChangeHandler = event => {
         setUserNameData({
             ...userNameData,
-            input: event.target.value
+            input: event.target.value,
+            isChanged: true
         });
     }
 
     const onUserNameBlurHandler = event => {
+        if (!userNameData.isChanged) return;
+
         const inputValue = event.target.value;
 
         let message = '';
-        let verified = false;
+        let isValid = false;
         if (inputValue.length === 0) {
-            const EMPTY_VALUE = 'Please fill out this field.';
-            message = EMPTY_VALUE;
-        } else if (1/* hasNoSpecialCharacter(inputValue) */) {
-            const CONFIRM_MESSAGE = 'Great!'
-            message = CONFIRM_MESSAGE;
-            verified = true;
+            message = '사용자명을 입력해주세요.';
+            isValid = false;
+        } else if (inputValue.length > 20) {
+            message = '사용자명은 20자 이내로 작성해주세요.';
+            isValid = false;
+        } else if (isEngKorNumber(inputValue)) {
+            message = '성공!';
+            isValid = true;
         } else {
-            const HAS_SPECIAL_CHARACTER = 'User name must not contain special character.';
-            message = HAS_SPECIAL_CHARACTER;
+            message = '한글, 영어, 숫자만 사용할 수 있습니다.';
+            isValid = false;
         }
 
         setUserNameData({
             ...userNameData,
-            message: message
+            message: message,
+            idValid: isValid,
+            isChanged: true
         });
-        // onInputBlur(text, verified);
     }
 
     // password
     const onPasswordChangeHandler = event => {
         setPasswordData({
             ...passwordData,
-            input: event.target.value
+            input: event.target.value,
+            isChanged: true
         });
+
+        if (confirmPasswordData.isValid) {
+            setConfirmPasswordData({
+                ...confirmPasswordData,
+                message: '비밀번호가 일치하지 않습니다.',
+                isValid: false
+            });
+        } else if (confirmPasswordData.isChanged &&
+            event.target.value === confirmPasswordData.input) {
+            setConfirmPasswordData({
+                ...confirmPasswordData,
+                message: '비밀번호가 일치합니다!',
+                isValid: true
+            });
+        }
     }
 
     const onPasswordBlurHandler = event => {
+        if (!passwordData.isChanged) return;
+
         const inputValue = event.target.value;
 
         let message = '';
-        let verified = false;
+        let isValid = false;
         if (inputValue.length === 0) {
-            const EMPTY_VALUE = 'Please fill out this field.';
-            message = EMPTY_VALUE;
-        } else if (1/* isPassword(inputValue) */) {
-            const CONFIRM_MESSAGE = 'Great!'
-            message = CONFIRM_MESSAGE;
-            verified = true;
+            message = '비밀번호를 입력해주세요.';
+            isValid = false;
+        } else if (isPassword(inputValue, 8)) {
+            message = '좋습니다!';
+            isValid = true;
         } else {
-            const INVALID_PASSWORD = 'Password must contain 8 to 16 characters with a mix of letters, numbers and sepcial character.';
-            message = INVALID_PASSWORD;
+            message = '8자리 이상의 문자, 숫자, 특수 기호를 조합해주세요.';
+            isValid = false;
         }
 
         setPasswordData({
             ...passwordData,
-            message: message
+            message: message,
+            isValid: isValid,
+            isChanged: true
         });
-        // setMessage(stateMessage);
-        // onInputBlur(inputValue, verified);
     }
 
     // confirmPassword
     const onConfirmPasswordChangeHandler = event => {
         setConfirmPasswordData({
             ...confirmPasswordData,
-            input: event.target.value
+            input: event.target.value,
+            isChanged: true
         });
     }
 
     const onConfirmPasswordBlurHandler = (event) => {
+        if (!confirmPasswordData.isChanged) return;
+
         const inputValue = event.target.value;
 
         let message = '';
-        let confirmed = false;
+        let isValid = false;
         if (inputValue.length === 0) {
-            const EMPTY_VALUE = 'Please fill out this field.';
-            message = EMPTY_VALUE;
-        } else if (1/* inputValue === passwordText */) {
-            const CONFIRM_MESSAGE = 'Great!'
-            message = CONFIRM_MESSAGE;
-            confirmed = true;
+            message = '비밀번호를 다시 입력해주세요.';
+            isValid = false;
+        } else if (!passwordData.isValid) {
+            message = '비밀번호 형식을 확인해주세요.';
+            isValid = false;
+        } else if (inputValue === passwordData.input) {
+            message = '비밀번호가 일치합니다!';
+            isValid = true;
         } else {
-            const DIFFERENT_PASSWORD = 'Both passwords do not match.';
-            message = DIFFERENT_PASSWORD;
+            message = '비밀번호가 일치하지 않습니다.';
+            isValid = false;
         }
 
         setConfirmPasswordData({
             ...confirmPasswordData,
-            message: message
+            message: message,
+            isValid: isValid,
+            isChanged: true
         });
-
-        // setMessage(stateMessage);
-        // setConfirm(confirmed);
-        // onInputBlur(inputValue, confirmed);
     }
 
     // onSubmit

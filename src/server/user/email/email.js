@@ -2,7 +2,7 @@
 const queryObject = require(process.cwd() + '/../../.private/query/api/user/email/email');
 
 /* shared */
-const formValidation =  require(process.cwd() + '/../shared/formValidation');
+const formValidation = require(process.cwd() + '/../shared/formValidation');
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
 module.exports = async (req, dbMember) => {

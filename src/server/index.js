@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 
 /* shared */
-const log = require('../shared/fancyLogger');
+const log = require(process.cwd() + '/../shared/fancyLogger');
 
 /* production server */
 app.use('/', express.static(path.resolve(__dirname, '../../build')));
