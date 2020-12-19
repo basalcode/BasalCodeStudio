@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
     
     const statusCode = response.statusCode;
 
+    log.line.star('');
     log.message({ statusCode: statusCode });
     log.line.star('R E S P O N S E');
 

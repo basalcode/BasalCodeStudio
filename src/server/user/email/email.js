@@ -15,13 +15,14 @@ module.exports = async (req, dbMember) => {
         case 'POST':
             break;
         case 'GET':
-            /* check value */
-            const email = req.query.email;
-            
+            /* basic value */
             log.container.double('STATE: check request values');
             log.message({ method: method });
             log.message({ query: req.query });
-            
+
+            /* verify value */
+            const email = req.query.email;
+
             log.container.double('ACTION: verfy values');
             log.message({ MESSAGE: 'Verify input values...' });
             try {
@@ -33,10 +34,10 @@ module.exports = async (req, dbMember) => {
                     };
 
                     log.container.double('RESULT: error');
-                    log.message({ response: response });
                     break;
                 }
             } catch (error) {
+                /* verify value result */
                 response = {
                     statusCode: 500,
                     payload: null,
@@ -44,13 +45,14 @@ module.exports = async (req, dbMember) => {
                 }
 
                 log.container.double('RESULT: error');
-                log.message({ response: response });
                 log.message({ error: error });
                 break;
             }
-
+            /* verify value result */
             log.container.double('REULST: success');
             log.message({ MESSAGE: 'Verification success!' });
+
+            /* additional process */
 
             /* request to DB */
             const query = queryObject[method];
@@ -59,8 +61,20 @@ module.exports = async (req, dbMember) => {
             log.message({ query: query });
             log.message({ values: values });
 
-            log.container.double('ACTION: verfy values');
+            log.container.double('ACTION: request to DB');
             const dbResult = await dbMember.user.run(query, values);
+
+            /* request to DB result */
+            if (!dbResult) {
+                response = {
+                    statusCode: 500,
+                    payload: null,
+                    errorMessage: 'Failed to request to DB.'
+                }
+
+                log.container.double('RESULT: error');
+                break;
+            }
 
             if (dbResult.length === 0) {
                 response = {
@@ -72,7 +86,6 @@ module.exports = async (req, dbMember) => {
                 }
 
                 log.container.double('RESULT: success');
-                log.message({ response: response });
             } else {
                 response = {
                     statusCode: 200,
@@ -83,10 +96,8 @@ module.exports = async (req, dbMember) => {
                 }
 
                 log.container.double('RESULT: success');
-                log.message({ response: response });
             }
             break;
-
         case 'PUT':
             break;
         case 'DELETE':
@@ -98,9 +109,9 @@ module.exports = async (req, dbMember) => {
                 errorMessage: 'Invalid HTTP method.'
             }
             log.container.double('RESULT: success');
-            log.message({ response: response });
             break;
     }
+    log.message({ response: response });
     log.print();
 
     return response;

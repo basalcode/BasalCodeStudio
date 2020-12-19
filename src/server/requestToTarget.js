@@ -6,43 +6,44 @@ const dbMember = require(process.cwd() + '/dbMember');
 const requestToTarget = async (req, path) => {
     log.line.single('[ requestToTarget.js ]');
 
+    log.container.double('ACTION: request API target');
+    log.message({ MESSAGE: 'find target module...' });
+
+    const moduleName = path.split('/')[path.split('/').length - 1];
+    const modulePath = '.' + path + '/' + moduleName;
+
+    log.message({ modulePath: modulePath });
+
     let targetModule = null;
-
     let response = null;
+
     try {
-        log.container.double('ACTION: request API target');
-        log.message({ MESSAGE: 'find target module...' });
-
-        const moduleName = path.split('/')[path.split('/').length - 1];
-        const modulePath = '.' + path + '/' + moduleName;
-
-        log.message({ modulePath: modulePath });
-
         targetModule = require(modulePath);
-
-        response = await targetModule(req, dbMember);
-            
-        if (!response) {
-            response = {
-                statusCode: 500,
-                payload: null,
-                errorMessage: 'Empty response object.'
-            }
-            
-            log.container.double('RESULT: error');
-            log.message({ response: response });
-        }
-    } catch (error) {
+    } catch(error) {
         response = {
             statusCode: 404,
             payload: null,
-            errorMessage: 'Unavailable resource.'
+            errorMessage: 'Failed to load resource.'
         }
 
-        log.container.double('RESULT: error');
-        log.message({ response: response });
+        log.container.double('RESULT: error');  
         log.message({ error: error });
     }
+
+    response = await targetModule(req, dbMember);
+        
+    if (!response) {
+        response = {
+            statusCode: 500,
+            payload: null,
+            errorMessage: 'Empty response object.'
+        }
+        
+        log.container.double('RESULT: error');
+    } else {
+        log.container.double('RESULT: success');
+    }
+    log.message({ response: response });
     log.print();
 
     return response;

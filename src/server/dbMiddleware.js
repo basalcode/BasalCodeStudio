@@ -64,14 +64,18 @@ const dbMiddleware = (host, user, password, dbName, connectionLimit = 10) => {
                     throw Error('Value type of query is not valid. Query is ' + getTypeOf(query) + ' type.');
                 }
             } catch(error) {
+                console.log(error);
                 log.container.double('RESULT');
                 log.message({ ERROR: error });
+                log.print();
 
                 return false;
             }
         } catch(error) {
+            console.log(error);
             log.container.double('RESULT');
             log.message({ ERROR: error });
+            log.print();
 
             return false;
         }

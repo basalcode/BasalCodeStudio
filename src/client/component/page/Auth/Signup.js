@@ -1,8 +1,9 @@
 /* module */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 /* api */
 import { get as getEmail } from 'api/user/email/email';
+import { post as postUser } from 'api/user/user';
 
 /* lib */
 import { 
@@ -119,7 +120,7 @@ const Signup = () => {
         setUserNameData({
             ...userNameData,
             message: message,
-            idValid: isValid,
+            isValid: isValid,
             isChanged: true
         });
     }
@@ -213,8 +214,48 @@ const Signup = () => {
     }
 
     // onSubmit
-    const onSubmitHandler = () => {
+    const onSubmitHandler = event => {
+        event.preventDefault();
 
+        if (!emailData.isValid) {
+            alert(emailData.message.length === 0 ?
+                '이메일을 입력해주세요.' :
+                emailData.message);
+            emailData.ref.current.focus();
+            return;
+        }
+        
+        if (!userNameData.isValid) {
+            alert(userNameData.message.length === 0 ?
+                '사용자명을 입력해주세요.':
+                userNameData.message);
+            userNameData.ref.current.focus();
+            return;
+        }
+
+        if (!passwordData.isValid) {
+            alert(passwordData.message.length === 0 ?
+                '비밀번호를 입력해주세요.' :
+                passwordData.message);
+            passwordData.ref.current.focus();
+            return;
+        }
+
+        if (!confirmPasswordData.isValid) {
+            alert(confirmPasswordData.message.length === 0 ?
+                '비밀번호를 확인해주세요.' :
+                confirmPasswordData.message);
+            confirmPasswordData.ref.current.focus();
+            return;
+        }
+
+        const formData = {
+            email: emailData.input,
+            userName: userNameData.input,
+            password: passwordData.input,
+        }
+
+        const response = postUser(formData);
     }
 
     return (
@@ -304,11 +345,9 @@ const Signup = () => {
                             {confirmPasswordData.message}
                         </div>
                     </div>
-                    <div className="Signup__submit-container">
-                        <input className="Signup__submit"
-                            type="submit"
-                            value="Sign up" />
-                    </div>
+                    <input className="Signup__submit"
+                        type="submit"
+                        value="Sign up" />
                 </form>
             </div>
         </section>

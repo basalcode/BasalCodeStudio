@@ -62,26 +62,22 @@
         font-size: 1.1rem;
     }
 
-    &__submit-container {
+    &__message {
+        font-size: 1rem;
+    }
+
+    &__submit {
         @include size(100%, 2.5rem);
         @include round-border(10px);
 
         position: relative;
         border: 2px solid black;
 
+        text-align: center;
+
         &:hover {
             background-color: black;
             color: white;
         }
-    }
-
-    &__message {
-        font-size: 1rem;
-    }
-    
-    &__submit {
-        @include center();
-
-        position: absolute;
     }
 }
