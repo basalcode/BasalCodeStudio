@@ -81,9 +81,7 @@ module.exports = async (req, dbMember) => {
 
                 log.container.double('RESULT: error');
                 break;
-            }
-
-            if (/* result process */) {
+            } else {
                 response = {
                     statusCode: 200,
                     payload: {

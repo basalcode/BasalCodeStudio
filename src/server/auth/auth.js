@@ -1,60 +1,35 @@
-/* private */
-const queryObject = require(process.cwd() + '/../../.private/query/api/user/user');
+/* query */
+const queryObject = require(process.cwd() + '/../../.private/query/api/[ target query path ]');
 
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
-const formValue = require(process.cwd() + '/../shared/formValidation');
-const bcrypt = require(process.cwd() + '/../shared/bcrypt');
 
 module.exports = async (req, dbMember) => {
-    log.line.single('[ user.js ]');
+    log.line.single('[ auth.js ]');
 
     const method = req.method;
 
     let response = null;
     switch (method) {
         case 'POST':
+            break;
+        case 'GET':
             /* basic value */
             log.container.double('STATE: check request values');
             log.message({ method: method });
-            log.message({ body: req.body });
+            log.message({ query: req.query });
 
             /* verify value */
-            const body = req.body;
-            const email = body.email;
-            const userName = body.userName;
-            const password = body.password;
+            // const value = req.query.value;
 
             log.container.double('ACTION: verfy values');
             log.message({ MESSAGE: 'Verify input values...' });
             try {
-                if (!formValue.isEmail(email)) {
+                if (1/* filter */) {
                     response = {
                         statusCode: 400,
                         payload: null,
-                        errorMessage: 'Invalid email address.'
-                    };
-
-                    log.container.double('RESULT: error');
-                    break;
-                }
-
-                if (!formValue.isEngKorNumber(userName)) {
-                    response = {
-                        statusCode: 400,
-                        payload: null,
-                        errorMessage: 'Invalid user name.'
-                    };
-
-                    log.container.double('RESULT: error');
-                    break;
-                }
-
-                if (!formValue.isPassword(password)) {
-                    response = {
-                        statusCode: 400,
-                        payload: null,
-                        errorMessage: 'Invalid user name.'
+                        errorMessage: 'Invalid ###value###.'
                     };
 
                     log.container.double('RESULT: error');
@@ -65,55 +40,28 @@ module.exports = async (req, dbMember) => {
                 response = {
                     statusCode: 500,
                     payload: null,
-                    errorMessage: 'Failed to verify value.'
+                    errorMessage: 'Failed to verify ###value###.'
                 }
 
                 log.container.double('RESULT: error');
                 log.message({ error: error });
                 break;
             }
-
             /* verify value result */
             log.container.double('REULST: success');
             log.message({ MESSAGE: 'Verification success!' });
 
             /* additional process */
-            log.container.double('ACTION: hash password');
-
-            let hashcode;
-            try {
-                hashcode = await bcrypt.hash(password);
-
-                log.container.double('REULST: success');
-                log.message({ MESSAGE: 'Hash password success!' });
-                log.message({ hashcode: hashcode })
-
-            } catch(error) {
-                response = {
-                    statusCode: 500,
-                    payload: null,
-                    errorMessage: 'Failed to hash password.'
-                }
-
-                log.container.double('RESULT: error');
-                log.message({ error: error });
-                break;
-            }
 
             /* request to DB */
             const query = queryObject[method];
-            const values = [
-                email,
-                userName,
-                hashcode
-            ];
+            const values = [ /* value */];
             log.container.double('STATE: check DB query and values');
             log.message({ query: query });
             log.message({ values: values });
 
             log.container.double('ACTION: request to DB');
-            
-            const dbResult = await dbMember.user.run(query, values);
+            const dbResult = await dbMember./* DB name */.run(query, values);
 
             /* request to DB result */
             if (!dbResult) {
@@ -130,15 +78,13 @@ module.exports = async (req, dbMember) => {
             response = {
                 statusCode: 200,
                 payload: {
-                    isEnrolled: true
+                    /* body data here */
                 },
                 errorMessage: null
             }
 
             log.container.double('RESULT: success');
             log.message({ dbResult: dbResult });
-            break;
-        case 'GET':
             break;
         case 'PUT':
             break;

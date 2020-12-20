@@ -1,18 +1,25 @@
 /* module */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
+
 
 /* api */
 import { get as getEmail } from 'api/user/email/email';
 import { post as postUser } from 'api/user/user';
 
 /* lib */
-import { 
+import {
     isEmail,
     isEngKorNumber,
     isPassword
 } from '~/../../shared/formValidation';
 
+import responseHandler from 'lib/responseHandler';
+
 const Signup = () => {
+    /* history */
+    const history = useHistory();
+
     /* state */
     const [emailData, setEmailData] = useState({
         input: '',
@@ -214,7 +221,7 @@ const Signup = () => {
     }
 
     // onSubmit
-    const onSubmitHandler = event => {
+    const onSubmitHandler = async event => {
         event.preventDefault();
 
         if (!emailData.isValid) {
@@ -224,10 +231,10 @@ const Signup = () => {
             emailData.ref.current.focus();
             return;
         }
-        
+
         if (!userNameData.isValid) {
             alert(userNameData.message.length === 0 ?
-                '사용자명을 입력해주세요.':
+                '사용자명을 입력해주세요.' :
                 userNameData.message);
             userNameData.ref.current.focus();
             return;
@@ -249,13 +256,52 @@ const Signup = () => {
             return;
         }
 
+        setEmailData({
+            ...emailData,
+            input: '',
+            isValid: false,
+            isChanged: false
+        });
+
+        setUserNameData({
+            ...userNameData,
+            input: '',
+            isValid: false,
+            isChanged: false
+        });
+
+        setPasswordData({
+            ...passwordData,
+            input: '',
+            isValid: false,
+            isChanged: false
+        });
+
+        setConfirmPasswordData({
+            ...confirmPasswordData,
+            input: '',
+            isValid: false,
+            isChanged: false
+        });
+
         const formData = {
             email: emailData.input,
             userName: userNameData.input,
             password: passwordData.input,
         }
 
-        const response = postUser(formData);
+        const response = await postUser(formData);
+
+        responseHandler(response, { 200: () => {
+            const isEnrolled = response.payload.isEnrolled;
+
+            if (isEnrolled) {
+                alert('계정을 성공적으로 생성했습니다!');
+            } else {
+                alert('계정을 생성하는 도중 문제가 생겼습니다. 다시 시도해주세요.');
+            }
+            history.push('/auth/login');
+        }});
     }
 
     return (

@@ -75,28 +75,16 @@ module.exports = async (req, dbMember) => {
                 log.container.double('RESULT: error');
                 break;
             }
-
-            if (dbResult.length === 0) {
-                response = {
-                    statusCode: 200,
-                    payload: {
-                        availability: true,
-                    },
-                    errorMessage: null 
-                }
-
-                log.container.double('RESULT: success');
-            } else {
-                response = {
-                    statusCode: 200,
-                    payload: {
-                        availability: false,
-                    },
-                    errorMessage: null
-                }
-
-                log.container.double('RESULT: success');
+            
+            response = {
+                statusCode: 200,
+                payload: {
+                    availability: dbResult.length === 0 ? true : false,
+                },
+                errorMessage: null 
             }
+
+            log.container.double('RESULT: success');
             break;
         case 'PUT':
             break;
