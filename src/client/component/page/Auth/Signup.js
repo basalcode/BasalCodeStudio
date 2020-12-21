@@ -13,7 +13,6 @@ import {
     isEngKorNumber,
     isPassword
 } from '~/../../shared/formValidation';
-
 import responseHandler from 'lib/responseHandler';
 
 const Signup = () => {
@@ -25,52 +24,60 @@ const Signup = () => {
         input: '',
         message: '',
         isValid: false,
-        isChanged: false,
         ref: useRef(null)
     });
     const [userNameData, setUserNameData] = useState({
         input: '',
         message: '',
         isValid: false,
-        isChanged: false,
         ref: useRef(null)
     });
     const [passwordData, setPasswordData] = useState({
         input: '',
         message: '',
         isValid: false,
-        isChanged: false,
         ref: useRef(null)
     });
     const [confirmPasswordData, setConfirmPasswordData] = useState({
         input: '',
         message: '',
         isValid: false,
-        isChanged: false,
         ref: useRef(null)
     });
 
     /* event handler */
     // email
     const onEmailChangeHandler = event => {
+        const inputValue = event.target.value;
+        
+        let message = '';
+        let isValid = false;
+
+        if (inputValue.length === 0) {
+            message = '이메일을 입력해주세요.';
+            isValid = false;
+        } else if (isEmail(inputValue)) { 
+            message = '올바른 이메일 주소입니다.';
+            isValid = false;
+        } else {
+            message = '이메일 주소가 아닙니다.';
+            isValid = false;
+        }
+
         setEmailData({
             ...emailData,
-            input: event.target.value,
-            isChanged: true
+            input: inputValue,
+            message: message,
+            isValid: isValid,
         });
     }
 
     const onEmailBlurHandler = async event => {
-        if (!emailData.isChanged) return;
-
         const inputValue = event.target.value;
 
         let message = '';
         let isValid = false;
-        if (inputValue.length === 0) {
-            message = '이메일을 입력해주세요.';
-            isValid = false;
-        } else if (isEmail(inputValue)) {
+        if (isEmail(inputValue)) {
             const response = await getEmail(inputValue);
             const availability = response.payload.availability;
 
@@ -81,31 +88,17 @@ const Signup = () => {
                 message = '이미 존재하는 이메일입니다.';
                 isValid = false;
             }
-        } else {
-            message = '유효하지 않은 이메일 주소입니다.';
-            isValid = false;
         }
 
         setEmailData({
             ...emailData,
             message: message,
             isValid: isValid,
-            isChanged: false
         });
     }
 
     // userName
     const onUserNameChangeHandler = event => {
-        setUserNameData({
-            ...userNameData,
-            input: event.target.value,
-            isChanged: true
-        });
-    }
-
-    const onUserNameBlurHandler = event => {
-        if (!userNameData.isChanged) return;
-
         const inputValue = event.target.value;
 
         let message = '';
@@ -117,7 +110,7 @@ const Signup = () => {
             message = '사용자명은 20자 이내로 작성해주세요.';
             isValid = false;
         } else if (isEngKorNumber(inputValue)) {
-            message = '성공!';
+            message = '사용 가능한 사용자명입니다.';
             isValid = true;
         } else {
             message = '한글, 영어, 숫자만 사용할 수 있습니다.';
@@ -126,39 +119,14 @@ const Signup = () => {
 
         setUserNameData({
             ...userNameData,
+            input: inputValue,
             message: message,
             isValid: isValid,
-            isChanged: true
         });
     }
 
     // password
     const onPasswordChangeHandler = event => {
-        setPasswordData({
-            ...passwordData,
-            input: event.target.value,
-            isChanged: true
-        });
-
-        if (confirmPasswordData.isValid) {
-            setConfirmPasswordData({
-                ...confirmPasswordData,
-                message: '비밀번호가 일치하지 않습니다.',
-                isValid: false
-            });
-        } else if (confirmPasswordData.isChanged &&
-            event.target.value === confirmPasswordData.input) {
-            setConfirmPasswordData({
-                ...confirmPasswordData,
-                message: '비밀번호가 일치합니다!',
-                isValid: true
-            });
-        }
-    }
-
-    const onPasswordBlurHandler = event => {
-        if (!passwordData.isChanged) return;
-
         const inputValue = event.target.value;
 
         let message = '';
@@ -167,7 +135,7 @@ const Signup = () => {
             message = '비밀번호를 입력해주세요.';
             isValid = false;
         } else if (isPassword(inputValue, 8)) {
-            message = '좋습니다!';
+            message = '사용 가능한 비밀번호 입니다.';
             isValid = true;
         } else {
             message = '8자리 이상의 문자, 숫자, 특수 기호를 조합해주세요.';
@@ -176,24 +144,28 @@ const Signup = () => {
 
         setPasswordData({
             ...passwordData,
+            input: inputValue,
             message: message,
             isValid: isValid,
-            isChanged: true
         });
+        if (confirmPasswordData.input.length === 0) return;
+        if (confirmPasswordData.isValid) {
+            setConfirmPasswordData({
+                ...confirmPasswordData,
+                message: '비밀번호가 일치하지 않습니다.',
+                isValid: false
+            });
+        } else if (event.target.value === confirmPasswordData.input) {
+            setConfirmPasswordData({
+                ...confirmPasswordData,
+                message: '비밀번호가 일치합니다!',
+                isValid: true
+            });
+        }
     }
 
     // confirmPassword
     const onConfirmPasswordChangeHandler = event => {
-        setConfirmPasswordData({
-            ...confirmPasswordData,
-            input: event.target.value,
-            isChanged: true
-        });
-    }
-
-    const onConfirmPasswordBlurHandler = (event) => {
-        if (!confirmPasswordData.isChanged) return;
-
         const inputValue = event.target.value;
 
         let message = '';
@@ -214,9 +186,9 @@ const Signup = () => {
 
         setConfirmPasswordData({
             ...confirmPasswordData,
+            input: event.target.value,
             message: message,
             isValid: isValid,
-            isChanged: true
         });
     }
 
@@ -260,28 +232,21 @@ const Signup = () => {
             ...emailData,
             input: '',
             isValid: false,
-            isChanged: false
         });
-
         setUserNameData({
             ...userNameData,
             input: '',
             isValid: false,
-            isChanged: false
         });
-
         setPasswordData({
             ...passwordData,
             input: '',
             isValid: false,
-            isChanged: false
         });
-
         setConfirmPasswordData({
             ...confirmPasswordData,
             input: '',
             isValid: false,
-            isChanged: false
         });
 
         const formData = {
@@ -292,16 +257,18 @@ const Signup = () => {
 
         const response = await postUser(formData);
 
-        responseHandler(response, { 200: () => {
-            const isEnrolled = response.payload.isEnrolled;
+        responseHandler(response,
+            () => {
+                const isEnrolled = response.payload.isEnrolled;
 
-            if (isEnrolled) {
-                alert('계정을 성공적으로 생성했습니다!');
-            } else {
-                alert('계정을 생성하는 도중 문제가 생겼습니다. 다시 시도해주세요.');
+                if (isEnrolled) {
+                    alert('계정을 성공적으로 생성했습니다!');
+                } else {
+                    alert('계정을 생성하는 도중 문제가 생겼습니다. 다시 시도해주세요.');
+                }
             }
-            history.push('/auth/login');
-        }});
+        );
+        history.push('/auth/login');
     }
 
     return (
@@ -343,8 +310,7 @@ const Signup = () => {
                                 type="text"
                                 value={userNameData.input}
                                 ref={userNameData.ref}
-                                onChange={onUserNameChangeHandler}
-                                onBlur={onUserNameBlurHandler} />
+                                onChange={onUserNameChangeHandler} />
                         </div>
                         <div className="Signup__message">
                             {userNameData.message}
@@ -363,8 +329,7 @@ const Signup = () => {
                                 type="password"
                                 value={passwordData.input}
                                 ref={passwordData.ref}
-                                onChange={onPasswordChangeHandler}
-                                onBlur={onPasswordBlurHandler} />
+                                onChange={onPasswordChangeHandler} />
                         </div>
                         <div className="Signup__message">
                             {passwordData.message}
@@ -383,9 +348,7 @@ const Signup = () => {
                                 type="password"
                                 value={confirmPasswordData.input}
                                 ref={confirmPasswordData.ref}
-                                onChange={onConfirmPasswordChangeHandler}
-                                onBlur={onConfirmPasswordBlurHandler}
-                            />
+                                onChange={onConfirmPasswordChangeHandler} />
                         </div>
                         <div className="Signup__message">
                             {confirmPasswordData.message}
