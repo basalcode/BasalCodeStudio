@@ -3,8 +3,17 @@ import React, { useState, useRef } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-/* store */
-import { login as loginAction } from 'store/action/auth';
+/* api */
+import { get as getAuth } from 'api/auth/auth';
+
+/* lib */
+import responseHandler from 'lib/responseHandler';
+
+/* shared */
+import {
+    isEmail,
+    isPassword
+} from '~/../../shared/formValidation';
 
 const Login = () => {
     /* store */
@@ -12,63 +21,93 @@ const Login = () => {
     const history = useHistory();
 
     /* state */
-    const [emailText, setEmailText] = useState('');
-    const [passwordText, setPasswordText] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-
-    /* useRef */
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
-    const messageRef = useRef(null);
-
-    /* function */
-    const canSubmit = () => {
-        let permission = false;
-        if (emailText.length === 0) {
-            emailRef.current.focus();
-            const EMAIL_EORROR_MESSAGE = 'Please fill out the form email.';
-            setErrorMessage(EMAIL_EORROR_MESSAGE);
-        } else if (passwordText.length === 0) {
-            passwordRef.current.focus();
-            const PASSWORD_EORROR_MESSAGE = 'Please fill out the form password.';
-            setErrorMessage(PASSWORD_EORROR_MESSAGE);
-        } else {
-            permission = true;
-        }
-        return permission;
-    }
+    const [emailData, setEmailData] = useState({
+        input: '',
+        ref: useRef(null)
+    });
+    const [passwordData, setPasswordData] = useState({
+        input: '',
+        ref: useRef(null)
+    });
+    const [message, setMessage] = useState('');
 
     /* event handler */
     // email
-    const onEmailChangeHandler = (event) => {
-        setEmailText(event.target.value);
-    }
-
-    const onEmailBlurHandler = (event) => {
-        setPasswordText(event.target.value);
+    const onEmailChangeHandler = event => {
+        setEmailData({
+            input: event.target.value
+        });
     }
 
     // password
-    const onPasswordChangeHandler = (event) => {
-        setPasswordText(event.target.value);
-    }
-
-    const onPasswordBlurHandler = (event) => {
-        setPasswordText(event.target.value);
+    const onPasswordChangeHandler = event => {
+        setPasswordData({
+            input: event.target.value
+        });
     }
 
     // submit
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = async event => {
         event.preventDefault();
-        if (canSubmit()) {
-            dispatch(loginAction(
-                emailText,
-                passwordText,
-                history,
-                emailRef,
-                passwordRef,
-                messageRef
-            ));
+
+        let message = '';
+        let isValid = false;
+        if (emailData.input.length === 0) {
+            message = '이메일을 입력해주세요.';
+            isValid = false;
+        } else if (isEmail(emailData.input)) { 
+            message = '올바른 이메일 주소입니다.';
+            isValid = true;
+        } else {
+            message = '이메일 주소가 아닙니다.';
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            setMessage(message);
+            emailData.ref.current.focus();
+            return;
+        }
+
+        if (passwordData.input.length === 0) {
+            message = '비밀번호를 입력해주세요.';
+            isValid = false;
+        } else if (isPassword(passwordData.input, 8)) {
+            message = '사용 가능한 비밀번호 입니다.';
+            isValid = true;
+        } else {
+            message = '8자리 이상의 문자, 숫자, 특수 기호를 조합해주세요.';
+            isValid = false;
+        }
+
+        if (!isValid) {
+            setMessage(message);
+            passwordData.ref.current.focus();
+            return;
+        }
+
+        const formData = {
+            email: emailData.input,
+            password: passwordData.input
+        };
+
+        const response = await getAuth(formData);
+
+        const isLoggedIn = response.payload.isLoggedIn;
+        responseHandler(response, () => {
+            if (isLoggedIn) {
+                const userName = response.userName;
+                
+                alert(`${userName}님, 반갑습니다.`);
+
+                history.push('/blog/lobby');
+            } else {
+                alert('이메일 또는 비밀번호가 잘못되었습니다.');
+            }
+        });
+
+        if (!isLoggedIn) {
+            history.go(0);
         }
     }
 
@@ -93,10 +132,10 @@ const Login = () => {
                             <input className={
                                 "Login__input " +
                                 "Login__email-input"}
+                                ref={emailData.ref}
                                 type="email"
-                                value={emailText}
-                                onChange={onEmailChangeHandler}
-                                onBlur={onEmailBlurHandler} />
+                                value={emailData.input}
+                                onChange={onEmailChangeHandler} />
                         </div>
                     </div>
                     <div className={
@@ -114,25 +153,20 @@ const Login = () => {
                             <input className={
                                 "Login__input " +
                                 "Login__password-input"}
+                                ref={passwordData.ref}
                                 type="password"
-                                value={passwordText}
-                                onChange={onPasswordChangeHandler}
-                                onBlur={onPasswordBlurHandler} />
+                                value={passwordData.input}
+                                onChange={onPasswordChangeHandler} />
                         </div>
                     </div>
                     <div className={
                         "Login__item " +
-                        "Login__message"}
-                        ref={messageRef}>
-                        {errorMessage}
+                        "Login__message"}>
+                        {message}
                     </div>
-                    <div className={
-                        "Login__item " +
-                        "Login__submit-container"}>
-                        <input className={"Login__submit"}
-                            type="submit"
-                            value="Sign in" />
-                    </div>
+                    <input className={"Login__submit"}
+                        type="submit"
+                        value="Sign in" />
                     <Link className="Login__signup"
                         to="/auth/signup">Sign up</Link>
                 </form>

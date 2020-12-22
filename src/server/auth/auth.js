@@ -1,8 +1,10 @@
 /* query */
-const queryObject = require(process.cwd() + '/../../.private/query/api/[ target query path ]');
+const queryObject = require(process.cwd() + '/../../.private/query/api/auth/auth');
 
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
+const type = require(process.cwd() + '/../shared/formValidation');
+const bcrypt = require(process.cwd() + '/../shared/bcrypt');
 
 module.exports = async (req, dbMember) => {
     log.line.single('[ auth.js ]');
@@ -20,16 +22,31 @@ module.exports = async (req, dbMember) => {
             log.message({ query: req.query });
 
             /* verify value */
-            // const value = req.query.value;
+            const email = decodeURIComponent(req.query.email);
+            const password = decodeURIComponent(req.query.password);
 
             log.container.double('ACTION: verfy values');
             log.message({ MESSAGE: 'Verify input values...' });
+            let verifyType;
             try {
-                if (1/* filter */) {
+                verifyType = 'email';
+                if (!type.isEmail(email)) {
                     response = {
                         statusCode: 400,
                         payload: null,
-                        errorMessage: 'Invalid ###value###.'
+                        errorMessage: 'Invalid email address.'
+                    };
+
+                    log.container.double('RESULT: error');
+                    break;
+                }
+
+                verifyType = 'password';
+                if (!type.isPassword(password)) {
+                    response = {
+                        statusCode: 400,
+                        payload: null,
+                        errorMessage: 'Invalid password value.'
                     };
 
                     log.container.double('RESULT: error');
@@ -40,28 +57,27 @@ module.exports = async (req, dbMember) => {
                 response = {
                     statusCode: 500,
                     payload: null,
-                    errorMessage: 'Failed to verify ###value###.'
+                    errorMessage: `Failed to verify ${verifyType} value.`
                 }
 
                 log.container.double('RESULT: error');
                 log.message({ error: error });
                 break;
             }
+
             /* verify value result */
             log.container.double('REULST: success');
             log.message({ MESSAGE: 'Verification success!' });
 
-            /* additional process */
-
             /* request to DB */
             const query = queryObject[method];
-            const values = [ /* value */];
+            const values = [ email ];
             log.container.double('STATE: check DB query and values');
             log.message({ query: query });
             log.message({ values: values });
 
             log.container.double('ACTION: request to DB');
-            const dbResult = await dbMember./* DB name */.run(query, values);
+            const dbResult = await dbMember.user.run(query, values);
 
             /* request to DB result */
             if (!dbResult) {
@@ -74,17 +90,49 @@ module.exports = async (req, dbMember) => {
                 log.container.double('RESULT: error');
                 break;
             }
+            log.container.double('RESULT: success');
+            log.message({ dbResult: dbResult });
 
+            /* additional process */
+            if (dbResult.length === 0) {
+                response = {
+                    statusCode: 200,
+                    payload: {
+                        isLoggedIn: false,
+                    },
+                    errorMessage: null
+                }
+                log.container.double('RESULT: success');
+                break;
+            }
+
+            log.container.double('ACTION: compare password and hashcode');
+            const hashcode = dbResult[0].hashcode;
+            
+            log.message({ hashcode: hashcode });
+            if (!bcrypt.compare(password, hashcode)) {
+                response = {
+                    statusCode: 200,
+                    payload: {
+                        isLoggedIn: false,
+                    },
+                    errorMessage: null
+                }
+                log.container.double('RESULT: success');
+                break;
+            } 
+
+            const userName = dbResult[0][user_Name];
             response = {
                 statusCode: 200,
                 payload: {
-                    /* body data here */
+                    isLoggedIn: true,
+                    userName: userName
                 },
                 errorMessage: null
             }
-
             log.container.double('RESULT: success');
-            log.message({ dbResult: dbResult });
+
             break;
         case 'PUT':
             break;

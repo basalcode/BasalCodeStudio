@@ -8,12 +8,14 @@ import { get as getEmail } from 'api/user/email/email';
 import { post as postUser } from 'api/user/user';
 
 /* lib */
+import responseHandler from 'lib/responseHandler';
+
+/* shared */
 import {
     isEmail,
     isEngKorNumber,
     isPassword
 } from '~/../../shared/formValidation';
-import responseHandler from 'lib/responseHandler';
 
 const Signup = () => {
     /* history */
@@ -52,13 +54,12 @@ const Signup = () => {
         
         let message = '';
         let isValid = false;
-
         if (inputValue.length === 0) {
             message = '이메일을 입력해주세요.';
             isValid = false;
         } else if (isEmail(inputValue)) { 
             message = '올바른 이메일 주소입니다.';
-            isValid = false;
+            isValid = true;
         } else {
             message = '이메일 주소가 아닙니다.';
             isValid = false;
@@ -148,6 +149,7 @@ const Signup = () => {
             message: message,
             isValid: isValid,
         });
+
         if (confirmPasswordData.input.length === 0) return;
         if (confirmPasswordData.isValid) {
             setConfirmPasswordData({

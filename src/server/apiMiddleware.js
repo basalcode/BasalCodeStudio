@@ -4,6 +4,11 @@ const requestToTarget = require('./requestToTarget');
 const log = require(process.cwd() + '/../shared/fancyLogger');
 
 module.exports = async (req, res) => {
+    log.line.star('R E Q U E S T');
+    log.message({ START: 'Request to API Server' })
+    log.line.star('');
+    log.print();
+
     log.line.single('[ apiMiddleware.js ]');
 
     const path = req.baseUrl.split('/api')[1];

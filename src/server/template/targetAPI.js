@@ -28,7 +28,7 @@ module.exports = async (req, dbMember) => {
             log.message({ query: req.query });
 
             /* verify value */
-            // const value = req.query.value;
+            // const value = decodeURIComponent(req.query.value);
 
             log.container.double('ACTION: verfy values');
             log.message({ MESSAGE: 'Verify input values...' });

@@ -1,5 +1,6 @@
 /* shared */
 const log = require(process.cwd() + '/../shared/fancyLogger');
+const type = require(process.cwd() + '/../shared/typeValidation');
 
 const dbMember = require(process.cwd() + '/dbMember');
 
@@ -26,11 +27,25 @@ const requestToTarget = async (req, path) => {
             errorMessage: 'Failed to load resource.'
         }
 
-        log.container.double('RESULT: error');  
+        log.container.double('RESULT: error');
         log.message({ error: error });
     }
 
-    response = await targetModule(req, dbMember);
+    try {
+        response = await targetModule(req, dbMember);
+    } catch (error) {
+        const targetModuleType = type.getTypeOf(targetModule);
+        response = {
+            statusCode: 500,
+            payload: null,
+            errorMessage: 'Failed to call targetModule.'
+        }
+
+        log.container.double('RESULT: error');
+        log.message({ targetModuleType: targetModuleType });
+        log.message({ error: error });
+    }
+    
         
     if (!response) {
         response = {
