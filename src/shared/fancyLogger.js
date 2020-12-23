@@ -153,7 +153,12 @@ const space = () => {
     logs.push(' ');
 }
 
-const print = () => {
+const print = (divisionLine = true, lineType = 'single') => {
+    if (divisionLine) {
+        line[lineType]();
+        space();
+    }
+
     let log;
     while (log = logs.shift()) {
         console.log(log);

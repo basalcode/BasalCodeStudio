@@ -7,31 +7,20 @@ const log = require(process.cwd() + '/../shared/fancyLogger');
 module.exports = async (req, dbMember) => {
     log.line.single('[ targetAPI.js ]');
 
+    log.container.double('ACTION: verify values');
+
     const method = req.method;
 
     let response = null;
     switch (method) {
         case 'POST':
-            /* check value */
-            const email = req.query.email;
-
-            log.container.double('STATE: check request values');
-            log.message({ method: method });
-            log.message({ body: req.body });
-
-
             break;
         case 'GET':
-            /* basic value */
-            log.container.double('STATE: check request values');
-            log.message({ method: method });
-            log.message({ query: req.query });
-
             /* verify value */
             // const value = decodeURIComponent(req.query.value);
-
-            log.container.double('ACTION: verfy values');
-            log.message({ MESSAGE: 'Verify input values...' });
+            log.container.double('ACTION: verify values');
+            log.message({ method: method });
+            log.message({ query: req.query });
             try {
                 if (1/* filter */) {
                     response = {
@@ -40,7 +29,7 @@ module.exports = async (req, dbMember) => {
                         errorMessage: 'Invalid ###value###.'
                     };
 
-                    log.container.double('RESULT: error');
+                    log.container.double('RESULT: [error] verify values');
                     break;
                 }
             } catch (error) {
@@ -51,24 +40,24 @@ module.exports = async (req, dbMember) => {
                     errorMessage: 'Failed to verify ###value###.'
                 }
 
-                log.container.double('RESULT: error');
+                log.container.double('RESULT: [error] verify values');
                 log.message({ error: error });
                 break;
             }
             /* verify value result */
-            log.container.double('REULST: success');
-            log.message({ MESSAGE: 'Verification success!' });
+            log.container.double('REULST: [success] verify values');
 
             /* additional process */
 
             /* request to DB */
             const query = queryObject[method];
             const values = [ /* value */];
-            log.container.double('STATE: check DB query and values');
-            log.message({ query: query });
-            log.message({ values: values });
 
             log.container.double('ACTION: request to DB');
+            log.message({ query: query });
+            log.message({ values: values });
+            log.print();
+
             const dbResult = await dbMember./* DB name */.run(query, values);
 
             /* request to DB result */
@@ -79,7 +68,7 @@ module.exports = async (req, dbMember) => {
                     errorMessage: 'Failed to request to DB.'
                 }
 
-                log.container.double('RESULT: error');
+                log.container.double('RESULT: [error] request to DB');
                 break;
             } else {
                 response = {
@@ -90,7 +79,7 @@ module.exports = async (req, dbMember) => {
                     errorMessage: null
                 }
 
-                log.container.double('RESULT: success');
+                log.container.double('RESULT: [success] request to DB');
             }
             break;
         case 'PUT':
@@ -103,7 +92,7 @@ module.exports = async (req, dbMember) => {
                 payload: null,
                 errorMessage: 'Invalid HTTP method.'
             }
-            log.container.double('RESULT: success');
+            log.container.double('RESULT: [error] Invalid HTTP method');
             break;
     }
     log.message({ response: response });

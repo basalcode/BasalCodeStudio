@@ -35,6 +35,7 @@ const Login = () => {
     // email
     const onEmailChangeHandler = event => {
         setEmailData({
+            ...emailData,
             input: event.target.value
         });
     }
@@ -42,6 +43,7 @@ const Login = () => {
     // password
     const onPasswordChangeHandler = event => {
         setPasswordData({
+            ...passwordData,
             input: event.target.value
         });
     }
@@ -82,7 +84,7 @@ const Login = () => {
 
         if (!isValid) {
             setMessage(message);
-            passwordData.ref.current.focus();
+            passwordData.ref.current.focus(); 
             return;
         }
 
@@ -93,10 +95,12 @@ const Login = () => {
 
         const response = await getAuth(formData);
 
+        console.log('response', response);
+
         const isLoggedIn = response.payload.isLoggedIn;
         responseHandler(response, () => {
             if (isLoggedIn) {
-                const userName = response.userName;
+                const userName = response.payload.userName;
                 
                 alert(`${userName}님, 반갑습니다.`);
 

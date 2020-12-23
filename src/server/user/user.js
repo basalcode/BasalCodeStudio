@@ -14,19 +14,16 @@ module.exports = async (req, dbMember) => {
     let response = null;
     switch (method) {
         case 'POST':
-            /* basic value */
-            log.container.double('STATE: check request values');
-            log.message({ method: method });
-            log.message({ body: req.body });
-
             /* verify value */
             const body = req.body;
             const email = body.email;
             const userName = body.userName;
             const password = body.password;
 
-            log.container.double('ACTION: verfy values');
-            log.message({ MESSAGE: 'Verify input values...' });
+            log.container.double('ACTION: verify values');
+            log.message({ method: method });
+            log.message({ body: req.body });
+
             try {
                 if (!formValue.isEmail(email)) {
                     response = {
@@ -35,7 +32,7 @@ module.exports = async (req, dbMember) => {
                         errorMessage: 'Invalid email address.'
                     };
 
-                    log.container.double('RESULT: error');
+                    log.container.double('RESULT: [error] verify values');
                     break;
                 }
 
@@ -46,7 +43,7 @@ module.exports = async (req, dbMember) => {
                         errorMessage: 'Invalid user name.'
                     };
 
-                    log.container.double('RESULT: error');
+                    log.container.double('RESULT: [error] verify values');
                     break;
                 }
 
@@ -57,7 +54,7 @@ module.exports = async (req, dbMember) => {
                         errorMessage: 'Invalid user name.'
                     };
 
-                    log.container.double('RESULT: error');
+                    log.container.double('RESULT: [error] verify values');
                     break;
                 }
             } catch (error) {
@@ -68,26 +65,21 @@ module.exports = async (req, dbMember) => {
                     errorMessage: 'Failed to verify value.'
                 }
 
-                log.container.double('RESULT: error');
+                log.container.double('RESULT: [error] verify values');
                 log.message({ error: error });
                 break;
             }
 
             /* verify value result */
-            log.container.double('REULST: success');
-            log.message({ MESSAGE: 'Verification success!' });
+            log.container.double('REULST: [success] verify values');
 
             /* additional process */
             log.container.double('ACTION: hash password');
-
             let hashcode;
             try {
                 hashcode = await bcrypt.hash(password);
 
-                log.container.double('REULST: success');
-                log.message({ MESSAGE: 'Hash password success!' });
-                log.message({ hashcode: hashcode })
-
+                log.message({ hash: hash });
             } catch(error) {
                 response = {
                     statusCode: 500,
@@ -95,10 +87,13 @@ module.exports = async (req, dbMember) => {
                     errorMessage: 'Failed to hash password.'
                 }
 
-                log.container.double('RESULT: error');
+                log.container.double('RESULT: [error] hash password');
                 log.message({ error: error });
                 break;
             }
+            log.container.double('REULST: [success] hash password');
+            log.message({ MESSAGE: 'Hash password success!' });
+            log.message({ hashcode: hashcode })
 
             /* request to DB */
             const query = queryObject[method];
@@ -107,12 +102,12 @@ module.exports = async (req, dbMember) => {
                 userName,
                 hashcode
             ];
-            log.container.double('STATE: check DB query and values');
+            
+            log.container.double('ACTION: request to DB');
             log.message({ query: query });
             log.message({ values: values });
+            log.print();
 
-            log.container.double('ACTION: request to DB');
-            
             const dbResult = await dbMember.user.run(query, values);
 
             /* request to DB result */
@@ -123,7 +118,7 @@ module.exports = async (req, dbMember) => {
                     errorMessage: 'Failed to request to DB.'
                 }
 
-                log.container.double('RESULT: error');
+                log.container.double('RESULT: [error] request to DB');
                 break;
             }
 
@@ -135,7 +130,7 @@ module.exports = async (req, dbMember) => {
                 errorMessage: null
             }
 
-            log.container.double('RESULT: success');
+            log.container.double('RESULT: [success] request to DB');
             log.message({ dbResult: dbResult });
             break;
         case 'GET':
