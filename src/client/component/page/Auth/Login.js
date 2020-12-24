@@ -4,10 +4,13 @@ import { useHistory, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 /* api */
-import { get as getAuth } from 'api/auth/auth';
+import getAuth from 'api/auth/auth';
 
 /* lib */
 import responseHandler from 'lib/responseHandler';
+
+/* store */
+import { action as authAction } from 'store/action/auth/auth';
 
 /* shared */
 import {
@@ -57,14 +60,14 @@ const Login = () => {
         if (emailData.input.length === 0) {
             message = '이메일을 입력해주세요.';
             isValid = false;
-        } else if (isEmail(emailData.input)) { 
+        } else if (isEmail(emailData.input)) {
             message = '올바른 이메일 주소입니다.';
             isValid = true;
         } else {
             message = '이메일 주소가 아닙니다.';
             isValid = false;
         }
-        
+
         if (!isValid) {
             setMessage(message);
             emailData.ref.current.focus();
@@ -84,7 +87,7 @@ const Login = () => {
 
         if (!isValid) {
             setMessage(message);
-            passwordData.ref.current.focus(); 
+            passwordData.ref.current.focus();
             return;
         }
 
@@ -93,26 +96,25 @@ const Login = () => {
             password: passwordData.input
         };
 
-        const response = await getAuth(formData);
-
-        console.log('response', response);
+        const response = await getAuth.get(formData);
 
         const isLoggedIn = response.payload.isLoggedIn;
         responseHandler(response, () => {
             if (isLoggedIn) {
+                const email = response.payload.email;
                 const userName = response.payload.userName;
-                
+
                 alert(`${userName}님, 반갑습니다.`);
+
+                dispatch(authAction.post(email, userName));
 
                 history.push('/blog/lobby');
             } else {
                 alert('이메일 또는 비밀번호가 잘못되었습니다.');
             }
-        });
-
-        if (!isLoggedIn) {
+        }, () => {
             history.go(0);
-        }
+        });
     }
 
     return (
@@ -164,7 +166,6 @@ const Login = () => {
                         </div>
                     </div>
                     <div className={
-                        "Login__item " +
                         "Login__message"}>
                         {message}
                     </div>

@@ -8,14 +8,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /* session */
-const session = require('./session/session');
+const session = require('./session');
 app.use(session);
 
 /* api */
 const apiMiddleware = require('./apiMiddleware');
-const emailProcessor = require('./email/emailProcessor');
-const requestProcessor = require('./db/requestProcessor');
-const sessionProcessor = require('./session/sessionProcessor');
 const errorHandler = require('./errors');
 
 /* shared */

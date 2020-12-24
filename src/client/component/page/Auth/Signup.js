@@ -2,10 +2,9 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-
 /* api */
-import { get as getEmail } from 'api/user/email/email';
-import { post as postUser } from 'api/user/user';
+import getEmail from 'api/user/email/email';
+import postUser from 'api/user/user';
 
 /* lib */
 import responseHandler from 'lib/responseHandler';
@@ -268,9 +267,12 @@ const Signup = () => {
                 } else {
                     alert('계정을 생성하는 도중 문제가 생겼습니다. 다시 시도해주세요.');
                 }
+                history.push('/auth/login');
+            }, () => {
+                history.go(0);
             }
         );
-        history.push('/auth/login');
+        
     }
 
     return (

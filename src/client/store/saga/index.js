@@ -6,6 +6,6 @@ import auth from 'store/saga/auth';
 
 export default function* index() {
     yield all([
-        call(auth),
+        // call(auth),
     ])
 }

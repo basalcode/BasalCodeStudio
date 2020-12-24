@@ -96,8 +96,6 @@
     }
 
     &__message {
-        @include size(100%, 2rem);
-
         text-align: center;
     }
 
@@ -116,6 +114,7 @@
     }
 
     &__signup {
+        display: inline;
         text-decoration: underline;
 
         &:hover {

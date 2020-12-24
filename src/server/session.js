@@ -1,8 +1,8 @@
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
-const privateDB = require('../../../.private/security/db.js');
-const sessionSecretCode = require('../../../.private/security/session.js').sessionSecretCode;
+const privateDB = require('../../.private/security/db.js');
+const sessionSecretCode = require('../../.private/security/session.js').sessionSecretCode;
 
 /* session-store */
 const storeOptions = {

@@ -103,35 +103,48 @@ module.exports = async (req, dbMember) => {
                 break;
             }
 
-            log.container.double('ACTION: compare password and hashcode');
-            const hashcode = dbResult[0].hashcode;
-            
-            log.message({ hashcode: hashcode });
-            log.message({ compare_result: bcrypt.compare(password, hashcode) });
+            try {
+                log.container.double('ACTION: compare password and hashcode');
+                const hashcode = dbResult[0].hashcode;
+                const compareResult = await bcrypt.compare(password, hashcode);
+                
+                log.message({ hashcode: hashcode });
+                log.message({ compareResult: compareResult });
 
-            if (!bcrypt.compare(password, hashcode)) {
-                response = {
-                    statusCode: 200,
-                    payload: {
-                        isLoggedIn: false,
-                        userName: null
-                    },
-                    errorMessage: null
+                if (!compareResult) {
+                    response = {
+                        statusCode: 200,
+                        payload: {
+                            isLoggedIn: false,
+                            userName: null
+                        },
+                        errorMessage: null
+                    }
+                    log.container.double('RESULT: [success] compare password and hashcode');
+                    break;
                 }
-                log.container.double('RESULT: [success] compare password and hashcode');
+            } catch (error) {
+                response = {
+                    statusCode: 500,
+                    payload: null,
+                    errorMessage: 'Failed to compare password and hashcode.'
+                }
+                log.container.double('RESULT: [error] compare password and hashcode');
                 break;
-            } 
+            }
 
-            const userName = dbResult[0]['user_name'];
             response = {
                 statusCode: 200,
                 payload: {
                     isLoggedIn: true,
-                    userName: userName
+                    email: dbResult[0]['email'],
+                    userName: dbResult[0]['user_name']
                 },
                 errorMessage: null
             }
             log.container.double('RESULT: [success] compare password and hashcode');
+
+            
 
             break;
         case 'PUT':

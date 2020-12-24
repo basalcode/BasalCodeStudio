@@ -1,6 +1,6 @@
 /* module */
 import React, { useState, useEffect, useRef } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 /* store */
@@ -23,6 +23,7 @@ const App = () => {
     /* store */
     const dispatch = useDispatch();
     const nightModeOn = useSelector(store => store.app.nightModeOn);
+    // const auth = useSelector(store => store.auth.)
 
     // /* state */
     const [scrollAvailable, setScrollAvailable] = useState(true);
@@ -33,6 +34,11 @@ const App = () => {
         appRef.current.focus();
 
         dispatch(appElementAction(appRef.current));
+    }, []);
+
+    // check authentication
+    useEffect(() => {
+
     }, []);
 
     return (
