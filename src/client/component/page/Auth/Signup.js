@@ -204,7 +204,6 @@ const Signup = () => {
             emailData.ref.current.focus();
             return;
         }
-
         if (!userNameData.isValid) {
             alert(userNameData.message.length === 0 ?
                 '사용자명을 입력해주세요.' :
@@ -212,7 +211,6 @@ const Signup = () => {
             userNameData.ref.current.focus();
             return;
         }
-
         if (!passwordData.isValid) {
             alert(passwordData.message.length === 0 ?
                 '비밀번호를 입력해주세요.' :
@@ -220,7 +218,6 @@ const Signup = () => {
             passwordData.ref.current.focus();
             return;
         }
-
         if (!confirmPasswordData.isValid) {
             alert(confirmPasswordData.message.length === 0 ?
                 '비밀번호를 확인해주세요.' :
@@ -228,7 +225,7 @@ const Signup = () => {
             confirmPasswordData.ref.current.focus();
             return;
         }
-
+        
         setEmailData({
             ...emailData,
             input: '',
@@ -272,7 +269,6 @@ const Signup = () => {
                 history.go(0);
             }
         );
-        
     }
 
     return (

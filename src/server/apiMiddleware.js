@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
     log.container.double('ACTION: call requestToTarget');
     log.message({ originalUrl: req.originalUrl });
     log.message({ path: path });
+    log.message({ method: req.method });
     log.print();
 
     let response = await requestToTarget(req, path);

@@ -3,13 +3,13 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 /* store */
-// import { logout as logoutAction } from 'store/action/auth/auth';
+import { action as authAction } from 'store/action/auth/auth';
 
 const Account = () => {
     const dispatch = useDispatch();
 
     const onClickHandler = (event) => {
-        // dispatch(logoutAction())
+        dispatch(authAction.delete());
     }
     
     return (

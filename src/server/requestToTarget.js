@@ -16,7 +16,7 @@ const requestToTarget = async (req, path) => {
 
     let targetModule = null;
     let response = null;
-
+    
     try {
         log.container.double('ACTION: load target module');
         targetModule = require(modulePath);
@@ -26,10 +26,18 @@ const requestToTarget = async (req, path) => {
             payload: null,
             errorMessage: 'Failed to load target module.'
         }
+        
+        const targetModuleType = type.getTypeOf(targetModule);
 
         log.container.double('RESULT: [error] load target module');
+        console.log('[error]', error);
         log.message({ error: error });
+        log.message({ targetModuleType: targetModuleType });
+        log.print();
+
+        return response;
     }
+
     log.container.double('RESULT: [success] load target module');
     const targetModuleType = type.getTypeOf(targetModule);
     log.message({ targetModuleType: targetModuleType });

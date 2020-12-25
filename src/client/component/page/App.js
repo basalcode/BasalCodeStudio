@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 /* store */
 import { appElement as appElementAction } from 'store/action/app';
+import { action as authAction } from 'store/action/auth/auth';
 
 /* component */ 
 import Prologue from 'component/page/Prologue/Prologue';
@@ -13,6 +14,7 @@ import Auth from 'component/page/Auth/Auth';
 import Career from 'component/page/Career/Career';
 import NotFound from 'component/page/NotFound/NotFound';
 
+/* pdf */
 import { pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -23,7 +25,7 @@ const App = () => {
     /* store */
     const dispatch = useDispatch();
     const nightModeOn = useSelector(store => store.app.nightModeOn);
-    // const auth = useSelector(store => store.auth.)
+    const isLoggedIn = useSelector(store => store.auth.isLoggedIn);
 
     // /* state */
     const [scrollAvailable, setScrollAvailable] = useState(true);
@@ -32,13 +34,15 @@ const App = () => {
     // auto fcous on App
     useEffect(() => {
         appRef.current.focus();
-
+        
         dispatch(appElementAction(appRef.current));
     }, []);
 
     // check authentication
     useEffect(() => {
-
+        if (!isLoggedIn) {
+            dispatch(authAction.get());
+        }
     }, []);
 
     return (
@@ -48,8 +52,7 @@ const App = () => {
                 'App__scroll--on ' :
                 'App__scroll--off '}` +
             `${nightModeOn ? 'App--night-mode ' : ' '}`}
-            ref={appRef}
-            >
+            ref={appRef}>
             <Switch>
                 <Route exact path='/' component={Prologue} />
                 <Route path='/blog' component={Blog} />

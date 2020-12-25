@@ -8,15 +8,15 @@ import Account from './Account';
 
 const UserMenu = () => {
     /* store */
-    const login = useSelector(store => store.auth.login);
+    const isLoggedIn = useSelector(store => store.auth.isLoggedIn);
 
     useEffect(() => {
-        console.log('login', login);
+        console.log('USER MENU: login', isLoggedIn);
     }, []);
 
     return (
         <div className="UserMenu">
-            { login ? <Account /> : <LoginButton /> }
+            { isLoggedIn ? <Account /> : <LoginButton /> }
         </div>
     );
 }

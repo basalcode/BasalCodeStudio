@@ -1,12 +1,14 @@
 /* constant */
 import {
     POST,
+    GET,
     PUT,
     DELETE
 } from 'store/action/auth/auth';
 
 /* reducer */
 const initialState = {
+    isLoggedIn: false,
     email: '',
     userName: ''
 }
@@ -16,13 +18,21 @@ export default (state = initialState, action) => {
         case POST:
             return {
                 ...state,
+                isLoggedIn: action.payload.isLoggedIn,
                 email: action.payload.email,
                 userName: action.payload.userName
             }
+        case GET:
+            return { ...state }
         case PUT:
             return { ...state }
         case DELETE:
-            return { ...state }
+            return { 
+                ...state,
+                isLoggedIn: action.payload.isLoggedIn,
+                email: action.payload.email,
+                userName: action.payload.userName
+            }
         default:
             return { ...state }
     }

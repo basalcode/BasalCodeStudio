@@ -4,7 +4,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 /* api */
-import getAuth from 'api/auth/auth';
+import authAPI from 'api/auth/auth';
 
 /* lib */
 import responseHandler from 'lib/responseHandler';
@@ -96,7 +96,7 @@ const Login = () => {
             password: passwordData.input
         };
 
-        const response = await getAuth.get(formData);
+        const response = await authAPI.post(formData);
 
         const isLoggedIn = response.payload.isLoggedIn;
         responseHandler(response, () => {
