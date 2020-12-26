@@ -18,9 +18,13 @@ function* watchGetAuth() {
 
 function* getAuth(action) {
     try {
-        let response = yield call(authAPI.get);
+        const response = yield call(authAPI.get);
         
-        yield put(authAction.post(response));
+        const isLoggedIn = response.payload.isLoggedIn;
+        const email = response.payload.email;
+        const userName = response.payload.userName;
+
+        yield put(authAction.put(isLoggedIn, email, userName));
     } catch (error) {
         console.log(error);
     }

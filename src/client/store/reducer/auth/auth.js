@@ -25,7 +25,12 @@ export default (state = initialState, action) => {
         case GET:
             return { ...state }
         case PUT:
-            return { ...state }
+            return { 
+                ...state,
+                isLoggedIn: action.payload.isLoggedIn,
+                email: action.payload.email,
+                userName: action.payload.userName
+            }
         case DELETE:
             return { 
                 ...state,

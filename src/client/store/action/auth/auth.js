@@ -22,10 +22,14 @@ export const action = {
             payload: {}
         }
     },
-    put: () => {
+    put: (isLoggedIn, email, userName) => {
         return {
             type: PUT,
-            payload: {}
+            payload: {
+                isLoggedIn: isLoggedIn,
+                email: email,
+                userName: userName
+            }
         }
     },
     delete: () => {
